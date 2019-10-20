@@ -1,12 +1,18 @@
-const surrounded = require('../tools/surrounded');
+const optional = require('../tools/optional');
 const combine = require('../tools/combine');
+const maybe = require('../tools/maybe');
 const check = require('../tools/check');
+const multiplier = require('./multiplier');
 const combinator = require('./combinator');
 
-module.exports = surrounded('[', ']', stream => {
-    const values = [];
+module.exports = maybe(stream => {
+    if (!optional(stream, 'punc', '[')) {
+        return null;
+    }
 
+    const values = [];
     const parsers = combine(
+        require('./type'),
         require('./group'),
         require('./string')
     );
@@ -25,8 +31,13 @@ module.exports = surrounded('[', ']', stream => {
         }
     }
 
+    if (!optional(stream, 'punc', ']')){
+        return null;
+    }
+
     return {
         type: 'group',
+        multiplier: multiplier(stream),
         value: values
     };
 });
