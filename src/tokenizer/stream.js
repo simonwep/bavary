@@ -7,6 +7,10 @@ module.exports = vals => {
         pop: () => index = stashed.pop(),
         next: () => vals[index++],
         peek: () => vals[index],
-        hasNext: () => index < vals.length
+        hasNext: () => index < vals.length,
+
+        get index() {
+            return index;
+        }
     };
 };

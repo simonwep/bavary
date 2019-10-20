@@ -20,10 +20,17 @@ module.exports = str => {
 
         // Find matching parser
         for (const parse of parser) {
+            const start = stream.index;
             const parsed = parse(stream);
 
             if (parsed) {
-                tokens.push(parsed);
+                const end = stream.index;
+
+                tokens.push({
+                    ...parsed,
+                    start, end
+                });
+
                 continue outer;
             }
         }
