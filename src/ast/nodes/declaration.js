@@ -1,0 +1,23 @@
+const optional = require('../tools/optional');
+const maybe = require('../tools/maybe');
+const group = require('./group');
+const type = require('./type');
+
+module.exports = maybe(stream => {
+
+    const target = type(stream);
+    if (!target || !optional(stream, 'punc', '=')) {
+        return null;
+    }
+
+    const body = group(stream);
+    if (!body) {
+        return null;
+    }
+
+    return {
+        type: 'declaration',
+        name: target,
+        value: body
+    };
+});
