@@ -22,26 +22,39 @@ module.exports = str => {
 
         // Ignore whitespace
         consume(stream, isWhiteSpace);
-        if (stream.hasNext()) {
 
-            // Find matching parser
-            for (const parse of parser) {
-                const start = stream.index;
-                const parsed = parse(stream);
-
-                if (parsed) {
-                    const end = stream.index;
-
-                    tokens.push({
-                        ...parsed,
-                        start, end
-                    });
-
-                    continue outer;
-                }
-            }
-        } else {
+        if (!stream.hasNext()) {
             break;
+        }
+
+        // Find matching parser
+        for (const parse of parser) {
+            const start = stream.index;
+            const parsed = parse(stream);
+
+            if (!parsed) {
+                continue;
+            }
+
+            // Check if token could be the beginning of a comment
+            if (parsed.value === '/' && stream.hasNext() && stream.peek() === '/') {
+                while (stream.hasNext()) {
+                    if (stream.peek() === '\n') {
+                        break;
+                    }
+
+                    stream.next();
+                }
+
+                continue outer;
+            }
+
+            tokens.push({
+                ...parsed, start,
+                end: stream.index
+            });
+
+            continue outer;
         }
 
         throw 'Failed to parse input sequence.';

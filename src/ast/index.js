@@ -15,7 +15,7 @@ module.exports = tokens => {
         if (dec) {
             declarations.push(dec);
         } else {
-            break;
+            throw 'Failed to parse declaration.'
         }
     }
 
