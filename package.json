@@ -1,0 +1,25 @@
+{
+    "name": "bavary",
+    "version": "0.0.0",
+    "description": "",
+    "main": "./dist/bavary.min.js",
+    "keywords": [
+        "parser"
+    ],
+    "author": "Simon Reinisch <trash@reinisch.io>",
+    "license": "MIT",
+    "scripts": {
+        "build": "webpack",
+        "lint": "eslint ./src --fix",
+        "test": "mocha test/**/*.test.js",
+        "dev:test": "mocha test/**/*.test.js --watch --watch-extensions js"
+    },
+    "devDependencies": {
+        "chai": "^4.2.0",
+        "eslint": "^6.5.1",
+        "eslint-config-problems": "^3.0.1",
+        "mocha": "^6.2.2",
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.9"
+    }
+}

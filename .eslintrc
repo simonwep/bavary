@@ -1,0 +1,35 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "problems"
+    ],
+    "env": {
+        "node": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "rules": {
+        "quotes": [2, "single", {"avoidEscape": true}],
+        "indent": ["error", 4, {"SwitchCase": 1}],
+        "brace-style": ["error", "1tbs"],
+        "capitalized-comments": "warn",
+        "keyword-spacing": "warn",
+        "eqeqeq": "error",
+        "no-console": "error",
+        "no-undef-init": "warn",
+        "no-sequences": "error",
+        "no-lonely-if": "error",
+        "no-trailing-spaces": "error",
+        "no-delete-var": "error",
+        "no-redeclare": "error",
+        "no-multi-str": "error",
+        "prefer-rest-params": "error",
+        "prefer-const": "error",
+        "camelcase": "error",
+        "eol-last": "error",
+        "curly": "error",
+        "yoda": "error"
+    }
+}
