@@ -31,7 +31,7 @@ module.exports = maybe(stream => {
         }
     }
 
-    if (!optional(stream, 'punc', ']')){
+    if (!optional(stream, 'punc', ']')) {
         return null;
     }
 

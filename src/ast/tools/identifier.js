@@ -6,7 +6,7 @@ module.exports = maybe(stream => {
     while (stream.hasNext(true)) {
         const {type, value} = stream.peek(true);
 
-        if (type === 'kw' || (type === 'punc' && value === '-')) {
+        if (type === 'kw' || type === 'num' || (type === 'punc' && value === '-')) {
             name += value;
             stream.next(true);
         } else {

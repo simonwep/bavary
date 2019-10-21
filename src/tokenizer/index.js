@@ -5,6 +5,7 @@ const {isWhiteSpace} = require('./tools/is');
 const parser = [
     require('./types/str'),
     require('./types/kw'),
+    require('./types/num'),
     require('./types/punc')
 ];
 
