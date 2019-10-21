@@ -1,7 +1,6 @@
 const {expect} = require('chai');
 const tokenize = require('../../src/tokenizer');
 
-
 describe('Tokenizer', () => {
 
     it('Should parse "<num-sign> = [ "+" | "-" ]{2,3}"', () => {

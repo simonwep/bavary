@@ -1,5 +1,6 @@
 const identifier = require('../tools/identifier');
 const optional = require('../tools/optional');
+const expect = require('../tools/expect');
 const maybe = require('../tools/maybe');
 const multiplier = require('./multiplier');
 
@@ -9,10 +10,11 @@ module.exports = maybe(stream => {
     }
 
     const name = identifier(stream);
-    if (!name || !optional(stream, 'punc', '>')) {
-        return null;
+    if (!name) {
+        stream.throwError('Expected identifier.');
     }
 
+    expect(stream, 'punc', '>');
     return {
         type: 'type',
         multiplier: multiplier(stream),

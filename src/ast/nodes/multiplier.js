@@ -1,27 +1,22 @@
 const optional = require('../tools/optional');
+const expect = require('../tools/expect');
 const maybe = require('../tools/maybe');
 
 module.exports = maybe(stream => {
     const mp = optional(stream, 'punc', '*', '+', '?', '!', '{');
 
     if (mp && mp.value === '{') {
-        const start = optional(stream, 'num');
+        const start = expect(stream, 'num');
+        expect(stream, 'punc', ',');
 
-        if (!start || !optional(stream, 'punc', ',')) {
-            throw 'Syntax error.';
-        }
-
-        const end = optional(stream, 'num');
-        if (!end) {
-            throw 'Missing final range argument.';
-        } else if (start.value < 0 || end.value < 0) {
-            throw 'Range values cannot contain negative values.';
+        const end = expect(stream, 'num');
+        if (start.value < 0 || end.value < 0) {
+            stream.throwError('Range values cannot contain negative values.');
         } else if (end.value - start.value < 0) {
-            throw 'Start value cannot be higher than the end value.';
-        } else if (!optional(stream, 'punc', '}')) {
-            throw 'Expected }.'; // TODO: expect util?
+            stream.throwError('Start value cannot be higher than the end value.');
         }
 
+        expect(stream, 'punc', '}');
         return {
             type: 'range',
             value: {

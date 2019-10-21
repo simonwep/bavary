@@ -12,7 +12,7 @@ module.exports = maybe(stream => {
 
     // Declaration cannot have multipliers
     if (target.multiplier) {
-        throw `Declaration type cannot contain multipliers, found '${target.multiplier.value}' on ${target.name}.`;
+        stream.throwError(`Declaration type cannot contain multipliers, found '${target.multiplier.value}' on ${target.name}.`);
     }
 
     const body = group(stream);

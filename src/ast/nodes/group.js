@@ -1,5 +1,6 @@
 const optional = require('../tools/optional');
 const combine = require('../tools/combine');
+const expect = require('../tools/expect');
 const maybe = require('../tools/maybe');
 const check = require('../tools/check');
 const multiplier = require('./multiplier');
@@ -31,10 +32,7 @@ module.exports = maybe(stream => {
         }
     }
 
-    if (!optional(stream, 'punc', ']')) {
-        return null;
-    }
-
+    expect(stream, 'punc', ']');
     return {
         type: 'group',
         multiplier: multiplier(stream),

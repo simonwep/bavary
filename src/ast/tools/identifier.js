@@ -1,5 +1,9 @@
 const maybe = require('./maybe');
 
+/**
+ * Parses an identifier made out of keywords, numbers or hyphens
+ * @type {Function}
+ */
 module.exports = maybe(stream => {
     let name = '';
 
