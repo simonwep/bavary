@@ -18,14 +18,18 @@ module.exports = (src, {message, start, end}) => {
     const totalLines = countLines(src);
     const totalLinesMaxStrLength = Math.max(String(totalLines).length, 2);
 
+    // Remove empty trailing lines
+    while (sourceLines.length && !sourceLines[0].trim()) {
+        sourceLines.splice(0, 1);
+    }
+
     // Check if lines where omitted
     const omittedLines = totalLines - sourceLines.length + 1;
     if (omittedLines > 1) {
-        console.log(`${omittedLines} line${omittedLines === 1 ? '' : 's'} omitted...`);
+        console.log(`... (${omittedLines} line${omittedLines === 1 ? '' : 's'} omitted)`);
     }
 
     // Pretty-print lines
-    // TODO: Omit empty, trailing lines?
     for (let i = 0; i < sourceLines.length; i++) {
         const line = sourceLines[i];
         const lineOffset = totalLines - sourceLines.length + i + 2;
