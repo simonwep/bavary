@@ -13,7 +13,7 @@ module.exports = maybe(stream => {
         if (start.value < 0 || end.value < 0) {
             stream.throwError('Range values cannot contain negative values.');
         } else if (end.value - start.value < 0) {
-            stream.throwError('Start value cannot be higher than the end value.');
+            stream.throwError('The difference between start and end-value cannot be negative or zero.');
         }
 
         expect(stream, 'punc', '}');

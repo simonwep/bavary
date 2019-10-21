@@ -14,6 +14,7 @@ module.exports = (src, {message, start, end}) => {
     const nextLineBreak = alternative(src.indexOf('\n', end), src.length);
     const sourceLines = resolveSourceLines(src, nextLineBreak);
     const col = (start - prevLineBreak);
+    let msg = '';
 
     const totalLines = countLines(src);
     const totalLinesMaxStrLength = Math.max(String(totalLines).length, 2);
@@ -26,7 +27,7 @@ module.exports = (src, {message, start, end}) => {
     // Check if lines where omitted
     const omittedLines = totalLines - sourceLines.length + 1;
     if (omittedLines > 1) {
-        console.log(`... (${omittedLines} line${omittedLines === 1 ? '' : 's'} omitted)`);
+        msg += `... (${omittedLines} line${omittedLines === 1 ? '' : 's'} omitted)\n`;
     }
 
     // Pretty-print lines
@@ -34,11 +35,12 @@ module.exports = (src, {message, start, end}) => {
         const line = sourceLines[i];
         const lineOffset = totalLines - sourceLines.length + i + 2;
         const lineCount = String(lineOffset).padStart(totalLinesMaxStrLength, '0');
-        console.log(`${lineCount} ${line}`);
+        msg += `${lineCount} ${line}\n`;
     }
 
-    console.log(`${' '.repeat(col + totalLinesMaxStrLength)}^`);
-    console.error(message);
+    msg += `${' '.repeat(col + totalLinesMaxStrLength)}^\n`;
+    msg += message;
+    throw msg;
 };
 
 function trimLine(line) {
