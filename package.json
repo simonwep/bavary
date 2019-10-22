@@ -21,5 +21,8 @@
         "mocha": "^6.2.2",
         "webpack": "^4.41.2",
         "webpack-cli": "^3.3.9"
+    },
+    "dependencies": {
+        "previous-index-of": "^1.2.1"
     }
 }
