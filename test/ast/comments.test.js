@@ -15,11 +15,7 @@ describe('Comments', () => {
             .to.deep.equal([
             {
                 'type': 'declaration',
-                'name': {
-                    'type': 'type',
-                    'multiplier': null,
-                    'value': 'brr'
-                },
+                'name': 'brr',
                 'value': {
                     'type': 'group',
                     'multiplier': null,
@@ -37,11 +33,7 @@ describe('Comments', () => {
         expect(parse(`<brr> = ['A\\'' | 'B']`)).to.deep.equal([
             {
                 'type': 'declaration',
-                'name': {
-                    'type': 'type',
-                    'multiplier': null,
-                    'value': 'brr'
-                },
+                'name': 'brr',
                 'value': {
                     'type': 'group',
                     'multiplier': null,

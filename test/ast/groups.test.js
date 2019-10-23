@@ -7,11 +7,7 @@ describe('Simple group declarations', () => {
         expect(parse(`<a-value> = [ '0' | '1']`)).to.deep.equal([
             {
                 'type': 'declaration',
-                'name': {
-                    'type': 'type',
-                    'multiplier': null,
-                    'value': 'a-value'
-                },
+                'name': 'a-value',
                 'value': {
                     'type': 'group',
                     'multiplier': null,
@@ -29,11 +25,7 @@ describe('Simple group declarations', () => {
         expect(parse(`<another-value> = [ '0' | '1' | ['5' | 'C']]`)).to.deep.equal([
             {
                 'type': 'declaration',
-                'name': {
-                    'type': 'type',
-                    'multiplier': null,
-                    'value': 'another-value'
-                },
+                'name': 'another-value',
                 'value': {
                     'type': 'group',
                     'multiplier': null,
@@ -43,8 +35,7 @@ describe('Simple group declarations', () => {
                         {'type': 'string', 'value': '1'},
                         {'type': 'combinator', 'value': '|'},
                         {
-                            'type':
-                                'group',
+                            'type': 'group',
                             'multiplier': null,
                             'value': [
                                 {'type': 'string', 'value': '5'},

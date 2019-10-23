@@ -15,7 +15,7 @@ module.exports = tokens => {
         if (dec) {
             declarations.push(dec);
         } else {
-            stream.throwError('Failed to parse declaration.');
+            stream.throwError('Expected type-declaration.');
         }
     }
 

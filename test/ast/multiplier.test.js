@@ -7,11 +7,7 @@ describe('Multipliers', () => {
         expect(parse(`<another-value> = [ '0' ]+`)).to.deep.equal([
             {
                 'type': 'declaration',
-                'name': {
-                    'type': 'type',
-                    'multiplier': null,
-                    'value': 'another-value'
-                },
+                'name': 'another-value',
                 'value': {
                     'type': 'group',
                     'multiplier': {
@@ -33,11 +29,7 @@ describe('Multipliers', () => {
         expect(parse(`<another-value> = [ '0' | ['C' | 'X']*]+`)).to.deep.equal([
             {
                 'type': 'declaration',
-                'name': {
-                    'type': 'type',
-                    'multiplier': null,
-                    'value': 'another-value'
-                },
+                'name': 'another-value',
                 'value': {
                     'type': 'group',
                     'multiplier': {
@@ -69,11 +61,7 @@ describe('Multipliers', () => {
         expect(parse(`<abc-123> = ['A' | 'B']{4,6}`)).to.deep.equal([
             {
                 'type': 'declaration',
-                'name': {
-                    'type': 'type',
-                    'multiplier': null,
-                    'value': 'abc-123'
-                },
+                'name': 'abc-123',
                 'value': {
                     'type': 'group',
                     'multiplier': {

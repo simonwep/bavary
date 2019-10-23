@@ -22,7 +22,7 @@ module.exports = maybe(stream => {
 
     return {
         type: 'declaration',
-        name: target,
+        name: target.value,
         value: body
     };
 });
