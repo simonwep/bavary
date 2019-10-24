@@ -11,7 +11,7 @@ module.exports = maybe(stream => {
 
     const name = identifier(stream);
     if (!name) {
-        stream.throwError('Expected identifier.');
+        return stream.throwError('Expected identifier.');
     }
 
     expect(stream, 'punc', '>');

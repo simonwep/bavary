@@ -11,9 +11,9 @@ module.exports = maybe(stream => {
 
         const end = expect(stream, 'num');
         if (start.value < 0 || end.value < 0) {
-            stream.throwError('Range values cannot contain negative values.');
+            return stream.throwError('Range values cannot contain negative values.');
         } else if (end.value - start.value < 0) {
-            stream.throwError('The difference between start and end-value cannot be negative or zero.');
+            return stream.throwError('The difference between start and end-value cannot be negative or zero.');
         }
 
         expect(stream, 'punc', '}');

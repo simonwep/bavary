@@ -15,7 +15,7 @@ module.exports = tokens => {
         if (dec) {
             declarations.push(dec);
         } else {
-            stream.throwError('Expected type-declaration.');
+            return stream.throwError('Expected type-declaration.');
         }
     }
 
