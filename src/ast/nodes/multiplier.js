@@ -2,8 +2,14 @@ const optional = require('../tools/optional');
 const expect = require('../tools/expect');
 const maybe = require('../tools/maybe');
 
+const types = {
+    '*': 'zero-infinity',
+    '+': 'one-infinity',
+    '?': 'optional'
+};
+
 module.exports = maybe(stream => {
-    const mp = optional(stream, 'punc', '*', '+', '?', '!', '{');
+    const mp = optional(stream, 'punc', '*', '+', '?', '{');
 
     if (mp && mp.value === '{') {
         const start = expect(stream, 'num');
@@ -27,7 +33,7 @@ module.exports = maybe(stream => {
     }
 
     return mp ? {
-        type: 'single',
+        type: types[mp.value],
         value: mp.value
     } : null;
 });

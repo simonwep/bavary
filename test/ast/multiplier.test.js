@@ -11,7 +11,7 @@ describe('Multipliers', () => {
                 'value': {
                     'type': 'group',
                     'multiplier': {
-                        'type': 'single',
+                        'type': 'one-infinity',
                         'value': '+'
                     },
                     'value': [
@@ -33,7 +33,7 @@ describe('Multipliers', () => {
                 'value': {
                     'type': 'group',
                     'multiplier': {
-                        'type': 'single',
+                        'type': 'one-infinity',
                         'value': '+'
                     },
                     'value': [
@@ -42,7 +42,7 @@ describe('Multipliers', () => {
                         {
                             'type': 'group',
                             'multiplier': {
-                                'type': 'single',
+                                'type': 'zero-infinity',
                                 'value': '*'
                             },
                             'value': [

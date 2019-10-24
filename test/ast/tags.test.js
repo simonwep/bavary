@@ -54,14 +54,14 @@ describe('Tags', () => {
                 'value': {
                     'type': 'group',
                     'multiplier': {
-                        'type': 'single',
+                        'type': 'zero-infinity',
                         'value': '*'
                     },
                     'value': [
                         {
                             'type': 'type',
                             'multiplier': {
-                                'type': 'single',
+                                'type': 'one-infinity',
                                 'value': '+'
                             },
                             'tag': 'abc-123',

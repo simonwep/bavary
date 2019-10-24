@@ -4,7 +4,6 @@ const group = require('./group');
 const type = require('./type');
 
 module.exports = maybe(stream => {
-
     const target = type(stream);
     if (!target || !optional(stream, 'punc', '=')) {
         return null;
