@@ -1,4 +1,4 @@
-const identifier = require('../tools/identifier');
+const identifier = require('./identifier');
 const optional = require('../tools/optional');
 const expect = require('../tools/expect');
 const maybe = require('../tools/maybe');
@@ -10,8 +10,8 @@ module.exports = maybe(stream => {
         return null;
     }
 
-    const value = identifier(stream);
-    if (!value) {
+    const ident = identifier(stream);
+    if (!ident) {
         return stream.throwError('Expected identifier.');
     }
 
@@ -22,15 +22,15 @@ module.exports = maybe(stream => {
         if (!tag) {
             return stream.throwError('Expected string or identifier as tag.');
         }
-        tag = tag.value || tag;
 
+        tag = tag.value;
     }
 
     expect(stream, 'punc', '>');
     return {
         type: 'type',
         multiplier: multiplier(stream),
-        tag,
-        value
+        value: ident.value,
+        tag
     };
 });

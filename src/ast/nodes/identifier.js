@@ -1,4 +1,4 @@
-const maybe = require('./maybe');
+const maybe = require('../tools/maybe');
 
 /**
  * Parses an identifier made out of keywords, numbers or hyphens
@@ -18,5 +18,8 @@ module.exports = maybe(stream => {
         }
     }
 
-    return name || null;
+    return {
+        type: 'identifier',
+        value: name || null
+    };
 });
