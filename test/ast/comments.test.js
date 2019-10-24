@@ -11,8 +11,7 @@ describe('Comments', () => {
         expect(parse(`
             // <ccc> = ['A']
             <brr> = ['A' | 'B'] // Another comment
-        `))
-            .to.deep.equal([
+        `)).to.deep.equal([
             {
                 'type': 'declaration',
                 'name': 'brr',
