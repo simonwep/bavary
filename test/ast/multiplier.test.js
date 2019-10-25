@@ -7,6 +7,7 @@ describe('Multipliers', () => {
         expect(parse(`<another-value> = [ '0' ]+`)).to.deep.equal([
             {
                 'type': 'declaration',
+                'variant': null,
                 'name': 'another-value',
                 'value': {
                     'type': 'group',
@@ -25,10 +26,31 @@ describe('Multipliers', () => {
         ]);
     });
 
+    it('Should parse entry types ', () => {
+        expect(parse(`entry <exported-value> = [ '0' ]`)).to.deep.equal([
+            {
+                'type': 'declaration',
+                'variant': 'entry',
+                'name': 'exported-value',
+                'value': {
+                    'type': 'group',
+                    'multiplier': null,
+                    'value': [
+                        {
+                            'type': 'string',
+                            'value': '0'
+                        }
+                    ]
+                }
+            }
+        ]);
+    });
+
     it('Should parse nested multipliers', () => {
         expect(parse(`<another-value> = [ '0' | ['C' | 'X']*]+`)).to.deep.equal([
             {
                 'type': 'declaration',
+                'variant': null,
                 'name': 'another-value',
                 'value': {
                     'type': 'group',
@@ -61,6 +83,7 @@ describe('Multipliers', () => {
         expect(parse(`<abc-123> = ['A' | 'B']{4,6}`)).to.deep.equal([
             {
                 'type': 'declaration',
+                'variant': null,
                 'name': 'abc-123',
                 'value': {
                     'type': 'group',

@@ -4,6 +4,11 @@ const group = require('./group');
 const type = require('./type');
 
 module.exports = maybe(stream => {
+
+    // Parse optional variant
+    const variant = optional(stream, 'kw', 'entry');
+
+    // Parse
     const target = type(stream);
     if (!target || !optional(stream, 'punc', '=')) {
         return null;
@@ -27,6 +32,7 @@ module.exports = maybe(stream => {
     return {
         type: 'declaration',
         name: target.value,
+        variant: variant ? variant.value : null,
         value: body
     };
 });

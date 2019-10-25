@@ -7,6 +7,7 @@ describe('Tags', () => {
         expect(parse(`<name> = ['C' <another-type#abc-123>]`)).to.deep.equal([
             {
                 'type': 'declaration',
+                'variant': null,
                 'name': 'name',
                 'value': {
                     'type': 'group',
@@ -29,6 +30,7 @@ describe('Tags', () => {
         expect(parse(`<name> = [<another-type#'Hello World'>]`)).to.deep.equal([
             {
                 'type': 'declaration',
+                'variant': null,
                 'name': 'name',
                 'value': {
                     'type': 'group',
@@ -50,6 +52,7 @@ describe('Tags', () => {
         expect(parse(`<name> = [<another-type#abc-123>+]*`)).to.deep.equal([
             {
                 'type': 'declaration',
+                'variant': null,
                 'name': 'name',
                 'value': {
                     'type': 'group',
