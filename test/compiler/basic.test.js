@@ -4,7 +4,7 @@ const {expect} = require('chai');
 describe('Very basic tests', () => {
 
     it('Should throw an error if no entry-type is defined', () => {
-        expect(() => compile`('<abc> = ['A']`).to.throw();
+        expect(() => compile(`'<abc> = ['A']`)).to.throw();
     });
 
     it('Should compile and parse character definitions', () => {

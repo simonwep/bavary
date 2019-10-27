@@ -28,9 +28,9 @@ describe('Nested groups', () => {
             entry <abc> = ['A' ['C' 'D']?]*
         `);
 
-        expect(parse('AC')).to.deep.equal(["AC"]);
-        expect(parse('ACD')).to.deep.equal(["ACD"]);
-        expect(parse('A')).to.deep.equal(["A"]);
+        expect(parse('AC')).to.deep.equal(['AC']);
+        expect(parse('ACD')).to.deep.equal(['ACD']);
+        expect(parse('A')).to.deep.equal(['A']);
         expect(parse('')).to.deep.equal([]);
     });
 });
