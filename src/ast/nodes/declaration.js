@@ -11,7 +11,7 @@ module.exports = maybe(stream => {
     // Parse
     const target = type(stream);
     if (!target || !optional(stream, 'punc', '=')) {
-        return null;
+        return stream.throwError('Expected declaration.');
     }
 
     // Declaration cannot have multipliers
@@ -26,7 +26,7 @@ module.exports = maybe(stream => {
 
     const body = group(stream);
     if (!body) {
-        return null;
+        return stream.throwError('A declaration consists of one group.');
     }
 
     return {
