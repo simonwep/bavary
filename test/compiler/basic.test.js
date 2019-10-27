@@ -9,7 +9,7 @@ describe('Very basic tests', () => {
 
     it('Should compile and parse character definitions', () => {
         const parse = compile(`
-            entry <abc> = [ 'A' | 'B' ]
+            entry <abc> = ['A' | 'B']
         `);
 
         expect(parse('A')).to.equal('A');
@@ -19,7 +19,7 @@ describe('Very basic tests', () => {
 
     it('Should compile and parse simple multipliers', () => {
         const parse = compile(`
-            entry <abc> = [ 'A' | 'B' ]+
+            entry <abc> = ['A' | 'B']+
         `);
 
         expect(parse('AAAA')).to.deep.equal(['A', 'A', 'A', 'A']);
@@ -28,7 +28,7 @@ describe('Very basic tests', () => {
 
     it('Should compile and parse non-optional, one-infinity sequences', () => {
         const parse = compile(`
-            entry <abc> = [ 'A' 'B' ]+
+            entry <abc> = ['A' 'B']+
         `);
 
         expect(parse('ABAB')).to.deep.equal(['AB', 'AB']);
@@ -37,7 +37,7 @@ describe('Very basic tests', () => {
 
     it('Should compile and parse zero-infinity sequences', () => {
         const parse = compile(`
-            entry <abc> = [ 'A' 'B' ]*
+            entry <abc> = ['A' 'B']*
         `);
 
         expect(parse('')).to.deep.equal([]);
@@ -45,7 +45,7 @@ describe('Very basic tests', () => {
 
     it('Should compile and parse range sequences', () => {
         const parse = compile(`
-            entry <abc> = [ 'A' 'B' ]{2,3}
+            entry <abc> = ['A' 'B']{2,3}
         `);
 
         expect(parse('ABAB')).to.deep.equal(['AB', 'AB']);
