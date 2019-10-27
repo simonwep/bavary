@@ -41,8 +41,16 @@ module.exports = multiplier((stream, group, map, obj = {}) => {
                     }
 
                     passed = true;
-                } else if (!decl.multiplier || (decl.multiplier.type === 'one-infinity')) {
-                    stream.pop();
+                } else if (decl.multiplier) {
+                    const {type} = decl.multiplier;
+
+                    if (type === 'one-infinity') {
+                        return null;
+                    } else if (type === 'optional') {
+                        continue;
+                    }
+
+                } else {
                     return null;
                 }
 

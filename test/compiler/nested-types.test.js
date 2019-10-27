@@ -37,4 +37,16 @@ describe('Nested types', () => {
         expect(parse('AB')).to.deep.equal(['AB']);
         expect(parse('AABB')).to.deep.equal(['AABB']);
     });
+
+    it('Should handle optional types', () => {
+        const parse = compile(`
+            <sign> = ['+' | '-']
+            <num> = ['1' | '2']
+            entry <abc> = [<sign>? <num>]
+        `);
+
+        expect(parse('1')).to.equal('1');
+        expect(parse('-2')).to.deep.equal('-2');
+        expect(parse('2-')).to.equal(null);
+    });
 });
