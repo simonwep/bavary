@@ -1,12 +1,13 @@
 const declaration = require('./nodes/declaration');
+const tokenize = require('../tokenizer');
 const createStream = require('../stream');
 
 /**
  * Converts a array of tokens into a ast-tree
- * @param tokens
+ * @param defs
  */
-module.exports = tokens => {
-    const stream = createStream(tokens);
+module.exports = defs => {
+    const stream = createStream(tokenize(defs), defs);
     const declarations = [];
 
     while (stream.hasNext()) {

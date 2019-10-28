@@ -1,13 +1,16 @@
+const prettyPrintError = require('./pretty-print-error');
+
 module.exports = class ParsingError extends Error {
 
     /**
      * Sytax-error with message and position
+     * @param source
      * @param msg
      * @param start
      * @param end
      */
-    constructor(msg, start, end) {
-        super(msg);
+    constructor(source, msg, start, end) {
+        super(prettyPrintError(source, msg, start, end));
         this.start = start;
         this.end = end;
     }

@@ -9,7 +9,7 @@ const MAX_LOOKBACK = 10;
  * @param start error-offset
  * @param end error-end index
  */
-module.exports = (src, {message, start, end}) => {
+module.exports = (src, message, start, end) => {
     const prevLineBreak = alternative(previousIndexOf(src, '\n', start), 0);
     const nextLineBreak = alternative(src.indexOf('\n', end), src.length);
     const sourceLines = resolveSourceLines(src, nextLineBreak);
@@ -40,7 +40,7 @@ module.exports = (src, {message, start, end}) => {
 
     msg += `${' '.repeat(col + totalLinesMaxStrLength)}^\n`;
     msg += message;
-    throw msg;
+    return msg;
 };
 
 function trimLine(line) {
