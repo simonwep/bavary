@@ -7,6 +7,8 @@ const multiplier = require('./multiplier');
 const combinator = require('./combinator');
 
 module.exports = maybe(stream => {
+
+    // It MAY be a group, dosn't need to though.
     if (!optional(stream, 'punc', '[')) {
         return null;
     }
@@ -23,7 +25,7 @@ module.exports = maybe(stream => {
         const com = combinator(stream);
 
         if (!value) {
-            return null;
+            return stream.throwError('Expected a type, group or raw string.')
         }
 
         values.push(value);

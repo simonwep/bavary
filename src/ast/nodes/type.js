@@ -6,6 +6,8 @@ const multiplier = require('./multiplier');
 const string = require('./string');
 
 module.exports = maybe(stream => {
+
+    // It MAY be a type, dosn't need to though.
     if (!optional(stream, 'punc', '<')) {
         return null;
     }
