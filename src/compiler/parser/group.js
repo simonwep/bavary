@@ -10,6 +10,7 @@ module.exports = multiplier((stream, group, map, obj = {}) => {
     const decs = group.value;
     for (let i = 0; i < decs.length; i++) {
         const next = (i < decs.length - 1) ? decs[i + 1] : null;
+        const prev = (i > 1) ? decs[i - 1] : null;
         const decl = decs[i];
         let passed = false;
 
@@ -26,7 +27,7 @@ module.exports = multiplier((stream, group, map, obj = {}) => {
                 break;
             }
             case 'type': {
-                const res = type(stream, decl, map, obj);
+                const res = type(stream, decl, map);
 
                 if (res) {
                     if (decl.tag) {
@@ -45,12 +46,14 @@ module.exports = multiplier((stream, group, map, obj = {}) => {
                     const {type} = decl.multiplier;
 
                     if (type === 'one-infinity') {
+                        stream.pop();
                         return null;
                     } else if (type === 'optional') {
                         continue;
                     }
 
                 } else {
+                    stream.pop();
                     return null;
                 }
 
@@ -60,10 +63,7 @@ module.exports = multiplier((stream, group, map, obj = {}) => {
                 const res = require('./group')(stream, decl, map, obj);
 
                 if (res) {
-                    if (decl.tag) {
-                        pure = false;
-                        obj[decl.tag] = res;
-                    } else if (Array.isArray(res)) {
+                    if (Array.isArray(res)) {
                         str += res.join('');
                     } else if (typeof res === 'string') {
                         str += res;
@@ -73,6 +73,15 @@ module.exports = multiplier((stream, group, map, obj = {}) => {
                     }
 
                     passed = true;
+                } else if (decl.multiplier) {
+                    const {type} = decl.multiplier;
+
+                    if (type === 'one-infinity') {
+                        stream.pop();
+                        return null;
+                    } else if (type === 'optional') {
+                        continue;
+                    }
                 }
 
                 break;
@@ -83,10 +92,11 @@ module.exports = multiplier((stream, group, map, obj = {}) => {
         }
 
         // If the type couldn't be parsed, check if it's optional trough a combinator.
-        if (!passed && next && next.type !== 'combinator') {
+        const isOptional = (next || prev) && (next || prev).type === 'combinator';
+        if (!passed && !isOptional) {
             stream.pop();
             return null;
-        } else if (passed && next && next.type === 'combinator') {
+        } else if (passed && isOptional) {
             break;
         }
     }

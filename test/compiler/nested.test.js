@@ -16,7 +16,7 @@ describe('Nested groups', () => {
             entry <abc> = ['A' | ['C' 'D']]+
         `);
 
-        expect(parse('AC')).to.deep.equal(['A', 'C']);
+        expect(parse('CD')).to.deep.equal(['CD']);
         expect(parse('ACD')).to.deep.equal(['A', 'CD']);
         expect(parse('CDACD')).to.deep.equal(['CD', 'A', 'CD']);
         expect(parse('ADC')).to.equal(null);
@@ -28,9 +28,9 @@ describe('Nested groups', () => {
             entry <abc> = ['A' ['C' 'D']?]*
         `);
 
-        expect(parse('AC')).to.deep.equal(['AC']);
         expect(parse('ACD')).to.deep.equal(['ACD']);
         expect(parse('A')).to.deep.equal(['A']);
         expect(parse('')).to.deep.equal([]);
+        expect(parse('AC')).to.deep.equal(null);
     });
 });
