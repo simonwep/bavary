@@ -23,7 +23,7 @@ describe('Comments', () => {
                         {
                             'type': 'combinator',
                             'sign': '|',
-                            'values': [
+                            'value': [
                                 {'type': 'string', 'value': 'A'},
                                 {'type': 'string', 'value': 'B'}
                             ]
@@ -47,7 +47,7 @@ describe('Comments', () => {
                         {
                             'type': 'combinator',
                             'sign': '|',
-                            'values': [
+                            'value': [
                                 {'type': 'string', 'value': 'A\''},
                                 {'type': 'string', 'value': 'B'}
                             ]

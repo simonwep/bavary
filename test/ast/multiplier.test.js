@@ -62,7 +62,7 @@ describe('Multipliers', () => {
                         {
                             'type': 'combinator',
                             'sign': '|',
-                            'values': [
+                            'value': [
                                 {'type': 'string', 'value': '0'},
                                 {
                                     'type': 'group',
@@ -74,7 +74,7 @@ describe('Multipliers', () => {
                                         {
                                             'type': 'combinator',
                                             'sign': '|',
-                                            'values': [
+                                            'value': [
                                                 {'type': 'string', 'value': 'C'},
                                                 {'type': 'string', 'value': 'X'}
                                             ]
@@ -105,7 +105,7 @@ describe('Multipliers', () => {
                         {
                             'type': 'combinator',
                             'sign': '|',
-                            'values': [
+                            'value': [
                                 {'type': 'string', 'value': 'A'},
                                 {'type': 'string', 'value': 'B'}
                             ]

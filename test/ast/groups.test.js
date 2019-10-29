@@ -16,7 +16,7 @@ describe('Simple group declarations', () => {
                         {
                             'type': 'combinator',
                             'sign': '|',
-                            'values': [
+                            'value': [
                                 {'type': 'string', 'value': '0'},
                                 {'type': 'string', 'value': '1'}
                             ]
@@ -41,7 +41,7 @@ describe('Simple group declarations', () => {
                         {
                             'type': 'combinator',
                             'sign': '|',
-                            'values': [
+                            'value': [
                                 {'type': 'string', 'value': '0'},
                                 {'type': 'string', 'value': '1'},
                                 {
@@ -51,7 +51,7 @@ describe('Simple group declarations', () => {
                                         {
                                             'type': 'combinator',
                                             'sign': '|',
-                                            'values': [
+                                            'value': [
                                                 {'type': 'string', 'value': '5'},
                                                 {'type': 'string', 'value': 'C'}
                                             ]

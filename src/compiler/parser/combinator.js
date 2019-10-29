@@ -5,7 +5,7 @@ module.exports = (stream, decl, map, result) => {
     switch (decl.sign) {
         case '|': {
 
-            for (const val of decl.values) { // TODO: Rename to value
+            for (const val of decl.value) { // TODO: Rename to value
                 if (delcaration(stream, val, map, result)) {
                     stream.recycle();
                     return true;

@@ -34,7 +34,7 @@ module.exports = maybe(stream => {
             // Append to previous group
             if (comg) {
                 if (com.value === comg.sign) {
-                    comg.values.push(value);
+                    comg.value.push(value);
                     continue;
                 } else {
                     values.push(comg);
@@ -46,10 +46,10 @@ module.exports = maybe(stream => {
             comg = {
                 type: 'combinator',
                 sign: com.value,
-                values: [value]
+                value: [value]
             };
         } else if (comg) {
-            comg.values.push(value);
+            comg.value.push(value);
             values.push(comg);
             comg = null;
         } else {
