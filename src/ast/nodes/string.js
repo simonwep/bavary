@@ -5,7 +5,7 @@ module.exports = maybe(stream => {
     const string = optional(stream, 'str');
 
     if (string && !string.value.length) {
-        return stream.throwError(`Strings shouldn't be empty.`);
+        return stream.throwError('Strings shouldn\'t be empty.');
     }
 
     return string ? {

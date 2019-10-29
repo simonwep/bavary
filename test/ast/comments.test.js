@@ -14,15 +14,20 @@ describe('Comments', () => {
         `)).to.deep.equal([
             {
                 'type': 'declaration',
-                'variant': null,
                 'name': 'brr',
+                'variant': null,
                 'value': {
                     'type': 'group',
                     'multiplier': null,
                     'value': [
-                        {'type': 'string', 'value': 'A'},
-                        {'type': 'combinator', 'value': '|'},
-                        {'type': 'string', 'value': 'B'}
+                        {
+                            'type': 'combinator',
+                            'sign': '|',
+                            'values': [
+                                {'type': 'string', 'value': 'A'},
+                                {'type': 'string', 'value': 'B'}
+                            ]
+                        }
                     ]
                 }
             }
@@ -33,18 +38,24 @@ describe('Comments', () => {
         expect(parse(`<brr> = ['A\\'' | 'B']`)).to.deep.equal([
             {
                 'type': 'declaration',
-                'variant': null,
                 'name': 'brr',
+                'variant': null,
                 'value': {
                     'type': 'group',
                     'multiplier': null,
                     'value': [
-                        {'type': 'string', 'value': 'A\''},
-                        {'type': 'combinator', 'value': '|'},
-                        {'type': 'string', 'value': 'B'}
+                        {
+                            'type': 'combinator',
+                            'sign': '|',
+                            'values': [
+                                {'type': 'string', 'value': 'A\''},
+                                {'type': 'string', 'value': 'B'}
+                            ]
+                        }
                     ]
                 }
             }
+
         ]);
     });
 });

@@ -20,18 +20,45 @@ module.exports = maybe(stream => {
         require('./string')
     );
 
+    let comg;
     while (!check(stream, 'punc', ']')) {
         const value = parsers(stream);
         const com = combinator(stream);
 
         if (!value) {
-            return stream.throwError('Expected a type, group or raw string.')
+            return stream.throwError('Expected a type, group or raw string.');
         }
 
-        values.push(value);
         if (com) {
-            values.push(com);
+
+            // Append to previous group
+            if (comg) {
+                if (com.value === comg.sign) {
+                    comg.values.push(value);
+                    continue;
+                } else {
+                    values.push(comg);
+                    comg = null;
+                }
+            }
+
+            // Consume next
+            comg = {
+                type: 'combinator',
+                sign: com.value,
+                values: [value]
+            };
+        } else if (comg) {
+            comg.values.push(value);
+            values.push(comg);
+            comg = null;
+        } else {
+            values.push(value);
         }
+    }
+
+    if (comg) {
+        values.push(comg);
     }
 
     expect(stream, 'punc', ']');

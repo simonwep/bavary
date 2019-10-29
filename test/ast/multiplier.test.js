@@ -50,8 +50,8 @@ describe('Multipliers', () => {
         expect(parse(`<another-value> = [ '0' | ['C' | 'X']*]+`)).to.deep.equal([
             {
                 'type': 'declaration',
-                'variant': null,
                 'name': 'another-value',
+                'variant': null,
                 'value': {
                     'type': 'group',
                     'multiplier': {
@@ -59,18 +59,28 @@ describe('Multipliers', () => {
                         'value': '+'
                     },
                     'value': [
-                        {'type': 'string', 'value': '0'},
-                        {'type': 'combinator', 'value': '|'},
                         {
-                            'type': 'group',
-                            'multiplier': {
-                                'type': 'zero-infinity',
-                                'value': '*'
-                            },
-                            'value': [
-                                {'type': 'string', 'value': 'C'},
-                                {'type': 'combinator', 'value': '|'},
-                                {'type': 'string', 'value': 'X'}
+                            'type': 'combinator',
+                            'sign': '|',
+                            'values': [
+                                {'type': 'string', 'value': '0'},
+                                {
+                                    'type': 'group',
+                                    'multiplier': {
+                                        'type': 'zero-infinity',
+                                        'value': '*'
+                                    },
+                                    'value': [
+                                        {
+                                            'type': 'combinator',
+                                            'sign': '|',
+                                            'values': [
+                                                {'type': 'string', 'value': 'C'},
+                                                {'type': 'string', 'value': 'X'}
+                                            ]
+                                        }
+                                    ]
+                                }
                             ]
                         }
                     ]
@@ -83,8 +93,8 @@ describe('Multipliers', () => {
         expect(parse(`<abc-123> = ['A' | 'B']{4,6}`)).to.deep.equal([
             {
                 'type': 'declaration',
-                'variant': null,
                 'name': 'abc-123',
+                'variant': null,
                 'value': {
                     'type': 'group',
                     'multiplier': {
@@ -92,9 +102,14 @@ describe('Multipliers', () => {
                         'value': {'start': 4, 'end': 6}
                     },
                     'value': [
-                        {'type': 'string', 'value': 'A'},
-                        {'type': 'combinator', 'value': '|'},
-                        {'type': 'string', 'value': 'B'}
+                        {
+                            'type': 'combinator',
+                            'sign': '|',
+                            'values': [
+                                {'type': 'string', 'value': 'A'},
+                                {'type': 'string', 'value': 'B'}
+                            ]
+                        }
                     ]
                 }
             }

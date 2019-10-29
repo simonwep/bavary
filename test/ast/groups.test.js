@@ -7,18 +7,24 @@ describe('Simple group declarations', () => {
         expect(parse(`<a-value> = [ '0' | '1']`)).to.deep.equal([
             {
                 'type': 'declaration',
-                'variant': null,
                 'name': 'a-value',
+                'variant': null,
                 'value': {
                     'type': 'group',
                     'multiplier': null,
                     'value': [
-                        {'type': 'string', 'value': '0'},
-                        {'type': 'combinator', 'value': '|'},
-                        {'type': 'string', 'value': '1'}
+                        {
+                            'type': 'combinator',
+                            'sign': '|',
+                            'values': [
+                                {'type': 'string', 'value': '0'},
+                                {'type': 'string', 'value': '1'}
+                            ]
+                        }
                     ]
                 }
             }
+
         ]);
     });
 
@@ -26,23 +32,32 @@ describe('Simple group declarations', () => {
         expect(parse(`<another-value> = [ '0' | '1' | ['5' | 'C']]`)).to.deep.equal([
             {
                 'type': 'declaration',
-                'variant': null,
                 'name': 'another-value',
+                'variant': null,
                 'value': {
                     'type': 'group',
                     'multiplier': null,
                     'value': [
-                        {'type': 'string', 'value': '0'},
-                        {'type': 'combinator', 'value': '|'},
-                        {'type': 'string', 'value': '1'},
-                        {'type': 'combinator', 'value': '|'},
                         {
-                            'type': 'group',
-                            'multiplier': null,
-                            'value': [
-                                {'type': 'string', 'value': '5'},
-                                {'type': 'combinator', 'value': '|'},
-                                {'type': 'string', 'value': 'C'}
+                            'type': 'combinator',
+                            'sign': '|',
+                            'values': [
+                                {'type': 'string', 'value': '0'},
+                                {'type': 'string', 'value': '1'},
+                                {
+                                    'type': 'group',
+                                    'multiplier': null,
+                                    'value': [
+                                        {
+                                            'type': 'combinator',
+                                            'sign': '|',
+                                            'values': [
+                                                {'type': 'string', 'value': '5'},
+                                                {'type': 'string', 'value': 'C'}
+                                            ]
+                                        }
+                                    ]
+                                }
                             ]
                         }
                     ]
