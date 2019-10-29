@@ -10,8 +10,9 @@ module.exports = class ParsingError extends Error {
      * @param end
      */
     constructor(source, msg, start, end) {
-        super(prettyPrintError(source, msg, start, end));
+        super(`\n${prettyPrintError(source, msg, start, end)}`);
         this.start = start;
         this.end = end;
+        this.name = 'Parsing Error';
     }
 };

@@ -25,17 +25,17 @@ module.exports = (src, message, start, end) => {
     }
 
     // Check if lines where omitted
-    const omittedLines = totalLines - sourceLines.length + 1;
-    if (omittedLines > 1) {
+    const omittedLines = totalLines - sourceLines.length;
+    if (omittedLines >= 1) {
         msg += `... (${omittedLines} line${omittedLines === 1 ? '' : 's'} omitted)\n`;
     }
 
     // Pretty-print lines
     for (let i = 0; i < sourceLines.length; i++) {
         const line = sourceLines[i];
-        const lineOffset = totalLines - sourceLines.length + i + 2;
+        const lineOffset = totalLines - sourceLines.length + i + 1;
         const lineCount = String(lineOffset).padStart(totalLinesMaxStrLength, '0');
-        msg += `${lineCount} ${line}\n`;
+        msg += `${lineCount}: ${line}\n`;
     }
 
     msg += `${' '.repeat(col + totalLinesMaxStrLength)}^\n`;
@@ -60,6 +60,7 @@ function countLines(src) {
 function resolveSourceLines(src, end) {
     const lines = [];
 
+    // Backtrack lines
     let prevIndex = end;
     while (lines.length < MAX_LOOKBACK) {
         const nextIndex = previousIndexOf(src, '\n', prevIndex - 1);
@@ -75,6 +76,13 @@ function resolveSourceLines(src, end) {
 
     if (!lines.length && src.length) {
         lines.push(trimLine(src));
+    } else if (lines.length < MAX_LOOKBACK) {
+        const trailingLine = trimLine(src.slice(0, prevIndex));
+
+        // The first line won't be matched by the previous loop.
+        if (trailingLine) {
+            lines.splice(0, 0, trailingLine);
+        }
     }
 
     return lines;
