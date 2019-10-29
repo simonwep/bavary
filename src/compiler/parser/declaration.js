@@ -1,3 +1,4 @@
+const characterRange = require('./character-range');
 const combinator = require('./combinator');
 const string = require('./string');
 const type = require('./type');
@@ -18,6 +19,15 @@ module.exports = (stream, decl, map, result = {obj: {}, str: '', pure: true}) =>
         case 'string': {
 
             if (!string(stream, decl, result)) {
+                stream.pop();
+                return false;
+            }
+
+            break;
+        }
+        case 'character-range': {
+
+            if (!characterRange(stream, decl, result)) {
                 stream.pop();
                 return false;
             }

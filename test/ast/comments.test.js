@@ -33,29 +33,4 @@ describe('Comments', () => {
             }
         ]);
     });
-
-    it('Should allow escaped quotations in strings', () => {
-        expect(parse(`<brr> = ['A\\'' | 'B']`)).to.deep.equal([
-            {
-                'type': 'declaration',
-                'name': 'brr',
-                'variant': null,
-                'value': {
-                    'type': 'group',
-                    'multiplier': null,
-                    'value': [
-                        {
-                            'type': 'combinator',
-                            'sign': '|',
-                            'value': [
-                                {'type': 'string', 'value': 'A\''},
-                                {'type': 'string', 'value': 'B'}
-                            ]
-                        }
-                    ]
-                }
-            }
-
-        ]);
-    });
 });

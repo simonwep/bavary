@@ -17,6 +17,7 @@ module.exports = maybe(stream => {
     const parsers = combine(
         require('./type'),
         require('./group'),
+        require('./character-range'),
         require('./string')
     );
 

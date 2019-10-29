@@ -3,7 +3,7 @@ const compile = require('./tools');
 describe('Example: numbers', () => {
 
     const parse = compile(`
-        <raw-num> = [['0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9']+]
+        <raw-num> = [['0' to '9']+]
         <num-sign> = [ '+' | '-' ]
         <scientific-notation> = ['e' <num-sign>? <raw-num>]
         <scientific-num> = [<raw-num> <scientific-notation>?]
