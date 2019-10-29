@@ -18,6 +18,10 @@ module.exports = maybe(stream => {
         }
     }
 
+    if (!name.length) {
+        return stream.throwError('An identifier cannot be empty.');
+    }
+
     return {
         type: 'identifier',
         value: name || null
