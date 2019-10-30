@@ -105,4 +105,27 @@ describe('Characters, strings and char-ranges', () => {
             }
         ]);
     });
+
+    it('Should allow unicode-escaped ranges', () => {
+        expect(parse(`entry <a> = [\\u2000 to \\u3300]`)).to.deep.equal([
+            {
+                'type': 'declaration',
+                'name': 'a',
+                'variant': 'entry',
+                'value': {
+                    'type': 'group',
+                    'multiplier': null,
+                    'value': [
+                        {
+                            'type': 'character-range',
+                            'value': {
+                                'from': 8192,
+                                'to': 13056
+                            }
+                        }
+                    ]
+                }
+            }
+        ]);
+    });
 });

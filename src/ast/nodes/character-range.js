@@ -1,32 +1,40 @@
+const unicodeEscape = require('../tools/unicode-escape');
 const optional = require('../tools/optional');
-const expect = require('../tools/expect');
 const maybe = require('../tools/maybe');
 
+const parsePoint = stream => {
+    const str = optional(stream, 'str');
+
+    if (str) {
+        const {value} = str;
+        return value.length === 1 ? value.charCodeAt(0) : null;
+    }
+
+    return unicodeEscape(stream);
+};
+
 module.exports = maybe(stream => {
-    const from = optional(stream, 'str');
+    let from = parsePoint(stream);
 
     // The keyword 'to' indicates a character range
     if (!from || !optional(stream, 'kw', 'to')) {
         return null;
     }
 
-    const to = expect(stream, 'str');
-    if (from.value.length !== 1 || to.value.length !== 1) {
-        return stream.throwError('A character range needs exactly one start- and one end-character.');
+    let to = parsePoint(stream);
+    if (!to) {
+        return stream.throwError('Expected range-end');
     }
 
-    let a = from.value.charCodeAt(0);
-    let b = to.value.charCodeAt(0);
-
-    if (b < a) {
-        [a, b] = [b, a];
+    if (to < from) {
+        [to, from] = [from, to];
     }
 
     return {
         type: 'character-range',
         value: {
-            from: a,
-            to: b
+            from,
+            to
         }
     };
 });
