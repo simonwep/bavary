@@ -17,12 +17,12 @@ module.exports = maybe(stream => {
     let from = parsePoint(stream);
 
     // The keyword 'to' indicates a character range
-    if (!from || !optional(stream, 'kw', 'to')) {
+    if (from === null || !optional(stream, 'kw', 'to')) {
         return null;
     }
 
     let to = parsePoint(stream);
-    if (!to) {
+    if (to === null) {
         return stream.throwError('Expected range-end');
     }
 
