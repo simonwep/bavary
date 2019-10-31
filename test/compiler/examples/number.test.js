@@ -7,8 +7,7 @@ describe('Example: numbers', () => {
         <num-sign> = [ '+' | '-' ]
         <scientific-notation> = ['e' <num-sign>? <raw-num>]
         <scientific-num> = [<raw-num> <scientific-notation>?]
-        
-        // Number could start with a +/-
+
         entry <number> = [
             
             // Well that's optional
