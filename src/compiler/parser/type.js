@@ -14,7 +14,7 @@ module.exports = multiplier((stream, decl, map, result) => {
     const exec = require('./group')(stream, body, map);
 
     // Check if group returned smth
-    if (exec) {
+    if (exec !== null) {
 
         // Store result
         if (decl.tag) {

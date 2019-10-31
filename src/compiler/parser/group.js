@@ -14,5 +14,5 @@ module.exports = multiplier((stream, decl, map, result = {obj: {}, str: '', pure
     }
 
     stream.recycle();
-    return result.pure ? (result.str || null) : result.obj;
+    return result.pure ? result.str : result.obj;
 });
