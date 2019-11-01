@@ -1,6 +1,6 @@
 const multiplier = require('./multiplier');
 
-module.exports = multiplier((stream, decl, scope, result) => {
+module.exports = (stream, decl, scope, result) => {
     const typeValue = require('./type-value');
     const {value} = decl;
 
@@ -12,33 +12,30 @@ module.exports = multiplier((stream, decl, scope, result) => {
     // Parse
     stream.stash();
     const body = scope.get(value);
-    const exec = typeValue(stream, body, scope);
 
-    // Check if group returned smth
-    if (exec !== null) {
+    // Type may have a multiplier attached to it
+    const matches = multiplier(
+        () => typeValue(stream, body, scope)
+    )(stream, decl, scope, result);
 
-        // Store result
-        if (decl.tag) {
-            result.pure = false; // Result is not anymore "just a string"
-            result.obj[decl.tag] = exec; // Save tag-result TODO: Check if already declared
-        } else if (Array.isArray(exec)) {
-            result.str += exec.join(''); // Concat string sequences
-        } else if (typeof exec === 'string') {
-            result.str += exec;
-        }
+    if (!matches) {
 
-        stream.recycle();
-        return true;
-    } else if (decl.multiplier) {
-        const {type} = decl.multiplier;
+        // Restore previous stack position
+        stream.pop();
 
-        // Declaration may containe a multiplier
-        if (type === 'optional') {
-            stream.recycle();
-            return true;
-        }
+        // Declaration may be still optional through a '?'
+        return decl.multiplier && decl.multiplier.type === 'optional';
     }
 
-    stream.pop();
-    return false;
-});
+    if (decl.tag) {
+        result.pure = false; // Result is not anymore "just a string"
+        result.obj[decl.tag] = matches; // Save tag-result TODO: Check if already declared
+    } else if (Array.isArray(matches)) {
+        result.str += matches.join(''); // Concat string sequences
+    } else if (typeof matches === 'string') {
+        result.str += matches;
+    }
+
+    stream.recycle();
+    return true;
+};

@@ -1,7 +1,6 @@
-const multiplier = require('./multiplier');
 const group = require('./group');
 
-module.exports = multiplier((stream, decl, scope) => {
+module.exports = (stream, decl, scope) => {
 
     // Inherit current scope
     const newScope = new Map([...scope]);
@@ -40,4 +39,4 @@ module.exports = multiplier((stream, decl, scope) => {
 
 
     return group(stream, def, newScope);
-});
+};
