@@ -1,13 +1,12 @@
 const createStream = require('../stream');
 const ast = require('../ast');
-const group = require('./parser/group');
-const block = require('./parser/block');
+const typeValue = require('./parser/type-value');
 
 module.exports = definitions => {
     const tree = ast(definitions);
     let entry = null;
 
-    // Create map of declarations
+    // Resolve entities in the global scope
     const globals = new Map();
     for (const {name, value, type, variant} of tree) {
 
@@ -42,7 +41,7 @@ module.exports = definitions => {
 
     return content => {
         const stream = createStream(content);
-        const res = (entry.type === 'block' ? block : group)(stream, entry, globals);
+        const res = typeValue(stream, entry, globals);
         return stream.hasNext() ? null : res;
     };
 };

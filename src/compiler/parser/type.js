@@ -1,8 +1,7 @@
 const multiplier = require('./multiplier');
 
 module.exports = multiplier((stream, decl, scope, result) => {
-    const group = require('./group');
-    const block = require('./block');
+    const typeValue = require('./type-value');
     const {value} = decl;
 
     // Lookup parser
@@ -13,7 +12,7 @@ module.exports = multiplier((stream, decl, scope, result) => {
     // Parse
     stream.stash();
     const body = scope.get(value);
-    const exec = (body.type === 'block' ? block : group)(stream, body, scope);
+    const exec = typeValue(stream, body, scope);
 
     // Check if group returned smth
     if (exec !== null) {
