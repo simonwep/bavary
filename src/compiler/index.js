@@ -1,38 +1,24 @@
+const resolveScope = require('./tools/resolve-scope');
+const typeValue = require('./parser/type-value');
 const createStream = require('../stream');
 const ast = require('../ast');
-const typeValue = require('./parser/type-value');
 
 module.exports = definitions => {
     const tree = ast(definitions);
     let entry = null;
 
     // Resolve entities in the global scope
-    const globals = new Map();
-    for (const {name, value, type, variant} of tree) {
+    const globals = resolveScope(tree, null, ({variant, name, value}) => {
+        if (variant === 'entry') {
 
-        // Each declaration can only one get once defined
-        if (globals.has(name)) {
-            throw `Type "${name}" has been already declared.`;
-        } else if (type === 'declaration') {
-
-            if (variant === 'entry') {
-
-                // There can only be one entry type
-                if (entry) {
-                    throw `There can only be one entry type. Got "${name}" as second one.`;
-                }
-
-                entry = value;
+            // There can only be one entry type
+            if (entry) {
+                throw `There can only be one entry type. Got "${name}" as second one.`;
             }
 
-            // Check if declaration isn't anonym
-            if (name !== null) {
-                globals.set(name, value);
-            }
-        } else {
-            throw `Unknown type "${type}"`;
+            entry = value;
         }
-    }
+    });
 
     // Check if entry node is declared
     if (!entry) {

@@ -35,7 +35,7 @@ module.exports = (stream, decl, scope, result) => {
     } else if (typeof matches === 'string') {
         result.str += matches;
     } else {
-        throw `Type "${decl.value}" is missing a tag.`
+        throw `Type "${decl.value}" is missing a tag.`;
     }
 
     stream.recycle();
