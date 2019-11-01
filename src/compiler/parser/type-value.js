@@ -10,7 +10,7 @@ module.exports = (stream, decl, scope, result) => {
             return block(stream, decl, scope);
         }
         default: {
-            throw `Unknown declaration type: ${decl.type}`;
+            throw `Unknown declaration type "${decl.type}"`;
         }
     }
 };

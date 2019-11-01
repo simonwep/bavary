@@ -6,7 +6,7 @@ module.exports = (stream, decl, scope, result) => {
 
     // Lookup parser
     if (!scope.has(value)) {
-        throw `Cannot resolve ${value}`;
+        throw `Cannot resolve "${value}"`;
     }
 
     // Parse
@@ -34,6 +34,8 @@ module.exports = (stream, decl, scope, result) => {
         result.str += matches.join(''); // Concat string sequences
     } else if (typeof matches === 'string') {
         result.str += matches;
+    } else {
+        throw `Type "${decl.value}" is missing a tag.`
     }
 
     stream.recycle();

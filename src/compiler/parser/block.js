@@ -11,7 +11,7 @@ module.exports = (stream, decl, scope) => {
 
         // Each declaration can only one get once defined
         if (newScope.has(name)) {
-            throw `Type ${name} has been already declared. Avoid using the same name multiple times.`;
+            throw `Type "${name}" has been already declared. Avoid using the same name multiple times.`;
         } else if (type === 'declaration') {
 
             if (variant === 'default') {
@@ -29,7 +29,7 @@ module.exports = (stream, decl, scope) => {
                 newScope.set(name, value);
             }
         } else {
-            throw `Unknown type: ${type}`;
+            throw `Unknown type "${type}"`;
         }
     }
 

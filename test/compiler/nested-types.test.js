@@ -49,4 +49,14 @@ describe('[COM] Nested types', () => {
         expect(parse('-2')).to.deep.equal('-2');
         expect(parse('2-')).to.equal(null);
     });
+
+    it('Should throw an error if no tag is defined but neccessary', () => {
+        const parse = compile(`
+            <abc> = ['a' | 'b']
+            <dfg> = [<abc#values>+]
+            entry [<dfg>]
+        `);
+
+        expect(() => parse('a')).to.throw();
+    });
 });

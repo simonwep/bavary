@@ -12,14 +12,14 @@ module.exports = definitions => {
 
         // Each declaration can only one get once defined
         if (globals.has(name)) {
-            throw `Type ${name} has been already declared.`;
+            throw `Type "${name}" has been already declared.`;
         } else if (type === 'declaration') {
 
             if (variant === 'entry') {
 
                 // There can only be one entry type
                 if (entry) {
-                    throw `There can only be one entry type. Got ${name} as second one.`;
+                    throw `There can only be one entry type. Got "${name}" as second one.`;
                 }
 
                 entry = value;
@@ -30,7 +30,7 @@ module.exports = definitions => {
                 globals.set(name, value);
             }
         } else {
-            throw `Unknown type: ${type}`;
+            throw `Unknown type "${type}"`;
         }
     }
 
