@@ -1,7 +1,7 @@
 const {parse, failAll} = require('./tools');
 const {expect} = require('chai');
 
-describe('Tags', () => {
+describe('[AST] Tags', () => {
 
     it('Should accept tags', () => {
         expect(parse(`<name> = ['C' <another-type#abc-123>]`)).to.deep.equal([

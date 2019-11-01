@@ -1,7 +1,7 @@
 const {compile} = require('../../src');
 const {expect} = require('chai');
 
-describe('Essentials', () => {
+describe('[COM] Essentials', () => {
 
     it('Should throw an error if no entry-type is defined', () => {
         expect(() => compile(`'<abc> = ['A']`)).to.throw();

@@ -1,6 +1,6 @@
 const compile = require('./tools');
 
-describe('Example: strings', () => {
+describe('[EXAMPLE] strings', () => {
 
     const parse = compile(`
 

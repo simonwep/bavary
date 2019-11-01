@@ -1,7 +1,7 @@
 const {compile} = require('../../src');
 const {expect} = require('chai');
 
-describe('Nested types', () => {
+describe('[COM] Nested types', () => {
 
     it('Should throw an error if more than one entry-type is defined', () => {
         expect(() => compile(`

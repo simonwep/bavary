@@ -1,7 +1,7 @@
 const {parse, failAll} = require('./tools');
 const {expect} = require('chai');
 
-describe('Multipliers', () => {
+describe('[AST] Multipliers', () => {
 
     it('Should parse multipliers', () => {
         expect(parse(`<another-value> = [ '0' ]+`)).to.deep.equal([

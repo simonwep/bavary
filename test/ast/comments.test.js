@@ -1,7 +1,7 @@
 const {parse} = require('./tools');
 const {expect} = require('chai');
 
-describe('Comments', () => {
+describe('[AST] Comments', () => {
 
     it('Should return an empty array if it\'s only a comment', () => {
         expect(parse(`// Hi`)).to.deep.equal([]);

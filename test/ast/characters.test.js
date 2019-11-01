@@ -1,7 +1,7 @@
 const {parse} = require('./tools');
 const {expect} = require('chai');
 
-describe('Characters, strings and char-ranges', () => {
+describe('[AST] Characters, strings and char-ranges', () => {
 
     it('Should throw an error on empty strings', () => {
         expect(() => parse(`<brr> = ['']`)).to.throw();

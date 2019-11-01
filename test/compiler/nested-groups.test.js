@@ -1,7 +1,7 @@
 const {compile} = require('../../src');
 const {expect} = require('chai');
 
-describe('Nested groups', () => {
+describe('[COM] Nested groups', () => {
 
     it('Should properly resolve nested group with optional types', () => {
         const parse = compile(`

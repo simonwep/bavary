@@ -1,7 +1,7 @@
 const {parse, failAll} = require('./tools');
 const {expect} = require('chai');
 
-describe('Simple group declarations', () => {
+describe('[AST] Simple group declarations', () => {
 
     it('Should parse: "<a-value> = [ \'0\' | \'1\']"', () => {
         expect(parse(`<a-value> = [ '0' | '1']`)).to.deep.equal([
