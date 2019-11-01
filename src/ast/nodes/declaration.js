@@ -7,7 +7,7 @@ const type = require('./type');
 module.exports = maybe(stream => {
 
     // Parse optional variant
-    const variant = optional(stream, 'kw', 'entry', 'default');
+    const variant = optional(stream, 'kw', 'entry', 'default', 'export');
 
     // Parse
     const target = type(stream);
@@ -30,9 +30,15 @@ module.exports = maybe(stream => {
     }
 
 
+    // A declaration value could be either a group or scoped block
     const body = group(stream) || require('./block')(stream);
     if (!body) {
         return stream.throwError('A declaration consists of one group.');
+    }
+
+    // If the variant is 'export' a block is required
+    if (variant === 'export' && body.type !== 'block') {
+        return stream.throwError('Types can only be exported in blocks.');
     }
 
     return {

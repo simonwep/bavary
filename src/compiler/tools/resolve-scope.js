@@ -27,7 +27,30 @@ module.exports = (decs, parent, interceptor) => {
         } else {
             throw `Unknown type "${type}"`;
         }
+
+        // If the value is a block it may export types
+        if (value.type === 'block') {
+            resolveExports(value.value, map, name);
+        }
     }
 
     return map;
 };
+
+function resolveExports(decs, map, base) {
+    for (const {variant, name, value} of decs) {
+        const subName = `${base}:${name}`;
+
+        if (map.has(subName)) {
+            throw `Type "${subName}" is already declared in the scope of "${name}".`;
+        }
+        if (variant === 'export') {
+            map.set(subName, value);
+        }
+
+        // If it's a block it may also export additional types
+        if (value.type === 'block') {
+            resolveExports(value.value, map, subName);
+        }
+    }
+}
