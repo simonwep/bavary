@@ -1,5 +1,5 @@
-module.exports = fn => (stream, decl, map, ...rest) => {
-    const parse = () => fn(stream, decl, map, ...rest);
+module.exports = fn => (stream, decl, scope, ...rest) => {
+    const parse = () => fn(stream, decl, scope, ...rest);
     const parseAll = () => {
         const values = [];
 

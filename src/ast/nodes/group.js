@@ -8,7 +8,7 @@ const combinator = require('./combinator');
 
 module.exports = maybe(stream => {
 
-    // It MAY be a group, dosn't need to though.
+    // It may be a group
     if (!optional(stream, 'punc', '[')) {
         return null;
     }

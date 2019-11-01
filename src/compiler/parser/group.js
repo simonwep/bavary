@@ -1,13 +1,13 @@
 const declaration = require('./declaration');
 const multiplier = require('./multiplier');
 
-module.exports = multiplier((stream, decl, map, result = {obj: {}, str: '', pure: true}) => {
+module.exports = multiplier((stream, decl, scope, result = {obj: {}, str: '', pure: true}) => {
     stream.stash();
 
     for (const dec of decl.value) {
 
         // Parse declaration
-        if (!declaration(stream, dec, map, result)) {
+        if (!declaration(stream, dec, scope, result)) {
             stream.pop();
             return null;
         }

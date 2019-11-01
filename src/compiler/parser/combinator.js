@@ -1,4 +1,4 @@
-module.exports = (stream, decl, map, result) => {
+module.exports = (stream, decl, scope, result) => {
     const delcaration = require('./declaration');
     stream.stash();
 
@@ -6,7 +6,7 @@ module.exports = (stream, decl, map, result) => {
         case '|': {
 
             for (const val of decl.value) {
-                if (delcaration(stream, val, map, result)) {
+                if (delcaration(stream, val, scope, result)) {
                     stream.recycle();
                     return true;
                 }

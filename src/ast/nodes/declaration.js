@@ -6,7 +6,7 @@ const type = require('./type');
 module.exports = maybe(stream => {
 
     // Parse optional variant
-    const variant = optional(stream, 'kw', 'entry');
+    const variant = optional(stream, 'kw', 'entry', 'default');
 
     // Parse
     const target = type(stream);
@@ -24,7 +24,7 @@ module.exports = maybe(stream => {
         return stream.throwError('Declaration type cannot have a tag.');
     }
 
-    const body = group(stream);
+    const body = group(stream) || require('./block')(stream);
     if (!body) {
         return stream.throwError('A declaration consists of one group.');
     }

@@ -1,17 +1,18 @@
 const createStream = require('../stream');
 const ast = require('../ast');
 const group = require('./parser/group');
+const block = require('./parser/block');
 
 module.exports = definitions => {
     const tree = ast(definitions);
     let entry = null;
 
     // Create map of declarations
-    const declarations = new Map();
+    const globals = new Map();
     for (const {name, value, type, variant} of tree) {
 
         // Each declaration can only one get once defined
-        if (declarations.has(name)) {
+        if (globals.has(name)) {
             throw `Type ${name} has been already declared.`;
         } else if (type === 'declaration') {
 
@@ -25,7 +26,7 @@ module.exports = definitions => {
                 entry = value;
             }
 
-            declarations.set(name, value);
+            globals.set(name, value);
         } else {
             throw `Unknown type: ${type}`;
         }
@@ -38,7 +39,7 @@ module.exports = definitions => {
 
     return content => {
         const stream = createStream(content);
-        const res = group(stream, entry, declarations);
+        const res = (entry.type === 'block' ? block : group)(stream, entry, globals);
         return stream.hasNext() ? null : res;
     };
 };

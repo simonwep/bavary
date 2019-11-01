@@ -1,17 +1,19 @@
 const multiplier = require('./multiplier');
 
-module.exports = multiplier((stream, decl, map, result) => {
+module.exports = multiplier((stream, decl, scope, result) => {
+    const group = require('./group');
+    const block = require('./block');
     const {value} = decl;
 
     // Lookup parser
-    if (!map.has(value)) {
+    if (!scope.has(value)) {
         throw `Cannot resolve ${value}`;
     }
 
     // Parse
     stream.stash();
-    const body = map.get(value);
-    const exec = require('./group')(stream, body, map);
+    const body = scope.get(value);
+    const exec = (body.type === 'block' ? block : group)(stream, body, scope);
 
     // Check if group returned smth
     if (exec !== null) {

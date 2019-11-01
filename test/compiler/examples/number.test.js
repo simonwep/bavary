@@ -3,22 +3,24 @@ const compile = require('./tools');
 describe('Example: numbers', () => {
 
     const parse = compile(`
-        <raw-num> = [['0' to '9']+]
-        <num-sign> = [ '+' | '-' ]
-        <scientific-notation> = ['e' <num-sign>? <raw-num>]
-        <scientific-num> = [<raw-num> <scientific-notation>?]
-
-        entry <number> = [
+        entry <number> = {
+            <raw-num> = [['0' to '9']+]
+            <num-sign> = [ '+' | '-' ]
+            <scientific-notation> = ['e' <num-sign>? <raw-num>]
+            <scientific-num> = [<raw-num> <scientific-notation>?]
             
-            // Well that's optional
-            <num-sign#sign>?
+            default <def> = [
+            
+                // Well that's optional
+                <num-sign#sign>?
         
-            // Decimal
-            [<raw-num#num>? '.' <scientific-num#decimal>] |
+                // Decimal
+                [<raw-num#num>? '.' <scientific-num#decimal>] |
             
-            // Non-decimal
-            [<scientific-num#num>]
-        ]
+                // Non-decimal
+                [<scientific-num#num>]
+            ]
+        }
     `);
 
     parse([

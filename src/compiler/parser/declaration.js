@@ -3,13 +3,13 @@ const combinator = require('./combinator');
 const string = require('./string');
 const type = require('./type');
 
-module.exports = (stream, decl, map, result = {obj: {}, str: '', pure: true}) => {
+module.exports = (stream, decl, scope, result = {obj: {}, str: '', pure: true}) => {
     stream.stash();
 
     switch (decl.type) {
         case 'combinator': {
 
-            if (!combinator(stream, decl, map, result)) {
+            if (!combinator(stream, decl, scope, result)) {
                 stream.pop();
                 return false;
             }
@@ -36,7 +36,7 @@ module.exports = (stream, decl, map, result = {obj: {}, str: '', pure: true}) =>
         }
         case 'type': {
 
-            if (!type(stream, decl, map, result)) {
+            if (!type(stream, decl, scope, result)) {
                 stream.pop();
                 return false;
             }
@@ -44,7 +44,7 @@ module.exports = (stream, decl, map, result = {obj: {}, str: '', pure: true}) =>
             break;
         }
         case 'group': {
-            const res = require('./group')(stream, decl, map, result);
+            const res = require('./group')(stream, decl, scope, result);
 
             if (!res) {
                 if (decl.multiplier) {
@@ -59,6 +59,8 @@ module.exports = (stream, decl, map, result = {obj: {}, str: '', pure: true}) =>
                 stream.pop();
                 return false;
             }
+
+            break;
         }
     }
 
