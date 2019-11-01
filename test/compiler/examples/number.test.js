@@ -3,13 +3,13 @@ const compile = require('./tools');
 describe('Example: numbers', () => {
 
     const parse = compile(`
-        entry <number> = {
+        entry {
             <raw-num> = [['0' to '9']+]
             <num-sign> = [ '+' | '-' ]
             <scientific-notation> = ['e' <num-sign>? <raw-num>]
             <scientific-num> = [<raw-num> <scientific-notation>?]
             
-            default <def> = [
+            default [
             
                 // Well that's optional
                 <num-sign#sign>?

@@ -26,7 +26,10 @@ module.exports = definitions => {
                 entry = value;
             }
 
-            globals.set(name, value);
+            // Check if declaration isn't anonym
+            if (name !== null) {
+                globals.set(name, value);
+            }
         } else {
             throw `Unknown type: ${type}`;
         }

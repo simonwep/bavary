@@ -25,7 +25,10 @@ module.exports = multiplier((stream, decl, scope) => {
                 throw 'The entry type needs to be in the global scope.';
             }
 
-            newScope.set(name, value);
+            // Check if declaration isn't anonym
+            if (name !== null) {
+                newScope.set(name, value);
+            }
         } else {
             throw `Unknown type: ${type}`;
         }
