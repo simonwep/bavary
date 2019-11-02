@@ -1,3 +1,4 @@
+#### Before you start, you can also checkout [examples](examples) directly! 
 
 ### Entry type
 Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type declaration](#type-definition) **or** 

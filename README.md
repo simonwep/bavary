@@ -54,4 +54,6 @@ const parsed = parse('A');
 console.log(parsed);
 ```
 
-Check out the [documentation](https://github.com/Simonwep/bavary/blob/master/docs/syntax.md) to get started!
+Check out the [documentation](docs/syntax.md) to get started or jump directly into one of the examples:
+
+1. [number](docs/examples/number.md) - Parsing floats and integers with optional scientific notation.
