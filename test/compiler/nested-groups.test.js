@@ -33,4 +33,19 @@ describe('[COM] Nested groups', () => {
         expect(parse('')).to.deep.equal([]);
         expect(parse('AC')).to.deep.equal(null);
     });
+
+    it('Should handle mixed combinators', () => {
+        const parse = compile(`
+            entry [['a' & 'b' & 'c'] | ['e' | 'f'] | ['g' 'h']]
+        `);
+
+        expect(parse('gh')).to.equal('gh');
+        expect(parse('cba')).to.equal('cba');
+        expect(parse('bac')).to.equal('bac');
+        expect(parse('e')).to.equal('e');
+        expect(parse('abbc')).to.equal(null);
+        expect(parse('cca')).to.equal(null);
+        expect(parse('x')).to.equal(null);
+        expect(parse('hg')).to.equal(null);
+    });
 });
