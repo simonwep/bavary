@@ -41,6 +41,7 @@ Each multiplier will result in different kind of results.
 
 The outcome will affect the value of [tags](#tags)
 
+
 ### Combinators
 Combinators define how components in a group should be treated:
 

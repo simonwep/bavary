@@ -56,4 +56,5 @@ console.log(parsed);
 
 Check out the [documentation](docs/syntax.md) to get started or jump directly into one of the examples:
 
-1. [number](docs/examples/number.md) - Parsing floats and integers with optional scientific notation.
+1. [hex-color](docs/examples/hex-colors.md) - Parsing different kinds of color types from the hexadecimal format.
+2. [number](docs/examples/number.md) - Parsing floats and integers with optional scientific notation.

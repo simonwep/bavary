@@ -29,8 +29,9 @@ The definition contains three tags:
 2. `decimal` contains the decimal-place.
 3. `sign` contains (an optional) preceding sign (`+` or `-`).
 
-#### Usage results:
+#### Usage and possible results:
 
+##### Code
 ```js
 const parse = compile(`
     entry {
