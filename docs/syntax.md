@@ -1,6 +1,7 @@
 
 ### Entry type
-Each parser consists of exactly **one** `entry` type followed by a named or anonymous [type declaration](#type-definition):
+Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type declaration](#type-definition) **or** 
+a [block](#block-definitions) definition where the default export will be used:
 ```html
 // Named entry type
 entry <my-first-type> = ['A']
@@ -31,6 +32,13 @@ Groups generally (and types used _in_ groups) can have multipliers to define how
 | `{min, max}`| Curly braces | **min** up to **max** times (both inclusive) | `['A']{3,6}` `<abc>{3,6}` |
 | `?` | Question mark | **One** or **zero** time (optional) | `['A']?` `<abc>?` |
 
+Each multiplier will result in different kind of results.
+
+* `*` Will **always** result in an array since it matches _zero_ or more times.
+* `+` or `{min, max}` Could **either** return an **array** or **`undefined`** since it's required to match _at least_ one time.
+* `?` Is **either** the result or **`undefined`**.
+
+The outcome will affect the value of [tags](#tags)
 
 ### Combinators
 Combinators define how components in a group should be treated:
@@ -103,3 +111,30 @@ sub-types, and an arbitrary amount of _exported_ types:
 // To access nested e.g. the <uppercase> type use `<characters:uppercase>`
 entry [<characters>+]
 ```
+
+
+### Tags
+So far you would only get a string, (nested-) array of strings or `null` if nothing got matched.
+Tags can be used to get actual objects:
+
+```html
+entry {
+    <number> = ['0' to '9'] // All characters from '0' to '9'
+    <sign> = ['-' | '+'] // '-' or '+'
+
+    default [
+        <sign#prefix>
+        <number#num>
+    ]
+}
+```
+
+The result of using '+5' would be:
+```js
+{
+   sign: '+',
+   num: '5' 
+}
+```
+
+Without tags it would just return `+5` as plain-string.
