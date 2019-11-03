@@ -42,10 +42,10 @@ const parse = compile(`
 ##### Valid inputs:
 | Input | Output |
 | ----- | ------ |
-| `parse('#b5d')` | `{'r': 'b', 'b': '5', 'g': 'd'}` |
-| `parse('#cf5c')` | `{'r': 'c', 'b': 'f', 'g': '5', 'a': 'c'}` |
-| `parse('#4eaecc')` | `{'r': '4e', 'b': 'ae', 'g': 'cc'}` |
-| `parse('#328fffcc')` | `{'r': '32', 'b': '8f', 'g': 'ff', 'a': 'cc'}` |
+| `parse('#b5d')` | `{r: 'b', b: '5', g: 'd', a: null}` |
+| `parse('#cf5c')` | `{r: 'c', b: 'f', g: '5', a: 'c'}` |
+| `parse('#4eaecc')` | `{r: '4e', b: 'ae', g: 'cc', a: null}` |
+| `parse('#328fffcc')` | `{r: '32', b: '8f', g: 'ff', a: 'cc'}` |
 
 ##### Invalid inputs:
 | Input | Output |

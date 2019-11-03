@@ -52,13 +52,13 @@ const parse = compile(`
 ##### Valid inputs:
 | Input | Output |
 | ----- | ------ |
-| `parse(10)` | `{num: '10'}` |
-| `parse(-25)` | `{sign: '-', num: '25'}` |
-| `parse(14.5)` | `{num: '14', decimal: '5'}` |
-| `parse(20e+55)` | `{num: '20e+55'}` |
-| `parse(10.5e6)` | `{num: '10', decimal: '5e6'}` |
-| `parse(-.5e2)` | `{sign: '-', decimal: '5e2'}` |
-| `parse(.23e-232)` | `{decimal: '23e-232'}` |
+| `parse('10')` | `{sign: null, num: '10', decimal: null}` |
+| `parse('-25')` | `{sign: '-', num: '25', decimal: null}` |
+| `parse('14.5')` | `{sign: null, num: '14', decimal: '5'}` |
+| `parse('20e+55')` | `{sign: null, num: '20e+55', decimal: null}` |
+| `parse('10.5e6')` | `{sign: null, num: '10', decimal: '5e6'}` |
+| `parse('-.5e2')` | `{sign: '-', num: null, decimal: '5e2'}` |
+| `parse('.23e-232')` | `{sign: null, num: null, decimal: '23e-232'}` |
 
 ##### Invalid inputs:
 | Input | Output |

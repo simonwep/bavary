@@ -134,7 +134,7 @@ entry {
 The result of using '+5' would be:
 ```js
 {
-   sign: '+',
+   prefix: '+',
    num: '5' 
 }
 ```
