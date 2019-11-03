@@ -14,6 +14,9 @@
         "test": "mocha test/**/*.test.js",
         "watch:test": "mocha test/**/*.test.js --watch --watch-extensions js"
     },
+    "homepage": "https://github.com/Simonwep/bavary#readme",
+    "repository": "github:Simonwep/repo",
+    "bugs":  "https://github.com/Simonwep/bavary/issues",
     "devDependencies": {
         "chai": "^4.2.0",
         "eslint": "^6.5.1",

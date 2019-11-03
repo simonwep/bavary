@@ -11,7 +11,6 @@
     <a href="https://www.npmjs.com/package/bavary"><img
        alt="Download count"
        src="https://img.shields.io/npm/dm/bavary.svg?style=popout-square"></a>
-    <img alt="No dependencies" src="https://img.shields.io/badge/dependencies-none-1B0466.svg?style=popout-square">
     <img alt="Current version" src="https://img.shields.io/github/tag/Simonwep/bavary.svg?color=21068E&label=version&style=flat-square">
     <a href="https://www.patreon.com/simonwep"><img
        alt="Support me"
