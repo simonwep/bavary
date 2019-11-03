@@ -20,7 +20,7 @@ module.exports = (stream, decl, scope, result) => {
 
     // Tags can be nullish
     if (decl.tag) {
-        result.obj[decl.tag] = matches; // Save tag-result (can be null) TODO: Check if already declared
+        result.obj[decl.tag] = matches; // Save tag-result (can be null)
 
         if (matches) {
 

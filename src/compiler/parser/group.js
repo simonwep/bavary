@@ -14,7 +14,7 @@ module.exports = multiplier((stream, decl, scope, result = {obj: {}, str: '', pu
             stream.pop();
 
             // Serialize remaining types
-            serialize(decs.slice(i), result.obj);
+            serialize(decs, result.obj, true);
             return null;
         }
     }
