@@ -1,3 +1,5 @@
+const serialize = require('../tools/serialize');
+
 module.exports = (stream, decl, scope, result) => {
     const delcaration = require('./declaration');
     stream.stash();
@@ -6,9 +8,13 @@ module.exports = (stream, decl, scope, result) => {
         case '|': {
 
             // Match one of the items
-            for (const val of decl.value) {
-                if (delcaration(stream, val, scope, result)) {
+            const decs = decl.value;
+            for (let i = 0; i < decs.length; i++) {
+                if (delcaration(stream, decs[i], scope, result)) {
                     stream.recycle();
+
+                    // Serialize remaining types
+                    serialize(decs.slice(i), result.obj);
                     return true;
                 }
             }
@@ -32,6 +38,8 @@ module.exports = (stream, decl, scope, result) => {
                 return true;
             }
 
+            // Serialize remaining types
+            serialize(cpy, result.obj);
             break;
         }
     }

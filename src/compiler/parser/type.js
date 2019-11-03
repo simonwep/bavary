@@ -18,6 +18,17 @@ module.exports = (stream, decl, scope, result) => {
         () => typeValue(stream, body, scope)
     )(stream, decl, scope, result);
 
+    // Tags can be nullish
+    if (decl.tag) {
+        result.obj[decl.tag] = matches; // Save tag-result (can be null) TODO: Check if already declared
+
+        if (matches) {
+
+            // Since something was matched the result is not anymore "just a string"
+            result.pure = false;
+        }
+    }
+
     if (!matches) {
 
         // Restore previous stack position
@@ -27,15 +38,14 @@ module.exports = (stream, decl, scope, result) => {
         return decl.multiplier && decl.multiplier.type === 'optional';
     }
 
-    if (decl.tag) {
-        result.pure = false; // Result is not anymore "just a string"
-        result.obj[decl.tag] = matches; // Save tag-result TODO: Check if already declared
-    } else if (Array.isArray(matches)) {
-        result.str += matches.join(''); // Concat string sequences
-    } else if (typeof matches === 'string') {
-        result.str += matches;
-    } else {
-        throw `Type "${decl.value}" is missing a tag.`;
+    if (!decl.tag) {
+        if (Array.isArray(matches)) {
+            result.str += matches.join(''); // Concat string sequences
+        } else if (typeof matches === 'string') {
+            result.str += matches;
+        } else {
+            throw `Type "${decl.value}" is missing a tag.`;
+        }
     }
 
     stream.recycle();

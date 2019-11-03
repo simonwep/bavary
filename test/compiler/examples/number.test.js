@@ -24,13 +24,13 @@ describe('[EXAMPLE] numbers', () => {
     `);
 
     parse([
-        ['10', {num: '10'}],
-        ['-25', {sign: '-', num: '25'}],
-        ['14.5', {num: '14', decimal: '5'}],
-        ['20e+55', {num: '20e+55'}],
-        ['10.5e6', {num: '10', decimal: '5e6'}],
-        ['-.5e2', {sign: '-', decimal: '5e2'}],
-        ['.23e-232', {decimal: '23e-232'}]
+        ['10', {sign: null, num: '10', decimal: null}],
+        ['-25', {sign: '-', num: '25', decimal: null}],
+        ['14.5', {sign: null, num: '14', decimal: '5'}],
+        ['20e+55', {sign: null, num: '20e+55', decimal: null}],
+        ['10.5e6', {sign: null, num: '10', decimal: '5e6'}],
+        ['-.5e2', {sign: '-', num: null, decimal: '5e2'}],
+        ['.23e-232', {sign: null, num: null, decimal: '23e-232'}]
     ]);
 
     parse([

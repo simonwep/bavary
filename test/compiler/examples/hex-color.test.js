@@ -20,9 +20,9 @@ describe('[EXAMPLE] hex-color', () => {
     `);
 
     parse([
-        ['#b5d', {r: 'b', b: '5', g: 'd'}],
+        ['#b5d', {r: 'b', b: '5', g: 'd', a: null}],
         ['#cf5c', {r: 'c', b: 'f', g: '5', a: 'c'}],
-        ['#4eaecc', {r: '4e', b: 'ae', g: 'cc'}],
+        ['#4eaecc', {r: '4e', b: 'ae', g: 'cc', a: null}],
         ['#328fffcc', {r: '32', b: '8f', g: 'ff', a: 'cc'}]
     ]);
 

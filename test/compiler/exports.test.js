@@ -54,8 +54,8 @@ describe('[COM] Exports', () => {
         `);
 
 
-        expect(parse('a')).to.deep.equal({deep: 'a'});
-        expect(parse('ABb')).to.deep.equal({mixed: ['A', 'B', 'b']});
+        expect(parse('a')).to.deep.equal({deep: 'a', mixed: null});
+        expect(parse('ABb')).to.deep.equal({deep: null, mixed: ['A', 'B', 'b']});
         expect(parse('4')).to.equal('4');
     });
 });
