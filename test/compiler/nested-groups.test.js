@@ -36,16 +36,27 @@ describe('[COM] Nested groups', () => {
 
     it('Should handle mixed combinators', () => {
         const parse = compile(`
-            entry [['a' & 'b' & 'c'] | ['e' | 'f'] | ['g' 'h']]
+            entry {
+                <num> = ['0' to '9']
+                <abc> = ['a' to 'c']
+                <xyz> = ['x' to 'z']
+            
+                default [
+                    [<num#a> && <abc#b> && <xyz#c>] | 
+                    ['a' & 'b' & 'c'] | 
+                    ['e' | 'f'] | 
+                    ['g' 'h']
+                ]
+            }
         `);
 
+        expect(parse('0x')).to.deep.equal({a: '0', b: null, c: 'x'});
+        expect(parse('z')).to.deep.equal({a: null, b: null, c: 'z'});
+        expect(parse('y0b')).to.deep.equal({a: '0', b: 'b', c: 'y'});
         expect(parse('gh')).to.equal('gh');
-        expect(parse('cba')).to.equal('cba');
-        expect(parse('bac')).to.equal('bac');
         expect(parse('e')).to.equal('e');
         expect(parse('abbc')).to.equal(null);
         expect(parse('cca')).to.equal(null);
-        expect(parse('x')).to.equal(null);
         expect(parse('hg')).to.equal(null);
     });
 });

@@ -21,6 +21,7 @@ module.exports = (stream, decl, scope, result) => {
 
             break;
         }
+        case '&&':
         case '&': {
             const cpy = [...decl.value];
 
@@ -33,13 +34,14 @@ module.exports = (stream, decl, scope, result) => {
                 }
             }
 
-            // Every item needs to be matched
-            if (!cpy.length) {
+            // Serialize remaining types
+            serialize(cpy, result.obj);
+
+            if (!cpy.length || decl.sign === '&&') {
+                stream.recycle();
                 return true;
             }
 
-            // Serialize remaining types
-            serialize(cpy, result.obj);
             break;
         }
         default: {
