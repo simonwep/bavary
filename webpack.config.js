@@ -15,6 +15,15 @@ module.exports = {
         libraryTarget: 'umd'
     },
 
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                use: 'eslint-loader'
+            }
+        ]
+    },
+
     plugins: [
         new webpack.BannerPlugin({
             banner: `Bavary ${version} MIT | https://github.com/Simonwep/bavary`

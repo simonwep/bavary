@@ -16,14 +16,15 @@
     },
     "homepage": "https://github.com/Simonwep/bavary#readme",
     "repository": "github:Simonwep/repo",
-    "bugs":  "https://github.com/Simonwep/bavary/issues",
+    "bugs": "https://github.com/Simonwep/bavary/issues",
     "devDependencies": {
         "chai": "^4.2.0",
-        "eslint": "^6.5.1",
+        "eslint": "^6.6.0",
         "eslint-config-problems": "^3.0.1",
+        "eslint-loader": "^3.0.2",
         "mocha": "^6.2.2",
         "webpack": "^4.41.2",
-        "webpack-cli": "^3.3.9"
+        "webpack-cli": "^3.3.10"
     },
     "dependencies": {
         "previous-index-of": "^1.2.1"
