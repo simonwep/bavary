@@ -28,7 +28,6 @@ module.exports = (stream, decl, scope, result) => {
             // Match items ignoring the order
             for (let i = 0; i < cpy.length; i++) {
                 if (delcaration(stream, cpy[i], scope, result)) {
-                    stream.recycle();
                     cpy.splice(i, 1);
                     i = -1;
                 }
@@ -37,7 +36,7 @@ module.exports = (stream, decl, scope, result) => {
             // Serialize remaining types
             serialize(cpy, result.obj);
 
-            if (!cpy.length || decl.sign === '&&') {
+            if (!cpy.length || (decl.sign === '&&' && cpy.length < decl.value.length)) {
                 stream.recycle();
                 return true;
             }

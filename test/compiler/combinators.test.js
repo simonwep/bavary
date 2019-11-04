@@ -37,6 +37,7 @@ describe('[COM] Combinators', () => {
         expect(parse('c')).to.equal('c');
         expect(parse('ca')).to.equal('ca');
         expect(parse('abb')).to.equal(null);
+        expect(parse('')).to.equal(null);
     });
 
     it('Should handle mixed combinators', () => {
