@@ -40,4 +40,27 @@ describe('[COM] Type serialization', () => {
         expect(parse('3a')).to.deep.equal({a: '3', b: 'a', c: null, d: null});
         expect(parse('cc')).to.deep.equal(null);
     });
+
+    it('Should properly serialize unmatched combinators', () => {
+        const parse = compile(`
+            entry {
+                <num> = ['0' to '9']
+                <abc> = ['a' to 'c']
+                <xyz> = ['x' to 'z']
+                
+                default [
+                    [<num#a> <abc#b> | <xyz#c>] |
+                    [
+                        [<abc#b> <xyz#c> <num#a>] |
+                        [<num#a> & <abc#b> & <xyz#c>]
+                    ]
+                ]
+            }
+        `);
+
+        expect(parse('1b')).to.deep.equal({a: '1', b: 'b', c: null});
+        expect(parse('b0x')).to.deep.equal({a: '0', b: 'b', c: 'x'});
+        expect(parse('z8b')).to.deep.equal({a: '8', b: 'b', c: 'z'});
+        expect(parse('z88b')).to.deep.equal(null);
+    });
 });
