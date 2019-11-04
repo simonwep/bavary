@@ -50,6 +50,7 @@ Combinators define how components in a group should be treated:
 | | Juxtaposition | Each component is mandatory and must appear in the given order | `'A' <abc>` |
 | `\|` | Single bar | Exactly one of the components must match | `'A' \| 'B'` |
 | `&` | Ampersand | Each component is mandatory but the may appear in any order | `'A' & 'B'` |
+| `&&` | Double ampersand | At least one component must be present, and the may appear in any order | `'A' && 'B'` |
 
 Combinators don't have any priorities, mixed combinators will be grouped from left to right. Use [groups](#group-definitions) to 
 bypass precedence rules.
