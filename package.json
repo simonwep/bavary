@@ -1,12 +1,12 @@
 {
     "name": "bavary",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Customizable, elegant and fast syntax-parser",
+    "author": "Simon Reinisch <trash@reinisch.io>",
     "main": "./src/index.js",
     "keywords": [
         "parser"
     ],
-    "author": "Simon Reinisch <trash@reinisch.io>",
     "license": "MIT",
     "scripts": {
         "build": "webpack",
