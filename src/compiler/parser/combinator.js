@@ -42,6 +42,9 @@ module.exports = (stream, decl, scope, result) => {
             serialize(cpy, result.obj);
             break;
         }
+        default: {
+            throw `Unknown combinator "${decl.sign}"`;
+        }
     }
 
     stream.pop();
