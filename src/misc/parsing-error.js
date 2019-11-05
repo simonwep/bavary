@@ -1,4 +1,4 @@
-const prettyPrintError = require('./pretty-print-error');
+const prettyPrintError = require('./prettify-error');
 
 module.exports = class ParsingError extends Error {
 
