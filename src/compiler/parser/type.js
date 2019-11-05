@@ -39,7 +39,7 @@ module.exports = (stream, decl, scope, result) => {
     }
 
     if (!decl.tag) {
-        if (Array.isArray(matches)) {
+        if (Array.isArray(matches) && matches.every(v => typeof v === 'string')) {
             result.str += matches.join(''); // Concat string sequences
         } else if (typeof matches === 'string') {
             result.str += matches;

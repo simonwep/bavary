@@ -23,7 +23,7 @@ module.exports = maybe(stream => {
 
     let to = parsePoint(stream);
     if (to === null) {
-        return stream.throwError('Expected range-end');
+        return stream.throwError('Character-ranges consist of two single characters');
     }
 
     if (to < from) {
