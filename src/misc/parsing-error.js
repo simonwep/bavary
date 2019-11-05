@@ -13,6 +13,7 @@ module.exports = class ParsingError extends Error {
         super(`\n${prettyPrintError(source, msg, start, end)}`);
         this.start = start;
         this.end = end;
+        this.msg = msg;
         this.name = 'Parsing Error';
     }
 };
