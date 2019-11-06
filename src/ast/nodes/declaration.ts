@@ -17,23 +17,23 @@ module.exports = maybe<Declaration | null>(stream => {
 
         // Declaration cannot have multipliers
         if (target.multiplier) {
-            return stream.throwError('Declaration type cannot contain multipliers.');
+            stream.throwError('Declaration type cannot contain multipliers.');
         }
 
         // Neither can they have tag
         if (target.tag) {
-            return stream.throwError('Declaration type cannot have a tag.');
+            stream.throwError('Declaration type cannot have a tag.');
         }
 
     } else if (!variant) {
-        return stream.throwError('Expected declaration.');
+        stream.throwError('Expected declaration.');
     }
 
     // A declaration value could be either a group or scoped block
     const body = group(stream) || block(stream);
 
     if (!body) {
-        return stream.throwError('A declaration consists of one group.');
+        stream.throwError('A declaration consists of one group.');
     }
 
     return {

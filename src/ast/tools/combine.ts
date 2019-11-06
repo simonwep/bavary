@@ -7,7 +7,8 @@ import {ASTNode}  from '../types';
  * @param parsers
  * @returns {Function}
  */
-export default (...parsers) => (stream: Streamable<Token>): ASTNode | null => {
+type Parsers = Array<(stream: Streamable<Token>) => ASTNode>
+export default (...parsers: Parsers) => (stream: Streamable<Token>): ASTNode | null => {
     for (const parser of parsers) {
         const result = parser(stream);
 

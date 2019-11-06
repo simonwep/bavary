@@ -6,10 +6,10 @@ const typeValue = require('./parser/type-value');
 
 export default (definitions: string): (content: string) => null | object => {
     const tree = parseAst(definitions);
-    let entry = null;
+    let entry: object | null = null;
 
     // Resolve entities in the global scope
-    const globals = resolveScope(tree, null, ({variant, name, value}) => {
+    const globals = resolveScope(tree, null, ({variant, name, value}: {variant: string; name: string; value: object}) => {
         if (variant === 'entry') {
 
             // There can only be one entry type

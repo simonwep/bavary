@@ -61,7 +61,7 @@ export default class Streamable<T> {
      * Throws an ParsingError
      * @param msg
      */
-    throwError(msg): void {
+    throwError(msg: string): void {
 
         if (!this.source) {
             throw msg;

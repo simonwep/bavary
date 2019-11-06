@@ -38,7 +38,7 @@ module.exports = maybe(stream => {
         const com = combinator(stream);
 
         if (!value) {
-            return stream.throwError('Expected a type, group or raw string.');
+            stream.throwError('Expected a type, group or raw string.');
         }
 
         if (com) {
@@ -46,7 +46,7 @@ module.exports = maybe(stream => {
             // Append to previous group
             if (comg) {
                 if (com.value === comg.sign) {
-                    comg.value.push(value);
+                    comg.value.push(value as ASTNode);
                     continue;
                 } else {
                     values.push(comg);
@@ -60,11 +60,11 @@ module.exports = maybe(stream => {
                 value: [value]
             } as GroupedCombinators;
         } else if (comg) {
-            comg.value.push(value);
+            comg.value.push(value as ASTNode);
             values.push(comg);
             comg = null;
         } else {
-            values.push(value);
+            values.push(value as ASTNode);
         }
     }
 

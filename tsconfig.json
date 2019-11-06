@@ -6,8 +6,7 @@
         "lib": ["esnext"],
         "module": "commonjs",
         "target": "es6",
-        "strict": true,
-        "noImplicitAny": false
+        "strict": true
     },
     "include": [
         "src/**/*"

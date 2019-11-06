@@ -8,7 +8,7 @@ import {Token, TokenType} from '../../tokenizer';
  * @param vals
  * @returns {boolean}
  */
-export default (stream: Streamable<Token>, type: TokenType, ...vals): boolean => {
+export default (stream: Streamable<Token>, type: TokenType, ...vals: Array<string | number>): boolean => {
     const peek = stream.peek();
 
     // Check if type matches

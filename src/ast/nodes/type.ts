@@ -15,7 +15,7 @@ module.exports = maybe<Type | null>(stream => {
 
     const ident = identifier(stream);
     if (!ident) {
-        return stream.throwError('Expected identifier.');
+        stream.throwError('Expected identifier.');
     }
 
     let tag: string | null = null;
@@ -23,7 +23,7 @@ module.exports = maybe<Type | null>(stream => {
         const opt = string(stream) || identifier(stream);
 
         if (!opt) {
-            return stream.throwError('Expected string or identifier as tag.');
+            stream.throwError('Expected string or identifier as tag.');
         }
 
         tag = opt.value;

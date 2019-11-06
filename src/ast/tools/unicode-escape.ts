@@ -17,7 +17,7 @@ export default maybe<number>(stream => {
 
     // Validate length of sequence
     if (sequence.length !== 5) {
-        return stream.throwError('An unicode-escape sequence consists out of an "u" followed by a code-point.');
+        stream.throwError('An unicode-escape sequence consists out of an "u" followed by a code-point.');
     }
 
     // Validate char-codes
@@ -26,7 +26,7 @@ export default maybe<number>(stream => {
         const code = char.charCodeAt(0);
 
         if (code < 48 || (code > 57 && code < 97) || code > 102) {
-            return stream.throwError('Invalid unicode-range.');
+            stream.throwError('Invalid unicode-range.');
         }
     }
 

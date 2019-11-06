@@ -6,10 +6,10 @@ import {Token}    from '../../tokenizer';
  * @param fn
  * @returns {Function}
  */
-export default <T>(fn: (...args) => T | null) => (stream: Streamable<Token>, ...args): T | null => {
+export default <T>(fn: (stream: Streamable<Token>) => T | null) => (stream: Streamable<Token>): T | null => {
     stream.stash();
 
-    const result = fn(stream, ...args);
+    const result = fn(stream);
     if (result !== null) {
         stream.recycle();
         return result;

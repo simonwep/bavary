@@ -4,7 +4,7 @@ import maybe        from '../tools/maybe';
 import optional     from '../tools/optional';
 import {Multiplier} from '../types';
 
-const types = {
+const types: {[key: string]: string} = {
     '*': 'zero-infinity',
     '+': 'one-infinity',
     '?': 'optional'
@@ -19,9 +19,9 @@ module.exports = maybe<Multiplier | null>(stream => {
 
         const end = expect(stream, 'num') as Token;
         if (start.value < 0 || end.value < 0) {
-            return stream.throwError('Range values cannot contain negative values.');
+            stream.throwError('Range values cannot contain negative values.');
         } else if ((end.value as number) - (start.value as number) < 0) { // TODO: That's ugly
-            return stream.throwError('The difference between start and end-value cannot be negative or zero.');
+            stream.throwError('The difference between start and end-value cannot be negative or zero.');
         }
 
         expect(stream, 'punc', '}');
@@ -31,7 +31,7 @@ module.exports = maybe<Multiplier | null>(stream => {
                 start: start.value,
                 end: end.value
             }
-        };
+        } as Multiplier;
     }
 
     return mp ? {

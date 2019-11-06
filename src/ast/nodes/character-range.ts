@@ -26,7 +26,8 @@ module.exports = maybe<CharacterRange | null>(stream => {
 
     let to = parsePoint(stream);
     if (to === null) {
-        return stream.throwError('Character-ranges consist of two single characters');
+        stream.throwError('Character-ranges consist of two single characters');
+        return null;
     }
 
     if (to < from) {

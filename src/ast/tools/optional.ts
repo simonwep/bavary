@@ -8,7 +8,7 @@ import check              from './check';
  * @param type
  * @param vals
  */
-export default (stream: Streamable<Token>, type: TokenType, ...vals): Token | null => {
+export default (stream: Streamable<Token>, type: TokenType, ...vals: Array<string | number>): Token | null => {
 
     if (check(stream, type, ...vals)) {
         return stream.next();
