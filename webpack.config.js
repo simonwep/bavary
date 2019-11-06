@@ -5,7 +5,7 @@ module.exports = {
     mode: 'production',
 
     entry: {
-        'bavary.min.js': './src/index.js'
+        'bavary.min.js': './src/index.ts'
     },
 
     output: {
@@ -18,10 +18,17 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
-                use: 'eslint-loader'
+                test: /\.(js|ts)$/,
+                use: [
+                    'ts-loader',
+                    'eslint-loader'
+                ]
             }
         ]
+    },
+
+    resolve: {
+        extensions: ['.ts', '.js']
     },
 
     plugins: [

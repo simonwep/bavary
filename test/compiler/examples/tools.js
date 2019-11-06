@@ -1,7 +1,7 @@
-const {compile} = require('../../../src');
-const {expect} = require('chai');
+import {expect}  from 'chai';
+import {compile} from '../../../src';
 
-module.exports = spec => {
+export default spec => {
     const parse = compile(spec);
 
     return tests => {

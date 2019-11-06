@@ -1,3 +1,21 @@
+function resolveExports(decs, map, base) {
+    for (const {variant, name, value} of decs) {
+        const subName = `${base}:${name}`;
+
+        if (map.has(subName)) {
+            throw `Type "${subName}" is already declared in the scope of "${name}".`;
+        }
+        if (variant === 'export') {
+            map.set(subName, value);
+        }
+
+        // If it's a block it may also export additional types
+        if (value.type === 'block') {
+            resolveExports(value.value, map, subName);
+        }
+    }
+}
+
 /**
  * Builds a new scope and resolves all exports
  * @param decs Declarations
@@ -7,6 +25,7 @@
 module.exports = (decs, parent, interceptor) => {
     const map = new Map(parent !== null ? [...parent] : null);
 
+    // TODO: Types are not properly scoped!
     for (const dec of decs) {
         const {name, value, type} = dec;
 
@@ -36,21 +55,3 @@ module.exports = (decs, parent, interceptor) => {
 
     return map;
 };
-
-function resolveExports(decs, map, base) {
-    for (const {variant, name, value} of decs) {
-        const subName = `${base}:${name}`;
-
-        if (map.has(subName)) {
-            throw `Type "${subName}" is already declared in the scope of "${name}".`;
-        }
-        if (variant === 'export') {
-            map.set(subName, value);
-        }
-
-        // If it's a block it may also export additional types
-        if (value.type === 'block') {
-            resolveExports(value.value, map, subName);
-        }
-    }
-}
