@@ -4,10 +4,12 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "problems"
     ],
     "env": {
-        "node": true
+        "node": true,
+        "mocha": true
     },
     "plugins": [
         "@typescript-eslint"

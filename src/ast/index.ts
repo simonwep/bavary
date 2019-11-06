@@ -2,13 +2,12 @@ import Streamable from '../stream';
 import tokenize   from '../tokenizer';
 import {ASTNode}  from './types';
 
-const declaration = require('./nodes/declaration');
-
 /**
  * Converts a array of tokens into a ast-tree
  * @param defs
  */
 export default (defs: string): Array<ASTNode> | null => {
+    const declaration = require('./nodes/declaration');
     const stream = new Streamable(tokenize(defs), defs);
     const declarations: Array<ASTNode> = [];
 

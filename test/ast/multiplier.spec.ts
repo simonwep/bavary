@@ -4,7 +4,7 @@ import {failAll, parse} from './tools';
 describe('[AST] Multipliers', () => {
 
     it('Should parse multipliers', () => {
-        expect(parse(`<another-value> = [ '0' ]+`)).to.deep.equal([
+        expect(parse('<another-value> = [ \'0\' ]+')).to.deep.equal([
             {
                 'type': 'declaration',
                 'variant': null,
@@ -27,7 +27,7 @@ describe('[AST] Multipliers', () => {
     });
 
     it('Should parse entry types ', () => {
-        expect(parse(`entry <exported-value> = [ '0' ]`)).to.deep.equal([
+        expect(parse('entry <exported-value> = [ \'0\' ]')).to.deep.equal([
             {
                 'type': 'declaration',
                 'variant': 'entry',
@@ -47,7 +47,7 @@ describe('[AST] Multipliers', () => {
     });
 
     it('Should parse nested multipliers', () => {
-        expect(parse(`<another-value> = [ '0' | ['C' | 'X']*]+`)).to.deep.equal([
+        expect(parse('<another-value> = [ \'0\' | [\'C\' | \'X\']*]+')).to.deep.equal([
             {
                 'type': 'declaration',
                 'name': 'another-value',
@@ -90,7 +90,7 @@ describe('[AST] Multipliers', () => {
     });
 
     it('Should parse range multipliers', () => {
-        expect(parse(`<abc-123> = ['A' | 'B']{4,6}`)).to.deep.equal([
+        expect(parse('<abc-123> = [\'A\' | \'B\']{4,6}')).to.deep.equal([
             {
                 'type': 'declaration',
                 'name': 'abc-123',

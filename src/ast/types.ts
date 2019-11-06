@@ -16,7 +16,7 @@ export type Multiplier = {
     value: {
         start: number;
         end: number;
-    } | '*' | '+' | '?'; // TODO: Or null
+    } | '*' | '+' | '?';
 }
 
 export type Str = {

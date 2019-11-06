@@ -4,7 +4,7 @@ import {compile} from '../../src';
 describe('[COM] Exports', () => {
 
     it('Should throw an error if export is used in the global space', () => {
-        expect(() => compile(`export <abc> = ['A']`)).to.throw();
+        expect(() => compile('export <abc> = [\'A\']')).to.throw();
     });
 
     it('Should resolve simple exports', () => {

@@ -4,11 +4,11 @@ import {parse}  from './tools';
 describe('[AST] Characters, strings and char-ranges', () => {
 
     it('Should throw an error on empty strings', () => {
-        expect(() => parse(`<brr> = ['']`)).to.throw();
+        expect(() => parse('<brr> = [\'\']')).to.throw();
     });
 
     it('Should resolve simple character sequences', () => {
-        expect(parse(`entry <a> = ['A' 'Hello' 'Hello World!']`)).to.deep.equal([
+        expect(parse('entry <a> = [\'A\' \'Hello\' \'Hello World!\']')).to.deep.equal([
             {
                 'type': 'declaration',
                 'name': 'a',
@@ -36,7 +36,7 @@ describe('[AST] Characters, strings and char-ranges', () => {
     });
 
     it('Should allow escaped quotations in strings', () => {
-        expect(parse(`<brr> = ['A\\'' | 'B']`)).to.deep.equal([
+        expect(parse('<brr> = [\'A\\\'\' | \'B\']')).to.deep.equal([
             {
                 'type': 'declaration',
                 'name': 'brr',
@@ -60,7 +60,7 @@ describe('[AST] Characters, strings and char-ranges', () => {
     });
 
     it('Should parse character ranges', () => {
-        expect(parse(`entry <a> = ['a' to 'z' 'A' to 'Z']`)).to.deep.equal([
+        expect(parse('entry <a> = [\'a\' to \'z\' \'A\' to \'Z\']')).to.deep.equal([
             {
                 'type': 'declaration',
                 'name': 'a',
@@ -84,7 +84,7 @@ describe('[AST] Characters, strings and char-ranges', () => {
     });
 
     it('Should automatically correct switched char-ranges', () => {
-        expect(parse(`entry <a> = ['z' to 'a']`)).to.deep.equal([
+        expect(parse('entry <a> = [\'z\' to \'a\']')).to.deep.equal([
             {
                 'type': 'declaration',
                 'name': 'a',
@@ -107,7 +107,7 @@ describe('[AST] Characters, strings and char-ranges', () => {
     });
 
     it('Should allow unicode-escaped ranges', () => {
-        expect(parse(`entry <a> = [\\u2000 to \\u3300]`)).to.deep.equal([
+        expect(parse('entry <a> = [\\u2000 to \\u3300]')).to.deep.equal([
             {
                 'type': 'declaration',
                 'name': 'a',
