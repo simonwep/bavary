@@ -1,15 +1,9 @@
-import check            from '../tools/check';
-import combine          from '../tools/combine';
-import expect           from '../tools/expect';
-import maybe            from '../tools/maybe';
-import optional         from '../tools/optional';
-import {ASTNode, Group} from '../types';
-
-type GroupedCombinators = {
-    type: 'combinator';
-    sign: string;
-    value: Array<ASTNode | GroupedCombinators>;
-}
+import check                                  from '../tools/check';
+import combine                                from '../tools/combine';
+import expect                                 from '../tools/expect';
+import maybe                                  from '../tools/maybe';
+import optional                               from '../tools/optional';
+import {Group, GroupedCombinator, GroupValue} from '../types';
 
 module.exports = maybe(stream => {
     const characterRange = require('./character-range');
@@ -24,7 +18,7 @@ module.exports = maybe(stream => {
         return null;
     }
 
-    const values: Array<ASTNode | GroupedCombinators> = [];
+    const values: Array<GroupValue> = [];
     const parsers = combine(
         type,
         group,
@@ -46,7 +40,7 @@ module.exports = maybe(stream => {
             // Append to previous group
             if (comg) {
                 if (com.value === comg.sign) {
-                    comg.value.push(value as ASTNode);
+                    comg.value.push(value as GroupValue);
                     continue;
                 } else {
                     values.push(comg);
@@ -58,13 +52,14 @@ module.exports = maybe(stream => {
                 type: 'combinator',
                 sign: com.value,
                 value: [value]
-            } as GroupedCombinators;
+            } as GroupedCombinator;
+
         } else if (comg) {
-            comg.value.push(value as ASTNode);
+            comg.value.push(value as GroupValue);
             values.push(comg);
             comg = null;
         } else {
-            values.push(value as ASTNode);
+            values.push(value as GroupValue);
         }
     }
 

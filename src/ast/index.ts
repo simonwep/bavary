@@ -1,15 +1,15 @@
-import Streamable from '../stream';
-import tokenize   from '../tokenizer';
-import {ASTNode}  from './types';
+import Streamable    from '../stream';
+import tokenize      from '../tokenizer';
+import {Declaration} from './types';
 
 /**
  * Converts a array of tokens into a ast-tree
  * @param defs
  */
-export default (defs: string): Array<ASTNode> | null => {
+export default (defs: string): Array<Declaration> | null => {
     const declaration = require('./nodes/declaration');
     const stream = new Streamable(tokenize(defs), defs);
-    const declarations: Array<ASTNode> = [];
+    const declarations: Array<Declaration> = [];
 
     while (stream.hasNext()) {
         const dec = declaration(stream);

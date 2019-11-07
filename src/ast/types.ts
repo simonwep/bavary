@@ -1,22 +1,36 @@
-export type ASTNode = {}
+export type ASTNode = {
+    type: string;
+}
 
+export type DeclarationValue = Group | Block;
 export type Declaration = {
     type: 'declaration';
     name: string | null;
     variant: string | null;
-    value: ASTNode;
+    value: DeclarationValue;
 } & ASTNode;
 
+export type GroupValue = Type | Str | GroupedCombinator | Group | CharacterRange;
 export type Group = {
     type: 'group';
+    multiplier: Multiplier;
+    value: Array<GroupValue>;
+}
+
+export type GroupedCombinator = {
+    type: 'combinator';
+    sign: string;
+    value: Array<GroupValue>;
+}
+
+export type MultiplierRange = {
+    start: number;
+    end: number;
 }
 
 export type Multiplier = {
     type: 'zero-infinity' | 'one-infinity' | 'optional' | 'range';
-    value: {
-        start: number;
-        end: number;
-    } | '*' | '+' | '?';
+    value: MultiplierRange | '*' | '+' | '?';
 }
 
 export type Str = {
