@@ -1,15 +1,19 @@
-import parseAst   from '../ast';
-import Streamable from '../stream';
-
-const resolveScope = require('./tools/resolve-scope');
-const typeValue = require('./parser/type-value');
+import parseAst     from '../ast';
+import {ASTNode}    from '../ast/types';
+import Streamable   from '../stream';
+import resolveScope from './tools/resolve-scope';
 
 export default (definitions: string): (content: string) => null | object => {
+    const typeValue = require('./parser/type-value');
     const tree = parseAst(definitions);
-    let entry: object | null = null;
+
+    if (!tree) {
+        throw 'Failed to parse declarations';
+    }
 
     // Resolve entities in the global scope
-    const globals = resolveScope(tree, null, ({variant, name, value}: {variant: string; name: string; value: object}) => {
+    let entry: ASTNode | null = null;
+    const globals = resolveScope(tree, null, ({variant, name, value}) => {
         if (variant === 'entry') {
 
             // There can only be one entry type
@@ -28,7 +32,7 @@ export default (definitions: string): (content: string) => null | object => {
 
     return (content: string): null | object => {
         const stream = new Streamable(content);
-        const res = typeValue(stream, entry, globals);
+        const res = typeValue(stream, entry as ASTNode, globals);
         return stream.hasNext() ? null : res;
     };
 };

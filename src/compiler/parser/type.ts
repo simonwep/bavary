@@ -1,6 +1,9 @@
-const multiplier = require('./multiplier');
+import {Type}                                           from '../../ast/types';
+import Streamable                                       from '../../stream';
+import {ParsingResult, ParsingResultObjectValue, Scope} from '../types';
+import multiplier                                       from './multiplier';
 
-module.exports = (stream, decl, scope, result) => {
+module.exports = (stream: Streamable<string>, decl: Type, scope: Scope, result: ParsingResult): boolean => {
     const typeValue = require('./type-value');
     const {value} = decl;
 
@@ -14,7 +17,7 @@ module.exports = (stream, decl, scope, result) => {
     const body = scope.get(value);
 
     // Type may have a multiplier attached to it
-    const matches = multiplier(
+    const matches = multiplier<ParsingResultObjectValue>(
         () => typeValue(stream, body, scope)
     )(stream, decl, scope, result);
 
@@ -35,7 +38,7 @@ module.exports = (stream, decl, scope, result) => {
         stream.pop();
 
         // Declaration may be still optional through a '?'
-        return decl.multiplier && decl.multiplier.type === 'optional';
+        return !!(decl.multiplier && decl.multiplier.type === 'optional');
     }
 
     if (!decl.tag) {

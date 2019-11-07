@@ -1,4 +1,7 @@
-function resolveExports(decs, map, base) {
+import {Declaration} from '../../ast/types';
+import {Scope}       from '../types';
+
+function resolveExports(decs: Array<Declaration>, map: Scope, base: string | null): void {
     for (const {variant, name, value} of decs) {
         const subName = `${base}:${name}`;
 
@@ -22,8 +25,8 @@ function resolveExports(decs, map, base) {
  * @param parent Optional inherited scope
  * @param interceptor Optional interceptor for each declaration
  */
-module.exports = (decs, parent, interceptor) => {
-    const map = new Map(parent !== null ? [...parent] : null);
+export default (decs: Array<Declaration>, parent: Scope | null, interceptor: (arg: Declaration) => void): Scope => {
+    const map = new Map(parent !== null ? [...parent] : null) as Scope;
 
     // TODO: Types are not properly scoped!
     for (const dec of decs) {

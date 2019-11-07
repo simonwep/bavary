@@ -1,11 +1,25 @@
-const characterRange = require('./character-range');
-const combinator = require('./combinator');
-const string = require('./string');
-const type = require('./type');
+import {CharacterRange, Group, GroupedCombinator, Str, Type} from '../../ast/types';
+import Streamable                                            from '../../stream';
+import {ParsingResult, Scope}                                from '../types';
 
-module.exports = (stream, decl, scope, result = {obj: {}, str: '', pure: true}) => {
+type ExtendetDeclarationValue = GroupedCombinator | Str | CharacterRange | Type | Group;
+module.exports = (
+    stream: Streamable<string>,
+    decl: ExtendetDeclarationValue,
+    scope: Scope,
+    result: ParsingResult = {
+        obj: {},
+        str: '',
+        pure: true
+    }
+): boolean => {
+    const characterRange = require('./character-range');
+    const combinator = require('./combinator');
+    const string = require('./string');
+    const group = require('./group');
+    const type = require('./type');
+
     stream.stash();
-
     switch (decl.type) {
         case 'combinator': {
 
@@ -44,7 +58,7 @@ module.exports = (stream, decl, scope, result = {obj: {}, str: '', pure: true}) 
             break;
         }
         case 'group': {
-            const res = require('./group')(stream, decl, scope, result);
+            const res = group(stream, decl, scope, result);
 
             if (!res) {
                 if (decl.multiplier) {

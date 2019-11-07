@@ -1,7 +1,10 @@
-const serialize = require('../tools/serialize');
+import {GroupedCombinator}    from '../../ast/types';
+import Streamable             from '../../stream';
+import serialize              from '../tools/serialize';
+import {ParsingResult, Scope} from '../types';
 
-module.exports = (stream, decl, scope, result) => {
-    const delcaration = require('./declaration');
+module.exports = (stream: Streamable<string>, decl: GroupedCombinator, scope: Scope, result: ParsingResult): boolean => {
+    const declaration = require('./declaration');
     stream.stash();
 
     switch (decl.sign) {
@@ -10,7 +13,7 @@ module.exports = (stream, decl, scope, result) => {
             // Match one of the items
             const decs = decl.value;
             for (let i = 0; i < decs.length; i++) {
-                if (delcaration(stream, decs[i], scope, result)) {
+                if (declaration(stream, decs[i], scope, result)) {
                     stream.recycle();
 
                     // Serialize remaining types
@@ -27,7 +30,7 @@ module.exports = (stream, decl, scope, result) => {
 
             // Match items ignoring the order
             for (let i = 0; i < cpy.length; i++) {
-                if (delcaration(stream, cpy[i], scope, result)) {
+                if (declaration(stream, cpy[i], scope, result)) {
                     cpy.splice(i, 1);
                     i = -1;
                 }
@@ -49,5 +52,5 @@ module.exports = (stream, decl, scope, result) => {
     }
 
     stream.pop();
-    return null;
+    return false;
 };

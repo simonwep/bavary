@@ -1,10 +1,13 @@
-const resolveScope = require('../tools/resolve-scope');
-const group = require('./group');
+import {Block, DeclarationValue, Group} from '../../ast/types';
+import Streamable                       from '../../stream';
+import resolveScope                     from '../tools/resolve-scope';
+import {Scope}                          from '../types';
 
-module.exports = (stream, decl, scope) => {
+module.exports = (stream: Streamable<string>, decl: Block, scope: Scope): Group => {
+    const group = require('./group'); // TODO: Fix messed up circular dependencies
 
     // Inherit current scope
-    let def = null;
+    let def: null | DeclarationValue = null;
     const newScope = resolveScope(decl.value, scope, ({variant, value}) => {
         if (variant === 'default') {
             if (def !== null) {
