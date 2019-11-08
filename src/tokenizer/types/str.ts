@@ -1,6 +1,6 @@
 import Streamable from '../../stream';
-import {RawType}  from '../index';
 import escaped    from '../tools/escaped';
+import {RawType}  from '../types';
 
 export default (stream: Streamable<string>): RawType | null => {
 

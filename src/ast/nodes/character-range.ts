@@ -1,5 +1,5 @@
 import Streamable       from '../../stream';
-import {Token}          from '../../tokenizer';
+import {Token}          from '../../tokenizer/types';
 import maybe            from '../tools/maybe';
 import optional         from '../tools/optional';
 import unicodeEscape    from '../tools/unicode-escape';

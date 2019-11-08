@@ -1,4 +1,4 @@
-import {Token}      from '../../tokenizer';
+import {Token}      from '../../tokenizer/types';
 import expect       from '../tools/expect';
 import maybe        from '../tools/maybe';
 import optional     from '../tools/optional';

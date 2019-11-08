@@ -1,6 +1,6 @@
 import Streamable  from '../../stream';
-import {RawType}   from '../index';
 import {isNumeric} from '../tools/is';
+import {RawType}   from '../types';
 
 export default (stream: Streamable<string>): RawType | null => {
 

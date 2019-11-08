@@ -1,5 +1,5 @@
 import Streamable         from '../../stream';
-import {Token, TokenType} from '../../tokenizer';
+import {Token, TokenType} from '../../tokenizer/types';
 import check              from './check';
 
 /**

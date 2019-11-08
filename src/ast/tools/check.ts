@@ -1,5 +1,5 @@
 import Streamable         from '../../stream';
-import {Token, TokenType} from '../../tokenizer';
+import {Token, TokenType} from '../../tokenizer/types';
 
 /**
  * Checks if the next token matches type and a list of optional values

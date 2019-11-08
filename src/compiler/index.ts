@@ -8,7 +8,7 @@ export default (definitions: string): (content: string) => null | object => {
     const tree = parseAst(definitions);
 
     if (!tree) {
-        throw 'Failed to parse declarations';
+        throw 'Failed to parse declarations.';
     }
 
     // Resolve entities in the global scope

@@ -1,10 +1,12 @@
 import {expect}  from 'chai';
 import {compile} from '../../../src';
 
-export default spec => {
+type TestType = Array<string | [string, object]>
+
+export default (spec: string): (tests: TestType) => void => {
     const parse = compile(spec);
 
-    return tests => {
+    return (tests: TestType): void => {
         for (const test of tests) {
             if (Array.isArray(test)) {
                 const [str, expectedResult] = test;

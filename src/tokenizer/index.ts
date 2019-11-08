@@ -1,6 +1,7 @@
 import Streamable     from '../stream';
 import consume        from './tools/consume';
 import {isWhiteSpace} from './tools/is';
+import {Token}        from './types';
 import kw             from './types/kw';
 import num            from './types/num';
 import punc           from './types/punc';
@@ -69,14 +70,3 @@ export default (str: string): Array<Token> => {
     return tokens;
 };
 
-export type TokenType = 'punc' | 'num' | 'str' | 'kw'
-
-export type RawType = {
-    type: TokenType;
-    value: string | number;
-}
-
-export type Token = {
-    start: number;
-    end: number;
-} & RawType;

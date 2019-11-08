@@ -1,5 +1,5 @@
 import Streamable from '../../stream';
-import {Token}    from '../../tokenizer';
+import {Token}    from '../../tokenizer/types';
 import {ASTNode}  from '../types';
 
 /**

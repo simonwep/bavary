@@ -1,7 +1,7 @@
 import Streamable                   from '../../stream';
-import {RawType}                    from '../index';
 import consume                      from '../tools/consume';
 import {isNonWhitespace, isNumeric} from '../tools/is';
+import {RawType}                    from '../types';
 
 export default (stream: Streamable<string>): RawType | null => {
 

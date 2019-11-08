@@ -17,12 +17,12 @@ module.exports = maybe<Declaration | null>(stream => {
 
         // Declaration cannot have multipliers
         if (target.multiplier) {
-            stream.throwError('Declaration type cannot contain multipliers.');
+            stream.throwError('A declaration cannot contain multipliers.');
         }
 
         // Neither can they have tag
         if (target.tag) {
-            stream.throwError('Declaration type cannot have a tag.');
+            stream.throwError('A declaration cannot have a tag.');
         }
 
     } else if (!variant) {
