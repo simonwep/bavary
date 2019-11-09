@@ -43,6 +43,11 @@ function resolveSingleReference(scope: Scope, target: string, needExport = false
                 scope.current = entry.key || scope.globalKey;
                 return resolved.value;
             } else if (entry) {
+
+                // Runtime garbage collection
+                scope.map.delete(entry.key);
+
+                // Bubble up
                 entry = scope.map.get(entry.parent) || null;
             } else {
                 entry = null;

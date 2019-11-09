@@ -15,7 +15,6 @@ export default (definitions: string): (content: string) => null | object => {
     let entry: Block | Group | null = null;
     const globalScopeKey = Symbol('global scope');
     const globals: Array<Declaration> = [];
-    const scopeMap: Map<ScopeKey, ScopeEntry> = new Map();
 
     for (const dec of tree) {
         if (dec.variant === 'entry') {
@@ -44,21 +43,23 @@ export default (definitions: string): (content: string) => null | object => {
         throw new Error('Couldn\'t resolveScope entry type. Use the entry keyword to declare one.');
     }
 
-    // Insert global scope
-    scopeMap.set(globalScopeKey, {
+    const globalScopeEntry: ScopeEntry = {
         entries: globals,
         parent: null,
         key: globalScopeKey
-    });
-
-    const scope: Scope = {
-        globalKey: globalScopeKey,
-        current: globalScopeKey,
-        map: scopeMap,
-        locals: []
     };
 
     return (content: string): null | object => {
+
+        // Set-up scope
+        const scope: Scope = {
+            globalKey: globalScopeKey,
+            current: globalScopeKey,
+            map: new Map<ScopeKey, ScopeEntry>([[globalScopeKey, globalScopeEntry]]),
+            locals: []
+        };
+
+        // Parse and return result if successful
         const stream = new Streamable(content);
         const res = typeValue(stream, entry, scope);
         return stream.hasNext() ? null : res;
