@@ -10,7 +10,7 @@ describe('[COM] Nested types', () => {
         `)).to.throw();
     });
 
-    it('Should throw an error if type-names where used multiple types', () => {
+    it('Should throw an error if type-names were used multiple times', () => {
         expect(() => compile(`
             <abc> = ['A']
             entry <abc> = ['A']

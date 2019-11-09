@@ -6,11 +6,11 @@ export type DeclarationValue = Group | Block;
 export type Declaration = {
     type: 'declaration';
     name: string | null;
-    variant: string | null;
+    variant: 'entry' | 'default' | 'export' | null;
     value: DeclarationValue;
 } & ASTNode;
 
-export type GroupValue = Type | Str | GroupedCombinator | Group | CharacterRange;
+export type GroupValue = Reference | Str | GroupedCombinator | Group | CharacterRange;
 export type Group = {
     type: 'group';
     multiplier: Multiplier;
@@ -40,9 +40,19 @@ export type Str = {
 
 export type Type = {
     type: 'type';
-    multiplier: Multiplier | null;
     value: string;
+}
+
+export type Reference = {
+    type: 'reference';
+    multiplier: Multiplier | null;
+    value: Array<string>;
     tag: string | null;
+}
+
+export type LookupSequence = {
+    type: 'lookup-sequence';
+    value: Array<string>;
 }
 
 export type Identifier = {

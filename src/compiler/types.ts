@@ -1,7 +1,19 @@
-import {DeclarationValue} from '../ast/types';
+import {Declaration} from '../ast/types';
 
-// TODO: Remove null as key for anonym types
-export type Scope = Map<string | null, DeclarationValue>;
+export type Scope = {
+    current: symbol;
+    globalKey: symbol;
+    locals: Array<Declaration>;
+    map: Map<ScopeKey, ScopeEntry>;
+}
+
+export type ScopeKey = null | symbol;
+
+export type ScopeEntry = {
+    entries: Array<Declaration>;
+    parent: ScopeKey;
+    key: ScopeKey;
+}
 
 export type ParsingResult = {
     obj: ParsingResultObject;
@@ -13,4 +25,3 @@ export type ParsingResultObjectValue = string | object | null;
 export type ParsingResultObject = {
     [key: string]: ParsingResultObjectValue | Array<ParsingResultObjectValue>;
 }
-

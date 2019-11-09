@@ -14,17 +14,6 @@ module.exports = maybe<Declaration | null>(stream => {
 
     if (target) {
         expect(stream, 'punc', '=');
-
-        // Declaration cannot have multipliers
-        if (target.multiplier) {
-            stream.throwError('A declaration cannot contain multipliers.');
-        }
-
-        // Neither can they have tag
-        if (target.tag) {
-            stream.throwError('A declaration cannot have a tag.');
-        }
-
     } else if (!variant) {
         stream.throwError('Expected declaration.');
     }

@@ -5,8 +5,6 @@ import {Type}   from '../types';
 
 module.exports = maybe<Type | null>(stream => {
     const identifier = require('./identifier');
-    const multiplier = require('./multiplier');
-    const string = require('./string');
 
     // It may be a type
     if (!optional(stream, 'punc', '<')) {
@@ -18,22 +16,9 @@ module.exports = maybe<Type | null>(stream => {
         stream.throwError('Expected identifier.');
     }
 
-    let tag: string | null = null;
-    if (optional(stream, 'punc', '#')) {
-        const opt = string(stream) || identifier(stream);
-
-        if (!opt) {
-            stream.throwError('Expected string or identifier as tag.');
-        }
-
-        tag = opt.value;
-    }
-
     expect(stream, 'punc', '>');
     return {
         type: 'type',
-        multiplier: multiplier(stream),
-        value: ident.value,
-        tag
+        value: ident.value
     } as Type;
 });

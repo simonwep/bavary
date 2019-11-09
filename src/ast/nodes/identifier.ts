@@ -11,7 +11,7 @@ module.exports = maybe<Identifier | null>(stream => {
     while (stream.hasNext()) {
         const {type, value} = stream.peek();
 
-        if (type === 'kw' || type === 'num' || (type === 'punc' && (value === '-' || value === ':'))) {
+        if (type === 'kw' || type === 'num' || (type === 'punc' && (value === '-'))) {
             name += value;
             stream.next();
         } else {
@@ -20,7 +20,7 @@ module.exports = maybe<Identifier | null>(stream => {
     }
 
     if (!name.length) {
-        stream.throwError('An identifier cannot be empty.');
+        return null;
     }
 
     return {

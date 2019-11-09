@@ -3,7 +3,25 @@ import {compile} from '../../src';
 
 describe('[COM] Scopes', () => {
 
-    it('Should resolve scopes with anonym default blocks', () => {
+    it('Should properly scope types', () => {
+        const parse = compile(`
+            <uppercase> = {
+                <val> = [['A' to 'Z']+]
+                default [<val>]
+            }
+            
+            <uppercase-lowercase> = {
+                <val> = [['a' to 'z']+]
+                default [<val> | <uppercase>]
+            }
+            
+            entry [<uppercase-lowercase>]
+        `);
+
+        expect(parse('ABACAB')).to.deep.equal('ABACAB');
+    });
+
+    it('Should resolveScope scopes with anonym default blocks', () => {
         const parse = compile(`
             <uppercase> = {
                 default [['A' to 'Z']+]

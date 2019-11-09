@@ -13,7 +13,7 @@
         "lint": "eslint src/**/*.ts test/**/*.ts --fix",
         "dev:lint": "nodemon --exec eslint src/**/*.ts --fix --watch ./src/**/*.ts -e ts",
         "test": "mocha -r ts-node/register test/**/*.spec.ts",
-        "dev:test": "mocha -r ts-node/register test/**/*.spec.ts --watch --watch-extensions ts,js"
+        "dev:test": "mocha -r ts-node/register test/**/*.spec.ts --watch --watch-extensions ts"
     },
     "homepage": "https://github.com/Simonwep/bavary#readme",
     "repository": "github:Simonwep/repo",

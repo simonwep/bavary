@@ -9,9 +9,9 @@ module.exports = maybe(stream => {
     const characterRange = require('./character-range');
     const combinator = require('./combinator');
     const multiplier = require('./multiplier');
+    const reference = require('./reference');
     const string = require('./string');
     const group = require('./group');
-    const type = require('./type');
 
     // It may be a group
     if (!optional(stream, 'punc', '[')) {
@@ -20,7 +20,7 @@ module.exports = maybe(stream => {
 
     const values: Array<GroupValue> = [];
     const parsers = combine(
-        type,
+        reference,
         group,
         characterRange,
         string,
@@ -32,7 +32,7 @@ module.exports = maybe(stream => {
         const com = combinator(stream);
 
         if (!value) {
-            stream.throwError('Expected a type, group or raw string.');
+            stream.throwError('Expected a type, group or raw string / character-range.');
         }
 
         if (com) {

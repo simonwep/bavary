@@ -15,10 +15,10 @@ describe('[AST] Tags', () => {
                     'value': [
                         {'type': 'string', 'value': 'C'},
                         {
-                            'type': 'type',
+                            'type': 'reference',
                             'multiplier': null,
                             'tag': 'abc-123',
-                            'value': 'another-type'
+                            'value': ['another-type']
                         }
                     ]
                 }
@@ -37,10 +37,10 @@ describe('[AST] Tags', () => {
                     'multiplier': null,
                     'value': [
                         {
-                            'type': 'type',
+                            'type': 'reference',
                             'multiplier': null,
                             'tag': 'Hello World',
-                            'value': 'another-type'
+                            'value': ['another-type']
                         }
                     ]
                 }
@@ -62,13 +62,13 @@ describe('[AST] Tags', () => {
                     },
                     'value': [
                         {
-                            'type': 'type',
+                            'type': 'reference',
                             'multiplier': {
                                 'type': 'one-infinity',
                                 'value': '+'
                             },
                             'tag': 'abc-123',
-                            'value': 'another-type'
+                            'value': ['another-type']
                         }
                     ]
                 }
