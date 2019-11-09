@@ -1,6 +1,25 @@
-import {Block, Group, Reference}     from '../../ast/types';
-import {Scope, ScopeEntry, ScopeKey} from '../types';
+import {Block, Declaration, Group, Reference} from '../../ast/types';
+import {Scope, ScopeEntry, ScopeKey}          from '../types';
 
+/**
+ * Extends a scope
+ * @param scope
+ * @param entries
+ * @param description
+ */
+function extendScope(scope: Scope, entries: Array<Declaration>, description?: string): void {
+
+    // Create sub-scope
+    const newScopeKey: ScopeKey = Symbol(description);
+    const newScopeEntry: ScopeEntry = {
+        entries,
+        parent: scope.current,
+        key: newScopeKey
+    };
+
+    scope.current = newScopeKey;
+    scope.map.set(newScopeKey, newScopeEntry);
+}
 
 /**
  * Resolves a type in the current scope
@@ -46,17 +65,10 @@ export function resolveDefaultExport(scope: Scope, target: Block): Group | null 
         return null;
     }
 
-    // Create sub-scope
-    const newScopeKey: ScopeKey = Symbol('Subscope for a default export');
-    const newScopeEntry: ScopeEntry = {
-        entries: target.value,
-        parent: scope.current,
-        key: newScopeKey
-    };
+    // Extend anonymous scope
+    extendScope(scope, target.value, 'Subscope for a default export');
 
-    scope.current = newScopeKey;
-    scope.map.set(newScopeKey, newScopeEntry);
-
+    // Resolve default in nested block or return group
     const {value} = defaultExport;
     if (value.type === 'block') {
         return resolveDefaultExport(scope, value);
@@ -88,16 +100,8 @@ export default function resolve(scope: Scope, target: Reference, index = 0): Gro
             return resolveDefaultExport(scope, val);
         }
 
-        // Update scope
-        const newScopeKey: ScopeKey = Symbol(`Subscope for ${part} (Part of ${value.join(':')})`);
-        const newScopeEntry: ScopeEntry = {
-            entries: val.value,
-            parent: scope.current,
-            key: newScopeKey
-        };
-
-        scope.current = newScopeKey;
-        scope.map.set(newScopeKey, newScopeEntry);
+        // Extend scope
+        extendScope(scope, val.value, `Subscope for ${part} (Part of ${value.join(':')})`);
         return resolve(scope, target, index + 1);
     } else if (val.type === 'group') {
         if (index + 1 === value.length) {

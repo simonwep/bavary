@@ -23,6 +23,7 @@
         "quotes": [2, "single", {"avoidEscape": true}],
         "indent": ["error", 4, {"SwitchCase": 1}],
         "@typescript-eslint/no-var-requires": "off",
+        "no-throw-literal": "error",
         "brace-style": ["error", "1tbs"],
         "capitalized-comments": "warn",
         "keyword-spacing": "warn",
