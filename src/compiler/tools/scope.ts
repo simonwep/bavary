@@ -2,6 +2,12 @@ import {Block, Group, Reference}     from '../../ast/types';
 import {Scope, ScopeEntry, ScopeKey} from '../types';
 
 
+/**
+ * Resolves a type in the current scope
+ * @param scope
+ * @param target
+ * @param needExport
+ */
 function resolveSingleReference(scope: Scope, target: string, needExport = false): Group | Block | null {
     let entry: ScopeEntry | null = scope.map.get(scope.current) || null;
 
@@ -28,6 +34,11 @@ function resolveSingleReference(scope: Scope, target: string, needExport = false
     return null;
 }
 
+/**
+ * Resolves a default export
+ * @param scope
+ * @param target
+ */
 export function resolveDefaultExport(scope: Scope, target: Block): Group | null {
     const defaultExport = target.value.find(v => v.variant === 'default');
 
@@ -58,7 +69,6 @@ export function resolveDefaultExport(scope: Scope, target: Block): Group | null 
  * Recursively resolves a reference and the corresponding scope.
  * @param scope
  * @param target
- * @param newScope
  * @param index
  */
 export default function resolve(scope: Scope, target: Reference, index = 0): Group | null {

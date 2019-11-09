@@ -1,6 +1,6 @@
 import {Reference}                                      from '../../ast/types';
 import Streamable                                       from '../../stream';
-import resolveScope                                     from '../tools/resolve-scope';
+import resolveScope                                     from '../tools/scope';
 import {ParsingResult, ParsingResultObjectValue, Scope} from '../types';
 import multiplier                                       from './multiplier';
 
