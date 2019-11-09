@@ -3,8 +3,8 @@ import {failAll, parse} from './tools';
 
 describe('[AST] Simple group declarations', () => {
 
-    it('Should parse: "<a-value> = [ \'0\' | \'1\']"', () => {
-        expect(parse('<a-value> = [ \'0\' | \'1\']')).to.deep.equal([
+    it('Should parse: "<a-value> = [ "0" | "1"]"', () => {
+        expect(parse('<a-value> = [ "0" | "1"]')).to.deep.equal([
             {
                 'type': 'declaration',
                 'name': 'a-value',
@@ -29,7 +29,7 @@ describe('[AST] Simple group declarations', () => {
     });
 
     it('Should parse nested groups', () => {
-        expect(parse('<another-value> = [ \'0\' | \'1\' | [\'5\' | \'C\']]')).to.deep.equal([
+        expect(parse('<another-value> = [ "0" | "1" | ["5" | "C"]]')).to.deep.equal([
             {
                 'type': 'declaration',
                 'name': 'another-value',

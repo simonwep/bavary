@@ -4,7 +4,7 @@ import {compile} from '../../src';
 describe('[COM] Essentials', () => {
 
     it('Should throw an error if no entry-type is defined', () => {
-        expect(() => compile('<abc> = [\'A\']')).to.throw();
+        expect(() => compile('<abc> = ["A"]')).to.throw();
     });
 
     it('Should throw an error for invalid, global declaration variants', () => {

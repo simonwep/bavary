@@ -4,7 +4,7 @@ import {failAll, parse} from './tools';
 describe('[AST] Tags', () => {
 
     it('Should accept tags', () => {
-        expect(parse('<name> = [\'C\' <another-type#abc-123>]')).to.deep.equal([
+        expect(parse('<name> = ["C" <another-type#abc-123>]')).to.deep.equal([
             {
                 'type': 'declaration',
                 'variant': null,
@@ -27,7 +27,7 @@ describe('[AST] Tags', () => {
     });
 
     it('Should accept strings as tags', () => {
-        expect(parse('<name> = [<another-type#\'Hello World\'>]')).to.deep.equal([
+        expect(parse('<name> = [<another-type#"Hello World">]')).to.deep.equal([
             {
                 'type': 'declaration',
                 'variant': null,

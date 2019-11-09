@@ -4,7 +4,7 @@ import {compile} from '../../src';
 describe('[COM] Combinators', () => {
 
     it('Should work without combintor', () => {
-        const parse = compile('entry  [\'a\' \'b\' \'c\']');
+        const parse = compile('entry ["a" "b" "c"]');
 
         expect(parse('abc')).to.equal('abc');
         expect(parse('cba')).to.equal(null);
@@ -12,7 +12,7 @@ describe('[COM] Combinators', () => {
     });
 
     it('Should work with "|"', () => {
-        const parse = compile('entry  [\'a\' | \'b\' | \'c\']');
+        const parse = compile('entry ["a" | "b" | "c"]');
 
         expect(parse('a')).to.equal('a');
         expect(parse('c')).to.equal('c');
@@ -21,7 +21,7 @@ describe('[COM] Combinators', () => {
     });
 
     it('Should work with "&"', () => {
-        const parse = compile('entry  [\'a\' & \'b\' & \'c\']');
+        const parse = compile('entry ["a" & "b" & "c"]');
 
         expect(parse('abc')).to.equal('abc');
         expect(parse('bca')).to.equal('bca');
@@ -31,7 +31,7 @@ describe('[COM] Combinators', () => {
     });
 
     it('Should work with "&&"', () => {
-        const parse = compile('entry  [\'a\' && \'b\' && \'c\']');
+        const parse = compile('entry ["a" && "b" && "c"]');
 
         expect(parse('ab')).to.equal('ab');
         expect(parse('c')).to.equal('c');

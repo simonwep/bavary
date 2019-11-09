@@ -48,8 +48,6 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
         } else if (typeof matches === 'string') {
             result.str += matches;
         } else {
-
-            // TODO: Dont't throw plain strings!
             throw new Error(`Type "${decl.value}" is missing a tag.`);
         }
     }

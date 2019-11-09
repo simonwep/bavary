@@ -4,7 +4,7 @@ import {resolveDefaultExport} from '../tools/scope';
 import {Scope}                from '../types';
 
 module.exports = (stream: Streamable<string>, decl: Block, scope: Scope): Group => {
-    const group = require('./group'); // TODO: Fix messed up circular dependencies
+    const group = require('./group');
 
     // Resolve target
     const defaultExport = resolveDefaultExport(scope, decl);
