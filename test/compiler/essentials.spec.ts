@@ -7,6 +7,21 @@ describe('[COM] Essentials', () => {
         expect(() => compile('<abc> = [\'A\']')).to.throw();
     });
 
+    it('Should throw an error for invalid, global declaration variants', () => {
+
+        // Nothing can be globally exported
+        expect(() => compile(`
+            export <abc> = ["A"]
+            entry [<abc>]
+        `)).to.throw();
+
+        // There is nothing such as a global "default"
+        expect(() => compile(`
+            default <abc> = ["A"]
+            entry [<abc>]
+        `)).to.throw();
+    });
+
     it('Should compile and parse character definitions', () => {
         const parse = compile(`
             entry <abc> = ['A' | 'B']

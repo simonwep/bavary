@@ -17,21 +17,26 @@ export default (definitions: string): (content: string) => null | object => {
     const globals: Array<Declaration> = [];
 
     for (const dec of tree) {
-        if (dec.variant === 'entry') {
+        const {name, variant, value} = dec;
 
-            if (entry) {
-                throw new Error('There can only be one entry type.');
+        if (variant) {
+            if (variant === 'entry') {
+                if (entry) {
+                    throw new Error('There can only be one entry type.');
+                }
+
+                entry = value;
+            } else {
+                throw new Error(`The ${variant}-modifier can only be used in blocks.`);
             }
-
-            entry = dec.value;
         }
 
         // Skip anonymous declarations
-        if (dec.name) {
+        if (name) {
 
             // Check if name was aready used
-            if (globals.find(v => v.name === dec.name)) {
-                throw new Error(`"${dec.name}" was already declared.`);
+            if (globals.find(v => v.name === name)) {
+                throw new Error(`"${name}" was already declared.`);
             }
 
             globals.push(dec);

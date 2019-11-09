@@ -15,7 +15,6 @@ export default (defs: string): Array<Declaration> | null => {
         const dec = declaration(stream);
 
         if (dec) {
-            // TODO: Throw error on default and export modifiers
             declarations.push(dec);
         } else {
             stream.throwError('Expected type-declaration.');
