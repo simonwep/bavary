@@ -3,13 +3,14 @@
     "version": "0.0.2",
     "description": "Customizable, elegant and fast syntax-parser",
     "author": "Simon Reinisch <trash@reinisch.io>",
-    "main": "src/index.ts",
+    "main": "dist/bavary.min.js",
+    "types": "types/index.d.ts",
     "keywords": [
         "parser"
     ],
     "license": "MIT",
     "scripts": {
-        "build": "webpack",
+        "build": "webpack --display-modules --sort-modules-by size",
         "lint": "eslint src/**/*.ts test/**/*.ts --fix",
         "dev:lint": "nodemon --exec eslint src/**/*.ts --fix --watch ./src/**/*.ts -e ts",
         "test": "mocha -r ts-node/register test/**/*.spec.ts",

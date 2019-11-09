@@ -5,6 +5,7 @@
         "allowJs": true,
         "lib": ["esnext"],
         "module": "commonjs",
+        "sourceMap": true,
         "target": "es6",
         "strict": true
     },
