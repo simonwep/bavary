@@ -47,7 +47,7 @@ module.exports = (stream: Streamable<string>, decl: GroupedCombinator, scope: Sc
             break;
         }
         default: {
-            throw `Unknown combinator "${decl.sign}"`;
+            throw new Error(`Unknown combinator "${decl.sign}"`);
         }
     }
 

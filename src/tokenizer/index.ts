@@ -64,7 +64,7 @@ export default (str: string): Array<Token> => {
             continue outer;
         }
 
-        throw 'Failed to parse input sequence.';
+        throw new Error('Failed to parse input sequence.');
     }
 
     return tokens;

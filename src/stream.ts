@@ -64,7 +64,7 @@ export default class Streamable<T> {
     throwError(msg: string): void {
 
         if (!this.source) {
-            throw msg;
+            throw new Error(msg);
         }
 
         throw new ParsingError(this.source, msg, this.index, this.index);

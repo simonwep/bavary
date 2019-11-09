@@ -14,7 +14,7 @@ module.exports = (stream: Streamable<string>, decl: ASTNode, scope: Scope, resul
             return block(stream, decl as Block, scope);
         }
         default: {
-            throw `Unknown declaration type "${decl.type}"`;
+            throw new Error(`Unknown declaration type "${decl.type}"`);
         }
     }
 };

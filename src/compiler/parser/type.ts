@@ -9,7 +9,7 @@ module.exports = (stream: Streamable<string>, decl: Type, scope: Scope, result: 
 
     // Lookup parser
     if (!scope.has(value)) {
-        throw `Cannot resolve "${value}"`;
+        throw new Error(`Cannot resolve "${value}"`);
     }
 
     // Parse
@@ -47,7 +47,7 @@ module.exports = (stream: Streamable<string>, decl: Type, scope: Scope, result: 
         } else if (typeof matches === 'string') {
             result.str += matches;
         } else {
-            throw `Type "${decl.value}" is missing a tag.`;
+            throw new Error(`Type "${decl.value}" is missing a tag.`);
         }
     }
 

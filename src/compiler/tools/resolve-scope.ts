@@ -12,7 +12,7 @@ function resolveSingleReference(scope: Scope, target: string, needExport = false
             if (resolved) {
 
                 if (needExport && resolved.variant !== 'export') {
-                    throw `Cannot access "${resolved.name}". Use the "export" keyword to make it accessible!`;
+                    throw new Error(`Cannot access "${resolved.name}". Use the "export" keyword to make it accessible!`);
                 }
 
                 scope.current = entry.key || scope.globalKey;
@@ -69,7 +69,7 @@ export default function resolve(scope: Scope, target: Reference, index = 0): Gro
     const val = resolveSingleReference(scope, part, index > 0);
 
     if (!val) {
-        throw `Failed to resolve "${part}"`;
+        throw new Error(`Failed to resolve "${part}"`);
     }
 
     if (val.type === 'block') {
@@ -93,7 +93,7 @@ export default function resolve(scope: Scope, target: Reference, index = 0): Gro
         if (index + 1 === value.length) {
             return val;
         }
-        throw `Reference "${part}" points to a group not a block.`;
+        throw new Error(`Reference "${part}" points to a group not a block.`);
 
     }
 

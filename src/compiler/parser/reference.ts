@@ -11,7 +11,7 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
     const body = resolveScope(scope, decl);
 
     if (!body) {
-        throw `Failed to resolve "${decl.value.join(':')}".`;
+        throw new Error(`Failed to resolve "${decl.value.join(':')}".`);
     }
 
     // Parse
@@ -50,7 +50,7 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
         } else {
 
             // TODO: Dont't throw plain strings!
-            throw `Type "${decl.value}" is missing a tag.`;
+            throw new Error(`Type "${decl.value}" is missing a tag.`);
         }
     }
 

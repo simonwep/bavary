@@ -8,7 +8,7 @@ export default (definitions: string): (content: string) => null | object => {
     const tree = parseAst(definitions);
 
     if (!tree) {
-        throw 'Failed to parse declarations.';
+        throw new Error('Failed to parse declarations.');
     }
 
     // Resolve entry-scope and find entry node
@@ -21,7 +21,7 @@ export default (definitions: string): (content: string) => null | object => {
         if (dec.variant === 'entry') {
 
             if (entry) {
-                throw 'There can only be one entry type.';
+                throw new Error('There can only be one entry type.');
             }
 
             entry = dec.value;
@@ -32,7 +32,7 @@ export default (definitions: string): (content: string) => null | object => {
 
             // Check if name was aready used
             if (globals.find(v => v.name === dec.name)) {
-                throw `"${dec.name}" was already declared.`;
+                throw new Error(`"${dec.name}" was already declared.`);
             }
 
             globals.push(dec);
@@ -41,7 +41,7 @@ export default (definitions: string): (content: string) => null | object => {
 
     // Check if entry node is declared
     if (!entry) {
-        throw 'Couldn\'t resolveScope entry type. Use the entry keyword to declare one.';
+        throw new Error('Couldn\'t resolveScope entry type. Use the entry keyword to declare one.');
     }
 
     // Insert global scope
