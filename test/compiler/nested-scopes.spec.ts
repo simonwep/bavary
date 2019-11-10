@@ -3,6 +3,48 @@ import {compile} from '../../src';
 
 describe('[COM] Scopes', () => {
 
+    it('Should throw an error on multiple defaults', () => {
+        expect(()=>compile(`
+            <abc> = {
+                default ['A']
+                default ['B']
+            }
+            
+            entry [<abc>]
+        `)).to.throw();
+    });
+
+    it('Should throw an error on re-used names', () => {
+        expect(()=>compile(`
+            <abc> = { default ['A'] }
+            <abc> = { default ['B'] }
+            
+            entry [<abc>]
+        `)).to.throw();
+    });
+
+    it('Should not throw an error on deeply re-used names', () => {
+        expect(()=>compile(`
+            <abc> = { 
+                <abc> = { default ['B'] }
+                default ['A'] 
+            }
+            
+            entry [<abc>]
+        `)).to.not.throw();
+    });
+
+    it('Should throw an error on invalid usage of the entry keyword', () => {
+        expect(()=>compile(`
+            <abc> = { 
+                <abc> = { entry ['B'] }
+                default ['A'] 
+            }
+            
+            entry [<abc>]
+        `)).to.throw();
+    });
+
     it('Should properly scope types', () => {
         const parse = compile(`
             <uppercase> = {
@@ -107,7 +149,7 @@ describe('[COM] Scopes', () => {
         expect(parse('c')).to.equal(null);
     });
 
-    it('Should revert invalid matches', ()=>{
+    it('Should revert invalid matches', () => {
         const parse = compile(`
             <abc> = {
                 export <a> = ['A']
