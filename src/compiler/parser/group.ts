@@ -11,6 +11,9 @@ module.exports = multiplier<ParsingResultObjectValue>((stream, decl, scope, resu
     const declaration = require('./declaration');
     stream.stash();
 
+    // Remember current raw result in case the group fails
+    const previousRawString = result.str;
+
     const decs = (decl as Group).value;
     for (let i = 0; i < decs.length; i++) {
         const dec = decs[i];
@@ -21,6 +24,9 @@ module.exports = multiplier<ParsingResultObjectValue>((stream, decl, scope, resu
 
             // Serialize remaining types
             serialize(decs, result.obj, true);
+
+            // Restore previous state
+            result.str = previousRawString;
             return null;
         }
     }

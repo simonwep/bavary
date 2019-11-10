@@ -57,4 +57,71 @@ describe('[COM] Scopes', () => {
         expect(parse('ABCabzABC')).to.equal(null);
         expect(parse('ABCabcABC')).to.deep.equal({'result': ['ABC', 'abc', 'ABC']});
     });
+
+    it('Should properly resolve complex nested scopes', () => {
+        const parse = compile(`
+            <chars> = {
+                <a> = ['A']
+                
+                export <set> = {
+                    default [<a>]
+                }
+            }
+            
+            <abc> = {
+                export <a> = {
+                    default [<chars:set>]
+                }
+            }
+
+            entry {
+                <b> = ['B']
+                
+                default {
+                    default {
+                        default [<b> | <abc:a>]
+                    }
+                }
+            }
+        `);
+
+        expect(parse('A')).to.equal('A');
+        expect(parse('c')).to.equal(null);
+    });
+
+    it('Should work if the entry is a group', () => {
+        const parse = compile(`
+            <abc> = {
+                <a> = ['A']
+                default [<a>]
+            }
+            
+            entry [
+                <abc>
+            ]
+        `);
+
+        expect(parse('A')).to.equal('A');
+        expect(parse('c')).to.equal(null);
+    });
+
+    it('Should revert invalid matches', ()=>{
+        const parse = compile(`
+            <abc> = {
+                export <a> = ['A']
+                export <b> = ['B']
+                export <c> = ['C']
+                default [<a> | <b> | <c>]
+            }
+            
+            entry [
+                [<abc:a> <abc:b>] |
+                [<abc>]
+            ]
+        `);
+
+        expect(parse('A')).to.equal('A');
+        expect(parse('C')).to.equal('C');
+        expect(parse('AB')).to.equal('AB');
+    })
 });
