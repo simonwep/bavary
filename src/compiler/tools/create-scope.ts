@@ -1,5 +1,5 @@
-import {Declaration}                                                                from '../../ast/types';
-import {Scope, ScopeEntriesMap, ScopeEntryKey, ScopeEntryVariant, ScopeVariantsMap} from '../types';
+import {Declaration, DeclarationValue}                                                          from '../../ast/types';
+import {Scope, ScopeEntriesMap, ScopeEntry, ScopeEntryKey, ScopeEntryVariant, ScopeVariantsMap} from '../types';
 
 export const GLOBAL_SCOPE = Symbol('Global scope');
 export const DEFAULT_EXPORT = Symbol('Default export');
@@ -7,27 +7,46 @@ export const ENTRY_EXPORT = Symbol('Entry type');
 export const EXPORTS = Symbol('Exported types');
 
 /**
- * Creates a new scope
- * @param parent
- * @param key
- */
-export function createScopeEntry(parent: Scope, key: ScopeEntryKey): Scope {
-    return {
-        variants: new Map() as ScopeVariantsMap,
-        entries: new Map() as ScopeEntriesMap,
-        parent,
-        key
-    } as Scope;
-}
-
-/**
- * TODO: minimize a bit
  * Resolves a scope with given declarations
  * @param decs
  * @param current
  */
 export function createScope(decs: Array<Declaration>, current: Scope): Scope {
     const {entries, variants, key} = current;
+
+    /**
+     * Registers a value into the current scope
+     * @param value
+     * @param target
+     * @param key
+     */
+    function register(
+        value: DeclarationValue,
+        target: Map<ScopeEntryKey, ScopeEntry | ScopeEntryVariant>,
+        key: ScopeEntryKey
+    ): void {
+        if (value.type === 'group') {
+
+            target.set(key as string, {
+                type: 'value',
+                value
+            });
+        } else {
+
+            // Create sub-scope with current scope as parent and key as key
+            const subScope = {
+                variants: new Map() as ScopeVariantsMap,
+                entries: new Map() as ScopeEntriesMap,
+                parent: current,
+                key
+            } as Scope;
+
+            target.set(key, {
+                type: 'scope',
+                value: createScope(value.value, subScope)
+            });
+        }
+    }
 
     for (const dec of decs) {
         const {value, name} = dec;
@@ -42,23 +61,7 @@ export function createScope(decs: Array<Declaration>, current: Scope): Scope {
                     throw new Error('There\'s already a default export.');
                 }
 
-                if (value.type === 'group') {
-
-                    // Save default export
-                    variants.set(DEFAULT_EXPORT, {
-                        type: 'value',
-                        value
-                    });
-                } else {
-                    const subScope = createScopeEntry(current, DEFAULT_EXPORT);
-
-                    // Save default export and resolve sub-entries
-                    variants.set(DEFAULT_EXPORT, {
-                        type: 'scope',
-                        value: createScope(value.value, subScope)
-                    });
-                }
-
+                register(value, variants, DEFAULT_EXPORT);
                 break;
             }
             case 'entry': {
@@ -70,23 +73,7 @@ export function createScope(decs: Array<Declaration>, current: Scope): Scope {
                     throw new Error('There\'s already an entry defined.');
                 }
 
-                if (value.type === 'group') {
-
-                    // Save default export
-                    variants.set(ENTRY_EXPORT, {
-                        type: 'value',
-                        value
-                    });
-                } else {
-                    const subScope = createScopeEntry(current, ENTRY_EXPORT);
-
-                    // Save entry export and resolve sub-entries
-                    variants.set(ENTRY_EXPORT, {
-                        type: 'scope',
-                        value: createScope(value.value, subScope)
-                    });
-                }
-
+                register(value, variants, ENTRY_EXPORT);
                 break;
             }
             case 'export': {
@@ -103,27 +90,12 @@ export function createScope(decs: Array<Declaration>, current: Scope): Scope {
                     });
                 }
 
+                // Resolve export map
                 const exportedMembers = (
                     variants.get(EXPORTS) as ScopeEntryVariant
                 ).value as ScopeEntriesMap;
 
-                if (value.type === 'group') {
-
-                    // Save export
-                    exportedMembers.set(name, {
-                        type: 'value',
-                        value
-                    });
-                } else {
-                    const subScope = createScopeEntry(current, name);
-
-                    // Save export and resolve sub-entries
-                    exportedMembers.set(name, {
-                        type: 'scope',
-                        value: createScope(value.value, subScope)
-                    });
-                }
-
+                register(value, exportedMembers, name);
                 break;
             }
         }
@@ -137,22 +109,7 @@ export function createScope(decs: Array<Declaration>, current: Scope): Scope {
                 throw new Error(`There's already a type named ${name}`);
             }
 
-            if (value.type === 'group') {
-
-                // Save entrie
-                entries.set(name, {
-                    type: 'value',
-                    value
-                });
-            } else {
-                const subScope = createScopeEntry(current, name);
-
-                // Save entrie and resolve sub-entries
-                entries.set(name, {
-                    type: 'scope',
-                    value: createScope(value.value, subScope)
-                });
-            }
+            register(value, entries, name);
         }
     }
 
