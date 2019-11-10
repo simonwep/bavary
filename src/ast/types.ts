@@ -3,10 +3,11 @@ export type ASTNode = {
 }
 
 export type DeclarationValue = Group | Block;
+export type DeclarationVariant = 'entry' | 'default' | 'export' | null;
 export type Declaration = {
     type: 'declaration';
     name: string | null;
-    variant: 'entry' | 'default' | 'export' | null;
+    variant: DeclarationVariant;
     value: DeclarationValue;
 } & ASTNode;
 

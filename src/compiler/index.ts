@@ -1,7 +1,9 @@
-import parseAst                      from '../ast';
-import {Block, Declaration, Group}   from '../ast/types';
-import Streamable                    from '../stream';
-import {Scope, ScopeEntry, ScopeKey} from './types';
+import parseAst                                   from '../ast';
+import {Group}                                    from '../ast/types';
+import Streamable                                 from '../stream';
+import {createScope, ENTRY_EXPORT, GLOBAL_SCOPE}  from './tools/create-scope';
+import {resolveDefaultExport}                     from './tools/resolve-scope';
+import {Scope, ScopeEntriesMap, ScopeVariantsMap} from './types';
 
 export default (definitions: string): (content: string) => null | object => {
     const typeValue = require('./parser/type-value');
@@ -11,62 +13,36 @@ export default (definitions: string): (content: string) => null | object => {
         throw new Error('Failed to parse declarations.');
     }
 
-    // Resolve entry-scope and find entry node
-    let entry: Block | Group | null = null;
-    const globalScopeKey = Symbol('global scope');
-    const globals: Array<Declaration> = [];
+    // Resolve sub-scopes
+    const globalScope = createScope(tree, {
+        variants: new Map() as ScopeVariantsMap,
+        entries: new Map() as ScopeEntriesMap,
+        parent: null,
+        key: GLOBAL_SCOPE,
+    });
 
-    for (const dec of tree) {
-        const {name, variant, value} = dec;
-
-        if (variant) {
-            if (variant === 'entry') {
-                if (entry) {
-                    throw new Error('There can only be one entry type.');
-                }
-
-                entry = value;
-            } else {
-                throw new Error(`The ${variant}-modifier can only be used in blocks.`);
-            }
-        }
-
-        // Skip anonymous declarations
-        if (name) {
-
-            // Check if name was aready used
-            if (globals.find(v => v.name === name)) {
-                throw new Error(`"${name}" was already declared.`);
-            }
-
-            globals.push(dec);
-        }
-    }
+    const entry = globalScope.variants.get(ENTRY_EXPORT);
 
     // Check if entry node is declared
     if (!entry) {
-        throw new Error('Couldn\'t resolveScope entry type. Use the entry keyword to declare one.');
+        throw new Error('Couldn\'t resolve entry type. Use the entry keyword to declare one.');
     }
 
-    const globalScopeEntry: ScopeEntry = {
-        entries: globals,
-        parent: null,
-        key: globalScopeKey
-    };
+    let entryGroup: Group | null = null;
+    let entryScope: Scope | null = null;
+
+    if (entry.type === 'scope') {
+        [entryScope, entryGroup] = resolveDefaultExport(entry.value as Scope);
+    } else {
+        entryGroup = entry.value as Group;
+        entryScope = globalScope;
+    }
 
     return (content: string): null | object => {
 
-        // Set-up scope
-        const scope: Scope = {
-            globalKey: globalScopeKey,
-            current: globalScopeKey,
-            map: new Map<ScopeKey, ScopeEntry>([[globalScopeKey, globalScopeEntry]]),
-            locals: []
-        };
-
         // Parse and return result if successful
         const stream = new Streamable(content);
-        const res = typeValue(stream, entry, scope);
+        const res = typeValue(stream, entryGroup, entryScope);
         return stream.hasNext() ? null : res;
     };
 };

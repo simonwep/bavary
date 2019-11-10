@@ -1,6 +1,6 @@
 import {Reference}                                      from '../../ast/types';
 import Streamable                                       from '../../stream';
-import resolveScope                                     from '../tools/scope';
+import {resolveReference}                               from '../tools/resolve-scope';
 import {ParsingResult, ParsingResultObjectValue, Scope} from '../types';
 import multiplier                                       from './multiplier';
 
@@ -8,19 +8,22 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
     const typeValue = require('./type-value');
 
     // Resolve reference
-    const body = resolveScope(scope, decl);
+    const resolvedScope = resolveReference(scope, decl);
 
-    if (!body) {
+    if (!resolvedScope) {
         throw new Error(`Failed to resolve "${decl.value.join(':')}".`);
     }
 
     // Parse
     stream.stash();
 
+    // Resolve-scope returns a new sub-scope for the target and the target itself
+    const [newScope, targetBody] = resolvedScope;
+
     // Type may have a multiplier attached to it
     const matches = multiplier<ParsingResultObjectValue>(
-        () => typeValue(stream, body, scope)
-    )(stream, decl, scope, result);
+        () => typeValue(stream, targetBody, newScope)
+    )(stream, decl, newScope, result);
 
     // Tags can be nullish
     if (decl.tag) {

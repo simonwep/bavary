@@ -1,18 +1,25 @@
-import {Declaration} from '../ast/types';
+import {DeclarationValue} from '../ast/types';
 
-export type Scope = {
-    current: symbol;
-    globalKey: symbol;
-    locals: Array<Declaration>;
-    map: Map<ScopeKey, ScopeEntry>;
+
+export type ScopeEntryKey = string | symbol;
+export type ScopeEntriesMap = Map<string, ScopeEntry>;
+export type ScopeVariantsMap = Map<symbol, ScopeEntryVariant>;
+
+export type ScopeEntryVariant = {
+    type: 'entries' /* Exported */ | 'scope' /* Block Declaration */ | 'value';
+    value: ScopeEntriesMap | Scope | DeclarationValue;
 }
 
-export type ScopeKey = null | symbol;
-
 export type ScopeEntry = {
-    entries: Array<Declaration>;
-    parent: ScopeKey;
-    key: ScopeKey;
+    type: 'scope' /* Block Declaration */ | 'value';
+    value: Scope | DeclarationValue;
+}
+
+export type Scope = {
+    variants: ScopeVariantsMap;
+    entries: ScopeEntriesMap;
+    parent: Scope | null;
+    key: ScopeEntryKey;
 }
 
 export type ParsingResult = {

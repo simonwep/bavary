@@ -21,7 +21,7 @@ describe('[COM] Scopes', () => {
         expect(parse('ABACAB')).to.deep.equal('ABACAB');
     });
 
-    it('Should resolveScope scopes with anonym default blocks', () => {
+    it('Should resolveReference scopes with anonym default blocks', () => {
         const parse = compile(`
             <uppercase> = {
                 default [['A' to 'Z']+]
@@ -69,8 +69,10 @@ describe('[COM] Scopes', () => {
             }
             
             <abc> = {
+                <c> = ['C']
+                
                 export <a> = {
-                    default [<chars:set>]
+                    default [<chars:set> | <c>]
                 }
             }
 
@@ -86,7 +88,7 @@ describe('[COM] Scopes', () => {
         `);
 
         expect(parse('A')).to.equal('A');
-        expect(parse('c')).to.equal(null);
+        expect(parse('C')).to.equal('C');
     });
 
     it('Should work if the entry is a group', () => {
@@ -123,5 +125,5 @@ describe('[COM] Scopes', () => {
         expect(parse('A')).to.equal('A');
         expect(parse('C')).to.equal('C');
         expect(parse('AB')).to.equal('AB');
-    })
+    });
 });

@@ -1,17 +1,18 @@
 import {Block, Group}         from '../../ast/types';
 import Streamable             from '../../stream';
-import {resolveDefaultExport} from '../tools/scope';
+import {resolveDefaultExport} from '../tools/resolve-scope';
 import {Scope}                from '../types';
 
 module.exports = (stream: Streamable<string>, decl: Block, scope: Scope): Group => {
     const group = require('./group');
 
     // Resolve target
-    const defaultExport = resolveDefaultExport(scope, decl);
+    const result = resolveDefaultExport(scope);
 
-    if (!defaultExport) {
+    if (!result) {
         throw new Error('Missing default export.');
     }
 
-    return group(stream, defaultExport, scope);
+    const [newScope, targetGroup] = result;
+    return group(stream, targetGroup, newScope);
 };
