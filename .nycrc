@@ -1,0 +1,17 @@
+{
+    "check-coverage": true,
+    "branches": 90,
+    "lines": 95,
+    "functions": 95,
+    "statements": 95,
+    "extension": [
+        ".ts"
+    ],
+    "include": [
+        "src/**/*.ts"
+    ],
+    "reporter": [
+        "lcov",
+        "text-summary"
+    ]
+}

@@ -4,11 +4,14 @@ node_js:
     - "stable"
 
 install:
-    - npm install
+    - npm ci
 
 script:
     - npm run build
-    - npm run test
+    - npm run test:coverage
+
+after_success:
+    - npm run test:report
 
 cache:
     directories:
