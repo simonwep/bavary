@@ -65,5 +65,8 @@ typings/
 # IntelliJ
 *.iml
 .idea
+
+# Test and dist files
 .test
 .psd
+dist
