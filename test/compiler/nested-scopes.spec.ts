@@ -57,6 +57,29 @@ describe('[COM] Scopes', () => {
         expect(() => parse('A')).to.throw();
     });
 
+    it('Should throw an error if a default export is missing', () => {
+        const parse = compile(`
+            <abc> = {
+                <a> = ['A']
+            }
+            
+            entry [<abc>]
+        `);
+
+        expect(() => parse('A')).to.throw();
+    });
+
+    it('Should resolve a block as entry type', () => {
+        const parse = compile(`
+            entry {
+                default ['A']
+            }
+        `);
+
+        expect(parse('A')).to.equal('A');
+        expect(parse('B')).to.equal(null);
+    });
+
     it('Should properly scope types', () => {
         const parse = compile(`
             <uppercase> = {

@@ -5,7 +5,7 @@ import {ParsingResult, ParsingResultObjectValue, Scope} from '../types';
 import multiplier                                       from './multiplier';
 
 module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, result: ParsingResult): boolean => {
-    const typeValue = require('./type-value');
+    const group = require('./group');
 
     // Resolve reference
     const resolvedScope = resolveReference(scope, decl);
@@ -22,7 +22,7 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
 
     // Type may have a multiplier attached to it
     const matches = multiplier<ParsingResultObjectValue>(
-        () => typeValue(stream, targetBody, newScope)
+        () => group(stream, targetBody, newScope)
     )(stream, decl, newScope, result);
 
     // Tags can be nullish

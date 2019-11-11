@@ -6,7 +6,7 @@ import {resolveDefaultExport}                     from './tools/resolve-scope';
 import {Scope, ScopeEntriesMap, ScopeVariantsMap} from './types';
 
 export default (definitions: string): (content: string) => null | object => {
-    const typeValue = require('./parser/type-value');
+    const group = require('./parser/group');
     const tree = parseAst(definitions);
 
     if (!tree) {
@@ -42,7 +42,7 @@ export default (definitions: string): (content: string) => null | object => {
 
         // Parse and return result if successful
         const stream = new Streamable(content);
-        const res = typeValue(stream, entryGroup, entryScope);
+        const res = group(stream, entryGroup, entryScope);
         return stream.hasNext() ? null : res;
     };
 };
