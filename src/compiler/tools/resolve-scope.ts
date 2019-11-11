@@ -1,7 +1,6 @@
-import {Group, Reference}  from '../../ast/types';
-import {Scope, ScopeEntry} from '../types';
-import {DEFAULT_EXPORT}    from './create-scope';
-
+import {Group, Reference}                   from '../../ast/types';
+import {Scope, ScopeEntriesMap, ScopeEntry} from '../types';
+import {DEFAULT_EXPORT, EXPORTS}            from './create-scope';
 
 /**
  * Resolves the default export in a scope
@@ -29,11 +28,28 @@ export function resolveDefaultExport(scope: Scope): [Scope, Group] {
  * @param offset
  */
 export function resolveReference(scope: Scope, ref: Reference, offset = 0): [Scope, Group] | null {
-    const lastItem = offset + 1 === ref.value.length;
+    const parts = ref.value;
+    const lastItem = offset + 1 === parts.length;
     const targetName = ref.value[offset];
+    let targetList: ScopeEntriesMap | null = null;
 
-    if (scope.entries.has(targetName)) {
-        const res = scope.entries.get(targetName) as ScopeEntry;
+    // The first reference (in <a:b:c> it's a) could be placed in a
+    // Parent scope. Any deeper reference need to be exported.
+    if (offset) {
+        const exportedMembers = scope.variants.get(EXPORTS);
+
+        if (exportedMembers) {
+            targetList = exportedMembers.value as ScopeEntriesMap;
+        } else {
+            throw new Error(`Type "${ref.value[offset - 1]}" does not export any types.`);
+        }
+
+    } else {
+        targetList = scope.entries;
+    }
+
+    if (targetList.has(targetName)) {
+        const res = targetList.get(targetName) as ScopeEntry;
 
         switch (res.type) {
             case 'scope': {

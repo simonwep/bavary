@@ -4,7 +4,7 @@ import {compile} from '../../src';
 describe('[COM] Scopes', () => {
 
     it('Should throw an error on multiple defaults', () => {
-        expect(()=>compile(`
+        expect(() => compile(`
             <abc> = {
                 default ['A']
                 default ['B']
@@ -15,7 +15,7 @@ describe('[COM] Scopes', () => {
     });
 
     it('Should throw an error on re-used names', () => {
-        expect(()=>compile(`
+        expect(() => compile(`
             <abc> = { default ['A'] }
             <abc> = { default ['B'] }
             
@@ -24,7 +24,7 @@ describe('[COM] Scopes', () => {
     });
 
     it('Should not throw an error on deeply re-used names', () => {
-        expect(()=>compile(`
+        expect(() => compile(`
             <abc> = { 
                 <abc> = { default ['B'] }
                 default ['A'] 
@@ -35,7 +35,7 @@ describe('[COM] Scopes', () => {
     });
 
     it('Should throw an error on invalid usage of the entry keyword', () => {
-        expect(()=>compile(`
+        expect(() => compile(`
             <abc> = { 
                 <abc> = { entry ['B'] }
                 default ['A'] 
@@ -43,6 +43,18 @@ describe('[COM] Scopes', () => {
             
             entry [<abc>]
         `)).to.throw();
+    });
+
+    it('Should throw an error if a reference points to a "private" type', () => {
+        const parse = compile(`
+            <abc> = { 
+                <private> = ['A']
+            }
+            
+            entry [<abc:private>]
+        `);
+
+        expect(() => parse('A')).to.throw();
     });
 
     it('Should properly scope types', () => {

@@ -1,6 +1,5 @@
 import {DeclarationValue} from '../ast/types';
 
-
 export type ScopeEntryKey = string | symbol;
 export type ScopeEntriesMap = Map<string, ScopeEntry>;
 export type ScopeVariantsMap = Map<symbol, ScopeEntryVariant>;
