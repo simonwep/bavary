@@ -1,6 +1,6 @@
 {
     "name": "bavary",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Customizable, elegant and fast syntax-parser",
     "author": "Simon Reinisch <trash@reinisch.io>",
     "main": "dist/bavary.min.js",
@@ -16,6 +16,12 @@
         "test": "mocha -r ts-node/register test/**/*.spec.ts",
         "dev:test": "mocha -r ts-node/register test/**/*.spec.ts --watch --watch-extensions ts"
     },
+    "files": [
+        "src",
+        "dist",
+        "types",
+        "docs"
+    ],
     "homepage": "https://github.com/Simonwep/bavary#readme",
     "repository": "github:Simonwep/repo",
     "bugs": "https://github.com/Simonwep/bavary/issues",
@@ -32,7 +38,6 @@
         "mocha": "^6.2.2",
         "ts-loader": "^6.2.1",
         "ts-node": "^8.4.1",
-        "ts-node-dev": "^1.0.0-pre.44",
         "typescript": "^3.6.3",
         "webpack": "^4.41.2",
         "webpack-cli": "^3.3.10"
