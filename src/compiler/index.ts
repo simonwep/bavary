@@ -9,10 +9,6 @@ export default (definitions: string): (content: string) => null | object => {
     const group = require('./parser/group');
     const tree = parseAst(definitions);
 
-    if (!tree) {
-        throw new Error('Failed to parse declarations.');
-    }
-
     // Resolve sub-scopes
     const globalScope = createScope(tree, {
         variants: new Map() as ScopeVariantsMap,

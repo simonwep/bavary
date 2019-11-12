@@ -1,7 +1,8 @@
 {
     "check-coverage": true,
-    "branches": 90,
+    "skip-full": true,
     "lines": 95,
+    "branches": 95,
     "functions": 95,
     "statements": 95,
     "extension": [

@@ -128,4 +128,11 @@ describe('[AST] Characters, strings and char-ranges', () => {
             }
         ]);
     });
+
+    it('Should throw an error for invalid unicode escapes', () => {
+        expect(() => parse('entry <a> = [\\2000 to \\u3300]')).to.throw();
+        expect(() => parse('entry <a> = [\\u20000 to \\u3300]')).to.throw();
+        expect(() => parse('entry <a> = [\\u20g0 to \\u3300]')).to.throw();
+        expect(() => parse('entry <a> = [\\u20 0 to \\u3300]')).to.throw();
+    });
 });

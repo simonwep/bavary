@@ -22,7 +22,7 @@ module.exports = maybe<Declaration | null>(stream => {
     const body = group(stream) || block(stream);
 
     if (!body) {
-        stream.throwError('A declaration consists of one group.');
+        stream.throwError('A declaration consists of one group or block statement.');
     }
 
     return {

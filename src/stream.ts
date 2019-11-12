@@ -9,10 +9,10 @@ import ParsingError from './misc/parsing-error';
 
 export default class Streamable<T> {
 
+    public index: number;
     private readonly vals: ArrayLike<T>;
     private readonly source: string | null;
     private stashed: Array<number>;
-    public index: number;
 
     constructor(vals: ArrayLike<T>, source: string | null = null) {
         this.vals = vals;

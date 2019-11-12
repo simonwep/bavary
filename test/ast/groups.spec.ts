@@ -68,8 +68,8 @@ describe('[AST] Simple group declarations', () => {
 
     it('Should properly resolve mixed combinators', () => {
         expect(parse(`
-entry ['a' | 'b' & 'c' | ['d' & 'e' | 'f']]
-`)).to.deep.equal([
+            entry ['a' | 'b' & 'c' | ['d' & 'e' | 'f']]
+        `)).to.deep.equal([
             {
                 'type': 'declaration',
                 'name': null,

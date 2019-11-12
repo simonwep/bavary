@@ -1,6 +1,6 @@
+import {RawType} from '../../tokenizer/types';
 import maybe     from './maybe';
 import optional  from './optional';
-import {RawType} from '../../tokenizer/types';
 
 /**
  * Parses a unicode escape and converts it into a decimal number
