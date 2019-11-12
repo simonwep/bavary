@@ -75,6 +75,8 @@ export default class Streamable<T> {
 
         if (peek) {
             throw new ParsingError(this.source, msg, peek.start, peek.end);
+        } else {
+            throw new Error(msg);
         }
     }
 }
