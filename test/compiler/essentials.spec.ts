@@ -3,6 +3,26 @@ import {compile} from '../../src';
 
 describe('[COM] Essentials', () => {
 
+    it('Should throw an error on an invalid statements', () => {
+
+        // Missing punctuations
+        expect(() => compile('.')).to.throw();
+        expect(() => compile('<abc')).to.throw();
+        expect(() => compile('<abc> =')).to.throw();
+        expect(() => compile('<abc> = [<de]')).to.throw();
+        expect(() => compile('<abc> = [<de')).to.throw();
+        expect(() => compile('<abc> = { export <abc> = ["A"]')).to.throw();
+
+        // Missing tag
+        expect(() => compile('<abc> = [<de#>]')).to.throw();
+
+        // Invalid tag
+        expect(() => compile('<abc> = [<de#">]')).to.throw();
+
+        // Unfinished range multiplier
+        expect(() => compile('<abc> = [<de>{2,]')).to.throw();
+    });
+
     it('Should throw an error if no entry-type is defined', () => {
         expect(() => compile('<abc> = ["A"]')).to.throw();
     });
