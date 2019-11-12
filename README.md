@@ -3,9 +3,8 @@
 </h3>
 
 <p align="center">
-    <img alt="gzip size" src="https://cdn.jsdelivr.net/npm/bavary@0.0.3/dist/bavary.min.js?compression=gzip&style=flat-square">
-    <img alt="brotli size" src="https://cdn.jsdelivr.net/npm/bavary@0.0.3/dist/bavary.min.js?compression=brotli&style=flat-square">
-    <img alt="brotli size" src="https://cdn.jsdelivr.net/npm/bavary@0.0.3/dist/bavary.min.js?compression=brotli&style=flat-square">
+    <img alt="gzip size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/bavary@0.0.3/dist/bavary.min.js?compression=gzip&style=flat-square">
+    <img alt="brotli size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/bavary@0.0.3/dist/bavary.min.js?compression=brotli&style=flat-square">
     <a href='https://coveralls.io/github/Simonwep/bavary?branch=master'><img 
        src='https://img.shields.io/coveralls/github/Simonwep/bavary?style=flat-square' 
        alt='Coverage Status'/></a>
