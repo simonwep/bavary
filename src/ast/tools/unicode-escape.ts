@@ -1,5 +1,6 @@
-import maybe    from './maybe';
-import optional from './optional';
+import maybe     from './maybe';
+import optional  from './optional';
+import {RawType} from '../../tokenizer/types';
 
 /**
  * Parses a unicode escape and converts it into a decimal number
@@ -10,7 +11,7 @@ export default maybe<number>(stream => {
         return null;
     }
 
-    const sequence = String(stream.next().value);
+    const sequence = String((stream.next() as RawType).value);
     if (!sequence.startsWith('u')) {
         return null;
     }

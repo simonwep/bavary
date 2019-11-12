@@ -6,7 +6,7 @@ export default (stream: Streamable<string>): RawType | null => {
 
     let number = '';
     while (stream.hasNext()) {
-        const ch = stream.peek();
+        const ch = stream.peek() as string;
 
         if (isNumeric(ch)) {
             number += ch;

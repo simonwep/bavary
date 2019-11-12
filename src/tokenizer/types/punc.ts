@@ -4,7 +4,7 @@ import {RawType}       from '../types';
 
 export default (stream: Streamable<string>): RawType | null => {
 
-    if (isPunctuation(stream.peek())) {
+    if (isPunctuation(stream.peek() as string)) {
         return {
             type: 'punc',
             value: stream.next()

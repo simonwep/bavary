@@ -32,15 +32,15 @@ export default class Streamable<T> {
     /**
      * Returns the next item
      */
-    next(): T {
-        return this.vals[this.index++];
+    next(): T | null {
+        return this.hasNext() ? this.vals[this.index++] : null;
     }
 
     /**
      * Returns the next item without modifying the cursor
      */
-    peek(): T {
-        return this.vals[this.index];
+    peek(): T | null {
+        return this.hasNext() ? this.vals[this.index] : null;
     }
 
     /**

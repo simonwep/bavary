@@ -19,10 +19,7 @@ export default (stream: Streamable<Token>, type: TokenType, ...values: Array<str
 
     const next = stream.hasNext() ? stream.peek() : null;
     if (next !== null) {
-        const expectedVal = values.length ? ` "${values.join(' / ')}"` : '';
-        const expectedPunc = next.type === type ? '' : ` (${type})`;
-        const actualPunc = next.type === type ? '' : ` (${next.type})`;
-        stream.throwError(`Expected${expectedVal + expectedPunc} but got "${next.value}"${actualPunc}`);
+        stream.throwError(`Expected ${values.join(', ')} (${type}) but got ${next.value} (${next.type})`);
     } else {
         stream.throwError('Unxpected end of input.');
     }

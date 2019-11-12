@@ -17,7 +17,7 @@ module.exports = (stream: Streamable<string>, decl: CharacterRange, result: Pars
     }
 
     // Resolve next character / char-code
-    const value = stream.next();
+    const value = stream.next() as string;
     const charCode = value.charCodeAt(0);
 
     // Check if charcode matches given range

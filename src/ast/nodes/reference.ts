@@ -1,5 +1,5 @@
-import expect      from '../tools/expect';
 import maybe       from '../tools/maybe';
+import expect      from '../tools/expect';
 import optional    from '../tools/optional';
 import {Reference} from '../types';
 
