@@ -3,8 +3,9 @@ import prettyPrintError from './prettify-error';
 export default class ParsingError extends Error {
 
     // Error location
-    public start: number;
-    public end: number;
+    public source?: string;
+    public start?: number;
+    public end?: number;
     public msg: string;
 
     /**
@@ -14,8 +15,9 @@ export default class ParsingError extends Error {
      * @param start
      * @param end
      */
-    constructor(source: string, msg: string, start: number, end: number) {
-        super(`\n${prettyPrintError(source, msg, start, end)}`);
+    constructor(msg: string, source?: string, start?: number, end?: number) {
+        super(start && end && source ? prettyPrintError(source, msg, start, end) : msg);
+        this.source = source;
         this.start = start;
         this.end = end;
         this.msg = msg;

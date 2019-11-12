@@ -1,5 +1,5 @@
 import Streamable from '../../stream';
-import {Token}    from '../../tokenizer/types';
+import {RawType}  from '../../tokenizer/types';
 import {ASTNode}  from '../types';
 
 /**
@@ -7,8 +7,8 @@ import {ASTNode}  from '../types';
  * @param parsers
  * @returns {Function}
  */
-type Parsers = Array<(stream: Streamable<Token>) => ASTNode>
-export default (...parsers: Parsers) => (stream: Streamable<Token>): ASTNode | null => {
+type Parsers = Array<(stream: Streamable<RawType>) => ASTNode>
+export default (...parsers: Parsers) => (stream: Streamable<RawType>): ASTNode | null => {
     for (const parser of parsers) {
         const result = parser(stream);
 

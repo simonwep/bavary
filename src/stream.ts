@@ -1,13 +1,17 @@
 import ParsingError from './misc/parsing-error';
 
+export type RangeInformation = {
+    start: number;
+    end: number;
+}
+
 /**
  * Creates a new stream out of an array of values and an optional "source-map"
  * @param vals
  * @param source Optional source-code to prettify error messages
  * @returns Streaming object
  */
-
-export default class Streamable<T> {
+export default class Streamable<T extends RangeInformation | string> {
 
     public index: number;
     private readonly vals: ArrayLike<T>;
@@ -62,21 +66,19 @@ export default class Streamable<T> {
      * @param msg
      */
     throwError(msg: string): void {
+        const {index, source} = this;
 
-        if (!this.source) {
-            throw new Error(msg);
-        }
+        if (!source) {
+            throw new ParsingError(msg);
+        } else if (this.hasNext()) {
 
-        // TODO. This solution is terrible, fix that
-        const peek = this.peek() as {
-            start: number;
-            end: number;
-        } | null;
-
-        if (peek) {
-            throw new ParsingError(this.source, msg, peek.start, peek.end);
+            // Expect peeked value to be of type RangeInformation
+            const peek = this.peek() as RangeInformation;
+            throw new ParsingError(source, msg, peek.start, peek.end);
         } else {
-            throw new Error(msg);
+
+            // Otherwise use current index as start and end value
+            throw new ParsingError(source, msg, index, index);
         }
     }
 }

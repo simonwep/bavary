@@ -1,7 +1,7 @@
 import Streamable     from '../stream';
 import consume        from './tools/consume';
 import {isWhiteSpace} from './tools/is';
-import {Token}        from './types';
+import {RawType}      from './types';
 import kw             from './types/kw';
 import num            from './types/num';
 import punc           from './types/punc';
@@ -19,9 +19,9 @@ const parser = [
  * @param str
  * @returns {[]}
  */
-export default (str: string): Array<Token> => {
+export default (str: string): Array<RawType> => {
     const stream = new Streamable(str);
-    const tokens: Array<Token> = [];
+    const tokens: Array<RawType> = [];
 
     /* eslint-disable no-labels */
     outer: while (stream.hasNext()) {
@@ -59,7 +59,7 @@ export default (str: string): Array<Token> => {
                 ...parsed,
                 start,
                 end: stream.index
-            } as Token);
+            } as RawType);
 
             continue outer;
         }

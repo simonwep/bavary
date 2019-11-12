@@ -1,4 +1,4 @@
-import {Token}      from '../../tokenizer/types';
+import {RawType}    from '../../tokenizer/types';
 import expect       from '../tools/expect';
 import maybe        from '../tools/maybe';
 import optional     from '../tools/optional';
@@ -14,10 +14,10 @@ module.exports = maybe<Multiplier | null>(stream => {
     const mp = optional(stream, 'punc', '*', '+', '?', '{');
 
     if (mp && mp.value === '{') {
-        const start = expect(stream, 'num') as Token;
+        const start = expect(stream, 'num') as RawType;
 
         expect(stream, 'punc', ',');
-        const end = expect(stream, 'num') as Token;
+        const end = expect(stream, 'num') as RawType;
 
         // Validate range
         if (start.value < 0 || end.value < 0) {

@@ -1,11 +1,11 @@
 import Streamable       from '../../stream';
-import {Token}          from '../../tokenizer/types';
+import {RawType}        from '../../tokenizer/types';
 import maybe            from '../tools/maybe';
 import optional         from '../tools/optional';
 import unicodeEscape    from '../tools/unicode-escape';
 import {CharacterRange} from '../types';
 
-const parsePoint = (stream: Streamable<Token>): number | null => {
+const parsePoint = (stream: Streamable<RawType>): number | null => {
     const str = optional(stream, 'str');
 
     if (str) {

@@ -1,12 +1,12 @@
 import Streamable from '../../stream';
-import {Token}    from '../../tokenizer/types';
+import {RawType}  from '../../tokenizer/types';
 
 /**
  * Restores the previous location if the passed function returns null
  * @param fn
  * @returns {Function}
  */
-export default <T>(fn: (stream: Streamable<Token>) => T | null) => (stream: Streamable<Token>): T | null => {
+export default <T>(fn: (stream: Streamable<RawType>) => T | null) => (stream: Streamable<RawType>): T | null => {
     stream.stash();
 
     const result = fn(stream);
