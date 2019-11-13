@@ -16,7 +16,7 @@ export default class ParsingError extends Error {
      * @param end
      */
     constructor(msg: string, source?: string, start?: number, end?: number) {
-        super(start && end && source ? prettyPrintError(source, msg, start, end) : msg);
+        super(start && end && source ? prettyPrintError(msg, source, start, end) : msg);
         this.source = source;
         this.start = start;
         this.end = end;

@@ -7,14 +7,14 @@ function alternative(val: number, fallback: number, pred = -1): number {
 /**
  * Pretty-prints an error-message
  * TODO: Cursor is misplaced
- * @param src the source-code
- * @param message error message
+ * @param msg the source-code
+ * @param source error message
  * @param start error-offset
  * @param end error-end index
  */
-export default (src: string, message: string, start: number, end: number): string => {
-    const prevLineBreak = alternative(previousIndexOf(src, '\n', start), 0);
-    const nextLineBreak = alternative(src.indexOf('\n', end), src.length);
+export default (msg: string, source: string, start: number, end: number): string => {
+    const prevLineBreak = alternative(previousIndexOf(msg, '\n', start), 0);
+    const nextLineBreak = alternative(msg.indexOf('\n', end), msg.length);
     const col = (start - prevLineBreak);
-    return `${src.slice(prevLineBreak, nextLineBreak)}\n${' '.repeat(col)}^\n${message}`;
+    return `${msg.slice(prevLineBreak, nextLineBreak)}\n${' '.repeat(col)}^\n${source}`;
 };
