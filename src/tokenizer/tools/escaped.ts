@@ -5,6 +5,12 @@ export default (stream: Streamable<string>, end: string): string | null => {
     let str = '';
 
     for (let ch = stream.next(); ; ch = stream.next()) {
+
+        // Disallow line-breaks in escaped sequences
+        if (ch === '\n') {
+            return null;
+        }
+
         if (escaped) {
             str += ch;
             escaped = false;

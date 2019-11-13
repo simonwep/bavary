@@ -22,4 +22,13 @@ describe('Tokenizer', () => {
             {type: 'punc', value: '}', start: 30, end: 31}
         ]);
     });
+
+    it('Should not allow line-breaks in strings', () => {
+        expect(tokenize(`"
+        "
+        `)).to.deep.equal([
+            {type: 'punc', value: '"', start: 0, end: 1},
+            {type: 'punc', value: '"', start: 10, end: 11}
+        ]);
+    });
 });
