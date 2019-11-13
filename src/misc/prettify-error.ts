@@ -6,6 +6,7 @@ function alternative(val: number, fallback: number, pred = -1): number {
 
 /**
  * Pretty-prints an error-message
+ * TODO: Cursor is misplaced
  * @param src the source-code
  * @param message error message
  * @param start error-offset

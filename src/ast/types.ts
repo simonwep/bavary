@@ -66,6 +66,25 @@ export type Combinator = {
     value: string;
 }
 
+export type CharacterSelection = {
+    type: 'character-selection';
+    included: CharacterSelectionArray;
+    excluded: CharacterSelectionArray;
+}
+
+export type CharacterSelectionArray = Array<CharacterSelectionRange | CharacterSelectionCode>;
+
+export type CharacterSelectionCode = {
+    type: 'character';
+    value: number;
+}
+
+export type CharacterSelectionRange = {
+    type: 'range';
+    from: number;
+    to: number;
+}
+
 export type CharacterRange = {
     type: 'character-range';
     value: {

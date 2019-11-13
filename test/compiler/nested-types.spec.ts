@@ -17,6 +17,12 @@ describe('[COM] Nested types', () => {
         `)).to.throw();
     });
 
+    it('Should throw an error on empty types', () => {
+        expect(() => compile(`
+            entry <> = ['A']
+        `)).to.throw();
+    });
+
     it('Should handle two types', () => {
         const parse = compile(`
             <1-2-3> = ['1' | '2' | '3']
