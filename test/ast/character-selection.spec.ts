@@ -97,8 +97,8 @@ describe('[AST] Character selection', () => {
                             'multiplier': null,
                             'included': [
                                 {'type': 'range', 'from': 97, 'to': 122},
-                                {'type': 'character', 'value': 92},
-                                {'type': 'range', 'from': 92, 'to': 92}
+                                {'type': 'character', 'value': 34},
+                                {'type': 'range', 'from': 43, 'to': 45}
                             ],
                             'excluded': [
                                 {'type': 'range', 'from': 103, 'to': 104}

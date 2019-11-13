@@ -36,8 +36,7 @@ const parseToken = (stream: Streamable<RawType>): number | null => {
         }
 
         const escaped = stream.peek() as RawType;
-        const escapedValue = String(next.value);
-
+        const escapedValue = String(escaped.value);
 
         if (escaped.type !== 'punc') {
             stream.throwError('Only punctuation characters need to be escaped.');
