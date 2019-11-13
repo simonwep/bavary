@@ -15,6 +15,7 @@ describe('[AST] Character selection', () => {
                     'value': [
                         {
                             'type': 'character-selection',
+                            'multiplier': null,
                             'included': [
                                 {'type': 'range', 'from': 97, 'to': 122}
                             ],
@@ -38,6 +39,7 @@ describe('[AST] Character selection', () => {
                     'value': [
                         {
                             'type': 'character-selection',
+                            'multiplier': null,
                             'included': [
                                 {'type': 'range', 'from': 97, 'to': 122}
                             ],
@@ -63,6 +65,7 @@ describe('[AST] Character selection', () => {
                     'value': [
                         {
                             'type': 'character-selection',
+                            'multiplier': null,
                             'included': [
                                 {'type': 'range', 'from': 97, 'to': 122},
                                 {'type': 'character', 'value': 53},
@@ -91,6 +94,7 @@ describe('[AST] Character selection', () => {
                     'value': [
                         {
                             'type': 'character-selection',
+                            'multiplier': null,
                             'included': [
                                 {'type': 'range', 'from': 97, 'to': 122},
                                 {'type': 'character', 'value': 92},
@@ -118,6 +122,7 @@ describe('[AST] Character selection', () => {
                     'value': [
                         {
                             'type': 'character-selection',
+                            'multiplier': null,
                             'included': [
                                 {'type': 'range', 'from': 1, 'to': 122}
                             ],
@@ -125,6 +130,36 @@ describe('[AST] Character selection', () => {
                                 {'type': 'range', 'from': 103, 'to': 104},
                                 {'type': 'range', 'from': 3, 'to': 162}
                             ]
+                        }
+                    ]
+                }
+            }
+        ]);
+    });
+
+    it('Should support multipliers', () => {
+        expect(parse('entry [(a-z){1,3}]')).to.deep.equal([
+            {
+                'type': 'declaration',
+                'name': null,
+                'variant': 'entry',
+                'value': {
+                    'type': 'group',
+                    'multiplier': null,
+                    'value': [
+                        {
+                            'type': 'character-selection',
+                            'multiplier': {
+                                'type': 'range',
+                                'value': {
+                                    'start': 1,
+                                    'end': 3
+                                }
+                            },
+                            'included': [
+                                {'type': 'range', 'from': 97, 'to': 122}
+                            ],
+                            'excluded': []
                         }
                     ]
                 }

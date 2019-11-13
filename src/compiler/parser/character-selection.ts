@@ -1,6 +1,7 @@
 import {CharacterSelection, CharacterSelectionArray} from '../../ast/types';
 import Streamable                                    from '../../stream';
-import {ParsingResult}                               from '../types';
+import {ParsingResult, Scope}                        from '../types';
+import multiplier                                    from './multiplier';
 
 /**
  * Checks if any range or value of a CharacterSelectionArray matches the given char-code
@@ -18,26 +19,42 @@ const matchesCharacterSelectionArray = (arr: CharacterSelectionArray, charCode: 
  * Parses a character-selection
  * @param stream Character-stream
  * @param decl
+ * @param scope
  * @param result
  * @returns {null|*}
  */
-module.exports = (stream: Streamable<string>, decl: CharacterSelection, result: ParsingResult): boolean => {
+module.exports = (stream: Streamable<string>, decl: CharacterSelection, scope: Scope, result: ParsingResult): boolean => {
     const {included, excluded} = decl;
 
-    if (!stream.hasNext()) {
+    // Type may have a multiplier attached to it
+    const matches = multiplier<string>(() => {
+
+        if (stream.hasNext()) {
+
+            // Resolve next character / char-code
+            const value = stream.peek() as string;
+            const charCode = value.charCodeAt(0);
+
+            // Check if character is included and not excluded
+            if (matchesCharacterSelectionArray(included, charCode) &&
+                !matchesCharacterSelectionArray(excluded, charCode)) {
+                stream.next();
+                return value;
+            }
+        }
+
+        return null;
+    })(stream, decl, scope, result);
+
+    // Resolve corresponding multiplier
+    // TODO: This part should be simplified since it's used in about 3 modules
+    if (Array.isArray(matches)) {
+        result.str += (matches).join('');
+    } else if (typeof matches === 'string') {
+        result.str += matches;
+    } else if (!matches && !decl.multiplier || (decl.multiplier && decl.multiplier.type !== 'optional')) {
         return false;
     }
 
-    // Resolve next character / char-code
-    const value = stream.next() as string;
-    const charCode = value.charCodeAt(0);
-
-    // Check if character isn't included or is excluded
-    if (!matchesCharacterSelectionArray(included, charCode) ||
-        matchesCharacterSelectionArray(excluded, charCode)) {
-        return false;
-    }
-
-    result.str += value;
     return true;
 };

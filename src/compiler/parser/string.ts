@@ -12,10 +12,6 @@ import {ParsingResult} from '../types';
 module.exports = (stream: Streamable<string>, decl: Str, result: ParsingResult): boolean => {
     const {value} = decl;
 
-    if (!stream.hasNext()) {
-        return false;
-    }
-
     stream.stash();
     for (let i = 0; i < value.length; i++) {
         const next = stream.next();

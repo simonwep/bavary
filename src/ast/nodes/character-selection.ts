@@ -88,6 +88,8 @@ const parseSequence = (stream: Streamable<RawType>): CharacterSelectionArray => 
 };
 
 module.exports = maybe<CharacterSelection | null>(stream => {
+    const multiplier = require('./multiplier');
+
     if (!optional(stream, 'punc', '(')) {
         return null;
     }
@@ -106,10 +108,9 @@ module.exports = maybe<CharacterSelection | null>(stream => {
     }
 
     expect(stream, 'punc', ')');
-
-    // TODO: Support multiplier
     return {
         type: 'character-selection',
+        multiplier: multiplier(stream),
         included,
         excluded
     } as CharacterSelection;

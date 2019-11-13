@@ -68,6 +68,7 @@ export type Combinator = {
 
 export type CharacterSelection = {
     type: 'character-selection';
+    multiplier: Multiplier | null;
     included: CharacterSelectionArray;
     excluded: CharacterSelectionArray;
 }

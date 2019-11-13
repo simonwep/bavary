@@ -27,4 +27,14 @@ describe('[COM] Character selection', () => {
         expect(parse('äüö')).to.equal('äüö');
         expect(parse('xlkjﾡ')).to.equal(null);
     });
+
+    it('Should work with multipliers', () => {
+        const parse = compile('entry [(a - z except f - j){3,5}]');
+
+        expect(parse('abc')).to.equal('abc');
+        expect(parse('abcd')).to.equal('abcd');
+        expect(parse('abcde')).to.equal('abcde');
+        expect(parse('abcdef')).to.equal(null);
+        expect(parse('ab')).to.equal(null);
+    });
 });

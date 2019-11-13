@@ -51,7 +51,7 @@ module.exports = (
         }
         case 'character-selection': {
 
-            if (!characterSelection(stream, decl, result)) {
+            if (!characterSelection(stream, decl, scope, result)) {
                 stream.pop();
                 return false;
             }
