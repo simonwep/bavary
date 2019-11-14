@@ -69,6 +69,30 @@ describe('[COM] Scopes', () => {
         expect(() => parse('A')).to.throw();
     });
 
+    it('Should throw an error if user tries to resolve a type inside a group', () => {
+        const parse = compile(`
+            <abc> = {
+               export <a> = ['A']
+            }
+            
+            entry [<abc:a:b>]
+        `);
+
+        expect(() => parse('A')).to.throw();
+    });
+
+    it('Should throw an error if user tries to resolve a undefined type', () => {
+        const parse = compile(`
+            <abc> = {
+               export <a> = ['A']
+            }
+            
+            entry [<abc:c>]
+        `);
+
+        expect(() => parse('A')).to.throw();
+    });
+
     it('Should resolve a block as entry type', () => {
         const parse = compile(`
             entry {

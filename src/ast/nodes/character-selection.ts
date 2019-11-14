@@ -108,14 +108,7 @@ module.exports = maybe<CharacterSelection | null>(stream => {
     included.push(...parseSequence(stream));
 
     if (optional(stream, 'kw', 'except')) {
-        if (!included.length) {
-            stream.throwError('Cannot use "except" without defining any ranges / characters prior to that.');
-        }
-
         excluded.push(...parseSequence(stream));
-        if (!excluded.length) {
-            stream.throwError('At least a single character must be excluded.');
-        }
     }
 
     expect(stream, 'punc', ')');

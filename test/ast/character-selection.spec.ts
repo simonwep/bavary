@@ -168,7 +168,10 @@ describe('[AST] Character selection', () => {
     });
 
     it('Should throw an error for invalid character-selections', () => {
+        expect(() => parse('entry [(')).to.throw();
         expect(() => parse('entry [(a - )]')).to.throw();
+        expect(() => parse('entry [(a - \\a)]')).to.throw(); // Useless escape
+        expect(() => parse('entry [(a - \\')).to.throw(); // Invalid escape
         expect(() => parse('entry [(a - ")]')).to.throw();
         expect(() => parse('entry [(a - z except)]')).to.throw();
         expect(() => parse('entry [(a - z a except b)]')).to.throw();

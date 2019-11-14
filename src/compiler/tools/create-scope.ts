@@ -81,9 +81,7 @@ export function createScope(decs: Array<Declaration>, current: Scope): Scope {
                 // Validate
                 if (key === GLOBAL_SCOPE) {
                     throw new Error('The global scope cannot export types.');
-                } else if (!name) {
-                    throw new Error('Exported members must have a name.');
-                } else if (!variants.has(EXPORTS)) {
+                } if (!variants.has(EXPORTS)) {
                     variants.set(EXPORTS, {
                         type: 'entries',
                         value: new Map() as ScopeEntriesMap
@@ -95,7 +93,7 @@ export function createScope(decs: Array<Declaration>, current: Scope): Scope {
                     variants.get(EXPORTS) as ScopeEntryVariant
                 ).value as ScopeEntriesMap;
 
-                register(value, exportedMembers, name);
+                register(value, exportedMembers, name as string); // Identifiers of types cannot be empty
                 break;
             }
         }

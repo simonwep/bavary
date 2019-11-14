@@ -69,7 +69,7 @@ export function resolveReference(scope: Scope, ref: Reference, offset = 0): [Sco
                     return [scope, val];
                 }
 
-                throw new Error(`Type "${val.value}" is not a block declaration.`);
+                throw new Error(`Reference "${targetName}" from "${parts.join(':')}" does not point to a block declaration.`);
             }
         }
     } else if (!offset && scope.parent) {
