@@ -19,6 +19,7 @@ const parseToken = (stream: Streamable<RawType>): number | null => {
         return null;
     }
 
+    // TODO: Accept raw numbers
     const next = stream.peek() as RawType;
     const nextValue = String(next.value);
     const escaped = nextValue === '\\';
@@ -47,15 +48,15 @@ const parseToken = (stream: Streamable<RawType>): number | null => {
         stream.next();
         return escapedValue.charCodeAt(0);
     }
-    return nextValue.charCodeAt(0);
 
+    return nextValue.charCodeAt(0);
 };
 
 const parseSequence = (stream: Streamable<RawType>): CharacterSelectionArray => {
     const sequence: CharacterSelectionArray = [];
-    let a, b = null;
 
     while (true) {
+        let a = null, b = null;
         a = parseToken(stream);
 
         if (a === null) {

@@ -11,8 +11,16 @@ describe('[COM] Character selection', () => {
         expect(parse('4')).to.equal(null);
     });
 
+    it('Should recognize a lowercase/uppercase difference', () => {
+        const parse = compile('entry [(A - Z)]');
+
+        expect(parse('A')).to.equal('A');
+        expect(parse('b')).to.equal(null);
+        expect(parse('4')).to.equal(null);
+    });
+
     it('Should return null for excludet character', () => {
-        const parse = compile('entry [[(a - z except f - j)]+]');
+        const parse = compile('entry [(a - z except f - j)+]');
 
         expect(parse('abcde')).to.equal('abcde');
         expect(parse('klm')).to.equal('klm');

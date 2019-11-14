@@ -10,7 +10,7 @@ export default (stream: Streamable<string>): RawType | null => {
 
         return str ? {
             type: 'kw',
-            value: str.toLowerCase()
+            value: str
         } as RawType : null;
     }
 

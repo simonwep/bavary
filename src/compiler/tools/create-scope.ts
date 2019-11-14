@@ -81,7 +81,9 @@ export function createScope(decs: Array<Declaration>, current: Scope): Scope {
                 // Validate
                 if (key === GLOBAL_SCOPE) {
                     throw new Error('The global scope cannot export types.');
-                } if (!variants.has(EXPORTS)) {
+                }
+
+                if (!variants.has(EXPORTS)) {
                     variants.set(EXPORTS, {
                         type: 'entries',
                         value: new Map() as ScopeEntriesMap

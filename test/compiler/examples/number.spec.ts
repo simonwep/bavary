@@ -4,7 +4,7 @@ describe('[EXAMPLE] numbers', () => {
 
     const parse = compile(`
         entry {
-            <raw-num> = [['0' to '9']+]
+            <raw-num> = [(0 - 9)+]
             <num-sign> = [ '+' | '-' ]
             <scientific-notation> = ['e' <num-sign>? <raw-num>]
             <scientific-num> = [<raw-num> <scientific-notation>?]

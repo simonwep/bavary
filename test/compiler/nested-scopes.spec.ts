@@ -107,12 +107,12 @@ describe('[COM] Scopes', () => {
     it('Should properly scope types', () => {
         const parse = compile(`
             <uppercase> = {
-                <val> = [['A' to 'Z']+]
+                <val> = [(A - Z)+]
                 default [<val>]
             }
             
             <uppercase-lowercase> = {
-                <val> = [['a' to 'z']+]
+                <val> = [(a - z)+]
                 default [<val> | <uppercase>]
             }
             
@@ -125,11 +125,11 @@ describe('[COM] Scopes', () => {
     it('Should resolveReference scopes with anonym default blocks', () => {
         const parse = compile(`
             <uppercase> = {
-                default [['A' to 'Z']+]
+                default [(A - Z)+]
             }
             
             <lowercase> = {
-                default [['a' to 'z']+]
+                default [(a - z)+]
             }
             
             entry [<lowercase> | <uppercase>]

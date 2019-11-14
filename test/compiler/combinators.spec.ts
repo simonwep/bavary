@@ -43,9 +43,9 @@ describe('[COM] Combinators', () => {
     it('Should handle mixed combinators', () => {
         const parse = compile(`
             entry {
-                <num> = ['0' to '9']
-                <abc> = ['a' to 'c']
-                <xyz> = ['x' to 'z']
+                <num> = [(0 - 9)]
+                <abc> = [(a - c)]
+                <xyz> = [(x - z)]
             
                 default [
                     ['a' & 'b' & 'c'] | 

@@ -5,7 +5,9 @@ describe('[EXAMPLE] strings', () => {
     const parse = compile(`
 
         // Allow all characters in the utf-8 range
-        <str-body> = [['\\\\"' | \\u0000 to \\u0021 | \\u0023 to \\uffff]+]
+        <str-body> = [
+            ['\\\\"' | (\\u0000 - \\uffff except \\")]+
+        ]
         
         entry <str> = [
             '"' <str-body#string> '"'

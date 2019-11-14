@@ -10,7 +10,7 @@ describe('[COM] Exports', () => {
     it('Should resolve simple exports', () => {
         const parse = compile(`
             <chars> = {
-                export <lowercase-letters> = ['a' to 'z']
+                export <lowercase-letters> = [(a - z)]
             }
     
             entry [<chars:lowercase-letters>+]
@@ -24,8 +24,8 @@ describe('[COM] Exports', () => {
     it('Should work in combination with default exports', () => {
         const parse = compile(`
             <chars> = {
-                export <lowercase-letters> = ['a' to 'z']
-                export <uppercase-letters> = ['A' to 'Z']
+                export <lowercase-letters> = [(a - z)+]
+                export <uppercase-letters> = [(A - Z)+]
                 default [<lowercase-letters> <uppercase-letters>]
             }
     
@@ -40,10 +40,10 @@ describe('[COM] Exports', () => {
     it('Should properly resolve nested exports and usage', () => {
         const parse = compile(`
             <chars> = {
-                export <numbers> = ['0' to '9']
+                export <numbers> = [(0 - 9)]
                 export <string-stuff> = {
-                    export <lowercase-letters> = ['a' to 'z']
-                    export <uppercase-letters> = ['A' to 'Z']
+                    export <lowercase-letters> = [(a - z)]
+                    export <uppercase-letters> = [(A - Z)]
                     default [<lowercase-letters> | <uppercase-letters>]+
                 }
                 

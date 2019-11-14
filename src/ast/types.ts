@@ -11,7 +11,7 @@ export type Declaration = {
     value: DeclarationValue;
 } & ASTNode;
 
-export type GroupValue = Reference | Str | GroupedCombinator | Group | CharacterRange;
+export type GroupValue = Reference | Str | GroupedCombinator | Group;
 export type Group = {
     type: 'group';
     multiplier: Multiplier;
@@ -84,14 +84,6 @@ export type CharacterSelectionRange = {
     type: 'range';
     from: number;
     to: number;
-}
-
-export type CharacterRange = {
-    type: 'character-range';
-    value: {
-        from: number;
-        to: number;
-    };
 }
 
 export type Block = {

@@ -6,9 +6,9 @@ describe('[COM] Type serialization', () => {
     it('Should properly serialize not matched, tagged types', () => {
         const parse = compile(`
             entry {
-                <num> = ['0' to '9']
-                <abc> = ['a' to 'c']
-                <xyz> = ['x' to 'z']
+                <num> = [(0 - 9)]
+                <abc> = [(a - c)]
+                <xyz> = [(x - z)]
                 
                 default [
                     [<num#num> <abc#abc>] |
@@ -25,9 +25,9 @@ describe('[COM] Type serialization', () => {
     it('Should nullish previously matched groups', () => {
         const parse = compile(`
             entry {
-                <num> = ['0' to '9']
-                <abc> = ['a' to 'c']
-                <xyz> = ['x' to 'z']
+                <num> = [(0 - 9)]
+                <abc> = [(a - c)]
+                <xyz> = [(x - z)]
                 
                 default [
                     [<num#a> <abc#b>] |
@@ -44,9 +44,9 @@ describe('[COM] Type serialization', () => {
     it('Should properly serialize unmatched combinators', () => {
         const parse = compile(`
             entry {
-                <num> = ['0' to '9']
-                <abc> = ['a' to 'c']
-                <xyz> = ['x' to 'z']
+                <num> = [(0 - 9)]
+                <abc> = [(a - c)]
+                <xyz> = [(x - z)]
                 
                 default [
                     [<num#a> <abc#b> | <xyz#c>] |

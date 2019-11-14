@@ -7,7 +7,6 @@ import {Group, GroupedCombinator, GroupValue} from '../types';
 
 module.exports = maybe(stream => {
     const characterSelection = require('./character-selection');
-    const characterRange = require('./character-range');
     const combinator = require('./combinator');
     const multiplier = require('./multiplier');
     const reference = require('./reference');
@@ -24,7 +23,6 @@ module.exports = maybe(stream => {
         reference,
         group,
         characterSelection,
-        characterRange,
         string,
     );
 
