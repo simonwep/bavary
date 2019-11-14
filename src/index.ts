@@ -9,4 +9,4 @@ export const compile = compiler;
 /**
  * Current version
  */
-export const version = '0.0.3';
+export const version = '0.0.4';
