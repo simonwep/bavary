@@ -55,8 +55,13 @@ const parseSequence = (stream: Streamable<RawType>): CharacterSelectionArray => 
     const sequence: CharacterSelectionArray = [];
     let a, b = null;
 
-    // TODO: Comma seperation is better
-    while ((a = parseToken(stream)) !== null) {
+    while (true) {
+        a = parseToken(stream);
+
+        if (a === null) {
+            stream.throwError('Missing character (-sequence).');
+            break;
+        }
 
         // There may be a range seletion
         if (optional(stream, 'punc', '-')) {
@@ -80,6 +85,11 @@ const parseSequence = (stream: Streamable<RawType>): CharacterSelectionArray => 
                 type: 'character',
                 value: a
             });
+        }
+
+        // Character (sets) must be seperated by commas
+        if (!optional(stream, 'punc', ',')) {
+            break;
         }
     }
 

@@ -54,7 +54,7 @@ describe('[AST] Character selection', () => {
     });
 
     it('Should parse long, chained ranges with exceptions', () => {
-        expect(parse('entry [(a-z 5 6 7 except h-g)]')).to.deep.equal([
+        expect(parse('entry [(a-z, 5, 6, 7 except h-g)]')).to.deep.equal([
             {
                 'type': 'declaration',
                 'name': null,
@@ -83,7 +83,7 @@ describe('[AST] Character selection', () => {
     });
 
     it('Should accept escaped punctuation characters', () => {
-        expect(parse('entry [(a-z \\" \\--\\+ except h-g)]')).to.deep.equal([
+        expect(parse('entry [(a-z, \\", \\--\\+ except h-g)]')).to.deep.equal([
             {
                 'type': 'declaration',
                 'name': null,
@@ -111,7 +111,7 @@ describe('[AST] Character selection', () => {
     });
 
     it('Should accept unicode escapes', () => {
-        expect(parse('entry [(\\u0001 - z except h - g \\u0003 - \\u00a2)]')).to.deep.equal([
+        expect(parse('entry [(\\u0001 - z except h - g, \\u0003 - \\u00a2)]')).to.deep.equal([
             {
                 'type': 'declaration',
                 'name': null,
@@ -171,6 +171,7 @@ describe('[AST] Character selection', () => {
         expect(() => parse('entry [(a - )]')).to.throw();
         expect(() => parse('entry [(a - ")]')).to.throw();
         expect(() => parse('entry [(a - z except)]')).to.throw();
+        expect(() => parse('entry [(a - z a except b)]')).to.throw();
         expect(() => parse('entry [(except a)]')).to.throw();
         expect(() => parse('entry [(a - z]')).to.throw();
     });
