@@ -171,6 +171,7 @@ describe('[AST] Character selection', () => {
         expect(() => parse('entry [(a - )]')).to.throw();
         expect(() => parse('entry [(a - ")]')).to.throw();
         expect(() => parse('entry [(a - z except)]')).to.throw();
+        expect(() => parse('entry [(except a)]')).to.throw();
         expect(() => parse('entry [(a - z]')).to.throw();
     });
 });

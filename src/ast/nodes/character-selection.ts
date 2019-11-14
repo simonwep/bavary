@@ -95,12 +95,14 @@ module.exports = maybe<CharacterSelection | null>(stream => {
 
     const included: CharacterSelectionArray = [];
     const excluded: CharacterSelectionArray = [];
-
     included.push(...parseSequence(stream));
 
     if (optional(stream, 'kw', 'except')) {
-        excluded.push(...parseSequence(stream));
+        if (!included.length) {
+            stream.throwError('Cannot use "except" without defining any ranges / characters prior to that.');
+        }
 
+        excluded.push(...parseSequence(stream));
         if (!excluded.length) {
             stream.throwError('At least a single character must be excluded.');
         }
