@@ -12,14 +12,20 @@ entry ['A']
 ```
 
 
-### Characters
-Everything is build upon matching different types of single characters / ranges:
+### Character Selection
+Everything is build upon matching different types of single characters / -ranges:
 
 | Name | Description | Example |
 | ---- | ----------- | ------- |
 | Single Character  | Matches exactly the given character | `'A'` |
-| Character range | Matches every character between two anchor-chars | `'a' to 'z'` | 
-| UTF-8 Range | Matches every character between two utf8 character-codes | `\uxxxx to \uxxxx` where `x` must be a valid hexa-decimal value |
+| Character range | Matches every character between two anchor-chars | `(a - z)` |
+| Character range with excludet characters | Excludes a char-range or single character | `(a - z except g, h)`  | 
+| UTF-8 Range | Matches every character between two utf8 character-codes | `(\uxxxx - \uxxxx)` where `x` must be a valid hexadecimal value |
+
+Attention: all **punctuation characters** (such as `"`, `,` , `-`...) need to be escaped (`\\,`) or quoted (`","`)!
+
+Character selection could also have [multipliers](#multipliers) attached to it, for example `(a - z, except d - g, z){4, 7}`: Matches all characters **between `a` and `z`** except the range `d` to `g` and the character `z`
+4 to 7 times.
 
 
 ### Multipliers
@@ -54,8 +60,6 @@ Combinators define how components in a group should be treated:
 
 Combinators don't have any priorities, mixed combinators will be grouped from left to right. Use [groups](#group-definitions) to 
 bypass precedence rules.
-
-> More coming soon!
 
 
 ### Group definitions
@@ -101,12 +105,12 @@ sub-types, and an arbitrary amount of _exported_ types:
 <characters> = {
 
   // Exported types
-  export <uppercase> =  ['A' to 'Z']
-  export <lowercase> =  ['a' to 'z']
-  export <numbers> = ['0' to '9']
+  export <uppercase> =  [(A - Z)]
+  export <lowercase> =  [(a - z)]
+  export <numbers> = [(0 - 9)]
   
   // Default export if <character> is used without referring to exported types.
-  // The default will match either 'A' - 'Z', 'a' - 'z' or '0' - '9'
+  // The default will match either 'A' to 'Z', 'a' to 'z' or '0' to '9'
   default [<uppercase> | <lowercase> | <numbers>]
 }
 
@@ -122,7 +126,7 @@ Tags can be used to get actual objects:
 
 ```html
 entry {
-    <number> = ['0' to '9'] // All characters from '0' to '9'
+    <number> = [(0 - 9)] // All characters from '0' to '9'
     <sign> = ['-' | '+'] // '-' or '+'
 
     default [
@@ -133,7 +137,7 @@ entry {
 ```
 
 The result of using '+5' would be:
-```js
+```json
 {
    prefix: '+',
    num: '5' 

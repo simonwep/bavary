@@ -4,21 +4,20 @@ In both the scientific notation can be used.
 
 ```html
 entry {
-    <raw-num> = [['0' to '9']+]
+    <raw-num> = [(0 - 9)+]
     <num-sign> = [ '+' | '-' ]
     <scientific-notation> = ['e' <num-sign>? <raw-num>]
     <scientific-num> = [<raw-num> <scientific-notation>?]
     
     default [
     
-        // Any number could have a '-' or '+' as prefix but it's completly optional.
+        // Well that's optional
         <num-sign#sign>?
-    
-        // It could be a floating-point number (see raw-num above) followed by a
-        // (optional) scientific number sequence (e.g. e6, e-5)
+
+        // Decimal
         [<raw-num#num>? '.' <scientific-num#decimal>] |
     
-        // Or its a non-floating-point number
+        // Non-decimal
         [<scientific-num#num>]
     ]
 }
