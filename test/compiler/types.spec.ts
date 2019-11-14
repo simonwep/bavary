@@ -65,4 +65,17 @@ describe('[COM] Nested types', () => {
 
         expect(() => parse('a')).to.throw();
     });
+
+    it('Should make a difference between types in lower- and uppercase', () => {
+        const parse = compile(`
+            <STRING> = [(A - Z)]
+            <string> = [(a - z)]
+            
+            entry [[<string> | <STRING>]+]
+        `);
+
+        expect(parse('abc')).to.equal('abc');
+        expect(parse('ABC')).to.equal('ABC');
+        expect(parse('abCDef')).to.equal('abCDef');
+    });
 });

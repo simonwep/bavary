@@ -3,6 +3,10 @@ import {parse}  from './tools';
 
 describe('[AST] Character selection', () => {
 
+    it('Should throw an error on empty strings', () => {
+        expect(() => parse('<brr> = [""]')).to.throw();
+    });
+
     it('Should parse simple ranges without exceptions', () => {
         expect(parse('entry [(a - z)]')).to.deep.equal([
             {
