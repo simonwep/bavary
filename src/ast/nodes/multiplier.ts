@@ -20,11 +20,7 @@ module.exports = maybe<Multiplier | null>(stream => {
         const end = expect(stream, 'num') as RawType;
 
         // Validate range - tokenizer currently parses no negaive numbers
-        // TODO: Consider removing num-types entirely
-        /* istanbul ignore if */
-        if (start.value < 0 || end.value < 0) {
-            stream.throwError('Range values cannot contain negative values.');
-        } else if ((end.value as number) - (start.value as number) < 0) {
+        if ((end.value as number) - (start.value as number) < 0) {
             stream.throwError('The difference between start and end-value cannot be negative or zero.');
         }
 

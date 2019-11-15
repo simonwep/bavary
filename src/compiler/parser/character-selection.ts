@@ -47,7 +47,6 @@ module.exports = (stream: Streamable<string>, decl: CharacterSelection, scope: S
     })(stream, decl, scope, result);
 
     // Resolve corresponding multiplier
-    // TODO: This part should be simplified since it's used in about 3 modules
     if (Array.isArray(matches)) {
         result.str += (matches).join('');
     } else if (typeof matches === 'string') {
