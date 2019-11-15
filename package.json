@@ -3,14 +3,14 @@
     "version": "0.0.4",
     "description": "Customizable, elegant and fast syntax-parser",
     "author": "Simon Reinisch <trash@reinisch.io>",
-    "main": "dist/bavary.min.js",
+    "main": "lib/bavary.js",
     "types": "types/index.d.ts",
     "keywords": [
         "parser"
     ],
     "license": "MIT",
     "scripts": {
-        "build": "webpack --display-modules --sort-modules-by size",
+        "build": "webpack",
         "lint": "eslint src/**/*.ts test/**/*.ts --fix",
         "lint:watch": "nodemon --exec eslint src/**/*.ts --fix --watch ./src/**/*.ts -e ts",
         "test": "mocha -r ts-node/register test/**/*.spec.ts --timeout 10000",
@@ -40,6 +40,7 @@
         "eslint-loader": "^3.0.2",
         "mocha": "^6.2.2",
         "nyc": "^14.1.1",
+        "terser-webpack-plugin": "^2.2.1",
         "ts-loader": "^6.2.1",
         "ts-node": "^8.4.1",
         "typescript": "^3.6.3",

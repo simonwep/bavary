@@ -1,11 +1,12 @@
 const {version} = require('./package');
+const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
     mode: 'production',
 
     entry: {
-        'bavary.min.js': './src/core/index.ts'
+        'bavary.js': './src/core/index.ts'
     },
 
     output: {
@@ -48,9 +49,23 @@ module.exports = {
         new webpack.BannerPlugin({
             banner: `Bavary ${version} MIT | https://github.com/Simonwep/bavary`
         }),
-
         new webpack.SourceMapDevToolPlugin({
             filename: '[name].map'
         })
-    ]
+    ],
+
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false,
+                sourceMap: true,
+                terserOptions: {
+                    mangle: {
+                        properties: true
+                    }
+                }
+            })
+        ]
+    }
 };
