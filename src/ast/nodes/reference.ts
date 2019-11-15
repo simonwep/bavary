@@ -15,10 +15,8 @@ module.exports = maybe<Reference | null>(stream => {
     }
 
     const seq = lookupSequence(stream);
-    if (!seq) {
-        stream.throwError('Expected identifier.');
-    }
 
+    // It may have a tag
     let tag: string | null = null;
     if (optional(stream, 'punc', '#')) {
         const opt = string(stream) || identifier(stream);

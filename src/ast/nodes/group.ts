@@ -63,8 +63,9 @@ module.exports = maybe(stream => {
         }
     }
 
+    // A remaining
     if (comg) {
-        values.push(comg);
+        stream.throwError('Combinator is missing a value!');
     }
 
     expect(stream, 'punc', ']');

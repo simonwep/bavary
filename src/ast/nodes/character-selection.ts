@@ -14,12 +14,10 @@ const parseToken = (stream: Streamable<RawType>): number | null => {
     }
 
     // Check if there are any chars left before using .next()
-    // TODO: Accept number in hasNext?
     if (!stream.hasNext()) {
         return null;
     }
 
-    // TODO: Accept raw numbers
     const next = stream.peek() as RawType;
     const nextValue = String(next.value);
     const escaped = nextValue === '\\';
@@ -41,8 +39,6 @@ const parseToken = (stream: Streamable<RawType>): number | null => {
 
         if (escaped.type !== 'punc') {
             stream.throwError('Only punctuation characters need to be escaped.');
-        } else if (escapedValue.length !== 1) {
-            stream.throwError('Expected single character');
         }
 
         stream.next();
@@ -61,7 +57,6 @@ const parseSequence = (stream: Streamable<RawType>): CharacterSelectionArray => 
 
         if (a === null) {
             stream.throwError('Missing character (-sequence).');
-            break;
         }
 
         // There may be a range seletion

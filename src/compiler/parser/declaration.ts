@@ -7,11 +7,7 @@ module.exports = (
     stream: Streamable<string>,
     decl: ExtendetDeclarationValue,
     scope: Scope,
-    result: ParsingResult = {
-        obj: {},
-        str: '',
-        pure: true
-    }
+    result: ParsingResult
 ): boolean => {
     const characterSelection = require('./character-selection');
     const combinator = require('./combinator');

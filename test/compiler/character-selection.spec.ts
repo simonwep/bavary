@@ -37,11 +37,15 @@ describe('[COM] Character selection', () => {
     });
 
     it('Should work with multipliers', () => {
-        const parse = compile('entry [(a - z except f - j){3,5}]');
+        const parse = compile(`
+            entry [(A - Z)? (a - z except f - j){3,5}]
+        `);
 
         expect(parse('abc')).to.equal('abc');
         expect(parse('abcd')).to.equal('abcd');
         expect(parse('abcde')).to.equal('abcde');
+        expect(parse('Aabc')).to.equal('Aabc');
+        expect(parse('aA')).to.equal(null);
         expect(parse('abcdef')).to.equal(null);
         expect(parse('ab')).to.equal(null);
     });

@@ -64,6 +64,8 @@ export default (str: string): Array<RawType> => {
             continue outer;
         }
 
+        // Same problem as in types/punc.ts
+        /* istanbul ignore next */
         throw new Error('Failed to parse input sequence.');
     }
 

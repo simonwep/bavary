@@ -128,6 +128,7 @@ describe('[AST] Simple group declarations', () => {
 
     failAll([
         '<vvv',
+        'entry [\'A\' | \'B\'|]',
         '<abc..> = ["A"]',
         '<abc> = [',
         '<abc> = ["A" | "B" | []',

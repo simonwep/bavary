@@ -8,6 +8,7 @@ describe('Streams', () => {
         expect(stream.peek()).to.equal('H');
         expect(stream.index).to.equal(0);
     });
+
     it('Should properly stash two times', () => {
 
         // Stash index and skip a few

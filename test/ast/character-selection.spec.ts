@@ -1,5 +1,5 @@
-import {expect} from 'chai';
-import {parse}  from './tools';
+import {expect}         from 'chai';
+import {failAll, parse} from './tools';
 
 describe('[AST] Character selection', () => {
 
@@ -171,15 +171,18 @@ describe('[AST] Character selection', () => {
         ]);
     });
 
-    it('Should throw an error for invalid character-selections', () => {
-        expect(() => parse('entry [(')).to.throw();
-        expect(() => parse('entry [(a - )]')).to.throw();
-        expect(() => parse('entry [(a - \\a)]')).to.throw(); // Useless escape
-        expect(() => parse('entry [(a - \\')).to.throw(); // Invalid escape
-        expect(() => parse('entry [(a - ")]')).to.throw();
-        expect(() => parse('entry [(a - z except)]')).to.throw();
-        expect(() => parse('entry [(a - z a except b)]')).to.throw();
-        expect(() => parse('entry [(except a)]')).to.throw();
-        expect(() => parse('entry [(a - z]')).to.throw();
-    });
+    failAll([
+        'entry [(',
+        'entry [(a - )]',
+        'entry [(a - \\a)]',
+        'entry [(a - \\"a)]',
+        'entry [(a - \\',
+        'entry [(a - ")]',
+        'entry [(a - z except)]',
+        'entry [(a - z a except b)]',
+        'entry [(except a)]',
+        'entry [(a - z]',
+        'entry [(\\u123l - z)]',
+        'entry [(\\u12322 - z)]'
+    ]);
 });

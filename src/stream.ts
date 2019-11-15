@@ -65,10 +65,13 @@ export default class Streamable<T extends RangeInformation | string> {
      * Throws an ParsingError
      * @param msg
      */
-    throwError(msg: string): void {
+    throwError(msg: string): never {
         const {index, source} = this;
 
+        /* istanbul ignore if */
         if (!source) {
+
+            // Currently not used, maybe in the future
             throw new ParsingError(msg);
         } else if (this.hasNext()) {
 

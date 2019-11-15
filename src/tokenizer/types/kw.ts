@@ -8,10 +8,10 @@ export default (stream: Streamable<string>): RawType | null => {
     if (isNonWhitespace(stream.peek() as string)) {
         const str = consume(stream, v => isNonWhitespace(v) || isNumeric(v));
 
-        return str ? {
+        return {
             type: 'kw',
             value: str
-        } as RawType : null;
+        } as RawType;
     }
 
     return null;
