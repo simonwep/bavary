@@ -9,7 +9,7 @@ export default (glob: string, cb: (parser: Parser) => void): void => {
     const source: Map<string, string> = new Map(); // TODO: Parse declarations instead of recompile every time
 
     const compileFiles = (): void => {
-        console.log(yellow('Compile...'));
+        console.log(yellow('Recompile...'));
 
         // Merge sources
         const fullSource = [...source.values()].join('\n').trim();

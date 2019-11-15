@@ -51,9 +51,12 @@
         "webpack-cli": "^3.3.10"
     },
     "dependencies": {
+        "@types/glob": "^7.1.1",
         "chalk": "^3.0.0",
         "chokidar": "^3.3.0",
         "commander": "^4.0.1",
-        "previous-index-of": "^1.2.1"
+        "glob": "^7.1.6",
+        "previous-index-of": "^1.2.1",
+        "webpack-node-externals": "^1.7.2"
     }
 }
