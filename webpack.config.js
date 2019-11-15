@@ -9,8 +9,8 @@ module.exports = {
     },
 
     output: {
-        publicPath: 'dist',
         filename: '[name]',
+        path: `${__dirname}/lib`,
         library: 'Bavary',
         libraryTarget: 'umd',
 

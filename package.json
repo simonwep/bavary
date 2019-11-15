@@ -20,7 +20,7 @@
     },
     "files": [
         "src",
-        "dist",
+        "lib",
         "types",
         "docs"
     ],

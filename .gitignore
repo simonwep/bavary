@@ -69,4 +69,4 @@ typings/
 # Test and dist files
 .test
 .psd
-dist
+lib
