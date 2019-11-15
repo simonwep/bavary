@@ -66,6 +66,9 @@ typings/
 *.iml
 .idea
 
+# Binary / cli-realated files
+bin
+
 # Test and dist files
 .test
 .psd

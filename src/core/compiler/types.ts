@@ -31,3 +31,5 @@ export type ParsingResultObjectValue = string | object | null;
 export type ParsingResultObject = {
     [key: string]: ParsingResultObjectValue | Array<ParsingResultObjectValue>;
 }
+
+export type Parser = (content: string) => null | object;

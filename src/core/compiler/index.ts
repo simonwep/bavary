@@ -1,11 +1,11 @@
-import parseAst                                   from '../ast';
-import {Group}                                    from '../ast/types';
-import Streamable                                 from '../stream';
-import {createScope, ENTRY_EXPORT, GLOBAL_SCOPE}  from './tools/create-scope';
-import {resolveDefaultExport}                     from './tools/resolve-scope';
-import {Scope, ScopeEntriesMap, ScopeVariantsMap} from './types';
+import parseAst                                           from '../ast';
+import {Group}                                            from '../ast/types';
+import Streamable                                         from '../stream';
+import {createScope, ENTRY_EXPORT, GLOBAL_SCOPE}          from './tools/create-scope';
+import {resolveDefaultExport}                             from './tools/resolve-scope';
+import {Parser, Scope, ScopeEntriesMap, ScopeVariantsMap} from './types';
 
-export default (definitions: string): (content: string) => null | object => {
+export default (definitions: string): Parser => {
     const group = require('./parser/group');
     const tree = parseAst(definitions);
 

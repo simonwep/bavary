@@ -5,10 +5,13 @@
     "author": "Simon Reinisch <trash@reinisch.io>",
     "main": "lib/bavary.js",
     "types": "types/index.d.ts",
+    "license": "MIT",
     "keywords": [
         "parser"
     ],
-    "license": "MIT",
+    "bin": {
+        "bvc": "bin/bvc.js"
+    },
     "scripts": {
         "build": "webpack",
         "lint": "eslint src/**/*.ts test/**/*.ts --fix",
@@ -48,6 +51,9 @@
         "webpack-cli": "^3.3.10"
     },
     "dependencies": {
+        "chalk": "^3.0.0",
+        "chokidar": "^3.3.0",
+        "commander": "^4.0.1",
         "previous-index-of": "^1.2.1"
     }
 }
