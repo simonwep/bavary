@@ -1,5 +1,5 @@
 import {expect}  from 'chai';
-import {compile} from '../../src';
+import {compile} from '../../src/core';
 
 describe('[COM] Nested types', () => {
 

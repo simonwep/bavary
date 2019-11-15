@@ -5,7 +5,7 @@ module.exports = {
     mode: 'production',
 
     entry: {
-        'bavary.min.js': './src/index.ts'
+        'bavary.min.js': './src/core/index.ts'
     },
 
     output: {

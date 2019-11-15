@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import parseAst from '../../src/ast';
+import parseAst from '../../src/core/ast';
 
 export const parse = parseAst;
 export const failAll = (tests: Array<string>): void => {
