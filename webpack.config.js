@@ -1,8 +1,6 @@
 const {version} = require('./package');
-const nodeExternals = require('webpack-node-externals');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
-const pkg = require('./package');
 
 const base = {
     mode: 'production',
@@ -90,9 +88,12 @@ module.exports = [
             path: `${__dirname}/lib`
         },
 
-        externals: [
-            nodeExternals()
-        ],
+        externals: {
+            glob: 'require("glob")',
+            chalk: 'require("chalk")',
+            chokidar: 'require("chokidar")',
+            commander: 'require("commander")'
+        },
 
         plugins: [
             new webpack.BannerPlugin({

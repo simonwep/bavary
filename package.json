@@ -14,6 +14,7 @@
     },
     "scripts": {
         "build": "webpack",
+        "build:install": "npm run build && npm i -g .",
         "lint": "eslint src/**/*.ts test/**/*.ts --fix",
         "lint:watch": "nodemon --exec eslint src/**/*.ts --fix --watch ./src/**/*.ts -e ts",
         "test": "mocha -r ts-node/register test/**/*.spec.ts --timeout 10000",
@@ -56,7 +57,6 @@
         "chokidar": "^3.3.0",
         "commander": "^4.0.1",
         "glob": "^7.1.6",
-        "previous-index-of": "^1.2.1",
-        "webpack-node-externals": "^1.7.2"
+        "previous-index-of": "^1.2.1"
     }
 }
