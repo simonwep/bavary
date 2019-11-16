@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import {green, red} from 'chalk';
-import {Parser}     from '../core/compiler/types';
+import {Parser}     from '../../core/compiler/types';
 
 export default (source = '', parser: Parser | null): void => {
     if (parser) {
