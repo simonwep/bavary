@@ -15,6 +15,7 @@ describe('[AST] Types', () => {
                     'value': [
                         {
                             'type': 'reference',
+                            'spread': false,
                             'multiplier': null,
                             'value': [
                                 'a',
@@ -32,6 +33,7 @@ describe('[AST] Types', () => {
     failAll([
         '<> = ["A"]',
         '<abc> = ["A" | <>]',
+        '<abc> = [...<a#b>]',
         '<abc> = ["A" | <a:b:>]'
     ]);
 });

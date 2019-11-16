@@ -5,9 +5,13 @@ import {Reference} from '../types';
 
 module.exports = maybe<Reference | null>(stream => {
     const lookupSequence = require('./lookup-sequence');
+    const spreadOperator = require('./spread-operator');
     const identifier = require('./identifier');
     const multiplier = require('./multiplier');
     const string = require('./string');
+
+    // It may have a spread operator attached to it
+    const hasSpreadOperator = !!spreadOperator(stream);
 
     // It may be a type
     if (!optional(stream, 'punc', '<')) {
@@ -28,11 +32,17 @@ module.exports = maybe<Reference | null>(stream => {
         tag = opt.value;
     }
 
+    // A tag shouldn't be combined with a spread operator
+    if (hasSpreadOperator && tag) {
+        stream.throwError('Type cannot have both a tag an spread operator attached to it.');
+    }
+
     expect(stream, 'punc', '>');
     return {
         type: 'reference',
         multiplier: multiplier(stream),
         value: seq.value,
+        spread: hasSpreadOperator,
         tag
     } as Reference;
 });

@@ -24,10 +24,14 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
     const matches = multiplier<ParsingResultObjectValue>(
         () => group(stream, targetBody, newScope)
     )(stream, decl, newScope, result);
+    const isArray = Array.isArray(matches);
+    const isString = typeof matches === 'string';
 
     // Tags can be nullish
     if (decl.tag) {
-        result.obj[decl.tag] = matches; // Save tag-result (can be null)
+
+        // Save tag-result (could be null)
+        result.obj[decl.tag] = matches;
 
         if (matches) {
 
@@ -43,13 +47,21 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
 
         // Declaration may be still optional through a '?'
         return !!(decl.multiplier && decl.multiplier.type === 'optional');
-    }
+    } else if (decl.spread) {
 
-    if (!decl.tag) {
-        if (Array.isArray(matches) && matches.every(v => typeof v === 'string')) {
-            result.str += matches.join(''); // Concat string sequences
-        } else if (typeof matches === 'string') {
-            result.str += matches;
+        // Spread operator won't work with strings or arrays
+        if (isArray || isString) {
+            throw new Error(`"${decl.value}" dosn't return a object which is required for the spread operator to work.`);
+        }
+
+        // Assign result to current object
+        Object.assign(result.obj, matches);
+        result.pure = false;
+    } else if (!decl.tag) {
+        if (isArray && (matches as Array<unknown>).every(v => typeof v === 'string')) {
+            result.str += (matches as Array<unknown>).join(''); // Concat string sequences
+        } else if (isString) {
+            result.str += matches as string;
         } else {
             throw new Error(`Type "${decl.value}" is missing a tag.`);
         }

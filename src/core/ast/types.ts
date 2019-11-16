@@ -49,6 +49,7 @@ export type Reference = {
     multiplier: Multiplier | null;
     value: Array<string>;
     tag: string | null;
+    spread: boolean;
 }
 
 export type LookupSequence = {
