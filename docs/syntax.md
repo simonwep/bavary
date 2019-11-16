@@ -1,4 +1,15 @@
-#### Before you start, you can also checkout [examples](examples) directly! 
+> Before you start, you can also checkout [examples](examples) directly! 
+
+#### Content
+1. [Entry type](#entry-type) _- Each parser starts with it._
+2. [Character Selection](#character-selection) _- Core concept._
+3. [Groups](#group-definition) _- Group related items._
+4. [Multipliers](#multipliers) _- How (and how often) should things get matched._
+5. [Types](#type-definition) _- Give groups or [blocks](#block-definition) a name._
+6. [Blocks](#block-definition) _- Scope [types](#type-definition) an things which are related to each other._
+7. [Tags](#tags) _- Give used [types](#type-definition) a name._
+8. [Operators](#operators) _- Specify how a result should be processed._  
+   8.1. [Spread Operator](#spread-operator) _- Let the result of a [types](#type-definition) bubble up._
 
 ### Entry type
 Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type declaration](#type-definition) **or** 
@@ -26,6 +37,21 @@ Attention: all **punctuation characters** (such as `"`, `,` , `-`...) need to be
 
 Character selection could also have [multipliers](#multipliers) attached to it, for example `(a - z, except d - g, z){4, 7}`: Matches all characters **between `a` and `z`** except the range `d` to `g` and the character `z`
 4 to 7 times.
+
+
+### Group definition
+Groups can be used to group related items together or to bypass precedence rules.
+Each group can additionally contain references to other types, groups or single characters:
+```html
+<1-or-2> = ['1' | '2']
+<a-b-c> = ['abc' <1-or-2>
+entry [<a-b-c>]
+```
+
+Groups can always have [multipliers](#multipliers) appended to it:
+```html
+entry ['a' | 'b' | ['c' 'd']*]+
+```
 
 
 ### Multipliers
@@ -62,21 +88,6 @@ Combinators don't have any priorities, mixed combinators will be grouped from le
 bypass precedence rules.
 
 
-### Group definitions
-Groups can be used to group related items together or to bypass precedence rules.
-Each group can additionally contain references to other types, groups or single characters:
-```html
-<1-or-2> = ['1' | '2']
-<a-b-c> = ['abc' <1-or-2>]
-entry [<a-b-c>]
-```
-
-Groups can always have [multipliers](#multipliers) appended to it:
-```html
-entry ['a' | 'b' | ['c' 'd']*]+
-```
-
-
 ### Type definition
 A type is a re-usable form of a group which can be used in other declarations, it's even possible to create recursive parser with it!
 
@@ -95,7 +106,7 @@ entry [<my-type>+]
 ```
 
 
-### Block definitions
+### Block definition
 Blocks (or scopes) can be used to **scope** [types](#type-definition) and **group** related [types](#type-definition) together without interfering other types.
 
 Each block can have exactly one, optional `default` export which can be used to define the behaviour if you use it without referring to
@@ -137,7 +148,7 @@ entry {
 ```
 
 The result of using '+5' would be:
-```json
+```
 {
    prefix: '+',
    num: '5' 
@@ -145,3 +156,54 @@ The result of using '+5' would be:
 ```
 
 Without tags it would just return `+5` as plain-string.
+
+
+### Operators
+Operators can be used to specify how the result of a type should be handles.
+
+#### Spread operator
+The spread-operator (`...`) can be prepend on a type to join (or consume) it's result:
+
+```js
+const parse = compile(`
+    <char> = {
+        <uppercase> = [(A - Z)+]
+        <lowercase> = [(a - z)+]
+    
+        // This returns {up: string | null, low: string | null}
+        default [
+            [<uppercase#up> <lowercase#low>]
+        ]
+    }
+
+    <num> = [(0 - 9)+]
+
+    entry {
+        default [...<char> <num#num>]
+    }
+`);
+
+console.log(parse('ABCabc123'));
+```
+
+The code above would log the following:
+```json
+{
+    "up": "ABC",
+    "low": "abc",
+    "num": "123"
+}
+```
+
+As we can see `up` and `low` bubbled up in their hierarchy and are now assigned to the root result.
+If there wouldn't be a spread operator and `<char>` would be tagged with `char` it'd print the following:
+
+```json
+{
+    "char": {
+        "up": "ABC",
+        "low": "abc"
+    },
+    "num": "123"
+}
+```
