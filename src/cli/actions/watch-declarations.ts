@@ -28,7 +28,7 @@ export default (glob: string, cb: (parser: Parser) => void): void => {
         }
 
         try {
-            console.log(yellow('\n[INFO] COMPILE...'));
+            console.log(yellow('[INFO] COMPILE...'));
             parser = compileDeclarations(fullSource);
         } catch (e) {
             console.log(red('[ERROR] Failed to compile sources...'));
