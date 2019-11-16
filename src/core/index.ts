@@ -1,3 +1,4 @@
+import {ENV_VERSION}         from '../env';
 import {parseAST}            from './ast';
 import {compileDeclarations} from './compiler';
 import {Parser}              from './compiler/types';
@@ -18,4 +19,4 @@ export const compile = (str: string): Parser => {
 /**
  * Current version
  */
-export const version = '0.0.4';
+export const version = ENV_VERSION;

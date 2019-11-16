@@ -3,15 +3,15 @@ import {blueBright, red} from 'chalk';
 import program           from 'commander';
 import * as fs           from 'fs';
 import path              from 'path';
+import {ENV_VERSION}     from '../env';
 import compilation       from './actions/compilation';
 
-// TODO: Dynamically inject env vars
 program
     .name('bvc')
     .description('Bavary cli')
-    .usage('[files] [input] [options...]')
+    .usage('[files] [options...]')
     .option('-w, --watch', 'Watch and auto-reload on changes')
-    .version('0.0.4', '-v, --version')
+    .version(ENV_VERSION, '-v, --version')
     .parse(process.argv);
 
 const [globSource, input] = program.args.map(v => path.resolve(v));
@@ -28,5 +28,5 @@ if (!globSource) {
     program.help();
 }
 
-console.log(`Using bavary: ${blueBright('v0.0.4')}`);
+console.log(`Using bavary: ${blueBright(program._version)}`);
 compilation(globSource, input, program.watch);

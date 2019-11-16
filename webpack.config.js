@@ -1,6 +1,7 @@
 const {version} = require('./package');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
+const pkg = require('./package');
 
 const base = {
     mode: 'production',
@@ -56,6 +57,10 @@ module.exports = [
 
             new webpack.SourceMapDevToolPlugin({
                 filename: '[name].map'
+            }),
+
+            new webpack.DefinePlugin({
+                VERSION: JSON.stringify(pkg.version)
             })
         ],
 
@@ -98,6 +103,10 @@ module.exports = [
         plugins: [
             new webpack.BannerPlugin({
                 banner: `Bavary CLI ${version} MIT | https://github.com/Simonwep/bavary`
+            }),
+
+            new webpack.DefinePlugin({
+                VERSION: JSON.stringify(pkg.version)
             })
         ],
 
