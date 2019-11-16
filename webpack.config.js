@@ -69,12 +69,7 @@ module.exports = [
             minimizer: [
                 new TerserPlugin({
                     extractComments: false,
-                    sourceMap: true,
-                    terserOptions: {
-                        mangle: {
-                            properties: true
-                        }
-                    }
+                    sourceMap: true
                 })
             ]
         }
