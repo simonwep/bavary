@@ -19,7 +19,7 @@ const parser = [
  * @param str
  * @returns {[]}
  */
-export default (str: string): Array<RawType> => {
+export const tokenize = (str: string): Array<RawType> => {
     const stream = new Streamable(str);
     const tokens: Array<RawType> = [];
 
