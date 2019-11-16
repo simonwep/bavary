@@ -8,8 +8,10 @@ export default (path: string, cb: (source: string) => void): void => {
     // Watch and recompile declarations
     chokidar.watch(path).on('change', file => {
         cb(fs.readFileSync(file, 'utf8'));
+    }).on('add', file => {
+        cb(fs.readFileSync(file, 'utf8'));
     }).on('unlink', () => {
-        console.log(redBright('Source file not longer available...'));
+        console.log(redBright('[ERROR] Source file not longer available...'));
         process.exit(0);
     });
 }

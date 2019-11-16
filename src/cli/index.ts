@@ -11,6 +11,8 @@ program
     .description('Bavary cli')
     .usage('[files] [options...]')
     .option('-w, --watch', 'Watch and auto-reload on changes')
+    .option('-o, --output <file>', 'Write parsing results to file')
+    .option('-p, --prettify', 'Prettify result (only active if --output is set)')
     .version(ENV_VERSION, '-v, --version')
     .parse(process.argv);
 
@@ -29,4 +31,8 @@ if (!globSource) {
 }
 
 console.log(`Using bavary: ${blueBright(program._version)}`);
-compilation(globSource, input, program.watch);
+compilation(globSource, input, {
+    watch: program.watch,
+    output: program.output,
+    prettify: program.prettify,
+});
