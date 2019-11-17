@@ -2,6 +2,7 @@ const {version} = require('./package');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const pkg = require('./package');
+const path = require('path');
 
 const base = {
     mode: 'production',
@@ -10,6 +11,7 @@ const base = {
         rules: [
             {
                 test: /\.(js|ts)$/,
+                include: path.resolve(__dirname, 'src'),
                 use: [
                     'ts-loader',
                     'eslint-loader'
@@ -110,7 +112,7 @@ module.exports = [
             minimizer: [
                 new TerserPlugin({
                     extractComments: false,
-                    sourceMap: true,
+                    sourceMap: false,
                     terserOptions: {
                         keep_classnames: true,
                         keep_fnames: true,
