@@ -1,6 +1,8 @@
 <h3 align="center">
-    <img src="https://user-images.githubusercontent.com/30767528/68051553-fd5ebc80-fce7-11e9-9f32-edad69e40584.png" alt="Logo">
+    <img src="https://user-images.githubusercontent.com/30767528/69007379-69befa00-093d-11ea-96ac-816d3e9ea6b4.png" alt="Logo">
 </h3>
+
+<br>
 
 <p align="center">
     <img alt="gzip size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/bavary@0.0.3/dist/bavary.min.js?compression=gzip&style=flat-square">
@@ -39,29 +41,6 @@ Include directly via jsdelivr:
 ```html
 <script src="https://cdn.jsdelivr.net/npm/graceful-ws/dist/bavary.min.js"></script>
 ```
-
-<h3 align="center">
-    <img src="https://user-images.githubusercontent.com/30767528/68051553-fd5ebc80-fce7-11e9-9f32-edad69e40584.png" alt="Logo">
-</h3>
-
-<p align="center">
-    <img alt="gzip size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/bavary@0.0.3/dist/bavary.min.js?compression=gzip&style=flat-square">
-    <img alt="brotli size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/bavary@0.0.3/dist/bavary.min.js?compression=brotli&style=flat-square">
-    <a href='https://coveralls.io/github/Simonwep/bavary?branch=master'><img 
-       src='https://img.shields.io/coveralls/github/Simonwep/bavary?style=flat-square' 
-       alt='Coverage Status'/></a>
-    <a href="https://travis-ci.org/Simonwep/bavary"><img
-       alt="Build Status"
-       src="https://img.shields.io/travis/Simonwep/bavary.svg?style=flat-square"></a>
-    <a href="https://www.npmjs.com/package/bavary"><img
-       alt="Download count"
-       src="https://img.shields.io/npm/dm/bavary.svg?style=flat-square"></a>
-    <img alt="Current version" src="https://img.shields.io/github/tag/Simonwep/bavary.svg?color=21068E&label=version&style=flat-square">
-    <a href="https://www.patreon.com/simonwep"><img
-       alt="Support me"
-       src="https://img.shields.io/badge/patreon-support-260DD3.svg?style=flat-square"></a>
-</p>
-
 
 ## Getting Started
 ⚠ Bavary is currently **not stable** and **heavily under development**.
