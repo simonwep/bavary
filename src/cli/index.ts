@@ -20,7 +20,7 @@ const [globSource, input] = program.args.map(v => path.resolve(v));
 
 // Validate base arguments
 if (!globSource) {
-    console.log(red('Error: Missing declarations source.'));
+    console.log(red('[RERROR] Missing declarations source.'));
     program.help();
 } else if (!input) {
     console.log(red('Error: Missing input file.'));

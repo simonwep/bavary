@@ -1,15 +1,15 @@
 /* eslint-disable no-console */
-import {greenBright, red, yellow} from 'chalk';
-import chokidar                   from 'chokidar';
-import * as fs                    from 'fs';
-import {setTimeout}               from 'timers';
-import {parseAST}                 from '../../core/ast';
-import {Declaration}              from '../../core/ast/types';
-import {compileDeclarations}      from '../../core/compiler';
-import {Parser}                   from '../../core/compiler/types';
-import {tokenize}                 from '../../core/tokenizer';
-import {createPathString}         from '../tools/prettify-file-path';
-import removeFromArray            from '../tools/remove-from-array';
+import chokidar              from 'chokidar';
+import * as fs               from 'fs';
+import {setTimeout}          from 'timers';
+import {parseAST}            from '../../core/ast';
+import {Declaration}         from '../../core/ast/types';
+import {compileDeclarations} from '../../core/compiler';
+import {Parser}              from '../../core/compiler/types';
+import {tokenize}            from '../../core/tokenizer';
+import {LEVEL, log}          from '../tools/log';
+import {createPathString}    from '../tools/prettify-file-path';
+import removeFromArray       from '../tools/remove-from-array';
 
 export default (glob: string, cb: (parser: Parser) => void): void => {
     const source: Map<string, Array<Declaration>> = new Map();
@@ -28,10 +28,10 @@ export default (glob: string, cb: (parser: Parser) => void): void => {
         }
 
         try {
-            console.log(yellow('[INFO] COMPILE...'));
+            log('Compile...', LEVEL.INFO);
             parser = compileDeclarations(fullSource);
         } catch (e) {
-            console.log(red('[ERROR] Failed to compile sources...'));
+            log('Failed to compile sources', LEVEL.ERROR);
             console.log(e.message);
             return;
         }
@@ -48,13 +48,13 @@ export default (glob: string, cb: (parser: Parser) => void): void => {
 
             // File contains no more errors
             if (removeFromArray(erroredFiles, file)) {
-                console.log(greenBright(`[INFO] Fixed ${createPathString(file)}`));
+                log(`Fixed ${createPathString(file)}`, LEVEL.OK);
             }
         } catch (e) {
-            console.log(red(`[ERROR] Failed to compile ${createPathString(file)}`));
+            log(`Failed to compile ${createPathString(file)}`, LEVEL.ERROR);
             console.log(e.message);
-            console.log(yellow('[INFO] Waiting for changes...'));
 
+            log('Waiting for changes...', LEVEL.WARN);
             if (!erroredFiles.includes(file)) {
                 erroredFiles.push(file);
             }
@@ -77,13 +77,13 @@ export default (glob: string, cb: (parser: Parser) => void): void => {
         interval: 500,
         binaryInterval: 500
     }).on('change', file => {
-        console.log(yellow(`[INFO] Changed: ${createPathString(file)}`));
+        log(`Changed: ${createPathString(file)}`, LEVEL.INFO);
         updateSourceFile(file);
     }).on('add', file => {
-        console.log(greenBright(`[INFO] Added: ${createPathString(file)}`));
+        log(`Added: ${createPathString(file)}`, LEVEL.INFO);
         updateSourceFile(file);
     }).on('unlink', file => {
-        console.log(yellow(`[WARN] Removed: ${createPathString(file)}`));
+        log(`Removed: ${createPathString(file)}`, LEVEL.WARN);
 
         // Remove file from errored-list and delete ast-tree from it
         removeFromArray(erroredFiles, file);

@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
-import {green, red}       from 'chalk';
+import {green}            from 'chalk';
 import * as fs            from 'fs';
 import {Parser}           from '../../core/compiler/types';
+import {LEVEL, log}       from '../tools/log';
 import {createPathString} from '../tools/prettify-file-path';
 
 export default (source = '', parser: Parser | null, output?: string, prettify?: boolean): void => {
@@ -9,13 +10,13 @@ export default (source = '', parser: Parser | null, output?: string, prettify?: 
         const result = parser(source);
 
         if (result === null) {
-            console.log(red('[INFO] Nothing matched'));
+            log('Nothing matched', LEVEL.INFO);
         } else if (output) {
             const data = prettify ? JSON.stringify(result, null, 2) : JSON.stringify(result);
 
             // Write to disk
             fs.writeFileSync(output, data);
-            console.log(green(`[SUCCESS] Result saved in ${createPathString(output)}`));
+            log(`Result saved in ${createPathString(output)}`, LEVEL.OK);
         } else {
             console.log();
             console.log(green(
@@ -23,6 +24,6 @@ export default (source = '', parser: Parser | null, output?: string, prettify?: 
             ));
         }
     } else {
-        console.log('[INFO] Waiting until files are compiled...');
+        log('Waiting until files are compiled...', LEVEL.INFO);
     }
 };

@@ -1,14 +1,16 @@
 /* eslint-disable no-console */
-import {blueBright, cyan, green, red, yellow} from 'chalk';
-import * as fs                                from 'fs';
-import glob                                   from 'glob';
-import path                                   from 'path';
-import {compile}                              from '../../core';
-import {Parser}                               from '../../core/compiler/types';
-import {createPathString}                     from '../tools/prettify-file-path';
-import parse                                  from './parse';
-import watchDeclarations                      from './watch-declarations';
-import watchSource                            from './watch-source';
+import {blueBright, green} from 'chalk';
+import * as fs             from 'fs';
+import glob                from 'glob';
+import path                from 'path';
+import {compile}           from '../../core';
+import {Parser}            from '../../core/compiler/types';
+import {LEVEL, log}        from '../tools/log';
+import {createPathString}  from '../tools/prettify-file-path';
+import parse               from './parse';
+import watchDeclarations   from './watch-declarations';
+import watchSource         from './watch-source';
+
 
 /**
  * Responsible for compilatation and watching source-files
@@ -34,7 +36,7 @@ export default (
         const outputDir = path.dirname(output);
 
         if (!fs.existsSync(outputDir)) {
-            console.log(red(`[ERROR] Invalid directory: ${outputDir}`));
+            log(`Invalid directory: ${outputDir}`, LEVEL.ERROR);
             process.exit(1);
         }
 
@@ -45,7 +47,7 @@ export default (
     console.log();
 
     if (watch) {
-        console.log(cyan('[INFO] Watching declartions and source file(s)...'));
+        log('Watching declartions and source file(s)...', LEVEL.INFO);
         let storedParser: Parser | null = null;
         let storedSource = '';
 
@@ -68,10 +70,10 @@ export default (
             }
 
             for (const match of matches) {
-                console.log(blueBright(`[INFO] Include ${createPathString(match)}`));
+                log(`Include ${createPathString(match)}`, LEVEL.INFO);
             }
 
-            console.log(yellow('\n[INFO] Compiling...'));
+            log('Compiling...', LEVEL.INFO);
             const source = fs.readFileSync(input, 'utf8');
             const declarations = matches
                 .map(v => fs.readFileSync(v, 'utf8'))

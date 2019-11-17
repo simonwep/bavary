@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import {redBright} from 'chalk';
-import chokidar    from 'chokidar';
-import * as fs     from 'fs';
+import chokidar     from 'chokidar';
+import * as fs      from 'fs';
+import {LEVEL, log} from '../tools/log';
 
 export default (path: string, cb: (source: string) => void): void => {
 
@@ -11,7 +11,7 @@ export default (path: string, cb: (source: string) => void): void => {
     }).on('add', file => {
         cb(fs.readFileSync(file, 'utf8'));
     }).on('unlink', () => {
-        console.log(redBright('[ERROR] Source file not longer available...'));
+        log(`Source file "${path}" not longer available...`, LEVEL.ERROR);
         process.exit(0);
     });
 }
