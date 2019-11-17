@@ -8,6 +8,7 @@ module.exports = maybe<Reference | null>(stream => {
     const spreadOperator = require('./spread-operator');
     const identifier = require('./identifier');
     const multiplier = require('./multiplier');
+    const extensions = require('./extensions');
     const string = require('./string');
 
     // It may have a spread operator attached to it
@@ -42,6 +43,7 @@ module.exports = maybe<Reference | null>(stream => {
         type: 'reference',
         multiplier: multiplier(stream),
         value: seq.value,
+        extensions: extensions(stream),
         spread: hasSpreadOperator,
         tag
     } as Reference;

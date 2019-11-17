@@ -47,6 +47,7 @@ export type Type = {
 export type Reference = {
     type: 'reference';
     multiplier: Multiplier | null;
+    extensions: ExtensionSet | null;
     value: Array<string>;
     tag: string | null;
     spread: boolean;
@@ -55,6 +56,10 @@ export type Reference = {
 export type LookupSequence = {
     type: 'lookup-sequence';
     value: Array<string>;
+}
+
+export type ExtensionSet = {
+    [key: string]: string;
 }
 
 export type Identifier = {

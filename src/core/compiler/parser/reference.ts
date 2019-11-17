@@ -27,6 +27,16 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
     const isArray = Array.isArray(matches);
     const isString = typeof matches === 'string';
 
+    // Assign extensions
+    if (matches && decl.extensions) {
+
+        if (isArray || isString) {
+            throw new Error('Extensions can only be used on types which return an object.');
+        }
+
+        Object.assign(matches as object, decl.extensions);
+    }
+
     // Tags can be nullish
     if (decl.tag) {
 
@@ -47,11 +57,13 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
 
         // Declaration may be still optional through a '?'
         return !!(decl.multiplier && decl.multiplier.type === 'optional');
-    } else if (decl.spread) {
+    }
+
+    if (decl.spread) {
 
         // Spread operator won't work with strings or arrays
         if (isArray || isString) {
-            throw new Error(`"${decl.value}" dosn't return a object which is required for the spread operator to work.`);
+            throw new Error(`"${decl.value}" doesn't return a object which is required for the spread operator to work.`);
         }
 
         // Assign result to current object
