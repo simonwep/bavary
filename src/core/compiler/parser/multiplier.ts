@@ -1,10 +1,24 @@
-import {ASTNode, CharacterSelection, Group, MultiplierRange, Reference} from '../../ast/types';
-import Streamable                                                       from '../../stream';
-import {ParsingResult, Scope}                                           from '../types';
+import {CharacterSelection, Group, MultiplierRange, Reference} from '../../ast/types';
+import Streamable                                              from '../../stream';
+import {ParsingResult, Scope}                                  from '../types';
 
-export default <result>(fn: (stream: Streamable<string>, decl: ASTNode, scope: Scope, result: ParsingResult) => result | null) => {
+type typesWhoCouldHaveMultiplierAttachedToIt = Group | Reference | CharacterSelection;
 
-    return (stream: Streamable<string>, decl: Group | Reference | CharacterSelection, scope: Scope, result: ParsingResult): result | Array<result> | null => {
+export default <result, declarationType extends typesWhoCouldHaveMultiplierAttachedToIt>(
+    fn: (
+        stream: Streamable<string>,
+        decl: declarationType,
+        scope: Scope,
+        result: ParsingResult
+    ) => result | null
+) => {
+
+    return (
+        stream: Streamable<string>,
+        decl: declarationType,
+        scope: Scope,
+        result: ParsingResult
+    ): result | Array<result> | null => {
         const parse = (): result | null => fn(stream, decl, scope, result);
         const parseAll = (): Array<result> => {
             const values: Array<result> = [];

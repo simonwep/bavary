@@ -3,7 +3,7 @@ import serialize                                 from '../tools/serialize';
 import {ParsingResult, ParsingResultObjectValue} from '../types';
 import multiplier                                from './multiplier';
 
-module.exports = multiplier<ParsingResultObjectValue>((stream, decl, scope, result: ParsingResult = {
+module.exports = multiplier<ParsingResultObjectValue, Group>((stream, decl, scope, result: ParsingResult = {
     obj: {},
     str: '',
     pure: true
@@ -14,7 +14,7 @@ module.exports = multiplier<ParsingResultObjectValue>((stream, decl, scope, resu
     // Remember current raw result in case the group fails
     const previousRawString = result.str;
 
-    const decs = (decl as Group).value;
+    const decs = decl.value;
     for (let i = 0; i < decs.length; i++) {
         const dec = decs[i];
 
@@ -32,9 +32,9 @@ module.exports = multiplier<ParsingResultObjectValue>((stream, decl, scope, resu
     }
 
     // Group may have extensions
-    if ((decl as Group).extensions) {
+    if (decl.extensions) {
         result.pure = false;
-        Object.assign(result.obj, (decl as Group).extensions);
+        Object.assign(result.obj, decl.extensions);
     }
 
     stream.recycle();

@@ -21,9 +21,11 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
     const [newScope, targetBody] = resolvedScope;
 
     // Type may have a multiplier attached to it
-    const matches = multiplier<ParsingResultObjectValue>(
+    const matches = multiplier<ParsingResultObjectValue, Reference>(
         () => group(stream, targetBody, newScope)
     )(stream, decl, newScope, result);
+
+    // Identify result type
     const isArray = Array.isArray(matches);
     const isString = typeof matches === 'string';
 

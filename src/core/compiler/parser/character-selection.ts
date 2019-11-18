@@ -27,7 +27,7 @@ module.exports = (stream: Streamable<string>, decl: CharacterSelection, scope: S
     const {included, excluded} = decl;
 
     // Type may have a multiplier attached to it
-    const matches = multiplier<string>(() => {
+    const matches = multiplier<string, CharacterSelection>(() => {
 
         if (stream.hasNext()) {
 
