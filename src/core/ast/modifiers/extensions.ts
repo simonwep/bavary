@@ -8,8 +8,8 @@ import {ExtensionSet} from '../types';
  * @type {Function}
  */
 module.exports = maybe<ExtensionSet | null>(stream => {
-    const identifier = require('./identifier');
-    const string = require('./string');
+    const identifier = require('../nodes/identifier');
+    const string = require('../nodes/string');
 
     if (!optional(stream, 'kw', 'with')) {
         return null;

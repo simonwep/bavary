@@ -5,10 +5,10 @@ import {Reference} from '../types';
 
 module.exports = maybe<Reference | null>(stream => {
     const lookupSequence = require('./lookup-sequence');
-    const spreadOperator = require('./spread-operator');
+    const spreadOperator = require('../modifiers/spread-operator');
     const identifier = require('./identifier');
     const multiplier = require('./multiplier');
-    const extensions = require('./extensions');
+    const extensions = require('../modifiers/extensions');
     const string = require('./string');
 
     // It may have a spread operator attached to it
