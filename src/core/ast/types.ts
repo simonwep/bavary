@@ -1,6 +1,5 @@
-export type ASTNode = {
-    type: string;
-}
+export type ASTNode = Declaration | Combinator | CharacterSelection |
+    Identifier | Type | Group | Multiplier | Reference | Block | string;
 
 export type DeclarationValue = Group | Block;
 export type DeclarationVariant = 'entry' | 'default' | 'export' | null;
@@ -9,7 +8,7 @@ export type Declaration = {
     name: string | null;
     variant: DeclarationVariant;
     value: DeclarationValue;
-} & ASTNode;
+}
 
 export type GroupValue = Reference | Str | GroupedCombinator | Group;
 export type Group = {
@@ -17,7 +16,7 @@ export type Group = {
     multiplier: Multiplier;
     extensions: ExtensionSet | null;
     value: Array<GroupValue>;
-} // TODO: Add missing ASTNode parent
+}
 
 export type GroupedCombinator = {
     type: 'combinator';
