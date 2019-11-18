@@ -30,7 +30,7 @@ if (!globSource) {
     program.help();
 }
 
-console.log(`Using bavary: ${blueBright(program._version)}`);
+console.log(`Using bavary: ${blueBright(`v${program._version}`)}`);
 compilation(globSource, input, {
     watch: program.watch,
     output: program.output,
