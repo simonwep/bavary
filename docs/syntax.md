@@ -9,7 +9,8 @@
 6. [Blocks](#block-definition) _- Scope [types](#type-definition) an things which are related to each other._
 7. [Tags](#tags) _- Give used [types](#type-definition) a name._
 8. [Operators](#operators) _- Specify how a result should be processed._  
-   8.1. [Spread Operator](#spread-operator) _- Let the result of a [types](#type-definition) bubble up._
+   8.1. [Spread Operator](#spread-operator) _- Let the result of a [type](#type-definition) bubble up._   
+   8.2. [Extensions](#extensions) _- Extend the result of a [type](#type-definition) with custom properties._
 
 ### Entry type
 Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type declaration](#type-definition) **or** 
@@ -207,3 +208,49 @@ If there wouldn't be a spread operator and `<char>` would be tagged with `char` 
     "num": "123"
 }
 ```
+
+#### Extensions
+Extensions can be used to extend the result of a [type](#type-definition) or [group](#group-definition) 
+and must at least contain **one kw-pair**.
+
+If used on types the target **must** return an object.
+
+```js
+const parse = compile(`
+
+    // <char> returns an object since tags are used within it
+    <char> = {
+        <uppercase> = [(A - Z)+]
+
+        default [
+            [<uppercase#up>]
+        ]
+    }
+
+    entry {
+        default [
+            <char#ch> with (
+                firstProp = 'Value A',
+                second = 'Another value'
+            ) 
+        ]
+    }
+`);
+
+console.log(parse('ABC'));
+```
+
+The code above would log the following:
+```
+{
+    "ch": {
+        "up": "ABC",
+        "firstProp": "Value A",    // This is a custom property!
+        "second": "Another value"  // ...
+    }   
+}
+```
+
+Each kw-pair must be seperated with commas, the name must be a valid identifier and the value always a string.
+
+> They can be used in combination with the spread operator!

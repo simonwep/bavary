@@ -17,6 +17,12 @@ describe('[COM] Extensions', () => {
         expect(() => parse('0')).to.throw();
     });
 
+    it('Should throw an error if empty', () => {
+        expect(() => compile(`
+            entry [['A'] with ()]
+        `)).to.throw();
+    });
+
     it('Should properly work stand-alone', () => {
         const parse = compile(`
             <char> = {
