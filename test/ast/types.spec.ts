@@ -11,6 +11,7 @@ describe('[AST] Types', () => {
                 'variant': 'entry',
                 'value': {
                     'type': 'group',
+                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {

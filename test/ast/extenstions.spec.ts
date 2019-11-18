@@ -18,6 +18,7 @@ describe('[AST] Extensions', () => {
                 'variant': 'entry',
                 'value': {
                     'type': 'group',
+                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {

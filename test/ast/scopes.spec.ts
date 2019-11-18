@@ -22,6 +22,7 @@ describe('[AST] Scopes', () => {
                             'variant': 'default',
                             'value': {
                                 'type': 'group',
+                                'extensions': null,
                                 'multiplier': null,
                                 'value': [
                                     {
@@ -65,6 +66,7 @@ describe('[AST] Scopes', () => {
                                         'variant': 'default',
                                         'value': {
                                             'type': 'group',
+                                            'extensions': null,
                                             'multiplier': null,
                                             'value': [
                                                 {

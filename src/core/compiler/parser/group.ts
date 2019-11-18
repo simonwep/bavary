@@ -31,6 +31,12 @@ module.exports = multiplier<ParsingResultObjectValue>((stream, decl, scope, resu
         }
     }
 
+    // Group may have extensions
+    if ((decl as Group).extensions) {
+        result.pure = false;
+        Object.assign(result.obj, (decl as Group).extensions);
+    }
+
     stream.recycle();
     return result.pure ? result.str : result.obj;
 });

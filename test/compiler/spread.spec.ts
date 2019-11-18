@@ -3,6 +3,43 @@ import {compile} from '../../src/core';
 
 describe('[COM] Spread operator', () => {
 
+    it('Should throw an error if it\'s used on a type which returns a string', () => {
+        const parse = compile(`
+            <char> = [(A - Z)+]
+           
+            entry {
+                default [...<char>]
+            }
+        `);
+
+        expect(() => parse('A')).to.throw();
+    });
+
+    it('Should throw an error if it\'s used on a type which returns an array', () => {
+        const parse = compile(`
+            <char> = [[(A - Z)]+]
+           
+            entry {
+                default [...<char>]
+            }
+        `);
+
+        expect(() => parse('A')).to.throw();
+    });
+
+    it('Should throw an error if it\'s used in combination with a tag', () => {
+        expect(() => compile(`
+            <char> = {
+                <num> = [(0 - 9)+]
+                default [ <num#number>]
+            }
+            
+            entry [
+                ...<char#ooops>
+            ]
+        `)).to.throw();
+    });
+
     it('Should properly assign nested object properties to the parent', () => {
         const parse = compile(`
             <char> = {
@@ -26,29 +63,5 @@ describe('[COM] Spread operator', () => {
         expect(parse('aa2')).to.deep.equal({up: null, low: 'aa', num: '2'});
         expect(parse('AAaa123')).to.deep.equal({up: 'AA', low: 'aa', num: '123'});
         expect(parse('abc')).to.equal(null);
-    });
-
-    it('Should throw an error if it\'s used on a type which returns a string', () => {
-        const parse = compile(`
-            <char> = [(A - Z)+]
-           
-            entry {
-                default [...<char>]
-            }
-        `);
-
-        expect(() => parse('A')).to.throw();
-    });
-
-    it('Should throw an error if it\'s used on a type which returns an array', () => {
-        const parse = compile(`
-            <char> = [[(A - Z)]+]
-           
-            entry {
-                default [...<char>]
-            }
-        `);
-
-        expect(() => parse('A')).to.throw();
     });
 });

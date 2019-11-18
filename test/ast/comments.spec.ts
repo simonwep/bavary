@@ -18,6 +18,7 @@ describe('[AST] Comments', () => {
                 'variant': null,
                 'value': {
                     'type': 'group',
+                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {

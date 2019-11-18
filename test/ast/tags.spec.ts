@@ -11,6 +11,7 @@ describe('[AST] Tags', () => {
                 'name': 'name',
                 'value': {
                     'type': 'group',
+                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {'type': 'string', 'value': 'C'},
@@ -36,6 +37,7 @@ describe('[AST] Tags', () => {
                 'name': 'name',
                 'value': {
                     'type': 'group',
+                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {
@@ -60,6 +62,7 @@ describe('[AST] Tags', () => {
                 'name': 'name',
                 'value': {
                     'type': 'group',
+                    'extensions': null,
                     'multiplier': {
                         'type': 'zero-infinity',
                         'value': '*'

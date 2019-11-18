@@ -15,8 +15,9 @@ export type GroupValue = Reference | Str | GroupedCombinator | Group;
 export type Group = {
     type: 'group';
     multiplier: Multiplier;
+    extensions: ExtensionSet | null;
     value: Array<GroupValue>;
-}
+} // TODO: Add missing ASTNode parent
 
 export type GroupedCombinator = {
     type: 'combinator';

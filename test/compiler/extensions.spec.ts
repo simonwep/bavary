@@ -46,22 +46,6 @@ describe('[COM] Extensions', () => {
         });
     });
 
-    it('Should throw an error if it\'s used in combination with a tag', () => {
-        expect(() => compile(`
-            <char> = {
-                <num> = [(0 - 9)+]
-                default [ <num#number>]
-            }
-            
-            entry [
-                ...<char#ooops> with (
-                    hello = 'world',
-                    whata = 'nice day'
-                )
-            ]
-        `)).to.throw();
-    });
-
     it('Should properly work with the spread operator', () => {
         const parse = compile(`
             <char> = {
@@ -85,6 +69,18 @@ describe('[COM] Extensions', () => {
             whata: 'nice day',
             number: '8',
             string: 'A'
+        });
+    });
+
+    it('Should work on groups', () => {
+        const parse = compile(`
+            entry [
+                [(0 - 9)+] with (hello = 'world')
+            ]
+        `);
+
+        expect(parse('10')).to.deep.equal({
+            hello: 'world'
         });
     });
 });
