@@ -7,7 +7,7 @@ export default (stream: Streamable<string>, end: string): string | null => {
     for (let ch = stream.next(); ; ch = stream.next()) {
 
         // Disallow line-breaks in escaped sequences
-        if (ch === '\n') {
+        if (ch === '\n' && !escaped) {
             return null;
         }
 
