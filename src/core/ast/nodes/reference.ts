@@ -5,13 +5,12 @@ import {Reference} from '../types';
 
 module.exports = maybe<Reference | null>(stream => {
     const spreadOperator = require('../modifiers/spread-operator');
+    const lookupSequence = require('../modifiers/lookup-sequence');
     const extensions = require('../modifiers/extensions');
-    const pipe = require('../modifiers/pipe');
-
-    const lookupSequence = require('./lookup-sequence');
     const identifier = require('./identifier');
-    const multiplier = require('./multiplier');
+    const pipe = require('../modifiers/pipe');
     const string = require('./string');
+    const multiplier = require('./multiplier');
 
     // It may have a spread operator attached to it
     const hasSpreadOperator = !!spreadOperator(stream);
@@ -47,7 +46,7 @@ module.exports = maybe<Reference | null>(stream => {
         extensions: extensions(stream),
         pipeInto: pipe(stream),
         spread: hasSpreadOperator,
-        value: seq.value,
+        value: seq,
         tag
     } as Reference;
 });

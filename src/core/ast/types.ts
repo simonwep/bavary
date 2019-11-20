@@ -54,11 +54,6 @@ export type Reference = {
     spread: boolean;
 }
 
-export type LookupSequence = {
-    type: 'lookup-sequence';
-    value: Array<string>;
-}
-
 export type ExtensionSet = {
     [key: string]: string;
 }
