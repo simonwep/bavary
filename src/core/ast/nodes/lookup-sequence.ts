@@ -6,7 +6,7 @@ import {LookupSequence} from '../types';
  * Parses a lookup-sequence
  * @type {Function}
  */
-module.exports = maybe<LookupSequence | null>(stream => {
+module.exports = maybe<LookupSequence | null>(stream => { // TODO: Remove extra type
     const identifier = require('./identifier');
     const sequence: Array<string> = [];
     let expectIdentifier = false;

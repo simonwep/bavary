@@ -1,15 +1,13 @@
 import {expect}         from 'chai';
 import {failAll, parse} from './tools';
 
-describe('[AST] Extensions', () => {
+describe('[AST] Pipe-ing', () => {
 
-    it('Should propely parse extensions assigned to a type', () => {
+    it('Should properly parse a piped result', () => {
         expect(parse(`
             entry [
-                <abc> with (
-                    hello = 'world',
-                    thats = 'awesome'
-                )
+                <abc#start>
+                <efg> -> start
             ]
         `)).to.deep.equal([
             {
@@ -18,21 +16,29 @@ describe('[AST] Extensions', () => {
                 'variant': 'entry',
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': null,
+                    'extensions': null,
                     'value': [
                         {
                             'type': 'reference',
                             'multiplier': null,
+                            'extensions': null,
                             'pipeInto': null,
+                            'spread': false,
                             'value': [
                                 'abc'
                             ],
-                            'extensions': {
-                                'hello': 'world',
-                                'thats': 'awesome'
-                            },
+                            'tag': 'start'
+                        },
+                        {
+                            'type': 'reference',
+                            'multiplier': null,
+                            'extensions': null,
+                            'pipeInto': 'start',
                             'spread': false,
+                            'value': [
+                                'efg'
+                            ],
                             'tag': null
                         }
                     ]
@@ -42,11 +48,8 @@ describe('[AST] Extensions', () => {
     });
 
     failAll([
-        'entry [ <abc> with ()]',
-        'entry [<abc> with (hello = )]',
-        'entry [<abc> with (hello = asda)]',
-        'entry [<abc> with (hello = \'world\',)]',
-        'entry [<abc> with (hello = \'\',)]',
-        'entry [<abc> with (hello = \'a)]'
+        'entry [<abc> <efg> -]',
+        'entry [<abc> <efg> ->]',
+        'entry [<abc> <efg> ->'
     ]);
 });

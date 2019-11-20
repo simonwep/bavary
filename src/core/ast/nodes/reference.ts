@@ -4,11 +4,13 @@ import optional    from '../tools/optional';
 import {Reference} from '../types';
 
 module.exports = maybe<Reference | null>(stream => {
-    const lookupSequence = require('./lookup-sequence');
     const spreadOperator = require('../modifiers/spread-operator');
+    const extensions = require('../modifiers/extensions');
+    const pipe = require('../modifiers/pipe');
+
+    const lookupSequence = require('./lookup-sequence');
     const identifier = require('./identifier');
     const multiplier = require('./multiplier');
-    const extensions = require('../modifiers/extensions');
     const string = require('./string');
 
     // It may have a spread operator attached to it
@@ -42,9 +44,10 @@ module.exports = maybe<Reference | null>(stream => {
     return {
         type: 'reference',
         multiplier: multiplier(stream),
-        value: seq.value,
         extensions: extensions(stream),
+        pipeInto: pipe(stream),
         spread: hasSpreadOperator,
+        value: seq.value,
         tag
     } as Reference;
 });

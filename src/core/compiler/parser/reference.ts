@@ -45,7 +45,18 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
             Object.assign(matches as object, decl.extensions);
         }
 
-        if (decl.spread) {
+        if (decl.pipeInto) {
+            const pipeTarget = decl.pipeInto;
+            const target = result.obj[pipeTarget];
+
+            if (!target) {
+                throw new Error(`Cannot pipe result into "${pipeTarget}". It isn't defined yet or cannot be found.`);
+            } else if (!Array.isArray(target) || !isArray) {
+                throw new Error(`Cannot pipe result into "${pipeTarget}" since the target or the result itself isn't an array.`);
+            }
+
+            target.push(...(matches as Array<ParsingResultObjectValue>));
+        } else if (decl.spread) {
 
             // Spread operator won't work with strings or arrays
             if (isArray || isString) {
@@ -59,16 +70,14 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
 
             // Since something was matched the result is not anymore "just a string"
             result.pure = false;
-        } else {
 
             // Perform appropriate action
-            if (isArray && (matches as Array<unknown>).every(v => typeof v === 'string')) {
-                result.str += (matches as Array<unknown>).join(''); // Concat string sequences
-            } else if (isString) {
-                result.str += matches as string;
-            } else {
-                throw new Error(`Type "${decl.value}" is missing a tag.`);
-            }
+        } else if (isArray && (matches as Array<unknown>).every(v => typeof v === 'string')) {
+            result.str += (matches as Array<unknown>).join(''); // Concat string sequences
+        } else if (isString) {
+            result.str += matches as string;
+        } else {
+            throw new Error(`Type "${decl.value}" is missing a tag.`);
         }
     } else {
 

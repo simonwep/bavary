@@ -18,6 +18,7 @@ describe('[AST] Types', () => {
                             'type': 'reference',
                             'spread': false,
                             'extensions': null,
+                            'pipeInto': null,
                             'multiplier': null,
                             'value': [
                                 'a',
