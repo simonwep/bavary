@@ -29,56 +29,54 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
     const isArray = Array.isArray(matches);
     const isString = typeof matches === 'string';
 
-    // Assign extensions
-    if (matches && decl.extensions) {
-
-        if (isArray || isString) {
-            throw new Error('Extensions can only be used on types which return an object.');
-        }
-
-        Object.assign(matches as object, decl.extensions);
+    // If reference has a tag immediatly attach result
+    if (decl.tag) {
+        result.obj[decl.tag] = matches;
     }
 
-    // Tags can be nullish
-    if (decl.tag) {
+    if (matches) {
 
-        // Save tag-result (could be null)
-        result.obj[decl.tag] = matches;
+        // Join extensions
+        if (decl.extensions) {
+            if (isArray || isString) {
+                throw new Error('Extensions can only be used on types which return an object.');
+            }
 
-        if (matches) {
+            Object.assign(matches as object, decl.extensions);
+        }
+
+        if (decl.spread) {
+
+            // Spread operator won't work with strings or arrays
+            if (isArray || isString) {
+                throw new Error(`"${decl.value}" doesn't return a object which is required for the spread operator to work.`);
+            }
+
+            // Assign result to current object
+            Object.assign(result.obj, matches);
+            result.pure = false;
+        } else if (decl.tag) {
 
             // Since something was matched the result is not anymore "just a string"
             result.pure = false;
-        }
-    }
+        } else {
 
-    if (!matches) {
+            // Perform appropriate action
+            if (isArray && (matches as Array<unknown>).every(v => typeof v === 'string')) {
+                result.str += (matches as Array<unknown>).join(''); // Concat string sequences
+            } else if (isString) {
+                result.str += matches as string;
+            } else {
+                throw new Error(`Type "${decl.value}" is missing a tag.`);
+            }
+        }
+    } else {
 
         // Restore previous stack position
         stream.pop();
 
         // Declaration may be still optional through a '?'
         return !!(decl.multiplier && decl.multiplier.type === 'optional');
-    }
-
-    if (decl.spread) {
-
-        // Spread operator won't work with strings or arrays
-        if (isArray || isString) {
-            throw new Error(`"${decl.value}" doesn't return a object which is required for the spread operator to work.`);
-        }
-
-        // Assign result to current object
-        Object.assign(result.obj, matches);
-        result.pure = false;
-    } else if (!decl.tag) {
-        if (isArray && (matches as Array<unknown>).every(v => typeof v === 'string')) {
-            result.str += (matches as Array<unknown>).join(''); // Concat string sequences
-        } else if (isString) {
-            result.str += matches as string;
-        } else {
-            throw new Error(`Type "${decl.value}" is missing a tag.`);
-        }
     }
 
     stream.recycle();
