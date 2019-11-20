@@ -39,6 +39,8 @@ Attention: all **punctuation characters** (such as `"`, `,` , `-`...) need to be
 Character selection could also have [multipliers](#multipliers) attached to it, for example `(a - z, except d - g, z){4, 7}`: Matches all characters **between `a` and `z`** except the range `d` to `g` and the character `z`
 4 to 7 times.
 
+**All punctuation characters** need to be escaped: `(\- - \+)` (`-` to `+`) / `(\\\n - \t)` (`\n` to `\t`, line-breaks need to be escaped too)
+
 
 ### Group definition
 Groups can be used to group related items together or to bypass precedence rules.
