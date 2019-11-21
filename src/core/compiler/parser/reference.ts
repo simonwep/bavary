@@ -28,6 +28,7 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
     // Identify result type
     const isArray = Array.isArray(matches);
     const isString = typeof matches === 'string';
+    const isObject = !isArray && !isString;
 
     // If reference has a tag immediatly attach result
     if (decl.tag) {
@@ -51,15 +52,26 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
 
             if (!target) {
                 throw new Error(`Cannot pipe result into "${pipeTarget}". It isn't defined yet or cannot be found.`);
-            } else if (!Array.isArray(target) || !isArray) {
-                throw new Error(`Cannot pipe result into "${pipeTarget}" since the target or the result itself isn't an array.`);
             }
 
-            target.push(...(matches as Array<ParsingResultObjectValue>));
+            // TODO: That's a mess, clean it up
+            if (Array.isArray(target)) {
+                if (isArray) {
+                    target.push(...(matches as Array<ParsingResultObjectValue>));
+                } else {
+                    throw new Error(`Cannot pipe result into "${pipeTarget}" since the target isn't an array.`);
+                }
+            } else if (typeof target === 'object') {
+                if (isObject) {
+                    Object.assign(target, matches);
+                } else {
+                    throw new Error(`Cannot pipe result into "${pipeTarget}" since the target isn't an object.`);
+                }
+            }
         } else if (decl.spread) {
 
             // Spread operator won't work with strings or arrays
-            if (isArray || isString) {
+            if (!isObject) {
                 throw new Error(`"${decl.value}" doesn't return a object which is required for the spread operator to work.`);
             }
 
