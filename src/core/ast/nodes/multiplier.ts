@@ -17,11 +17,14 @@ module.exports = maybe<Multiplier | null>(stream => {
         const start = expect(stream, 'num') as RawType;
 
         expect(stream, 'punc', ',');
-        const end = expect(stream, 'num') as RawType;
+        const end = optional(stream, 'num') as RawType;
 
-        // Validate range - tokenizer currently parses no negaive numbers
-        if ((end.value as number) - (start.value as number) < 0) {
-            stream.throwError('The difference between start and end-value cannot be negative or zero.');
+        if (end) {
+
+            // Validate range - tokenizer currently parses no negaive numbers
+            if ((end.value as number) - (start.value as number) < 0) {
+                stream.throwError('The difference between start and end-value cannot be negative or zero.');
+            }
         }
 
         expect(stream, 'punc', '}');
@@ -29,7 +32,7 @@ module.exports = maybe<Multiplier | null>(stream => {
             type: 'range',
             value: {
                 start: start.value,
-                end: end.value
+                end: end ? end.value : -1
             }
         } as Multiplier;
     }

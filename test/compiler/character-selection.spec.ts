@@ -38,7 +38,7 @@ describe('[COM] Character selection', () => {
 
     it('Should work with multipliers', () => {
         const parse = compile(`
-            entry [(A - Z)? (a - z except f - j){3,5}]
+            entry [(A - Z)? (a - z except f - j){3, 5}]
         `);
 
         expect(parse('abc')).to.equal('abc');
@@ -47,6 +47,16 @@ describe('[COM] Character selection', () => {
         expect(parse('Aabc')).to.equal('Aabc');
         expect(parse('aA')).to.equal(null);
         expect(parse('abcdef')).to.equal(null);
+        expect(parse('ab')).to.equal(null);
+    });
+
+    it('Should work with the n-infinity multipliers', () => {
+        const parse = compile(`
+            entry [(a - z){3,}]
+        `);
+
+        expect(parse('abc')).to.equal('abc');
+        expect(parse('abcdefg')).to.equal('abcdefg');
         expect(parse('ab')).to.equal(null);
     });
 });

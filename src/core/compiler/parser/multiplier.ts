@@ -55,7 +55,7 @@ export default <result, declarationType extends typesWhoCouldHaveMultiplierAttac
                     const {start, end} = value as MultiplierRange;
                     const values = parseAll();
 
-                    if (values.length < start || values.length > end) {
+                    if (values.length < start || (~end && values.length > end)) {
                         stream.pop();
                         return null;
                     }
