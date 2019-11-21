@@ -67,6 +67,10 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
                 } else {
                     throw new Error(`Cannot pipe result into "${pipeTarget}" since the target isn't an object.`);
                 }
+            } else if (isString) {
+                (result.obj[pipeTarget] as string) += matches;
+            } else {
+                throw new Error(`Cannot pipe result into "${pipeTarget}" since the target isn't a string.`);
             }
         } else if (decl.spread) {
 

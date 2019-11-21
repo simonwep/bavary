@@ -38,6 +38,22 @@ describe('[COM] Pipe-ing', () => {
         });
     });
 
+    it('Sould concat two strings', () => {
+        const parse = compile(`
+            <str> = [(a - z, A - Z)+]
+            <num> = [(0 - 9)+]
+        
+            entry [
+                <str#total>
+                <num> -> total
+            ]
+        `);
+
+        expect(parse('abc123')).to.deep.equal({
+            total: 'abc123'
+        });
+    });
+
     it('Should throw an error if the target isn\'t defined yet', () => {
         const parse = compile(`
             <num> = [(0 - 9)]+
@@ -54,7 +70,7 @@ describe('[COM] Pipe-ing', () => {
 
     it('Should throw an error if target dosn\'t matches the source scheme', () => {
 
-        // Array != object
+        // Array != Array
         expect(() => compile(`
             <num> = [(0 - 9)]+
             <cha> = [(a - z)]+
@@ -67,11 +83,23 @@ describe('[COM] Pipe-ing', () => {
             ]
         `)('4a')).to.throw();
 
-        // Object != Array
+        // Object != Object
         expect(() => compile(`
             <sub-num> = [(0 - 9)]+
             <num> = [<sub-num#sub>]
             <cha> = [(a - z)]+
+            
+            entry [
+                <cha#chars>
+                <num> -> chars
+            ]
+        `)('a1')).to.throw();
+
+        // String != String
+        expect(() => compile(`
+            <sub-num> = [(0 - 9)]+
+            <num> = [<sub-num#sub>]
+            <cha> = [(a - z)+]
             
             entry [
                 <cha#chars>
