@@ -40,11 +40,18 @@ module.exports = maybe<Reference | null>(stream => {
     }
 
     expect(stream, 'punc', '>');
+    const pipeTarget = pipe(stream);
+
+    // Piping cannot be done in combination with tag / spread
+    if (pipeTarget && (hasSpreadOperator || tag)) {
+        stream.throwError('Piping cannot be done if the spread-operator is used on it or it has a tag.');
+    }
+
     return {
         type: 'reference',
         multiplier: multiplier(stream),
         extensions: extensions(stream),
-        pipeInto: pipe(stream),
+        pipeInto: pipeTarget,
         spread: hasSpreadOperator,
         value: seq,
         tag

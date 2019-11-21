@@ -52,7 +52,7 @@ describe('[COM] Pipe-ing', () => {
         expect(() => parse('1a')).to.throw();
     });
 
-    it('Shoudl throw an error if target dosn\'t matches the source scheme', () => {
+    it('Should throw an error if target dosn\'t matches the source scheme', () => {
 
         // Array != object
         expect(() => compile(`

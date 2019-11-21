@@ -50,6 +50,8 @@ describe('[AST] Pipe-ing', () => {
     failAll([
         'entry [<abc> <efg> -]',
         'entry [<abc> <efg> ->]',
-        'entry [<abc> <efg> ->'
+        'entry [<abc> <efg> ->',
+        'entry [<abc#super> -> oh]',
+        'entry [...<abc> -> oh]'
     ]);
 });
