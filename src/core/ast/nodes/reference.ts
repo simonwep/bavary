@@ -40,6 +40,8 @@ module.exports = maybe<Reference | null>(stream => {
     }
 
     expect(stream, 'punc', '>');
+    const multipliers = multiplier(stream);
+    const exts = extensions(stream);
     const pipeTarget = pipe(stream);
 
     // Piping cannot be done in combination with tag / spread
@@ -49,8 +51,8 @@ module.exports = maybe<Reference | null>(stream => {
 
     return {
         type: 'reference',
-        multiplier: multiplier(stream),
-        extensions: extensions(stream),
+        multiplier: multipliers,
+        extensions: exts,
         pipeInto: pipeTarget,
         spread: hasSpreadOperator,
         value: seq,

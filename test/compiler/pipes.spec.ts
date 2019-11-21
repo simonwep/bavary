@@ -17,6 +17,22 @@ describe('[COM] Pipe-ing', () => {
         expect(parse('abc123')).to.deep.equal({chars: ['a', 'b', 'c', '1', '2', '3']});
     });
 
+    it('Should concat arrays while using multipliers', () => {
+        const parse = compile(`
+            <num> = [(0 - 9)]
+            <cha> = [(a - z)]
+            
+            entry [
+                <num#numma>+
+                <cha>+ -> numma
+            ]
+        `);
+
+        expect(parse('123abc')).to.deep.equal({
+            numma: ['1', '2', '3', 'a', 'b', 'c']
+        });
+    });
+
     it('Should join an object', () => {
         const parse = compile(`
             <num> = [(0 - 9)]+
