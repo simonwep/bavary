@@ -77,4 +77,43 @@ describe('[COM] Extensions', () => {
             string: 'A'
         });
     });
+
+    it('Should delete properties with the del command', () => {
+        const parse = compile(`
+            <chars> = {
+                export <uppercase> = [(A - Z)+]
+                export <lowercase> = [(a - z)+]
+            }
+            
+            <str> = [<chars:uppercase#upper>? <chars:lowercase#lower>?]
+            
+            entry [
+                ...<str{del upper}>
+
+                <str#res{
+                    del lower
+                }>
+            ]
+        `);
+
+        expect(parse('abcABC')).to.deep.equal({
+            lower: 'abc',
+            res: {
+                upper: 'ABC'
+            }
+        });
+    });
+
+    it('Should throw an error if del is used on a non-existing property', () => {
+        const parse = compile(`
+            <uppercase> = [(A - Z)+]
+            <str> = [<uppercase#upper>]
+            
+            entry [
+                <str#res{del lol}>
+            ]
+        `);
+
+        expect(() => parse('ABC')).to.throw();
+    });
 });

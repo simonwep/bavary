@@ -49,11 +49,11 @@ describe('[AST] Extensions', () => {
     });
 
     failAll([
-        'entry [ <abc> where ()]',
-        'entry [<abc> where (hello = )]',
-        'entry [<abc> where (hello = asda)]',
-        'entry [<abc> where (hello = \'world\',)]',
-        'entry [<abc> where (hello = \'\',)]',
-        'entry [<abc> where (hello = \'a)]'
+        'entry [<abc#wow{>]',
+        'entry [<abc#wow{def}>]',
+        'entry [<abc#wow{del}>]',
+        'entry [<abc#wow{del hello = }>]',
+        'entry [<abc#wow{def hello = }>]',
+        'entry [<abc#wow{def hello = "world",}>]',
     ]);
 });
