@@ -18,7 +18,7 @@ describe('[AST] Tags', () => {
                         {
                             'type': 'reference',
                             'multiplier': null,
-                            'pipeInto': null,
+                            'join': null,
                             'extensions': null,
                             'tag': 'abc-123',
                             'spread': false,
@@ -44,7 +44,7 @@ describe('[AST] Tags', () => {
                         {
                             'type': 'reference',
                             'extensions': null,
-                            'pipeInto': null,
+                            'join': null,
                             'multiplier': null,
                             'tag': 'Hello World',
                             'spread': false,
@@ -78,7 +78,7 @@ describe('[AST] Tags', () => {
                             },
                             'tag': 'abc-123',
                             'spread': false,
-                            'pipeInto': null,
+                            'join': null,
                             'extensions': null,
                             'value': ['another-type']
                         }

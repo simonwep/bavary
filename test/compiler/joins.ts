@@ -1,7 +1,7 @@
 import {expect}  from 'chai';
 import {compile} from '../../src/core';
 
-describe('[COM] Pipe-ing', () => {
+describe('[COM] Joins', () => {
 
     it('Should properly resolve and join an array', () => {
         const parse = compile(`

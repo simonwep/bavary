@@ -24,7 +24,7 @@ describe('[AST] Extensions', () => {
                         {
                             'type': 'reference',
                             'multiplier': null,
-                            'pipeInto': null,
+                            'join': null,
                             'value': [
                                 'abc'
                             ],

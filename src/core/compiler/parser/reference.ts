@@ -46,8 +46,8 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
             Object.assign(matches as object, decl.extensions);
         }
 
-        if (decl.pipeInto) {
-            const pipeTarget = decl.pipeInto;
+        if (decl.join) {
+            const pipeTarget = decl.join;
             const target = result.obj[pipeTarget];
 
             if (!target) {

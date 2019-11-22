@@ -48,7 +48,7 @@ export type Reference = {
     type: 'reference';
     multiplier: Multiplier | null;
     extensions: ExtensionSet | null;
-    pipeInto: string | null;
+    join: string | null;
     value: Array<string>;
     tag: string | null;
     spread: boolean;

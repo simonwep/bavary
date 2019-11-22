@@ -6,9 +6,9 @@ import {Reference} from '../types';
 module.exports = maybe<Reference | null>(stream => {
     const spreadOperator = require('../modifiers/spread-operator');
     const lookupSequence = require('../modifiers/lookup-sequence');
+    const joinTarget = require('../modifiers/join-target');
     const extensions = require('../modifiers/extensions');
     const identifier = require('./identifier');
-    const pipe = require('../modifiers/pipe');
     const string = require('./string');
     const multiplier = require('./multiplier');
 
@@ -42,7 +42,7 @@ module.exports = maybe<Reference | null>(stream => {
     expect(stream, 'punc', '>');
     const multipliers = multiplier(stream);
     const exts = extensions(stream);
-    const pipeTarget = pipe(stream);
+    const pipeTarget = joinTarget(stream);
 
     // Piping cannot be done in combination with tag / spread
     if (pipeTarget && (hasSpreadOperator || tag)) {
@@ -53,7 +53,7 @@ module.exports = maybe<Reference | null>(stream => {
         type: 'reference',
         multiplier: multipliers,
         extensions: exts,
-        pipeInto: pipeTarget,
+        join: pipeTarget,
         spread: hasSpreadOperator,
         value: seq,
         tag

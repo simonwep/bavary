@@ -1,7 +1,7 @@
 import {expect}         from 'chai';
 import {failAll, parse} from './tools';
 
-describe('[AST] Pipe-ing', () => {
+describe('[AST] Joins', () => {
 
     it('Should properly parse a piped result', () => {
         expect(parse(`
@@ -23,7 +23,7 @@ describe('[AST] Pipe-ing', () => {
                             'type': 'reference',
                             'multiplier': null,
                             'extensions': null,
-                            'pipeInto': null,
+                            'join': null,
                             'spread': false,
                             'value': [
                                 'abc'
@@ -34,7 +34,7 @@ describe('[AST] Pipe-ing', () => {
                             'type': 'reference',
                             'multiplier': null,
                             'extensions': null,
-                            'pipeInto': 'start',
+                            'join': 'start',
                             'spread': false,
                             'value': [
                                 'efg'
