@@ -9,7 +9,6 @@ module.exports = maybe<Reference | null>(stream => {
     const joinTarget = require('../modifiers/join-target');
     const extensions = require('../modifiers/extensions');
     const identifier = require('./identifier');
-    const string = require('./string');
     const multiplier = require('./multiplier');
 
     // It may have a spread operator attached to it
@@ -25,13 +24,13 @@ module.exports = maybe<Reference | null>(stream => {
     // It may have a tag
     let tag: string | null = null;
     if (optional(stream, 'punc', '#')) {
-        const opt = string(stream) || identifier(stream);
+        const ident = identifier(stream);
 
-        if (!opt) {
+        if (!ident) {
             stream.throwError('Expected string or identifier as tag.');
         }
 
-        tag = opt.value;
+        tag = ident.value;
     }
 
     // A tag shouldn't be combined with a spread operator

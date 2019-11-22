@@ -30,32 +30,6 @@ describe('[AST] Tags', () => {
         ]);
     });
 
-    it('Should accept strings as tags', () => {
-        expect(parse('<name> = [<another-type#"Hello World">]')).to.deep.equal([
-            {
-                'type': 'declaration',
-                'variant': null,
-                'name': 'name',
-                'value': {
-                    'type': 'group',
-                    'extensions': null,
-                    'multiplier': null,
-                    'value': [
-                        {
-                            'type': 'reference',
-                            'extensions': null,
-                            'join': null,
-                            'multiplier': null,
-                            'tag': 'Hello World',
-                            'spread': false,
-                            'value': ['another-type']
-                        }
-                    ]
-                }
-            }
-        ]);
-    });
-
     it('Should parse multipliers after tags', () => {
         expect(parse('<name> = [<another-type#abc-123>+]*')).to.deep.equal([
             {
