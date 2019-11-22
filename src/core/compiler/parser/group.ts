@@ -31,12 +31,6 @@ module.exports = multiplier<ParsingResultObjectValue, Group>((stream, decl, scop
         }
     }
 
-    // Group may have extensions
-    if (decl.extensions) {
-        result.pure = false;
-        Object.assign(result.obj, decl.extensions);
-    }
-
     stream.recycle();
     return result.pure ? result.str : result.obj;
 });

@@ -11,7 +11,6 @@ describe('[AST] Multipliers', () => {
                 'name': 'another-value',
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': {
                         'type': 'one-infinity',
                         'value': '+'
@@ -35,7 +34,6 @@ describe('[AST] Multipliers', () => {
                 'name': 'exported-value',
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {
@@ -56,7 +54,6 @@ describe('[AST] Multipliers', () => {
                 'variant': null,
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': {
                         'type': 'one-infinity',
                         'value': '+'
@@ -69,7 +66,6 @@ describe('[AST] Multipliers', () => {
                                 {'type': 'string', 'value': '0'},
                                 {
                                     'type': 'group',
-                                    'extensions': null,
                                     'multiplier': {
                                         'type': 'zero-infinity',
                                         'value': '*'
@@ -101,7 +97,6 @@ describe('[AST] Multipliers', () => {
                 'variant': null,
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': {
                         'type': 'range',
                         'value': {'start': 4, 'end': 6}

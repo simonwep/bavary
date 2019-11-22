@@ -39,11 +39,21 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
 
         // Join extensions
         if (decl.extensions) {
-            if (isArray || isString) {
-                throw new Error('Extensions can only be used on types which return an object.');
-            }
 
-            Object.assign(matches as object, decl.extensions);
+            // TODO: Move to seperate module
+            for (const ext of decl.extensions) {
+                switch (ext.type) {
+                    case 'def': {
+                        if (isArray || isString) {
+                            throw new Error('Extensions can only be used on types which return an object.');
+                        }
+
+                        (matches as {
+                            [key: string]: string;
+                        })[ext.key] = ext.value;
+                    }
+                }
+            }
         }
 
         if (decl.join) {

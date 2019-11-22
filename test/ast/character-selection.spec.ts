@@ -15,7 +15,6 @@ describe('[AST] Character selection', () => {
                 'variant': 'entry',
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {
@@ -40,7 +39,6 @@ describe('[AST] Character selection', () => {
                 'variant': 'entry',
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {
@@ -67,7 +65,6 @@ describe('[AST] Character selection', () => {
                 'variant': 'entry',
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {
@@ -97,7 +94,6 @@ describe('[AST] Character selection', () => {
                 'variant': 'entry',
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {
@@ -126,7 +122,6 @@ describe('[AST] Character selection', () => {
                 'variant': 'entry',
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {
@@ -154,7 +149,6 @@ describe('[AST] Character selection', () => {
                 'variant': 'entry',
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {

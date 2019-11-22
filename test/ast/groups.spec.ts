@@ -11,7 +11,6 @@ describe('[AST] Simple group declarations', () => {
                 'variant': null,
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {
@@ -37,7 +36,6 @@ describe('[AST] Simple group declarations', () => {
                 'variant': null,
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {
@@ -48,7 +46,6 @@ describe('[AST] Simple group declarations', () => {
                                 {'type': 'string', 'value': '1'},
                                 {
                                     'type': 'group',
-                                    'extensions': null,
                                     'multiplier': null,
                                     'value': [
                                         {
@@ -79,7 +76,6 @@ describe('[AST] Simple group declarations', () => {
                 'variant': 'entry',
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {
@@ -103,7 +99,6 @@ describe('[AST] Simple group declarations', () => {
                                 {'type': 'string', 'value': 'c'},
                                 {
                                     'type': 'group',
-                                    'extensions': null,
                                     'multiplier': null,
                                     'value': [
                                         {

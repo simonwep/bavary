@@ -6,7 +6,6 @@ import optional                               from '../tools/optional';
 import {Group, GroupedCombinator, GroupValue} from '../types';
 
 module.exports = maybe(stream => {
-    const extensions = require('../modifiers/extensions');
     const characterSelection = require('./character-selection');
     const combinator = require('./combinator');
     const multiplier = require('./multiplier');
@@ -74,7 +73,6 @@ module.exports = maybe(stream => {
     return {
         type: 'group',
         multiplier: multiplier(stream),
-        extensions: extensions(stream),
         value: values
     } as Group;
 });

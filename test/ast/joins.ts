@@ -17,7 +17,6 @@ describe('[AST] Joins', () => {
                 'value': {
                     'type': 'group',
                     'multiplier': null,
-                    'extensions': null,
                     'value': [
                         {
                             'type': 'reference',

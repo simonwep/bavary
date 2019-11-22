@@ -14,7 +14,6 @@ export type GroupValue = Reference | Str | GroupedCombinator | Group;
 export type Group = {
     type: 'group';
     multiplier: Multiplier;
-    extensions: ExtensionSet | null;
     value: Array<GroupValue>;
 }
 
@@ -54,9 +53,14 @@ export type Reference = {
     spread: boolean;
 }
 
-export type ExtensionSet = {
-    [key: string]: string;
+export type DefineExtension = {
+    type: 'def';
+    key: string;
+    value: string;
 }
+
+export type Extension = DefineExtension;
+export type ExtensionSet = Array<DefineExtension>
 
 export type Identifier = {
     type: 'identifier';

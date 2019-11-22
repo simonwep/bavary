@@ -6,10 +6,10 @@ describe('[AST] Extensions', () => {
     it('Should propely parse extensions assigned to a type', () => {
         expect(parse(`
             entry [
-                <abc> with (
-                    hello = 'world',
-                    thats = 'awesome'
-                )
+                <abc{
+                    def hello = 'world',
+                    def thats = 'awesome'
+                }>
             ]
         `)).to.deep.equal([
             {
@@ -18,7 +18,6 @@ describe('[AST] Extensions', () => {
                 'variant': 'entry',
                 'value': {
                     'type': 'group',
-                    'extensions': null,
                     'multiplier': null,
                     'value': [
                         {
@@ -28,10 +27,18 @@ describe('[AST] Extensions', () => {
                             'value': [
                                 'abc'
                             ],
-                            'extensions': {
-                                'hello': 'world',
-                                'thats': 'awesome'
-                            },
+                            'extensions': [
+                                {
+                                    'key': 'hello',
+                                    'type': 'def',
+                                    'value': 'world'
+                                },
+                                {
+                                    'key': 'thats',
+                                    'type': 'def',
+                                    'value': 'awesome'
+                                }
+                            ],
                             'spread': false,
                             'tag': null
                         }
@@ -42,11 +49,11 @@ describe('[AST] Extensions', () => {
     });
 
     failAll([
-        'entry [ <abc> with ()]',
-        'entry [<abc> with (hello = )]',
-        'entry [<abc> with (hello = asda)]',
-        'entry [<abc> with (hello = \'world\',)]',
-        'entry [<abc> with (hello = \'\',)]',
-        'entry [<abc> with (hello = \'a)]'
+        'entry [ <abc> where ()]',
+        'entry [<abc> where (hello = )]',
+        'entry [<abc> where (hello = asda)]',
+        'entry [<abc> where (hello = \'world\',)]',
+        'entry [<abc> where (hello = \'\',)]',
+        'entry [<abc> where (hello = \'a)]'
     ]);
 });

@@ -8,9 +8,9 @@ describe('[COM] Extensions', () => {
             <char> = [(0 - 9)+]
             
             entry [
-                ...<char> with (
-                    hello = 'world'
-                )
+                ...<char{
+                    def hello = 'world'
+                }>
             ]
         `);
 
@@ -19,7 +19,7 @@ describe('[COM] Extensions', () => {
 
     it('Should throw an error if empty', () => {
         expect(() => compile(`
-            entry [['A'] with ()]
+            entry [['A'] where ()]
         `)).to.throw();
     });
 
@@ -35,10 +35,10 @@ describe('[COM] Extensions', () => {
             }
             
             entry [
-                <char#char> with (
-                    hello = 'world',
-                    whata = 'nice day'
-                )
+                <char#char{
+                    def hello = 'world',
+                    def whata = 'nice day'
+                }>
             ]
         `);
 
@@ -63,10 +63,10 @@ describe('[COM] Extensions', () => {
             
             entry [
                 <cha#string>
-                ...<char> with (
-                    hello = 'world',
-                    whata = 'nice day'
-                )
+                ...<char{
+                    def hello = 'world',
+                    def whata = 'nice day'
+                }>
             ]
         `);
 
@@ -75,18 +75,6 @@ describe('[COM] Extensions', () => {
             whata: 'nice day',
             number: '8',
             string: 'A'
-        });
-    });
-
-    it('Should work on groups', () => {
-        const parse = compile(`
-            entry [
-                [(0 - 9)+] with (hello = 'world')
-            ]
-        `);
-
-        expect(parse('10')).to.deep.equal({
-            hello: 'world'
         });
     });
 });

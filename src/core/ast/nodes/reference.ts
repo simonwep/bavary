@@ -38,9 +38,10 @@ module.exports = maybe<Reference | null>(stream => {
         stream.throwError('Type cannot have both a tag an spread operator attached to it.');
     }
 
+    const exts = extensions(stream);
+
     expect(stream, 'punc', '>');
     const multipliers = multiplier(stream);
-    const exts = extensions(stream);
     const pipeTarget = joinTarget(stream);
 
     // Piping cannot be done in combination with tag / spread
