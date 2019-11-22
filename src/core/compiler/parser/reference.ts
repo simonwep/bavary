@@ -39,18 +39,25 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
 
         // Join extensions
         if (decl.extensions) {
+            if (!isObject) {
+                throw new Error('Extensions can only be used on types which return an object.');
+            }
+
+            const objMatches = matches as {[key: string]: unknown};
 
             // TODO: Move to seperate module
             for (const ext of decl.extensions) {
                 switch (ext.type) {
                     case 'def': {
-                        if (isArray || isString) {
-                            throw new Error('Extensions can only be used on types which return an object.');
+                        objMatches[ext.key] = ext.value;
+                        break;
+                    }
+                    case 'del': {
+                        if (typeof objMatches[ext.param] === 'undefined') {
+                            throw new Error(`Reference "${decl.value.join(':')}" does not return the tag "${ext.param}"`);
                         }
 
-                        (matches as {
-                            [key: string]: string;
-                        })[ext.key] = ext.value;
+                        delete objMatches[ext.param];
                     }
                 }
             }

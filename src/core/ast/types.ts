@@ -53,14 +53,19 @@ export type Reference = {
     spread: boolean;
 }
 
+export type DeleteExtension = {
+    type: 'del';
+    param: string;
+}
+
 export type DefineExtension = {
     type: 'def';
     key: string;
     value: string;
 }
 
-export type Extension = DefineExtension;
-export type ExtensionSet = Array<DefineExtension>
+export type Extension = DefineExtension | DeleteExtension;
+export type ExtensionSet = Array<Extension>
 
 export type Identifier = {
     type: 'identifier';

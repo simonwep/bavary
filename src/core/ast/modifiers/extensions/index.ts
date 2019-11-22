@@ -5,10 +5,11 @@ import maybe                     from '../../tools/maybe';
 import optional                  from '../../tools/optional';
 import {Extension, ExtensionSet} from '../../types';
 import def                       from './def';
+import del                       from './del';
 
 const parsers: {
     [key: string]: (stream: Streamable<RawType>) => Extension;
-} = {def};
+} = {def, del};
 
 /**
  * Parses a lookup-sequence
@@ -23,7 +24,7 @@ module.exports = maybe<ExtensionSet | null>(stream => {
 
     // Parse key-value combies
     do {
-        const op = optional(stream, 'kw', 'def');
+        const op = optional(stream, 'kw', 'def', 'del');
 
         if (!op) {
             stream.throwError('Expected operator');
