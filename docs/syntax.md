@@ -11,10 +11,11 @@
 8. [Operators](#operators) _- Specify how a result should be processed._  
    8.1. [Spread Operator](#spread-operator) _- Let the result of a [type](#type-definition) bubble up._   
    8.2. [Extensions](#extensions) _- Extend the result of a [type](#type-definition) with custom properties._
+   8.3. [Joins](#joins) _- Concatenate results._
 
 ### Entry type
 Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type declaration](#type-definition) **or** 
-a [block](#block-definitions) definition where the default export will be used:
+a [block](#block-definition) definition where the default export will be used:
 ```html
 // Named entry type
 entry <my-first-type> = ['A']
@@ -65,7 +66,7 @@ Groups generally (and types used _in_ groups) can have multipliers to define how
 | | No multiplier | The group / type occurs exactly **one time** | `['A']` `<abc>` |
 | `+` | Plus-sign | **One** or **more times** | `['A']+` `<abc>+` |
 | `*` | Asterisk | **Zero** or **more times** | `['A']*` `<abc>*` |
-| `{min, max}`| Curly braces | **min** up to **max** times (both inclusive) | `['A']{3,6}` `<abc>{3,6}` |
+| `{min, [max]}`| Curly braces | **min** up to **max** times (both inclusive) | `['A']{3,6}` `<abc>{3,}` (Empty means infinity, only works at the end) |
 | `?` | Question mark | **One** or **zero** time (optional) | `['A']?` `<abc>?` |
 
 Each multiplier will result in different kind of results.
@@ -256,3 +257,29 @@ The code above would log the following:
 Each kw-pair must be seperated with commas, the name must be a valid identifier and the value always a string.
 
 > They can be used in combination with the spread operator!
+
+
+#### Joins
+Joins can be used to concatenate objects, strings or arrays.
+Example with arrays:
+
+```js
+const parse = compile(`
+    <num> = [(0 - 9)]+
+    <cha> = [(a - z)]+
+    
+    entry [
+        <cha#chars> // Chars is in this case an array
+        <num> -> chars // Array too, but without tag but a join-operator
+    ]
+`);
+
+console.log(parse('ABC123'));
+```
+
+As we can see we use a `->` operator, pointing to `chars`, instead of using a tag.
+
+`<num>` will return `['1', '2', '3']` and `<cha>`: `['A', 'B', 'C']`, instead of saving both results 
+into different properties the array out of `<num>` will be added to `chars`.
+
+> Joins can be used to join strings, object _or_ arrays. Both sides need to be of the same type!
