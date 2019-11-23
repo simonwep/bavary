@@ -18,7 +18,7 @@ describe('[AST] Tags', () => {
                             'type': 'reference',
                             'multiplier': null,
                             'join': null,
-                            'extensions': null,
+                            'modifiers': null,
                             'tag': 'abc-123',
                             'spread': false,
                             'value': ['another-type']
@@ -51,7 +51,7 @@ describe('[AST] Tags', () => {
                             'tag': 'abc-123',
                             'spread': false,
                             'join': null,
-                            'extensions': null,
+                            'modifiers': null,
                             'value': ['another-type']
                         }
                     ]

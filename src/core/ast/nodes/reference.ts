@@ -7,7 +7,7 @@ module.exports = maybe<Reference | null>(stream => {
     const spreadOperator = require('../modifiers/spread-operator');
     const lookupSequence = require('../modifiers/lookup-sequence');
     const joinTarget = require('../modifiers/join-target');
-    const extensions = require('../modifiers/extensions');
+    const parseModifiers = require('../modifiers/modifications');
     const identifier = require('./identifier');
     const multiplier = require('./multiplier');
 
@@ -38,7 +38,7 @@ module.exports = maybe<Reference | null>(stream => {
         stream.throwError('Type cannot have both a tag an spread operator attached to it.');
     }
 
-    const exts = extensions(stream);
+    const mods = parseModifiers(stream);
 
     expect(stream, 'punc', '>');
     const multipliers = multiplier(stream);
@@ -52,7 +52,7 @@ module.exports = maybe<Reference | null>(stream => {
     return {
         type: 'reference',
         multiplier: multipliers,
-        extensions: exts,
+        modifiers: mods,
         join: pipeTarget,
         spread: hasSpreadOperator,
         value: seq,

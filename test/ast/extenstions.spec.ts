@@ -1,9 +1,9 @@
 import {expect}         from 'chai';
 import {failAll, parse} from './tools';
 
-describe('[AST] Extensions', () => {
+describe('[AST] Modifiers', () => {
 
-    it('Should propely parse extensions assigned to a type', () => {
+    it('Should propely parse modifiers assigned to a type', () => {
         expect(parse(`
             entry [
                 <abc{
@@ -27,7 +27,7 @@ describe('[AST] Extensions', () => {
                             'value': [
                                 'abc'
                             ],
-                            'extensions': [
+                            'modifiers': [
                                 {
                                     'key': 'hello',
                                     'type': 'def',

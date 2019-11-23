@@ -1,9 +1,9 @@
 import {expect}  from 'chai';
 import {compile} from '../../src/core';
 
-describe('[COM] Extensions', () => {
+describe('[COM] Modifiers', () => {
 
-    it('Should throw an error if extensions are used on types which don\'t return an object', () => {
+    it('Should throw an error if modifiers are used on types which don\'t return an object', () => {
         const parse = compile(`
             <char> = [(0 - 9)+]
             

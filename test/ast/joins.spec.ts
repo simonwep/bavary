@@ -21,7 +21,7 @@ describe('[AST] Joins', () => {
                         {
                             'type': 'reference',
                             'multiplier': null,
-                            'extensions': null,
+                            'modifiers': null,
                             'join': null,
                             'spread': false,
                             'value': [
@@ -32,7 +32,7 @@ describe('[AST] Joins', () => {
                         {
                             'type': 'reference',
                             'multiplier': null,
-                            'extensions': null,
+                            'modifiers': null,
                             'join': 'start',
                             'spread': false,
                             'value': [

@@ -1,7 +1,8 @@
-import {Reference}                                      from '../../ast/types';
+import {ModifierTarget, Reference}                      from '../../ast/types';
 import Streamable                                       from '../../stream';
 import {resolveReference}                               from '../tools/resolve-scope';
 import {ParsingResult, ParsingResultObjectValue, Scope} from '../types';
+import {applyModifications}                             from './modification';
 import multiplier                                       from './multiplier';
 
 module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, result: ParsingResult): boolean => {
@@ -37,30 +38,9 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
 
     if (matches) {
 
-        // Join extensions
-        if (decl.extensions) {
-            if (!isObject) {
-                throw new Error('Extensions can only be used on types which return an object.');
-            }
-
-            const objMatches = matches as {[key: string]: unknown};
-
-            // TODO: Move to seperate module
-            for (const ext of decl.extensions) {
-                switch (ext.type) {
-                    case 'def': {
-                        objMatches[ext.key] = ext.value;
-                        break;
-                    }
-                    case 'del': {
-                        if (typeof objMatches[ext.param] === 'undefined') {
-                            throw new Error(`Reference "${decl.value.join(':')}" does not return the tag "${ext.param}"`);
-                        }
-
-                        delete objMatches[ext.param];
-                    }
-                }
-            }
+        // Apply modifiers if defined
+        if (decl.modifiers) {
+            applyModifications(matches as ModifierTarget, decl);
         }
 
         if (decl.join) {

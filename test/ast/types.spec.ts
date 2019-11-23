@@ -16,7 +16,7 @@ describe('[AST] Types', () => {
                         {
                             'type': 'reference',
                             'spread': false,
-                            'extensions': null,
+                            'modifiers': null,
                             'join': null,
                             'multiplier': null,
                             'value': [

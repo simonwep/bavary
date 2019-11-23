@@ -46,26 +46,27 @@ export type Type = {
 export type Reference = {
     type: 'reference';
     multiplier: Multiplier | null;
-    extensions: ExtensionSet | null;
+    modifiers: Modifiers | null;
     join: string | null;
     value: Array<string>;
     tag: string | null;
     spread: boolean;
 }
 
-export type DeleteExtension = {
+export type DeleteModifier = {
     type: 'del';
     param: string;
 }
 
-export type DefineExtension = {
+export type DefineModifier = {
     type: 'def';
     key: string;
     value: string;
 }
 
-export type Extension = DefineExtension | DeleteExtension;
-export type ExtensionSet = Array<Extension>
+export type Modifier = DefineModifier | DeleteModifier;
+export type Modifiers = Array<Modifier>;
+export type ModifierTarget = {[key: string]: unknown};
 
 export type Identifier = {
     type: 'identifier';
