@@ -1,12 +1,13 @@
-import maybe    from '../tools/maybe';
-import optional from '../tools/optional';
+import maybe       from '../tools/maybe';
+import optional    from '../tools/optional';
+import {Reference} from '../types';
 
 /**
  * Parses a lookup-sequence
  * @type {Function}
  */
-module.exports = maybe<Array<string> | null>(stream => {
-    const identifier = require('../nodes/identifier');
+module.exports = maybe<Reference | null>(stream => {
+    const identifier = require('./identifier');
     const sequence: Array<string> = [];
     let expectIdentifier = false;
 
@@ -29,5 +30,8 @@ module.exports = maybe<Array<string> | null>(stream => {
         stream.throwError('Container cannot be emtpy.');
     }
 
-    return sequence;
+    return {
+        type: 'reference',
+        value: sequence
+    } as Reference;
 });

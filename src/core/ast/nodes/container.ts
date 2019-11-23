@@ -5,7 +5,7 @@ import {Container} from '../types';
 
 module.exports = maybe<Container | null>(stream => {
     const spreadOperator = require('../modifiers/spread-operator');
-    const lookupSequence = require('../modifiers/lookup-sequence');
+    const lookupSequence = require('./reference');
     const joinTarget = require('../modifiers/join-target');
     const parseModifiers = require('../modifiers/modifications');
     const identifier = require('./identifier');

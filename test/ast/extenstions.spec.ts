@@ -23,23 +23,26 @@ describe('[AST] Modifiers', () => {
                         {
                             'type': 'container',
                             'multiplier': null,
-                            'join': null,
-                            'value': [
-                                'abc'
-                            ],
                             'modifiers': [
                                 {
-                                    'key': 'hello',
                                     'type': 'def',
+                                    'key': 'hello',
                                     'value': 'world'
                                 },
                                 {
-                                    'key': 'thats',
                                     'type': 'def',
+                                    'key': 'thats',
                                     'value': 'awesome'
                                 }
                             ],
+                            'join': null,
                             'spread': false,
+                            'value': {
+                                'type': 'reference',
+                                'value': [
+                                    'abc'
+                                ]
+                            },
                             'tag': null
                         }
                     ]

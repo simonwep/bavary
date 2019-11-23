@@ -19,11 +19,15 @@ describe('[AST] Types', () => {
                             'modifiers': null,
                             'join': null,
                             'multiplier': null,
-                            'value': [
-                                'a',
-                                'b',
-                                'c'
-                            ],
+                            'value': {
+                                'type': 'reference',
+                                'value': [
+                                    'a',
+                                    'b',
+                                    'c'
+                                ]
+                            }
+                            ,
                             'tag': null
                         }
                     ]

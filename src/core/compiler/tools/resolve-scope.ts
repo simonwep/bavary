@@ -1,4 +1,4 @@
-import {Group, Container}                   from '../../ast/types';
+import {Group, Reference}                   from '../../ast/types';
 import {Scope, ScopeEntriesMap, ScopeEntry} from '../types';
 import {DEFAULT_EXPORT, EXPORTS}            from './create-scope';
 
@@ -27,7 +27,7 @@ export function resolveDefaultExport(scope: Scope): [Scope, Group] {
  * @param ref
  * @param offset
  */
-export function resolveReference(scope: Scope, ref: Container, offset = 0): [Scope, Group] | null {
+export function resolveReference(scope: Scope, ref: Reference, offset = 0): [Scope, Group] | null {
     const parts = ref.value;
     const lastItem = offset + 1 === parts.length;
     const targetName = ref.value[offset];

@@ -21,7 +21,10 @@ describe('[AST] Tags', () => {
                             'modifiers': null,
                             'tag': 'abc-123',
                             'spread': false,
-                            'value': ['another-type']
+                            'value': {
+                                'type': 'reference',
+                                'value': ['another-type']
+                            }
                         }
                     ]
                 }
@@ -33,8 +36,8 @@ describe('[AST] Tags', () => {
         expect(parse('<name> = [<another-type#abc-123>+]*')).to.deep.equal([
             {
                 'type': 'declaration',
-                'variant': null,
                 'name': 'name',
+                'variant': null,
                 'value': {
                     'type': 'group',
                     'multiplier': {
@@ -48,11 +51,16 @@ describe('[AST] Tags', () => {
                                 'type': 'one-infinity',
                                 'value': '+'
                             },
-                            'tag': 'abc-123',
-                            'spread': false,
-                            'join': null,
                             'modifiers': null,
-                            'value': ['another-type']
+                            'join': null,
+                            'spread': false,
+                            'value': {
+                                'type': 'reference',
+                                'value': [
+                                    'another-type'
+                                ]
+                            },
+                            'tag': 'abc-123'
                         }
                     ]
                 }

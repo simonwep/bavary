@@ -43,12 +43,17 @@ export type Type = {
     value: string;
 }
 
+export type Reference = {
+    type: 'reference';
+    value: Array<string>;
+}
+
 export type Container = {
     type: 'container';
     multiplier: Multiplier | null;
     modifiers: Modifiers | null;
+    value: Reference;
     join: string | null;
-    value: Array<string>;
     tag: string | null;
     spread: boolean;
 }

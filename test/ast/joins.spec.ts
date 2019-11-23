@@ -24,9 +24,12 @@ describe('[AST] Joins', () => {
                             'modifiers': null,
                             'join': null,
                             'spread': false,
-                            'value': [
-                                'abc'
-                            ],
+                            'value': {
+                                'type': 'reference',
+                                'value': [
+                                    'abc'
+                                ],
+                            },
                             'tag': 'start'
                         },
                         {
@@ -35,9 +38,12 @@ describe('[AST] Joins', () => {
                             'modifiers': null,
                             'join': 'start',
                             'spread': false,
-                            'value': [
-                                'efg'
-                            ],
+                            'value': {
+                                'type': 'reference',
+                                'value': [
+                                    'efg'
+                                ],
+                            },
                             'tag': null
                         }
                     ]
