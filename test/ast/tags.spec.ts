@@ -15,7 +15,7 @@ describe('[AST] Tags', () => {
                     'value': [
                         {'type': 'string', 'value': 'C'},
                         {
-                            'type': 'reference',
+                            'type': 'container',
                             'multiplier': null,
                             'join': null,
                             'modifiers': null,
@@ -43,7 +43,7 @@ describe('[AST] Tags', () => {
                     },
                     'value': [
                         {
-                            'type': 'reference',
+                            'type': 'container',
                             'multiplier': {
                                 'type': 'one-infinity',
                                 'value': '+'

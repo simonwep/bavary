@@ -3,7 +3,7 @@ import {failAll, parse} from './tools';
 
 describe('[AST] Types', () => {
 
-    it('Should propely parse a named entry type an a reference', () => {
+    it('Should propely parse a named entry type an a container', () => {
         expect(parse('entry <a> = [<a:b:c>]')).to.deep.equal([
             {
                 'type': 'declaration',
@@ -14,7 +14,7 @@ describe('[AST] Types', () => {
                     'multiplier': null,
                     'value': [
                         {
-                            'type': 'reference',
+                            'type': 'container',
                             'spread': false,
                             'modifiers': null,
                             'join': null,

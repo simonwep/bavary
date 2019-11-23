@@ -1,9 +1,9 @@
 import expect      from '../tools/expect';
 import maybe       from '../tools/maybe';
 import optional    from '../tools/optional';
-import {Reference} from '../types';
+import {Container} from '../types';
 
-module.exports = maybe<Reference | null>(stream => {
+module.exports = maybe<Container | null>(stream => {
     const spreadOperator = require('../modifiers/spread-operator');
     const lookupSequence = require('../modifiers/lookup-sequence');
     const joinTarget = require('../modifiers/join-target');
@@ -50,12 +50,12 @@ module.exports = maybe<Reference | null>(stream => {
     }
 
     return {
-        type: 'reference',
+        type: 'container',
         multiplier: multipliers,
         modifiers: mods,
         join: pipeTarget,
         spread: hasSpreadOperator,
         value: seq,
         tag
-    } as Reference;
+    } as Container;
 });

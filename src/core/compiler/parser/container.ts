@@ -1,14 +1,14 @@
-import {ModifierTarget, Reference}                      from '../../ast/types';
+import {ModifierTarget, Container}                      from '../../ast/types';
 import Streamable                                       from '../../stream';
 import {resolveReference}                               from '../tools/resolve-scope';
 import {ParsingResult, ParsingResultObjectValue, Scope} from '../types';
 import {applyModifications}                             from './modification';
 import multiplier                                       from './multiplier';
 
-module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, result: ParsingResult): boolean => {
+module.exports = (stream: Streamable<string>, decl: Container, scope: Scope, result: ParsingResult): boolean => {
     const group = require('./group');
 
-    // Resolve reference
+    // Resolve container
     const resolvedScope = resolveReference(scope, decl);
 
     if (!resolvedScope) {
@@ -22,7 +22,7 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
     const [newScope, targetBody] = resolvedScope;
 
     // Type may have a multiplier attached to it
-    const matches = multiplier<ParsingResultObjectValue, Reference>(
+    const matches = multiplier<ParsingResultObjectValue, Container>(
         () => group(stream, targetBody, newScope)
     )(stream, decl, newScope, result);
 
@@ -31,7 +31,7 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
     const isString = typeof matches === 'string';
     const isObject = !isArray && !isString;
 
-    // If reference has a tag immediatly attach result
+    // If container has a tag immediatly attach result
     if (decl.tag) {
         result.obj[decl.tag] = matches;
     }

@@ -1,8 +1,8 @@
-import {CharacterSelection, Group, MultiplierRange, Reference} from '../../ast/types';
+import {CharacterSelection, Group, MultiplierRange, Container} from '../../ast/types';
 import Streamable                                              from '../../stream';
 import {ParsingResult, Scope}                                  from '../types';
 
-type typesWhoCouldHaveMultiplierAttachedToIt = Group | Reference | CharacterSelection;
+type typesWhoCouldHaveMultiplierAttachedToIt = Group | Container | CharacterSelection;
 
 export default <result, declarationType extends typesWhoCouldHaveMultiplierAttachedToIt>(
     fn: (

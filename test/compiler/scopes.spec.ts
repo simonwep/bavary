@@ -45,7 +45,7 @@ describe('[COM] Scopes', () => {
         `)).to.throw();
     });
 
-    it('Should throw an error if a reference points to a "private" type', () => {
+    it('Should throw an error if a container points to a "private" type', () => {
         const parse = compile(`
             <abc> = { 
                 <private> = ['A']

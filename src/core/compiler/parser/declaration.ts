@@ -1,8 +1,8 @@
-import {CharacterSelection, Group, GroupedCombinator, Reference, Str} from '../../ast/types';
+import {CharacterSelection, Group, GroupedCombinator, Container, Str} from '../../ast/types';
 import Streamable                                                     from '../../stream';
 import {ParsingResult, Scope}                                         from '../types';
 
-type ExtendetDeclarationValue = GroupedCombinator | Str | CharacterSelection | Reference | Group;
+type ExtendetDeclarationValue = GroupedCombinator | Str | CharacterSelection | Container | Group;
 module.exports = (
     stream: Streamable<string>,
     decl: ExtendetDeclarationValue,
@@ -11,7 +11,7 @@ module.exports = (
 ): boolean => {
     const characterSelection = require('./character-selection');
     const combinator = require('./combinator');
-    const reference = require('./reference');
+    const container = require('./container');
     const string = require('./string');
     const group = require('./group');
 
@@ -44,9 +44,9 @@ module.exports = (
 
             break;
         }
-        case 'reference': {
+        case 'container': {
 
-            if (!reference(stream, decl, scope, result)) {
+            if (!container(stream, decl, scope, result)) {
                 stream.pop();
                 return false;
             }

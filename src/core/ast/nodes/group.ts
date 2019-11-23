@@ -9,7 +9,7 @@ module.exports = maybe(stream => {
     const characterSelection = require('./character-selection');
     const combinator = require('./combinator');
     const multiplier = require('./multiplier');
-    const reference = require('./reference');
+    const container = require('./container');
     const string = require('./string');
     const group = require('./group');
 
@@ -20,7 +20,7 @@ module.exports = maybe(stream => {
 
     const values: Array<GroupValue> = [];
     const parsers = combine(
-        reference,
+        container,
         group,
         characterSelection,
         string,

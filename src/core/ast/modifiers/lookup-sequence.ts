@@ -26,7 +26,7 @@ module.exports = maybe<Array<string> | null>(stream => {
     if (expectIdentifier) {
         stream.throwError('Expected identifier');
     } else if (!sequence.length) {
-        stream.throwError('Reference cannot be emtpy.');
+        stream.throwError('Container cannot be emtpy.');
     }
 
     return sequence;

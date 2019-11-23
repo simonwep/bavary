@@ -1,6 +1,6 @@
-import {Modifiers, ModifierTarget, Reference} from '../../ast/types';
+import {Modifiers, ModifierTarget, Container} from '../../ast/types';
 
-export const applyModifications = (res: ModifierTarget, decl: Reference): void => {
+export const applyModifications = (res: ModifierTarget, decl: Container): void => {
     const {modifiers} =decl;
 
     for (const ext of modifiers as Modifiers) {

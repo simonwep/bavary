@@ -1,5 +1,5 @@
 export type ASTNode = Declaration | Combinator | CharacterSelection |
-    Identifier | Type | Group | Multiplier | Reference | Block | string;
+    Identifier | Type | Group | Multiplier | Container | Block | string;
 
 export type DeclarationValue = Group | Block;
 export type DeclarationVariant = 'entry' | 'default' | 'export' | null;
@@ -10,7 +10,7 @@ export type Declaration = {
     value: DeclarationValue;
 }
 
-export type GroupValue = Reference | Str | GroupedCombinator | Group;
+export type GroupValue = Container | Str | GroupedCombinator | Group;
 export type Group = {
     type: 'group';
     multiplier: Multiplier;
@@ -43,8 +43,8 @@ export type Type = {
     value: string;
 }
 
-export type Reference = {
-    type: 'reference';
+export type Container = {
+    type: 'container';
     multiplier: Multiplier | null;
     modifiers: Modifiers | null;
     join: string | null;
