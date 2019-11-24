@@ -1,4 +1,4 @@
-import {Container, ModifierTarget}                      from '../../ast/types';
+import {Container, Group, ModifierTarget}               from '../../ast/types';
 import Streamable                                       from '../../stream';
 import {resolveReference}                               from '../tools/resolve-scope';
 import {ParsingResult, ParsingResultObjectValue, Scope} from '../types';
@@ -10,14 +10,26 @@ module.exports = (stream: Streamable<string>, decl: Container, scope: Scope, res
     stream.stash();
 
     // Resolve container
-    const resolvedScope = resolveReference(scope, decl.value);
+    let targetBody: Group | null = null;
+    let newScope: Scope | null = null;
 
-    if (!resolvedScope) {
-        throw new Error(`Failed to resolve "${decl.value.value.join(':')}".`);
+    switch (decl.value.type) {
+        case 'reference': {
+            const res = resolveReference(scope, decl.value);
+
+            if (!res) {
+                throw new Error(`Failed to resolve "${decl.value.value.join(':')}".`);
+            }
+
+            [newScope, targetBody] = res;
+            break;
+        }
+        case 'group': {
+            targetBody = decl.value;
+            newScope = scope;
+            break;
+        }
     }
-
-    // Resolve-scope returns a new sub-scope for the target and the target itself
-    const [newScope, targetBody] = resolvedScope;
 
     // Type may have a multiplier attached to it
     const matches = multiplier<ParsingResultObjectValue, Container>(

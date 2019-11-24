@@ -5,21 +5,25 @@ import {Container} from '../types';
 
 module.exports = maybe<Container | null>(stream => {
     const spreadOperator = require('../modifiers/spread-operator');
-    const lookupSequence = require('./reference');
-    const joinTarget = require('../modifiers/join-target');
     const parseModifiers = require('../modifiers/modifications');
+    const joinTarget = require('../modifiers/join-target');
+    const parseMultipliers = require('./multiplier');
+    const reference = require('./reference');
     const identifier = require('./identifier');
-    const multiplier = require('./multiplier');
+    const group = require('./group');
 
     // It may have a spread operator attached to it
-    const hasSpreadOperator = !!spreadOperator(stream);
+    const spread = !!spreadOperator(stream);
 
     // It may be a type
     if (!optional(stream, 'punc', '<')) {
         return null;
     }
 
-    const seq = lookupSequence(stream);
+    const value = reference(stream) || group(stream);
+    if (!value) {
+        stream.throwError('Expected a reference or group');
+    }
 
     // It may have a tag
     let tag: string | null = null;
@@ -34,28 +38,28 @@ module.exports = maybe<Container | null>(stream => {
     }
 
     // A tag shouldn't be combined with a spread operator
-    if (hasSpreadOperator && tag) {
+    if (spread && tag) {
         stream.throwError('Type cannot have both a tag an spread operator attached to it.');
     }
 
-    const mods = parseModifiers(stream);
+    const modifiers = parseModifiers(stream);
 
     expect(stream, 'punc', '>');
-    const multipliers = multiplier(stream);
-    const pipeTarget = joinTarget(stream);
+    const multiplier = parseMultipliers(stream);
+    const join = joinTarget(stream);
 
     // Piping cannot be done in combination with tag / spread
-    if (pipeTarget && (hasSpreadOperator || tag)) {
+    if (join && (spread || tag)) {
         stream.throwError('Piping cannot be done if the spread-operator is used on it or it has a tag.');
     }
 
     return {
         type: 'container',
-        multiplier: multipliers,
-        modifiers: mods,
-        join: pipeTarget,
-        spread: hasSpreadOperator,
-        value: seq,
+        multiplier,
+        modifiers,
+        spread,
+        value,
+        join,
         tag
     } as Container;
 });

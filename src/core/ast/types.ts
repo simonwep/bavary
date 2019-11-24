@@ -52,7 +52,7 @@ export type Container = {
     type: 'container';
     multiplier: Multiplier | null;
     modifiers: Modifiers | null;
-    value: Reference;
+    value: Reference | Group;
     join: string | null;
     tag: string | null;
     spread: boolean;
