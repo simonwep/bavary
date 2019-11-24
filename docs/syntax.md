@@ -8,10 +8,11 @@
 5. [Types](#type-definition) _- Give groups or [blocks](#block-definition) a name._
 6. [Blocks](#block-definition) _- Scope [types](#type-definition) an things which are related to each other._
 7. [Tags](#tags) _- Give used [types](#type-definition) a name._
-8. [Operators](#operators) _- Specify how a result should be processed._  
-   8.1. [Spread Operator](#spread-operator) _- Let the result of a [type](#type-definition) bubble up._   
-   8.2. [Extensions](#extensions) _- Extend the result of a [type](#type-definition) with custom properties._
-   8.3. [Joins](#joins) _- Concatenate results._
+8. [Inline Blocks](#inline-blocks) _- Use groups instead of a reference and tag them immediatly._
+9. [Operators](#operators) _- Specify how a result should be processed._
+   9.1. [Spread Operator](#spread-operator) _- Let the result of a [type](#type-definition) bubble up._
+   9.2. [Modifiers](#modifiers) _- Extend the result of a [type](#type-definition) with custom properties._
+   9.3. [Joins](#joins) _- Concatenate results._
 
 ### Entry type
 Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type declaration](#type-definition) **or** 
@@ -30,7 +31,7 @@ Everything is build upon matching different types of single characters / -ranges
 
 | Name | Description | Example |
 | ---- | ----------- | ------- |
-| Single Character  | Matches exactly the given character | `'A'` |
+| Single Character | Matches exactly the given character | `'A'` |
 | Character range | Matches every character between two anchor-chars | `(a - z)` |
 | Character range with excludet characters | Excludes a char-range or single character | `(a - z except g, h)`  | 
 | UTF-8 Range | Matches every character between two utf8 character-codes | `(\uxxxx - \uxxxx)` where `x` must be a valid hexadecimal value |
@@ -45,7 +46,7 @@ Character selection could also have [multipliers](#multipliers) attached to it, 
 
 ### Group definition
 Groups can be used to group related items together or to bypass precedence rules.
-Each group can additionally contain references to other types, groups or single characters:
+Each group can additionally contain containers to other types, groups or single characters:
 ```html
 <1-or-2> = ['1' | '2']
 <a-b-c> = ['abc' <1-or-2>
@@ -88,14 +89,14 @@ Combinators define how components in a group should be treated:
 | `&` | Ampersand | Each component is mandatory but the may appear in any order | `'A' & 'B'` |
 | `&&` | Double ampersand | At least one component must be present, and the may appear in any order | `'A' && 'B'` |
 
-Combinators don't have any priorities, mixed combinators will be grouped from left to right. Use [groups](#group-definitions) to 
+Combinators don't have any priorities, mixed combinators will be grouped from left to right. Use [groups](#group-definition) to 
 bypass precedence rules.
 
 
 ### Type definition
 A type is a re-usable form of a group which can be used in other declarations, it's even possible to create recursive parser with it!
 
-Each type can either be a [parsing-group](#group-definitions), to **group related** types together, or a direct definition of a character / type sequence.
+Each type can either be a [parsing-group](#group-definition), to **group related** types together, or a direct definition of a character / type sequence.
 ```html
 // Group definition
 <my-group-type> = ['A']
@@ -120,8 +121,8 @@ sub-types, and an arbitrary amount of _exported_ types:
 <characters> = {
 
   // Exported types
-  export <uppercase> =  [(A - Z)]
-  export <lowercase> =  [(a - z)]
+  export <uppercase> = [(A - Z)]
+  export <lowercase> = [(a - z)]
   export <numbers> = [(0 - 9)]
   
   // Default export if <character> is used without referring to exported types.
@@ -160,6 +161,25 @@ The result of using '+5' would be:
 ```
 
 Without tags it would just return `+5` as plain-string.
+
+### Inline-blocks
+It's possible to use a [group](#group-definition) instead of a reference:
+
+```html
+entry [
+    <[ (a - z)+ ]#low>
+    <[ (A - Z)+ ]#high>
+]
+```
+
+Let's parse `abcABC` with it:
+```json
+{
+    "low": "abc",
+    "high": "ABC" 
+}
+```
+... as we can see we manage to use [tags](#tags) without actually defining other types. 
 
 
 ### Operators
@@ -212,8 +232,8 @@ If there wouldn't be a spread operator and `<char>` would be tagged with `char` 
 }
 ```
 
-#### Extensions
-Extensions can be used to extend the result of a [type](#type-definition) or [group](#group-definition) 
+#### Modifiers
+Modifiers can be used to extend the result of a [type](#type-definition) or [group](#group-definition) 
 and must at least contain **one kw-pair**.
 
 If used on types the target **must** return an object.
@@ -232,10 +252,10 @@ const parse = compile(`
 
     entry {
         default [
-            <char#ch> with (
-                firstProp = 'Value A',
-                second = 'Another value'
-            ) 
+            <char#ch{
+                def firstProp = 'Value A',
+                def second = 'Another value'
+            }>
         ]
     }
 `);
@@ -255,6 +275,13 @@ The code above would log the following:
 ```
 
 Each kw-pair must be seperated with commas, the name must be a valid identifier and the value always a string.
+
+##### Available modifiers:
+
+| Modifier | Explanation | Example |
+| -------- | ----------- | ------- |
+| def | Add custom values to a result | `def key = 'value'` |
+| del | Remove a property from the result-set | `del key` |
 
 > They can be used in combination with the spread operator!
 
