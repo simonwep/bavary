@@ -1,11 +1,10 @@
-import {CharacterSelection, Group, GroupedCombinator, Reference, Str} from '../../ast/types';
-import Streamable                                                     from '../../stream';
-import {ParsingResult, Scope}                                         from '../types';
+import {GroupValue}           from '../../ast/types';
+import Streamable             from '../../stream';
+import {ParsingResult, Scope} from '../types';
 
-type ExtendetDeclarationValue = GroupedCombinator | Str | CharacterSelection | Reference | Group;
 module.exports = (
     stream: Streamable<string>,
-    decl: ExtendetDeclarationValue,
+    decl: GroupValue,
     scope: Scope,
     result: ParsingResult
 ): boolean => {

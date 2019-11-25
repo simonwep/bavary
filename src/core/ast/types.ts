@@ -10,7 +10,7 @@ export type Declaration = {
     value: DeclarationValue;
 }
 
-export type GroupValue = Reference | Str | GroupedCombinator | Group;
+export type GroupValue = Reference | Str | GroupedCombinator | Group | CharacterSelection;
 export type Group = {
     type: 'group';
     multiplier: Multiplier;
