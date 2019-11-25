@@ -27,7 +27,7 @@ export type ParsingResult = {
     pure: boolean;
 }
 
-export type ParsingResultObjectValue = string | object | null;
+export type ParsingResultObjectValue = string | number | object | null;
 export type ParsingResultObject = {
     [key: string]: ParsingResultObjectValue | Array<ParsingResultObjectValue>;
 }

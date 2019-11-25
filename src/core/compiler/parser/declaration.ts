@@ -13,6 +13,7 @@ module.exports = (
     const reference = require('./reference');
     const string = require('./string');
     const group = require('./group');
+    const fn = require('./function');
 
     stream.stash();
     switch (decl.type) {
@@ -65,6 +66,15 @@ module.exports = (
                     }
                 }
 
+                stream.pop();
+                return false;
+            }
+
+            break;
+        }
+        case 'function': {
+
+            if (!fn(stream, decl, scope, result)) {
                 stream.pop();
                 return false;
             }

@@ -10,7 +10,7 @@ export type Declaration = {
     value: DeclarationValue;
 }
 
-export type GroupValue = Reference | Str | GroupedCombinator | Group | CharacterSelection;
+export type GroupValue = Reference | Str | GroupedCombinator | Group | CharacterSelection | Func;
 export type Group = {
     type: 'group';
     multiplier: Multiplier;
@@ -67,6 +67,18 @@ export type DefineModifier = {
 export type Modifier = DefineModifier | DeleteModifier;
 export type Modifiers = Array<Modifier>;
 export type ModifierTarget = {[key: string]: unknown};
+
+export type FuncArgument = Group | Identifier | Tag;
+export type Func = {
+    type: 'function';
+    name: string;
+    args: Array<FuncArgument>;
+}
+
+export type Tag = {
+    type: 'tag';
+    value: string;
+}
 
 export type Identifier = {
     type: 'identifier';

@@ -1,17 +1,18 @@
-import check                                                                 from '../tools/check';
-import combine                                                               from '../tools/combine';
-import expect                                                                from '../tools/expect';
-import maybe                                                                 from '../tools/maybe';
-import optional                                                              from '../tools/optional';
-import {CharacterSelection, Group, GroupedCombinator, GroupValue, Reference} from '../types';
+import check                                                                      from '../tools/check';
+import combine                                                                    from '../tools/combine';
+import expect                                                                     from '../tools/expect';
+import maybe                                                                      from '../tools/maybe';
+import optional                                                                   from '../tools/optional';
+import {CharacterSelection, Group, GroupedCombinator, GroupValue, Reference, Str} from '../types';
 
-module.exports = maybe(stream => {
+module.exports = maybe<Group>(stream => {
     const characterSelection = require('./character-selection');
     const combinator = require('./combinator');
     const multiplier = require('./multiplier');
     const reference = require('./reference');
     const string = require('./string');
     const group = require('./group');
+    const fn = require('./function');
 
     // It may be a group
     if (!optional(stream, 'punc', '[')) {
@@ -19,11 +20,12 @@ module.exports = maybe(stream => {
     }
 
     const values: Array<GroupValue> = [];
-    const parsers = combine<Reference | Group | CharacterSelection | string>(
+    const parsers = combine<Reference | Group | CharacterSelection | Str | Function>(
+        fn,
         reference,
         group,
         characterSelection,
-        string,
+        string
     );
 
     let comg;
