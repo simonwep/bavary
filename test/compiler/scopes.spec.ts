@@ -9,7 +9,7 @@ describe('[COM] Scopes', () => {
                 default ['A']
                 default ['B']
             }
-            
+
             entry [<abc>]
         `)).to.throw();
     });
@@ -18,39 +18,39 @@ describe('[COM] Scopes', () => {
         expect(() => compile(`
             <abc> = { default ['A'] }
             <abc> = { default ['B'] }
-            
+
             entry [<abc>]
         `)).to.throw();
     });
 
     it('Should not throw an error on deeply re-used names', () => {
         expect(() => compile(`
-            <abc> = { 
+            <abc> = {
                 <abc> = { default ['B'] }
-                default ['A'] 
+                default ['A']
             }
-            
+
             entry [<abc>]
         `)).to.not.throw();
     });
 
     it('Should throw an error on invalid usage of the entry keyword', () => {
         expect(() => compile(`
-            <abc> = { 
+            <abc> = {
                 <abc> = { entry ['B'] }
-                default ['A'] 
+                default ['A']
             }
-            
+
             entry [<abc>]
         `)).to.throw();
     });
 
-    it('Should throw an error if a container points to a "private" type', () => {
+    it('Should throw an error if a reference points to a "private" type', () => {
         const parse = compile(`
-            <abc> = { 
+            <abc> = {
                 <private> = ['A']
             }
-            
+
             entry [<abc:private>]
         `);
 
@@ -62,7 +62,7 @@ describe('[COM] Scopes', () => {
             <abc> = {
                 <a> = ['A']
             }
-            
+
             entry [<abc>]
         `);
 
@@ -74,7 +74,7 @@ describe('[COM] Scopes', () => {
             <abc> = {
                export <a> = ['A']
             }
-            
+
             entry [<abc:a:b>]
         `);
 
@@ -86,7 +86,7 @@ describe('[COM] Scopes', () => {
             <abc> = {
                export <a> = ['A']
             }
-            
+
             entry [<abc:c>]
         `);
 
@@ -110,28 +110,28 @@ describe('[COM] Scopes', () => {
                 <val> = [(A - Z)+]
                 default [<val>]
             }
-            
+
             <uppercase-lowercase> = {
                 <val> = [(a - z)+]
                 default [<val> | <uppercase>]
             }
-            
+
             entry [<uppercase-lowercase>]
         `);
 
         expect(parse('ABACAB')).to.deep.equal('ABACAB');
     });
 
-    it('Should resolveReference scopes with anonym default blocks', () => {
+    it('Should resolve a reference scopes with anonym default blocks', () => {
         const parse = compile(`
             <uppercase> = {
                 default [(A - Z)+]
             }
-            
+
             <lowercase> = {
                 default [(a - z)+]
             }
-            
+
             entry [<lowercase> | <uppercase>]
         `);
 
@@ -144,14 +144,14 @@ describe('[COM] Scopes', () => {
                 <uppercase> = {
                     default ['ABC']
                 }
-            
+
                 <lowercase> = {
                     default ['abc']
                 }
-                
+
                 default [<uppercase> | <lowercase>]
             }
-            
+
             entry [<characters#result>+]
         `);
 
@@ -163,15 +163,15 @@ describe('[COM] Scopes', () => {
         const parse = compile(`
             <chars> = {
                 <a> = ['A']
-                
+
                 export <set> = {
                     default [<a>]
                 }
             }
-            
+
             <abc> = {
                 <c> = ['C']
-                
+
                 export <a> = {
                     default [<chars:set> | <c>]
                 }
@@ -179,7 +179,7 @@ describe('[COM] Scopes', () => {
 
             entry {
                 <b> = ['B']
-                
+
                 default {
                     default {
                         default [<b> | <abc:a>]
@@ -198,7 +198,7 @@ describe('[COM] Scopes', () => {
                 <a> = ['A']
                 default [<a>]
             }
-            
+
             entry [
                 <abc>
             ]
@@ -216,7 +216,7 @@ describe('[COM] Scopes', () => {
                 export <c> = ['C']
                 default [<a> | <b> | <c>]
             }
-            
+
             entry [
                 [<abc:a> <abc:b>] |
                 [<abc>]

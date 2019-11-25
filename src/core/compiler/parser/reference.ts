@@ -1,38 +1,25 @@
-import {Container, Group, ModifierTarget}               from '../../ast/types';
+import {ModifierTarget, Reference}                      from '../../ast/types';
 import Streamable                                       from '../../stream';
 import {resolveReference}                               from '../tools/resolve-scope';
 import {ParsingResult, ParsingResultObjectValue, Scope} from '../types';
 import {applyModifications}                             from './modification';
 import multiplier                                       from './multiplier';
 
-module.exports = (stream: Streamable<string>, decl: Container, scope: Scope, result: ParsingResult): boolean => {
+module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, result: ParsingResult): boolean => {
     const group = require('./group');
     stream.stash();
 
-    // Resolve container
-    let targetBody: Group | null = null;
-    let newScope: Scope | null = null;
+    // Resolve reference
+    const res = resolveReference(scope, decl);
 
-    switch (decl.value.type) {
-        case 'reference': {
-            const res = resolveReference(scope, decl.value);
-
-            if (!res) {
-                throw new Error(`Failed to resolve "${decl.value.value.join(':')}".`);
-            }
-
-            [newScope, targetBody] = res;
-            break;
-        }
-        case 'group': {
-            targetBody = decl.value;
-            newScope = scope;
-            break;
-        }
+    if (!res) {
+        throw new Error(`Failed to resolve "${decl.value.join(':')}".`);
     }
 
+    const [newScope, targetBody] = res;
+
     // Type may have a multiplier attached to it
-    const matches = multiplier<ParsingResultObjectValue, Container>(
+    const matches = multiplier<ParsingResultObjectValue, Reference>(
         () => group(stream, targetBody, newScope)
     )(stream, decl, newScope, result);
 
@@ -41,7 +28,7 @@ module.exports = (stream: Streamable<string>, decl: Container, scope: Scope, res
     const isString = typeof matches === 'string';
     const isObject = !isArray && !isString;
 
-    // If container has a tag immediatly attach result
+    // If reference has a tag, immediatly attach result
     if (decl.tag) {
         result.obj[decl.tag] = matches;
     }

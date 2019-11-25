@@ -1,8 +1,7 @@
-import {Container, Modifiers, ModifierTarget} from '../../ast/types';
+import {Modifiers, ModifierTarget, Reference} from '../../ast/types';
 
-export const applyModifications = (res: ModifierTarget, decl: Container): void => {
+export const applyModifications = (res: ModifierTarget, decl: Reference): void => {
     const {modifiers, value} = decl;
-    const errorIntro = value.type === 'reference' ? `Reference ${value.value.join(':')}` : 'Anonymous reference';
 
     for (const ext of modifiers as Modifiers) {
         switch (ext.type) {
@@ -12,7 +11,7 @@ export const applyModifications = (res: ModifierTarget, decl: Container): void =
             }
             case 'del': {
                 if (typeof res[ext.param] === 'undefined') {
-                    throw new Error(`${errorIntro} does not return the tag "${ext.param}"`);
+                    throw new Error(`${value.join(':')} does not return the tag "${ext.param}"`);
                 }
 
                 delete res[ext.param];

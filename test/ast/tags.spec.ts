@@ -15,16 +15,13 @@ describe('[AST] Tags', () => {
                     'value': [
                         {'type': 'string', 'value': 'C'},
                         {
-                            'type': 'container',
+                            'type': 'reference',
                             'multiplier': null,
                             'join': null,
                             'modifiers': null,
                             'tag': 'abc-123',
                             'spread': false,
-                            'value': {
-                                'type': 'reference',
-                                'value': ['another-type']
-                            }
+                            'value': ['another-type']
                         }
                     ]
                 }
@@ -46,7 +43,7 @@ describe('[AST] Tags', () => {
                     },
                     'value': [
                         {
-                            'type': 'container',
+                            'type': 'reference',
                             'multiplier': {
                                 'type': 'one-infinity',
                                 'value': '+'
@@ -54,12 +51,9 @@ describe('[AST] Tags', () => {
                             'modifiers': null,
                             'join': null,
                             'spread': false,
-                            'value': {
-                                'type': 'reference',
-                                'value': [
-                                    'another-type'
-                                ]
-                            },
+                            'value': [
+                                'another-type'
+                            ],
                             'tag': 'abc-123'
                         }
                     ]

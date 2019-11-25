@@ -21,7 +21,7 @@ describe('[AST] Modifiers', () => {
                     'multiplier': null,
                     'value': [
                         {
-                            'type': 'container',
+                            'type': 'reference',
                             'multiplier': null,
                             'modifiers': [
                                 {
@@ -37,12 +37,9 @@ describe('[AST] Modifiers', () => {
                             ],
                             'join': null,
                             'spread': false,
-                            'value': {
-                                'type': 'reference',
-                                'value': [
-                                    'abc'
-                                ]
-                            },
+                            'value': [
+                                'abc'
+                            ],
                             'tag': null
                         }
                     ]

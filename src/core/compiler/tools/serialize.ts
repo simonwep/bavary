@@ -11,7 +11,7 @@ export default function serialize(rest: Array<GroupValue>, target: ParsingResult
     for (const item of rest) {
 
         // Check if item is a type, has a tag and the tag wasn't already used
-        if (item.type === 'container' && item.tag && ((typeof target[item.tag] === 'undefined') || nullish)) {
+        if (item.type === 'reference' && item.tag && ((typeof target[item.tag] === 'undefined') || nullish)) {
             target[item.tag] = null;
         } else if (item.type === 'group') {
             serialize(item.value, target);

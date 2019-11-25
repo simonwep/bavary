@@ -22,7 +22,7 @@ export function resolveDefaultExport(scope: Scope): [Scope, Group] {
 }
 
 /**
- * Resolves a container in the given scope
+ * Resolves a reference in the given scope
  * @param scope
  * @param ref
  * @param offset
@@ -33,8 +33,8 @@ export function resolveReference(scope: Scope, ref: Reference, offset = 0): [Sco
     const targetName = ref.value[offset];
     let targetList: ScopeEntriesMap | null = null;
 
-    // The first container (in <a:b:c> it's a) could be placed in a
-    // Parent scope. Any deeper container need to be exported.
+    // The first reference (in <a:b:c> it's a) could be placed in a
+    // Parent scope. Any deeper reference need to be exported.
     if (offset) {
         const exportedMembers = scope.variants.get(EXPORTS);
 

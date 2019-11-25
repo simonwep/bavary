@@ -3,13 +3,13 @@ import combine                                                               fro
 import expect                                                                from '../tools/expect';
 import maybe                                                                 from '../tools/maybe';
 import optional                                                              from '../tools/optional';
-import {CharacterSelection, Container, Group, GroupedCombinator, GroupValue} from '../types';
+import {CharacterSelection, Group, GroupedCombinator, GroupValue, Reference} from '../types';
 
 module.exports = maybe(stream => {
     const characterSelection = require('./character-selection');
     const combinator = require('./combinator');
     const multiplier = require('./multiplier');
-    const container = require('./container');
+    const reference = require('./reference');
     const string = require('./string');
     const group = require('./group');
 
@@ -19,8 +19,8 @@ module.exports = maybe(stream => {
     }
 
     const values: Array<GroupValue> = [];
-    const parsers = combine<Container | Group | CharacterSelection | String>(
-        container,
+    const parsers = combine<Reference | Group | CharacterSelection | string>(
+        reference,
         group,
         characterSelection,
         string,

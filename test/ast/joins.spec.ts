@@ -19,31 +19,25 @@ describe('[AST] Joins', () => {
                     'multiplier': null,
                     'value': [
                         {
-                            'type': 'container',
+                            'type': 'reference',
                             'multiplier': null,
                             'modifiers': null,
                             'join': null,
                             'spread': false,
-                            'value': {
-                                'type': 'reference',
-                                'value': [
-                                    'abc'
-                                ],
-                            },
+                            'value': [
+                                'abc'
+                            ],
                             'tag': 'start'
                         },
                         {
-                            'type': 'container',
+                            'type': 'reference',
                             'multiplier': null,
                             'modifiers': null,
                             'join': 'start',
                             'spread': false,
-                            'value': {
-                                'type': 'reference',
-                                'value': [
-                                    'efg'
-                                ],
-                            },
+                            'value': [
+                                'efg'
+                            ],
                             'tag': null
                         }
                     ]
