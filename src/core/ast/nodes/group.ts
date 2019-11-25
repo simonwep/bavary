@@ -1,9 +1,9 @@
-import check                                  from '../tools/check';
-import combine                                from '../tools/combine';
-import expect                                 from '../tools/expect';
-import maybe                                  from '../tools/maybe';
-import optional                               from '../tools/optional';
-import {Group, GroupedCombinator, GroupValue} from '../types';
+import check                                                                 from '../tools/check';
+import combine                                                               from '../tools/combine';
+import expect                                                                from '../tools/expect';
+import maybe                                                                 from '../tools/maybe';
+import optional                                                              from '../tools/optional';
+import {CharacterSelection, Container, Group, GroupedCombinator, GroupValue} from '../types';
 
 module.exports = maybe(stream => {
     const characterSelection = require('./character-selection');
@@ -19,7 +19,7 @@ module.exports = maybe(stream => {
     }
 
     const values: Array<GroupValue> = [];
-    const parsers = combine(
+    const parsers = combine<Container | Group | CharacterSelection | String>(
         container,
         group,
         characterSelection,
