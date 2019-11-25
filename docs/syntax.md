@@ -1,4 +1,4 @@
-> Before you start, you can also checkout [examples](examples) directly! 
+> Before you start, you can also checkout [examples](examples) directly!
 
 #### Content
 1. [Entry type](#entry-type) _- Each parser starts with it._
@@ -8,14 +8,13 @@
 5. [Types](#type-definition) _- Give groups or [blocks](#block-definition) a name._
 6. [Blocks](#block-definition) _- Scope [types](#type-definition) an things which are related to each other._
 7. [Tags](#tags) _- Give used [types](#type-definition) a name._
-8. [Inline Blocks](#inline-blocks) _- Use groups instead of a reference and tag them immediatly._
-9. [Operators](#operators) _- Specify how a result should be processed._
-   9.1. [Spread Operator](#spread-operator) _- Let the result of a [type](#type-definition) bubble up._
-   9.2. [Modifiers](#modifiers) _- Extend the result of a [type](#type-definition) with custom properties._
-   9.3. [Joins](#joins) _- Concatenate results._
+8. [Operators](#operators) _- Specify how a result should be processed._
+   8.1. [Spread Operator](#spread-operator) _- Let the result of a [type](#type-definition) bubble up._
+   8.2. [Modifiers](#modifiers) _- Extend the result of a [type](#type-definition) with custom properties._
+   8.3. [Joins](#joins) _- Concatenate results._
 
 ### Entry type
-Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type declaration](#type-definition) **or** 
+Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type declaration](#type-definition) **or**
 a [block](#block-definition) definition where the default export will be used:
 ```html
 // Named entry type
@@ -33,7 +32,7 @@ Everything is build upon matching different types of single characters / -ranges
 | ---- | ----------- | ------- |
 | Single Character | Matches exactly the given character | `'A'` |
 | Character range | Matches every character between two anchor-chars | `(a - z)` |
-| Character range with excludet characters | Excludes a char-range or single character | `(a - z except g, h)`  | 
+| Character range with excludet characters | Excludes a char-range or single character | `(a - z except g, h)`  |
 | UTF-8 Range | Matches every character between two utf8 character-codes | `(\uxxxx - \uxxxx)` where `x` must be a valid hexadecimal value |
 
 Attention: all **punctuation characters** (such as `"`, `,` , `-`...) need to be escaped (`\\,`) or quoted (`","`)!
@@ -89,7 +88,7 @@ Combinators define how components in a group should be treated:
 | `&` | Ampersand | Each component is mandatory but the may appear in any order | `'A' & 'B'` |
 | `&&` | Double ampersand | At least one component must be present, and the may appear in any order | `'A' && 'B'` |
 
-Combinators don't have any priorities, mixed combinators will be grouped from left to right. Use [groups](#group-definition) to 
+Combinators don't have any priorities, mixed combinators will be grouped from left to right. Use [groups](#group-definition) to
 bypass precedence rules.
 
 
@@ -124,7 +123,7 @@ sub-types, and an arbitrary amount of _exported_ types:
   export <uppercase> = [(A - Z)]
   export <lowercase> = [(a - z)]
   export <numbers> = [(0 - 9)]
-  
+
   // Default export if <character> is used without referring to exported types.
   // The default will match either 'A' to 'Z', 'a' to 'z' or '0' to '9'
   default [<uppercase> | <lowercase> | <numbers>]
@@ -156,30 +155,11 @@ The result of using '+5' would be:
 ```
 {
    prefix: '+',
-   num: '5' 
+   num: '5'
 }
 ```
 
 Without tags it would just return `+5` as plain-string.
-
-### Inline-blocks
-It's possible to use a [group](#group-definition) instead of a reference:
-
-```html
-entry [
-    <[ (a - z)+ ]#low>
-    <[ (A - Z)+ ]#high>
-]
-```
-
-Let's parse `abcABC` with it:
-```json
-{
-    "low": "abc",
-    "high": "ABC" 
-}
-```
-... as we can see we manage to use [tags](#tags) without actually defining other types. 
 
 
 ### Operators
@@ -193,7 +173,7 @@ const parse = compile(`
     <char> = {
         <uppercase> = [(A - Z)+]
         <lowercase> = [(a - z)+]
-    
+
         // This returns {up: string | null, low: string | null}
         default [
             [<uppercase#up> <lowercase#low>]
@@ -233,7 +213,7 @@ If there wouldn't be a spread operator and `<char>` would be tagged with `char` 
 ```
 
 #### Modifiers
-Modifiers can be used to extend the result of a [type](#type-definition) or [group](#group-definition) 
+Modifiers can be used to extend the result of a [type](#type-definition) or [group](#group-definition)
 and must at least contain **one kw-pair**.
 
 If used on types the target **must** return an object.
@@ -270,7 +250,7 @@ The code above would log the following:
         "up": "ABC",
         "firstProp": "Value A",    // This is a custom property!
         "second": "Another value"  // ...
-    }   
+    }
 }
 ```
 
@@ -294,7 +274,7 @@ Example with arrays:
 const parse = compile(`
     <num> = [(0 - 9)]+
     <cha> = [(a - z)]+
-    
+
     entry [
         <cha#chars> // Chars is in this case an array
         <num> -> chars // Array too, but without tag but a join-operator
@@ -306,7 +286,7 @@ console.log(parse('ABC123'));
 
 As we can see we use a `->` operator, pointing to `chars`, instead of using a tag.
 
-`<num>` will return `['1', '2', '3']` and `<cha>`: `['A', 'B', 'C']`, instead of saving both results 
+`<num>` will return `['1', '2', '3']` and `<cha>`: `['A', 'B', 'C']`, instead of saving both results
 into different properties the array out of `<num>` will be added to `chars`.
 
 > Joins can be used to join strings, object _or_ arrays. Both sides need to be of the same type!
