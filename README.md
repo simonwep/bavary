@@ -42,25 +42,6 @@ Include directly via jsdelivr:
 <script src="https://cdn.jsdelivr.net/npm/graceful-ws/dist/bavary.min.js"></script>
 ```
 
-## Getting Started
-⚠ Bavary is currently **not stable** and **heavily under development**.
-The API might change and all `0.0.x` releases should be treated as test / preview releases.
-
-Install via npm:
-```shell
-$ npm install bavary
-```
-
-Install via yarn:
-```shell
-$ yarn add bavary
-```
-
-Include directly via jsdelivr:
-```html
-<script src="https://cdn.jsdelivr.net/npm/graceful-ws/dist/bavary.min.js"></script>
-```
-
 
 ## Usage
 ```js 
@@ -99,42 +80,4 @@ If no output file is specified (via `--output`) it'll print the result to the co
 | `-v, --version` | Prints the current version | `$ bva --version` |
 | `-o, --output <file>` | Write results to disk | `$ bva --output result.json` |
 | `-p, --prettify` | Prettify result (Works only in combination with `--output`)  | `$ bva --output result.json --prettify` |
-| `-h, --help` | Shows usage info | `$ bva --help` |
-
-## Usage
-```js 
-import {compile} from 'bavary';
-
-// Compile definitions
-const parse = compile(`
-    entry ['A' | 'B']
-`)
-
-// Use compiled definitions to parse a string
-const parsed = parse('A');
-
-// Logs "A" to the console
-console.log(parsed);
-```
-
-Check out the [documentation](docs/syntax.md) to get started or jump directly into one of the examples:
-
-1. [string](docs/examples/string.md) - Parsing strings and support escaped quotes.
-2. [hex-color](docs/examples/hex-color.md) - Parsing different kinds of color types in the hexadecimal format.
-3. [number](docs/examples/number.md) - Parsing floats and integers with optional scientific notation.
-
-
-## CLI
-Usage:
-```bash
-$ bvc [files] [options...]
-```
-Where `files` can be any kind of directory, file or [glob-pattern](https://en.wikipedia.org/wiki/Glob_%28programming%29).
-
-| Flag | Explanation | Example |
-| ---- | ----------- | ------- |
-| `-w, --watch` | Watches source-files matched by `[files]`, recompiles and tries to parse a input file | `$ bva src/**/*.bv input.txt --watch` |
-| `-v, --version` | Prints the current version | `$ bva --version` |
-| `-o, --output <file>` | Write results to disk | `$ bva --output result.json` |
-| `-p, --prettify` | Prettify result (Works only in combination with `-o`)  | `$ bva --output result.json --prettify` |
 | `-h, --help` | Shows usage info | `$ bva --help` |
