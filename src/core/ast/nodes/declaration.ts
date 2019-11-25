@@ -3,7 +3,7 @@ import maybe         from '../tools/maybe';
 import optional      from '../tools/optional';
 import {Declaration} from '../types';
 
-module.exports = maybe<Declaration | null>(stream => {
+module.exports = maybe<Declaration>(stream => {
     const group = require('./group');
     const block = require('./block');
     const type = require('./type');

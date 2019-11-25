@@ -4,13 +4,13 @@ import {ParsingResult, Scope}                                  from '../types';
 
 type typesWhoCouldHaveMultiplierAttachedToIt = Group | Reference | CharacterSelection;
 
-export default <result, declarationType extends typesWhoCouldHaveMultiplierAttachedToIt>(
+export default <expectedResult, declarationType extends typesWhoCouldHaveMultiplierAttachedToIt>(
     fn: (
         stream: Streamable<string>,
         decl: declarationType,
         scope: Scope,
         result: ParsingResult
-    ) => result | null
+    ) => expectedResult | null
 ) => {
 
     return (
@@ -18,11 +18,13 @@ export default <result, declarationType extends typesWhoCouldHaveMultiplierAttac
         decl: declarationType,
         scope: Scope,
         result: ParsingResult
-    ): result | Array<result> | null => {
-        const parse = (): result | null => fn(stream, decl, scope, result);
-        const parseAll = (): Array<result> => {
-            const values: Array<result> = [];
+    ): expectedResult | Array<expectedResult> | null => {
 
+        const parse = (): expectedResult | null => fn(stream, decl, scope, result);
+        const parseAll = (): Array<expectedResult> => {
+            const values: Array<expectedResult> = [];
+
+            // TODO: Smth fishy here with result
             for (let res; (res = parse());) {
                 values.push(res);
             }

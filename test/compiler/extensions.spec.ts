@@ -6,7 +6,7 @@ describe('[COM] Modifiers', () => {
     it('Should throw an error if modifiers are used on types which don\'t return an object', () => {
         const parse = compile(`
             <char> = [(0 - 9)+]
-            
+
             entry [
                 ...<char{
                     def hello = 'world'
@@ -15,12 +15,6 @@ describe('[COM] Modifiers', () => {
         `);
 
         expect(() => parse('0')).to.throw();
-    });
-
-    it('Should throw an error if empty', () => {
-        expect(() => compile(`
-            entry [['A'] where ()]
-        `)).to.throw();
     });
 
     it('Should properly work stand-alone', () => {
@@ -33,7 +27,7 @@ describe('[COM] Modifiers', () => {
                     <cha#string>
                 ]
             }
-            
+
             entry [
                 <char#char{
                     def hello = 'world',
@@ -58,9 +52,9 @@ describe('[COM] Modifiers', () => {
                 <num> = [(0 - 9)+]
                 default [ <num#number>]
             }
-            
+
             <cha> = [[(a - z) | (A - Z)]+]
-            
+
             entry [
                 <cha#string>
                 ...<char{
@@ -84,9 +78,9 @@ describe('[COM] Modifiers', () => {
                 export <uppercase> = [(A - Z)+]
                 export <lowercase> = [(a - z)+]
             }
-            
+
             <str> = [<chars:uppercase#upper>? <chars:lowercase#lower>?]
-            
+
             entry [
                 ...<str{del upper}>
 
@@ -108,7 +102,7 @@ describe('[COM] Modifiers', () => {
         const parse = compile(`
             <uppercase> = [(A - Z)+]
             <str> = [<uppercase#upper>]
-            
+
             entry [
                 <str#res{del lol}>
             ]

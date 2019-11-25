@@ -4,7 +4,7 @@ import maybe                from '../tools/maybe';
 import optional             from '../tools/optional';
 import {Block, Declaration} from '../types';
 
-module.exports = maybe<Block | null>(stream => {
+module.exports = maybe<Block>(stream => {
     const declaration = require('./declaration');
 
     // It may be a block

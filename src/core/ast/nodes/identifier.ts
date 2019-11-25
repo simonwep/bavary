@@ -6,7 +6,7 @@ import {Identifier} from '../types';
  * Parses an identifier made out of keywords, numbers or hyphens
  * @type {Function}
  */
-module.exports = maybe<Identifier | null>(stream => {
+module.exports = maybe<Identifier>(stream => {
     let name = '';
 
     while (stream.hasNext()) {

@@ -2,7 +2,7 @@ import maybe        from '../tools/maybe';
 import optional     from '../tools/optional';
 import {Combinator} from '../types';
 
-module.exports = maybe<Combinator | null>(stream => {
+module.exports = maybe<Combinator>(stream => {
     const combinator = optional(stream, 'punc', '|', '&');
 
     if (!combinator) {

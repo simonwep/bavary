@@ -92,7 +92,7 @@ const parseSequence = (stream: Streamable<RawType>): CharacterSelectionArray => 
     return sequence;
 };
 
-module.exports = maybe<CharacterSelection | null>(stream => {
+module.exports = maybe<CharacterSelection>(stream => {
     const multiplier = require('./multiplier');
 
     if (!optional(stream, 'punc', '(')) {
