@@ -8,7 +8,7 @@ import optional             from './optional';
  * @param type
  * @param values
  */
-export default (stream: Streamable<RawType>, type: TokenType, ...values: Array<string | number>): RawType | void => {
+export default (stream: Streamable<RawType>, type: TokenType, ...values: Array<string | number>): RawType | never => {
 
     // Check if next token matches type and value
     const expected = optional(stream, type, ...values);

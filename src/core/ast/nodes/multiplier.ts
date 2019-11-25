@@ -14,7 +14,7 @@ module.exports = maybe<Multiplier | null>(stream => {
     const mp = optional(stream, 'punc', '*', '+', '?', '{');
 
     if (mp && mp.value === '{') {
-        const start = expect(stream, 'num') as RawType;
+        const start = expect(stream, 'num');
 
         expect(stream, 'punc', ',');
         const end = optional(stream, 'num') as RawType;
