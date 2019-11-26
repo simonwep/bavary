@@ -7,8 +7,8 @@
 <p align="center">
     <img alt="gzip size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/bavary@0.0.3/dist/bavary.min.js?compression=gzip&style=flat-square">
     <img alt="brotli size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/bavary@0.0.3/dist/bavary.min.js?compression=brotli&style=flat-square">
-    <a href='https://coveralls.io/github/Simonwep/bavary?branch=master'><img 
-       src='https://img.shields.io/coveralls/github/Simonwep/bavary?style=flat-square' 
+    <a href='https://coveralls.io/github/Simonwep/bavary?branch=master'><img
+       src='https://img.shields.io/coveralls/github/Simonwep/bavary?style=flat-square'
        alt='Coverage Status'/></a>
     <a href="https://travis-ci.org/Simonwep/bavary"><img
        alt="Build Status"
@@ -39,12 +39,12 @@ $ yarn add bavary
 
 Include directly via jsdelivr:
 ```html
-<script src="https://cdn.jsdelivr.net/npm/graceful-ws/dist/bavary.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bavary/lib/bavary.min.js"></script>
 ```
 
 
 ## Usage
-```js 
+```js
 import {compile} from 'bavary';
 
 // Compile definitions
