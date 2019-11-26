@@ -2,7 +2,7 @@ import maybe    from '../tools/maybe';
 import optional from '../tools/optional';
 
 module.exports = maybe<string | null>(stream => {
-    const identifier = require('../nodes/identifier');
+    const identifier = require('./identifier');
 
     if (optional(stream, 'punc', '-') &&
         optional(stream, 'punc', '>')) {
@@ -12,7 +12,7 @@ module.exports = maybe<string | null>(stream => {
             stream.throwError('Expected identifier.');
         }
 
-        return ident.value;
+        return ident;
     }
 
     return null;

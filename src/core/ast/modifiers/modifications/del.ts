@@ -3,7 +3,7 @@ import {RawType}        from '../../../tokenizer/types';
 import {DeleteModifier} from '../../types';
 
 export default (stream: Streamable<RawType>): DeleteModifier => {
-    const identifier = require('../../nodes/identifier');
+    const identifier = require('../identifier');
 
     const param = identifier(stream);
     if (!param) {
@@ -12,6 +12,6 @@ export default (stream: Streamable<RawType>): DeleteModifier => {
 
     return {
         type: 'del',
-        param: param.value,
+        param,
     } as DeleteModifier;
 }

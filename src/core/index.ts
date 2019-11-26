@@ -10,7 +10,6 @@ import {tokenize}            from './tokenizer';
  */
 export const compile = (str: string): Parser => {
     return compileDeclarations(
-
         // Call ast-parser with array of tokens an provide the source-code in case of errors
         parseAST(tokenize(str), str)
     );

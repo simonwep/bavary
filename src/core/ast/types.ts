@@ -1,5 +1,5 @@
 export type ASTNode = Declaration | Combinator | CharacterSelection |
-    Identifier | Type | Group | Multiplier | Reference | Block | string;
+    Type | Group | Multiplier | Reference | Block | Str;
 
 export type DeclarationValue = Group | Block;
 export type DeclarationVariant = 'entry' | 'default' | 'export' | null;
@@ -61,17 +61,12 @@ export type DeleteModifier = {
 export type DefineModifier = {
     type: 'def';
     key: string;
-    value: string;
+    value: Str | ValueAccessor;
 }
 
 export type Modifier = DefineModifier | DeleteModifier;
 export type Modifiers = Array<Modifier>;
 export type ModifierTarget = {[key: string]: unknown};
-
-export type Identifier = {
-    type: 'identifier';
-    value: string;
-}
 
 export type Combinator = {
     type: 'combinator';
@@ -101,4 +96,10 @@ export type CharacterSelectionRange = {
 export type Block = {
     type: 'block';
     value: Array<Declaration>;
+}
+
+export type ValueAccessorPath = Array<string | number>; // <identifier | array-index>
+export type ValueAccessor = {
+    type: 'value-accessor';
+    value: ValueAccessorPath;
 }

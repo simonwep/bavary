@@ -7,8 +7,8 @@ module.exports = maybe<Reference>(stream => {
     const spreadOperator = require('../modifiers/spread-operator');
     const parseModifiers = require('../modifiers/modifications');
     const joinTarget = require('../modifiers/join-target');
+    const identifier = require('../modifiers/identifier');
     const parseMultipliers = require('./multiplier');
-    const identifier = require('./identifier');
 
     // It may have a spread operator attached to it
     const spread = !!spreadOperator(stream);
@@ -26,7 +26,7 @@ module.exports = maybe<Reference>(stream => {
 
         if (next) {
             expectIdentifier = false;
-            value.push(next.value);
+            value.push(next);
         } else if (!optional(stream, 'punc', ':')) {
             break;
         } else {
@@ -43,13 +43,11 @@ module.exports = maybe<Reference>(stream => {
     // It may have a tag
     let tag: string | null = null;
     if (optional(stream, 'punc', '#')) {
-        const ident = identifier(stream);
+        tag = identifier(stream);
 
-        if (!ident) {
+        if (!tag) {
             stream.throwError('Expected string or identifier as tag.');
         }
-
-        tag = ident.value;
     }
 
     // A tag shouldn't be combined with a spread operator

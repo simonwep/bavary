@@ -1,4 +1,5 @@
 import {Modifiers, ModifierTarget, Reference} from '../../ast/types';
+import {lookupValue}                          from '../tools/lookup-value';
 
 export const applyModifications = (res: ModifierTarget, decl: Reference): void => {
     const {modifiers, value} = decl;
@@ -6,7 +7,11 @@ export const applyModifications = (res: ModifierTarget, decl: Reference): void =
     for (const ext of modifiers as Modifiers) {
         switch (ext.type) {
             case 'def': {
-                res[ext.key] = ext.value;
+                const extValue = ext.value;
+
+                res[ext.key] = extValue.type === 'string' ?
+                    extValue.value :
+                    lookupValue(res, extValue.value);
                 break;
             }
             case 'del': {
