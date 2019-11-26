@@ -13,7 +13,7 @@ export const expect = (stream: Streamable<RawType>, type: TokenType, ...values: 
     // Check if next token matches type and value
     const expected = optional(stream, type, ...values);
 
-    if (expected) {
+    if (expected !== null) {
         return expected;
     }
 

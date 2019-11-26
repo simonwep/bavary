@@ -13,7 +13,7 @@ export const combine = <T = ASTNode>(
         for (const parser of parsers) {
             const result = parser(stream);
 
-            if (result) {
+            if (result !== null) {
                 return result;
             }
         }

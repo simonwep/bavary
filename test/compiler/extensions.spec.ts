@@ -136,6 +136,7 @@ describe('[COM] Modifiers', () => {
                 <type#sup{
                     def simple = mix.h,
                     def numref = num,
+                    def num0 = num[0],
                     def num2 = num[2],
                     def num10 = num[10],
                     def puncinv = punc[2].a.b,
@@ -157,6 +158,7 @@ describe('[COM] Modifiers', () => {
                 ],
                 simple: 'ABC',
                 numref: ['1', '2', '4'],
+                num0: '1',
                 num2: '4',
                 num10: null,
                 puncinv: null,
