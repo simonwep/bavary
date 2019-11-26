@@ -1,8 +1,8 @@
-import Streamable      from '../../stream';
+import {Streamable}    from '../../stream';
 import {isPunctuation} from '../tools/is';
 import {RawType}       from '../types';
 
-export default (stream: Streamable<string>): RawType | null => {
+export const punc = (stream: Streamable<string>): RawType | null => {
 
     /* istanbul ignore else */
     if (isPunctuation(stream.peek() as string)) {

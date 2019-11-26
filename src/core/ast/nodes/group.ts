@@ -1,8 +1,8 @@
-import check                                                                 from '../tools/check';
-import combine                                                               from '../tools/combine';
-import expect                                                                from '../tools/expect';
-import maybe                                                                 from '../tools/maybe';
-import optional                                                              from '../tools/optional';
+import {check}                                                               from '../tools/check';
+import {combine}                                                             from '../tools/combine';
+import {expect}                                                              from '../tools/expect';
+import {maybe}                                                               from '../tools/maybe';
+import {optional}                                                            from '../tools/optional';
 import {CharacterSelection, Group, GroupedCombinator, GroupValue, Reference} from '../types';
 
 module.exports = maybe(stream => {

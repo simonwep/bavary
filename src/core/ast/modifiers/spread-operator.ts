@@ -1,5 +1,5 @@
-import maybe    from '../tools/maybe';
-import optional from '../tools/optional';
+import {maybe}    from '../tools/maybe';
+import {optional} from '../tools/optional';
 
 /**
  * Parses a spread-operator

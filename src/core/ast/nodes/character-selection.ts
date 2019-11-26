@@ -1,13 +1,13 @@
-import Streamable                                    from '../../stream';
+import {Streamable}                                  from '../../stream';
 import {RawType}                                     from '../../tokenizer/types';
-import unicodeEscape                                 from '../modifiers/unicode-escape';
-import expect                                        from '../tools/expect';
-import maybe                                         from '../tools/maybe';
-import optional                                      from '../tools/optional';
+import {parseUnicodeEscape}                          from '../modifiers/unicode-escape';
+import {expect}                                      from '../tools/expect';
+import {maybe}                                       from '../tools/maybe';
+import {optional}                                    from '../tools/optional';
 import {CharacterSelection, CharacterSelectionArray} from '../types';
 
 const parseToken = (stream: Streamable<RawType>): number | null => {
-    const unicode = unicodeEscape(stream);
+    const unicode = parseUnicodeEscape(stream);
 
     if (unicode !== null) {
         return unicode;

@@ -1,11 +1,11 @@
-import Streamable     from '../stream';
-import consume        from './tools/consume';
+import {Streamable}   from '../stream';
+import {cunsumeWhile} from './tools/consume';
 import {isWhiteSpace} from './tools/is';
 import {RawType}      from './types';
-import kw             from './types/kw';
-import num            from './types/num';
-import punc           from './types/punc';
-import str            from './types/str';
+import {kw}           from './types/kw';
+import {num}          from './types/num';
+import {punc}         from './types/punc';
+import {str}          from './types/str';
 
 const parser = [
     str,
@@ -27,7 +27,7 @@ export const tokenize = (str: string): Array<RawType> => {
     outer: while (stream.hasNext()) {
 
         // Ignore whitespace
-        consume(stream, isWhiteSpace);
+        cunsumeWhile(stream, isWhiteSpace);
 
         if (!stream.hasNext()) {
             break;

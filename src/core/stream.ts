@@ -1,4 +1,4 @@
-import ParsingError from './misc/parsing-error';
+import {ParsingError} from './misc/parsing-error';
 
 export type RangeInformation = {
     start: number;
@@ -11,7 +11,7 @@ export type RangeInformation = {
  * @param source Optional source-code to prettify error messages
  * @returns Streaming object
  */
-export default class Streamable<T extends RangeInformation | string> {
+export class Streamable<T extends RangeInformation | string> {
 
     public index: number;
     private readonly vals: ArrayLike<T>;

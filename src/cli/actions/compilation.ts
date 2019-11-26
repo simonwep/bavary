@@ -11,7 +11,6 @@ import parse               from './parse';
 import watchDeclarations   from './watch-declarations';
 import watchSource         from './watch-source';
 
-
 /**
  * Responsible for compilatation and watching source-files
  * @param input

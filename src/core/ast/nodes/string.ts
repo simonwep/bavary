@@ -1,6 +1,6 @@
-import maybe    from '../tools/maybe';
-import optional from '../tools/optional';
-import {Str}    from '../types';
+import {maybe}    from '../tools/maybe';
+import {optional} from '../tools/optional';
+import {Str}      from '../types';
 
 module.exports = maybe<Str | null>(stream => {
     const string = optional(stream, 'str');

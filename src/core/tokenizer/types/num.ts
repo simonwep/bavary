@@ -1,8 +1,8 @@
-import Streamable  from '../../stream';
-import {isNumeric} from '../tools/is';
-import {RawType}   from '../types';
+import {Streamable} from '../../stream';
+import {isNumeric}  from '../tools/is';
+import {RawType}    from '../types';
 
-export default (stream: Streamable<string>): RawType | null => {
+export const num = (stream: Streamable<string>): RawType | null => {
 
     let number = '';
     while (stream.hasNext()) {

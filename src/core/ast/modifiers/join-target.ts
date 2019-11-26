@@ -1,5 +1,5 @@
-import maybe    from '../tools/maybe';
-import optional from '../tools/optional';
+import {maybe}    from '../tools/maybe';
+import {optional} from '../tools/optional';
 
 module.exports = maybe<string | null>(stream => {
     const identifier = require('./identifier');

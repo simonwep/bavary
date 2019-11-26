@@ -1,6 +1,5 @@
 import {ValueAccessorPath} from '../../ast/types';
 
-// TODO: Remove remaining default exports
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const lookupValue = (source: any, path: ValueAccessorPath): unknown => {
 

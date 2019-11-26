@@ -1,9 +1,9 @@
 import {Group}                                   from '../../ast/types';
-import serialize                                 from '../tools/serialize';
+import {serializeParsingResult}                  from '../tools/serialize';
 import {ParsingResult, ParsingResultObjectValue} from '../types';
-import multiplier                                from './multiplier';
+import {maybeMultiplier}                         from './multiplier';
 
-module.exports = multiplier<ParsingResultObjectValue, Group>((stream, decl, scope, result: ParsingResult = {
+module.exports = maybeMultiplier<ParsingResultObjectValue, Group>((stream, decl, scope, result: ParsingResult = {
     obj: {},
     str: '',
     pure: true
@@ -23,7 +23,7 @@ module.exports = multiplier<ParsingResultObjectValue, Group>((stream, decl, scop
             stream.pop();
 
             // Serialize remaining types
-            serialize(decs, result.obj, true);
+            serializeParsingResult(decs, result.obj, true);
 
             // Restore previous state
             result.str = previousRawString;

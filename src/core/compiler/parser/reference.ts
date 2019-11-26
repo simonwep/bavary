@@ -1,9 +1,9 @@
 import {ModifierTarget, Reference}                      from '../../ast/types';
-import Streamable                                       from '../../stream';
+import {Streamable}                                     from '../../stream';
 import {resolveReference}                               from '../tools/resolve-scope';
 import {ParsingResult, ParsingResultObjectValue, Scope} from '../types';
 import {applyModifications}                             from './modification';
-import multiplier                                       from './multiplier';
+import {maybeMultiplier}                                from './multiplier';
 
 module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, result: ParsingResult): boolean => {
     const group = require('./group');
@@ -19,7 +19,7 @@ module.exports = (stream: Streamable<string>, decl: Reference, scope: Scope, res
     const [newScope, targetBody] = res;
 
     // Type may have a multiplier attached to it
-    const matches = multiplier<ParsingResultObjectValue, Reference>(
+    const matches = maybeMultiplier<ParsingResultObjectValue, Reference>(
         () => group(stream, targetBody, newScope)
     )(stream, decl, newScope, result);
 

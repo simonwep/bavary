@@ -3,7 +3,7 @@
  * @param arr
  * @param item
  */
-export default function removeFromArray<T>(arr: Array<T>, item: T): boolean {
+export function removeFromArray<T>(arr: Array<T>, item: T): boolean {
     const index = arr.indexOf(item);
 
     if (~index) {

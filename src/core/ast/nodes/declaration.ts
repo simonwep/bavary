@@ -1,6 +1,6 @@
-import expect        from '../tools/expect';
-import maybe         from '../tools/maybe';
-import optional      from '../tools/optional';
+import {expect}      from '../tools/expect';
+import {maybe}       from '../tools/maybe';
+import {optional}    from '../tools/optional';
 import {Declaration} from '../types';
 
 module.exports = maybe<Declaration>(stream => {

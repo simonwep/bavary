@@ -1,6 +1,6 @@
-import prettyPrintError from './prettify-error';
+import {prettifyError} from './prettify-error';
 
-export default class ParsingError extends Error {
+export class ParsingError extends Error {
 
     // Error location
     public source?: string;
@@ -16,7 +16,7 @@ export default class ParsingError extends Error {
      * @param end
      */
     constructor(msg: string, source?: string, start?: number, end?: number) {
-        super(start && end && source ? prettyPrintError(msg, source, start, end) : msg);
+        super(start && end && source ? prettifyError(msg, source, start, end) : msg);
         this.source = source;
         this.start = start;
         this.end = end;

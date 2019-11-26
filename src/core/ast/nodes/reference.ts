@@ -1,6 +1,6 @@
-import expect      from '../tools/expect';
-import maybe       from '../tools/maybe';
-import optional    from '../tools/optional';
+import {expect}    from '../tools/expect';
+import {maybe}     from '../tools/maybe';
+import {optional}  from '../tools/optional';
 import {Reference} from '../types';
 
 module.exports = maybe<Reference>(stream => {

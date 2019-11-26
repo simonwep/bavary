@@ -1,15 +1,18 @@
-import Streamable            from '../../../stream';
+import {Streamable}          from '../../../stream';
 import {RawType}             from '../../../tokenizer/types';
-import expect                from '../../tools/expect';
-import maybe                 from '../../tools/maybe';
-import optional              from '../../tools/optional';
+import {expect}              from '../../tools/expect';
+import {maybe}               from '../../tools/maybe';
+import {optional}            from '../../tools/optional';
 import {Modifier, Modifiers} from '../../types';
-import def                   from './def';
-import del                   from './del';
+import {parseDefineModifier} from './def';
+import {parseDeleteModifier} from './del';
 
 const parsers: {
     [key: string]: (stream: Streamable<RawType>) => Modifier;
-} = {def, del};
+} = {
+    def: parseDefineModifier,
+    del: parseDeleteModifier
+};
 
 /**
  * Parses a lookup-sequence

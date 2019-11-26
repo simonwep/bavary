@@ -1,7 +1,7 @@
-import combine         from '../tools/combine';
-import expect          from '../tools/expect';
-import maybe           from '../tools/maybe';
-import optional        from '../tools/optional';
+import {combine}       from '../tools/combine';
+import {expect}        from '../tools/expect';
+import {maybe}         from '../tools/maybe';
+import {optional}      from '../tools/optional';
 import {ValueAccessor} from '../types';
 
 const parseObjectAccessor = maybe<string>(stream => {

@@ -1,8 +1,8 @@
-import Streamable       from '../../../stream';
+import {Streamable}     from '../../../stream';
 import {RawType}        from '../../../tokenizer/types';
 import {DeleteModifier} from '../../types';
 
-export default (stream: Streamable<RawType>): DeleteModifier => {
+export const parseDeleteModifier = (stream: Streamable<RawType>): DeleteModifier => {
     const identifier = require('../identifier');
 
     const param = identifier(stream);
@@ -14,4 +14,4 @@ export default (stream: Streamable<RawType>): DeleteModifier => {
         type: 'del',
         param,
     } as DeleteModifier;
-}
+};

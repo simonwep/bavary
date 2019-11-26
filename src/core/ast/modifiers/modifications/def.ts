@@ -1,9 +1,9 @@
-import Streamable       from '../../../stream';
+import {Streamable}     from '../../../stream';
 import {RawType}        from '../../../tokenizer/types';
-import expect           from '../../tools/expect';
+import {expect}         from '../../tools/expect';
 import {DefineModifier} from '../../types';
 
-export default (stream: Streamable<RawType>): DefineModifier => {
+export const parseDefineModifier = (stream: Streamable<RawType>): DefineModifier => {
     const valueAccessor = require('../value-accessor');
     const identifier = require('../identifier');
     const string = require('../../nodes/string');
@@ -25,4 +25,4 @@ export default (stream: Streamable<RawType>): DefineModifier => {
         value: val,
         key
     } as DefineModifier;
-}
+};

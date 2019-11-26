@@ -1,7 +1,7 @@
-import expect   from '../tools/expect';
-import maybe    from '../tools/maybe';
-import optional from '../tools/optional';
-import {Type}   from '../types';
+import {expect}   from '../tools/expect';
+import {maybe}    from '../tools/maybe';
+import {optional} from '../tools/optional';
+import {Type}     from '../types';
 
 module.exports = maybe<Type | null>(stream => {
     const identifier = require('../modifiers/identifier');
