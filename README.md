@@ -39,7 +39,7 @@ $ yarn add bavary
 
 Include directly via jsdelivr:
 ```html
-<script src="https://cdn.jsdelivr.net/npm/bavary/lib/bavary.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bavary/lib/bavary.js"></script>
 ```
 
 
@@ -50,7 +50,7 @@ import {compile} from 'bavary';
 // Compile definitions
 const parse = compile(`
     entry ['A' | 'B']
-`)
+`);
 
 // Use compiled definitions to parse a string
 const parsed = parse('A');
