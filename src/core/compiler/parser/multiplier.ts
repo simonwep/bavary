@@ -1,10 +1,10 @@
 import {CharacterSelection, Group, MultiplierRange, Reference} from '../../ast/types';
-import Streamable                                              from '../../stream';
+import {Streamable}                                            from '../../stream';
 import {ParsingResult, Scope}                                  from '../types';
 
 type typesWhoCouldHaveMultiplierAttachedToIt = Group | Reference | CharacterSelection;
 
-export default <expectedResult, declarationType extends typesWhoCouldHaveMultiplierAttachedToIt>(
+export const maybeMultiplier = <expectedResult, declarationType extends typesWhoCouldHaveMultiplierAttachedToIt>(
     fn: (
         stream: Streamable<string>,
         decl: declarationType,
@@ -71,4 +71,4 @@ export default <expectedResult, declarationType extends typesWhoCouldHaveMultipl
         stream.recycle();
         return parse();
     };
-}
+};

@@ -1,6 +1,6 @@
-import Streamable from '../../stream';
+import {Streamable} from '../../stream';
 
-export default (stream: Streamable<string>, end: string): string | null => {
+export const consumeEscaped = (stream: Streamable<string>, end: string): string | null => {
     let escaped = false;
     let str = '';
 

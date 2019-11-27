@@ -11,7 +11,7 @@ function alternative(val: number, fallback: number, pred = -1): number {
  * @param start error-offset
  * @param end error-end index
  */
-export default (msg: string, source: string, start: number, end: number): string => {
+export const prettifyError = (msg: string, source: string, start: number, end: number): string => {
     const prevLineBreak = alternative(previousIndexOf(msg, '\n', start), -1) + 1;
     const nextLineBreak = alternative(msg.indexOf('\n', end), msg.length);
     const col = (start - prevLineBreak);

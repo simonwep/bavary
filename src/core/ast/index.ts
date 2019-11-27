@@ -1,4 +1,4 @@
-import Streamable    from '../stream';
+import {Streamable}  from '../stream';
 import {RawType}     from '../tokenizer/types';
 import {Declaration} from './types';
 

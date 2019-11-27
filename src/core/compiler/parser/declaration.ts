@@ -1,5 +1,5 @@
 import {GroupValue}           from '../../ast/types';
-import Streamable             from '../../stream';
+import {Streamable}           from '../../stream';
 import {ParsingResult, Scope} from '../types';
 
 module.exports = (

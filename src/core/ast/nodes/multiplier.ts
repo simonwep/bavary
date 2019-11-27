@@ -1,7 +1,7 @@
 import {RawType}    from '../../tokenizer/types';
-import expect       from '../tools/expect';
-import maybe        from '../tools/maybe';
-import optional     from '../tools/optional';
+import {expect}     from '../tools/expect';
+import {maybe}      from '../tools/maybe';
+import {optional}   from '../tools/optional';
 import {Multiplier} from '../types';
 
 const types: {[key: string]: string} = {

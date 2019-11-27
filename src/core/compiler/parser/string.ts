@@ -1,5 +1,5 @@
 import {Str}           from '../../ast/types';
-import Streamable      from '../../stream';
+import {Streamable}    from '../../stream';
 import {ParsingResult} from '../types';
 
 /**

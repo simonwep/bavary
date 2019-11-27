@@ -110,4 +110,62 @@ describe('[COM] Modifiers', () => {
 
         expect(() => parse('ABC')).to.throw();
     });
+
+    it('Should parse a definition using a value-accessor', () => {
+        const parse = compile(`
+            <num> = [(0 - 9)]+
+
+            <highlow> = {
+                <high> = [(A - Z)+]
+                <low> = [(a - z)+]
+
+                default [<high#h> <low#low>]
+            }
+
+            <puncs> = {
+                <punc-a> = ['-']
+                <punc-b> = ['+']
+                default [<punc-a#a> <punc-b#b>]+
+            }
+
+            <type> = [
+                <highlow#mix> <num#num> <puncs#punc>
+            ]
+
+            entry [
+                <type#sup{
+                    def simple = mix.h,
+                    def numref = num,
+                    def num0 = num[0],
+                    def num2 = num[2],
+                    def num10 = num[10],
+                    def puncinv = punc[2].a.b,
+                    def puncinv2 = punc.a,
+                    def punc2a = punc[2].a,
+                    def punc5a = punc[5].a
+                }>
+            ]
+        `);
+
+        expect(parse('ABCabc124-+-+-+')).to.deep.equal({
+            sup: {
+                mix: {h: 'ABC', low: 'abc'},
+                num: ['1', '2', '4'],
+                punc: [
+                    {a: '-', b: '+'},
+                    {a: '-', b: '+'},
+                    {a: '-', b: '+'}
+                ],
+                simple: 'ABC',
+                numref: ['1', '2', '4'],
+                num0: '1',
+                num2: '4',
+                num10: null,
+                puncinv: null,
+                puncinv2: null,
+                punc2a: '-',
+                punc5a: null
+            }
+        });
+    });
 });

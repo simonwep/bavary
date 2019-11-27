@@ -1,12 +1,12 @@
-import check                    from '../tools/check';
-import combine                  from '../tools/combine';
-import expect                   from '../tools/expect';
-import maybe                    from '../tools/maybe';
-import optional                      from '../tools/optional';
+import {check}                    from '../tools/check';
+import {combine}                  from '../tools/combine';
+import {expect}                   from '../tools/expect';
+import {maybe}                    from '../tools/maybe';
+import {optional}                      from '../tools/optional';
 import {Func, Group, Reference, Tag} from '../types';
 
 module.exports = maybe<Func>(stream => {
-    const identifier = require('./identifier');
+    const identifier = require('../modifiers/identifier');
     const name = identifier(stream);
 
     if (!name || !optional(stream, 'punc', '(')) {
@@ -37,7 +37,7 @@ module.exports = maybe<Func>(stream => {
     expect(stream, 'punc', ')');
     return {
         type: 'function',
-        name: name.value,
+        name,
         args,
     } as Func;
 });

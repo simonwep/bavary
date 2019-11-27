@@ -1,7 +1,7 @@
 import {CharacterSelection, CharacterSelectionArray} from '../../ast/types';
-import Streamable                                    from '../../stream';
+import {Streamable}                                  from '../../stream';
 import {ParsingResult, Scope}                        from '../types';
-import multiplier                                    from './multiplier';
+import {maybeMultiplier}                             from './multiplier';
 
 /**
  * Checks if any range or value of a CharacterSelectionArray matches the given char-code
@@ -27,7 +27,7 @@ module.exports = (stream: Streamable<string>, decl: CharacterSelection, scope: S
     const {included, excluded} = decl;
 
     // Type may have a multiplier attached to it
-    const matches = multiplier<string, CharacterSelection>(() => {
+    const matches = maybeMultiplier<string, CharacterSelection>(() => {
 
         if (stream.hasNext()) {
 

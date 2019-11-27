@@ -9,7 +9,7 @@ import {Parser}              from '../../core/compiler/types';
 import {tokenize}            from '../../core/tokenizer';
 import {LEVEL, log}          from '../tools/log';
 import {createPathString}    from '../tools/prettify-file-path';
-import removeFromArray       from '../tools/remove-from-array';
+import {removeFromArray}     from '../tools/remove-from-array';
 
 export default (glob: string, cb: (parser: Parser) => void): void => {
     const source: Map<string, Array<Declaration>> = new Map();

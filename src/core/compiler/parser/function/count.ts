@@ -1,5 +1,5 @@
 import {Func, Group, Identifier, Tag} from '../../../ast/types';
-import Streamable                     from '../../../stream';
+import {Streamable}                     from '../../../stream';
 import {ParsingResult, Scope}         from '../../types';
 import {validateArguments}            from './validate-arguments';
 
@@ -29,7 +29,6 @@ module.exports = (stream: Streamable<string>, decl: Func, scope: Scope, result: 
     if (!Array.isArray(rawSource) && typeof rawSource !== 'string') {
         throw new Error('Count function requires an array or string as source.');
     }
-
 
     result.obj[tag.value] = rawSource.length;
     return true;

@@ -1,5 +1,5 @@
-import maybe        from '../tools/maybe';
-import optional     from '../tools/optional';
+import {maybe}      from '../tools/maybe';
+import {optional}   from '../tools/optional';
 import {Combinator} from '../types';
 
 module.exports = maybe<Combinator>(stream => {

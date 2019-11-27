@@ -1,7 +1,7 @@
-import {GroupedCombinator}    from '../../ast/types';
-import Streamable             from '../../stream';
-import serialize              from '../tools/serialize';
-import {ParsingResult, Scope} from '../types';
+import {GroupedCombinator}      from '../../ast/types';
+import {Streamable}             from '../../stream';
+import {serializeParsingResult} from '../tools/serialize';
+import {ParsingResult, Scope}   from '../types';
 
 module.exports = (stream: Streamable<string>, decl: GroupedCombinator, scope: Scope, result: ParsingResult): boolean => {
     const declaration = require('./declaration');
@@ -17,7 +17,7 @@ module.exports = (stream: Streamable<string>, decl: GroupedCombinator, scope: Sc
                     stream.recycle();
 
                     // Serialize remaining types
-                    serialize(decs.slice(i), result.obj);
+                    serializeParsingResult(decs.slice(i), result.obj);
                     return true;
                 }
             }
@@ -37,7 +37,7 @@ module.exports = (stream: Streamable<string>, decl: GroupedCombinator, scope: Sc
             }
 
             // Serialize remaining types
-            serialize(cpy, result.obj);
+            serializeParsingResult(cpy, result.obj);
 
             if (!cpy.length || (decl.sign === '&&' && cpy.length < decl.value.length)) {
                 stream.recycle();

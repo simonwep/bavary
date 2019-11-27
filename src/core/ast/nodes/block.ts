@@ -1,7 +1,7 @@
-import check                from '../tools/check';
-import expect               from '../tools/expect';
-import maybe                from '../tools/maybe';
-import optional             from '../tools/optional';
+import {check}              from '../tools/check';
+import {expect}             from '../tools/expect';
+import {maybe}              from '../tools/maybe';
+import {optional}           from '../tools/optional';
 import {Block, Declaration} from '../types';
 
 module.exports = maybe<Block>(stream => {

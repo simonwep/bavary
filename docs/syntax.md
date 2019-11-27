@@ -10,7 +10,7 @@
 7. [Tags](#tags) _- Give used [types](#type-definition) a name._
 8. [Operators](#operators) _- Specify how a result should be processed._
    8.1. [Spread Operator](#spread-operator) _- Let the result of a [type](#type-definition) bubble up._
-   8.2. [Modifiers](#modifiers) _- Extend the result of a [type](#type-definition) with custom properties._
+   8.2. [Modifiers](#modifiers) _- Alter the result of a [type](#type-definition)._
    8.3. [Joins](#joins) _- Concatenate results._
 
 ### Entry type
@@ -213,17 +213,17 @@ If there wouldn't be a spread operator and `<char>` would be tagged with `char` 
 ```
 
 #### Modifiers
-Modifiers can be used to extend the result of a [type](#type-definition) or [group](#group-definition)
-and must at least contain **one kw-pair**.
+Modifiers can be used to alter the result of a [type](#type-definition) or [group](#group-definition)
+and must at least contain **one definition**.
 
-If used on types the target **must** return an object.
+> The target **must** return an object.
 
 ```js
 const parse = compile(`
 
     // <char> returns an object since tags are used within it
     <char> = {
-        <uppercase> = [(A - Z)+]
+        <uppercase> = [(A - Z)]+
 
         default [
             [<uppercase#up>]
@@ -234,7 +234,7 @@ const parse = compile(`
         default [
             <char#ch{
                 def firstProp = 'Value A',
-                def second = 'Another value'
+                def second = up[0]
             }>
         ]
     }
@@ -247,9 +247,13 @@ The code above would log the following:
 ```
 {
     "ch": {
-        "up": "ABC",
-        "firstProp": "Value A",    // This is a custom property!
-        "second": "Another value"  // ...
+        "up": [
+            "A",
+            "B",
+            "C"
+        ],
+        "firstProp": "Value A", // Custom prop
+        "second": "A" // First item of 'up'
     }
 }
 ```
@@ -260,7 +264,7 @@ Each kw-pair must be seperated with commas, the name must be a valid identifier 
 
 | Modifier | Explanation | Example |
 | -------- | ----------- | ------- |
-| def | Add custom values to a result | `def key = 'value'` |
+| def | Add custom values to a result or select a specific value | `def key = 'wow'` `def sub = obj.arr[2].v` |
 | del | Remove a property from the result-set | `del key` |
 
 > They can be used in combination with the spread operator!
