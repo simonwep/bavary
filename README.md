@@ -59,6 +59,10 @@ const parsed = parse('A');
 console.log(parsed);
 ```
 
+The function `compile` accepts as second argument a [config object](docs/config.md);
+
+
+## Getting started
 Check out the [documentation](docs/syntax.md) to get started or jump directly into one of the examples:
 
 1. [string](docs/examples/string.md) - Parsing strings and support escaped quotes.

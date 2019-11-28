@@ -8,9 +8,9 @@
 5. [Types](#type-definition) _- Give groups or [blocks](#block-definition) a name._
 6. [Blocks](#block-definition) _- Scope [types](#type-definition) an things which are related to each other._
 7. [Tags](#tags) _- Give used [types](#type-definition) a name._
-8. [Operators](#operators) _- Specify how a result should be processed._
-   8.1. [Spread Operator](#spread-operator) _- Let the result of a [type](#type-definition) bubble up._
-   8.2. [Modifiers](#modifiers) _- Alter the result of a [type](#type-definition)._
+8. [Operators](#operators) _- Specify how a result should be processed._  
+   8.1. [Spread Operator](#spread-operator) _- Let the result of a [type](#type-definition) bubble up._  
+   8.2. [Modifiers](#modifiers) _- Alter the result of a [type](#type-definition)._  
    8.3. [Joins](#joins) _- Concatenate results._
 
 ### Entry type
