@@ -57,10 +57,8 @@ export type ParserActions = {
     setProperty: (key: string, value: ParsingResultObjectValue) => void;
 }
 
-export type ParsingFunctionPairs = {
-    [key: string]: ParsingFunction;
-};
-
 export type CompilerConfig = {
-    functions: ParsingFunctionPairs;
+    functions: {
+        [key: string]: ParsingFunction;
+    };
 }
