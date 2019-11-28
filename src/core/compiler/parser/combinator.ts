@@ -1,9 +1,15 @@
-import {GroupedCombinator}      from '../../ast/types';
-import {Streamable}             from '../../stream';
-import {serializeParsingResult} from '../tools/serialize';
-import {ParsingResult, Scope}   from '../types';
+import {GroupedCombinator}                    from '../../ast/types';
+import {Streamable}                           from '../../stream';
+import {serializeParsingResult}               from '../tools/serialize';
+import {CompilerConfig, ParsingResult, Scope} from '../types';
 
-module.exports = (stream: Streamable<string>, decl: GroupedCombinator, scope: Scope, result: ParsingResult): boolean => {
+module.exports = (
+    config: CompilerConfig,
+    stream: Streamable<string>,
+    decl: GroupedCombinator,
+    scope: Scope,
+    result: ParsingResult
+): boolean => {
     const declaration = require('./declaration');
     stream.stash();
 
@@ -13,7 +19,7 @@ module.exports = (stream: Streamable<string>, decl: GroupedCombinator, scope: Sc
             // Match one of the items
             const decs = decl.value;
             for (let i = 0; i < decs.length; i++) {
-                if (declaration(stream, decs[i], scope, result)) {
+                if (declaration(config, stream, decs[i], scope, result)) {
                     stream.recycle();
 
                     // Serialize remaining types
@@ -30,7 +36,7 @@ module.exports = (stream: Streamable<string>, decl: GroupedCombinator, scope: Sc
 
             // Match items ignoring the order
             for (let i = 0; i < cpy.length; i++) {
-                if (declaration(stream, cpy[i], scope, result)) {
+                if (declaration(config, stream, cpy[i], scope, result)) {
                     cpy.splice(i, 1);
                     i = -1;
                 }

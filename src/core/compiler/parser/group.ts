@@ -3,11 +3,17 @@ import {serializeParsingResult}                  from '../tools/serialize';
 import {ParsingResult, ParsingResultObjectValue} from '../types';
 import {maybeMultiplier}                         from './multiplier';
 
-module.exports = maybeMultiplier<ParsingResultObjectValue, Group>((stream, decl, scope, result: ParsingResult = {
-    obj: {},
-    str: '',
-    pure: true
-}): ParsingResultObjectValue => {
+module.exports = maybeMultiplier<ParsingResultObjectValue, Group>((
+    config,
+    stream,
+    decl,
+    scope,
+    result: ParsingResult = {
+        obj: {},
+        str: '',
+        pure: true
+    }
+): ParsingResultObjectValue => {
     const declaration = require('./declaration');
     stream.stash();
 
@@ -19,7 +25,7 @@ module.exports = maybeMultiplier<ParsingResultObjectValue, Group>((stream, decl,
         const dec = decs[i];
 
         // Parse declaration
-        if (!declaration(stream, dec, scope, result)) {
+        if (!declaration(config, stream, dec, scope, result)) {
             stream.pop();
 
             // Serialize remaining types

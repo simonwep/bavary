@@ -1,15 +1,8 @@
-import {Str}           from '../../ast/types';
-import {Streamable}    from '../../stream';
-import {ParsingResult} from '../types';
+import {Str}                           from '../../ast/types';
+import {Streamable}                    from '../../stream';
+import {CompilerConfig, ParsingResult} from '../types';
 
-/**
- * Parses a single string
- * @param stream Character-stream
- * @param decl
- * @param result
- * @returns {null|*}
- */
-module.exports = (stream: Streamable<string>, decl: Str, result: ParsingResult): boolean => {
+module.exports = (config: CompilerConfig, stream: Streamable<string>, decl: Str, result: ParsingResult): boolean => {
     const {value} = decl;
 
     stream.stash();

@@ -1,11 +1,12 @@
 import {CharacterSelection, Group, MultiplierRange, Reference} from '../../ast/types';
 import {Streamable}                                            from '../../stream';
-import {ParsingResult, Scope}                                  from '../types';
+import {CompilerConfig, ParsingResult, Scope}                  from '../types';
 
 type typesWhoCouldHaveMultiplierAttachedToIt = Group | Reference | CharacterSelection;
 
 export const maybeMultiplier = <expectedResult, declarationType extends typesWhoCouldHaveMultiplierAttachedToIt>(
     fn: (
+        config: CompilerConfig,
         stream: Streamable<string>,
         decl: declarationType,
         scope: Scope,
@@ -14,13 +15,14 @@ export const maybeMultiplier = <expectedResult, declarationType extends typesWho
 ) => {
 
     return (
+        config: CompilerConfig,
         stream: Streamable<string>,
         decl: declarationType,
         scope: Scope,
         result: ParsingResult
     ): expectedResult | Array<expectedResult> | null => {
 
-        const parse = (): expectedResult | null => fn(stream, decl, scope, result);
+        const parse = (): expectedResult | null => fn(config, stream, decl, scope, result);
         const parseAll = (): Array<expectedResult> => {
             const values: Array<expectedResult> = [];
 

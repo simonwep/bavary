@@ -68,7 +68,7 @@ export type Modifier = DefineModifier | DeleteModifier;
 export type Modifiers = Array<Modifier>;
 export type ModifierTarget = {[key: string]: unknown};
 
-export type FuncArgument = Group | Identifier | Tag;
+export type FuncArgument = Group | Str | Tag;
 export type Func = {
     type: 'function';
     name: string;
@@ -77,11 +77,6 @@ export type Func = {
 
 export type Tag = {
     type: 'tag';
-    value: string;
-}
-
-export type Identifier = {
-    type: 'identifier';
     value: string;
 }
 

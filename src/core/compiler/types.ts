@@ -33,3 +33,9 @@ export type ParsingResultObject = {
 }
 
 export type Parser = (content: string) => null | object;
+export type ParsingFunction = (res: ParsingResult, ...args: Array<string | object>) => boolean;
+export type ParsingFunctionPairs = Array<[string, ParsingFunction]>;
+
+export type CompilerConfig = {
+    functions: ParsingFunctionPairs;
+}

@@ -1,15 +1,16 @@
-import {Declaration, Group}                               from '../ast/types';
-import {Streamable}                                       from '../stream';
-import {createScope, ENTRY_EXPORT, GLOBAL_SCOPE}          from './tools/create-scope';
-import {resolveDefaultExport}                             from './tools/resolve-scope';
-import {Parser, Scope, ScopeEntriesMap, ScopeVariantsMap} from './types';
+import {Declaration, Group}                                                                     from '../ast/types';
+import {Streamable}                                                                             from '../stream';
+import {createScope, ENTRY_EXPORT, GLOBAL_SCOPE}                                                from './tools/create-scope';
+import {resolveDefaultExport}                                                                   from './tools/resolve-scope';
+import {CompilerConfig, Parser, ParsingFunctionPairs, Scope, ScopeEntriesMap, ScopeVariantsMap} from './types';
 
 /**
  * Compiles a pre-calcuated set of declarations.
  * Should only be used internally.
  * @param tree
+ * @param functions
  */
-export const compileDeclarations = (tree: Array<Declaration>): Parser => {
+export const compileDeclarations = (tree: Array<Declaration>, functions: ParsingFunctionPairs): Parser => {
     const group = require('./parser/group');
 
     // Resolve sub-scopes
@@ -20,6 +21,12 @@ export const compileDeclarations = (tree: Array<Declaration>): Parser => {
         key: GLOBAL_SCOPE,
     });
 
+    // Create compiler-global object with config stuff
+    const config = {
+        functions
+    } as CompilerConfig;
+
+    // Pick entry type
     const entry = globalScope.variants.get(ENTRY_EXPORT);
 
     // Check if entry node is declared
@@ -41,7 +48,7 @@ export const compileDeclarations = (tree: Array<Declaration>): Parser => {
 
         // Parse and return result if successful
         const stream = new Streamable(content);
-        const res = group(stream, entryGroup, entryScope);
+        const res = group(config, stream, entryGroup, entryScope);
         return stream.hasNext() ? null : res;
     };
 };

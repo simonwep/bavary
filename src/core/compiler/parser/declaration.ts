@@ -1,8 +1,9 @@
-import {GroupValue}           from '../../ast/types';
-import {Streamable}           from '../../stream';
-import {ParsingResult, Scope} from '../types';
+import {GroupValue}                           from '../../ast/types';
+import {Streamable}                           from '../../stream';
+import {CompilerConfig, ParsingResult, Scope} from '../types';
 
 module.exports = (
+    config: CompilerConfig,
     stream: Streamable<string>,
     decl: GroupValue,
     scope: Scope,
@@ -19,7 +20,7 @@ module.exports = (
     switch (decl.type) {
         case 'combinator': {
 
-            if (!combinator(stream, decl, scope, result)) {
+            if (!combinator(config, stream, decl, scope, result)) {
                 stream.pop();
                 return false;
             }
@@ -28,7 +29,7 @@ module.exports = (
         }
         case 'string': {
 
-            if (!string(stream, decl, result)) {
+            if (!string(config, stream, decl, result)) {
                 stream.pop();
                 return false;
             }
@@ -37,7 +38,7 @@ module.exports = (
         }
         case 'character-selection': {
 
-            if (!characterSelection(stream, decl, scope, result)) {
+            if (!characterSelection(config, stream, decl, scope, result)) {
                 stream.pop();
                 return false;
             }
@@ -46,7 +47,7 @@ module.exports = (
         }
         case 'reference': {
 
-            if (!reference(stream, decl, scope, result)) {
+            if (!reference(config, stream, decl, scope, result)) {
                 stream.pop();
                 return false;
             }
@@ -54,7 +55,7 @@ module.exports = (
             break;
         }
         case 'group': {
-            const res = group(stream, decl, scope, result);
+            const res = group(config, stream, decl, scope, result);
 
             if (!res) {
                 if (decl.multiplier) {
@@ -74,7 +75,7 @@ module.exports = (
         }
         case 'function': {
 
-            if (!fn(stream, decl, scope, result)) {
+            if (!fn(config, stream, decl, scope, result)) {
                 stream.pop();
                 return false;
             }
