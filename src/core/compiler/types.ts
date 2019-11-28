@@ -33,9 +33,32 @@ export type ParsingResultObject = {
 }
 
 export type Parser = (content: string) => null | object;
-export type ParsingFunction = (res: ParsingResult, ...args: Array<string | object>) => boolean;
+export type ParsingFunction = (res: ParserActions, ...args: Array<string | object>) => boolean;
+export type ParserActions = {
+
+    /**
+     * Current state.
+     * Should only be used to access properties.
+     */
+    state: ParsingResult;
+
+    /**
+     * Updates the current raw-result. Only possible if not an object already.
+     * Throws an error if the target is an object.
+     * @param str
+     */
+    setString: (str: string) => void;
+
+    /**
+     * Defines / overrides a property of the result.
+     * @param key
+     * @param value
+     */
+    setProperty: (key: string, value: ParsingResultObjectValue) => void;
+}
+
 export type ParsingFunctionPairs = {
-    [key: string]: ParsingFunction
+    [key: string]: ParsingFunction;
 };
 
 export type CompilerConfig = {

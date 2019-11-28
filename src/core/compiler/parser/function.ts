@@ -1,6 +1,25 @@
-import {Func}                                 from '../../ast/types';
-import {Streamable}                           from '../../stream';
-import {CompilerConfig, ParsingResult, Scope} from '../types';
+import {Func}                                                from '../../ast/types';
+import {Streamable}                                          from '../../stream';
+import {CompilerConfig, ParserActions, ParsingResult, Scope} from '../types';
+
+const createParserActionsObj = (res: ParsingResult): ParserActions => {
+    return {
+        state: res,
+
+        setString(str): void {
+            if (!res.pure) {
+                throw new Error('Can\'t apply string, result isn\'t pure.');
+            }
+
+            res.str = str;
+        },
+
+        setProperty(key, val): void {
+            res.obj[key] = val;
+            res.pure = false;
+        }
+    };
+};
 
 module.exports = (
     config: CompilerConfig,
@@ -37,9 +56,12 @@ module.exports = (
         throw new Error(`There is no such function: ${decl.name}`);
     }
 
-    // Call
-    return fn(
-        result,
-        ...resolvedArgs
-    );
+    try {
+        return fn(
+            createParserActionsObj(result),
+            ...resolvedArgs
+        );
+    } catch (e) {
+        throw new Error(`Function "${decl.name}" throwed an error:\n${e.message}`);
+    }
 };
