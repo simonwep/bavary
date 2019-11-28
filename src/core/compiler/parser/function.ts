@@ -32,13 +32,13 @@ module.exports = (
     }
 
     // Resolve function
-    const fnPair = config.functions.find(v => v[0] === decl.name);
-    if (!fnPair) {
+    const fn = config.functions[decl.name];
+    if (typeof fn !== 'function') {
         throw new Error(`There is no such function: ${decl.name}`);
     }
 
     // Call
-    return fnPair[1](
+    return fn(
         result,
         ...resolvedArgs
     );

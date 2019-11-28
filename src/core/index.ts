@@ -6,11 +6,10 @@ import {tokenize}                     from './tokenizer';
 
 /**
  * Compiles a definition-string.
- * Returns a function which can be used to parse content with compiled definitions. TODO: Let function be an object
+ * Returns a function which can be used to parse content with compiled definitions.
  */
-export const compile = (str: string, functions: ParsingFunctionPairs = []): Parser => {
+export const compile = (str: string, functions: ParsingFunctionPairs = {}): Parser => {
     return compileDeclarations(
-
         // Call ast-parser with array of tokens an provide the source-code in case of errors
         parseAST(tokenize(str), str),
 
