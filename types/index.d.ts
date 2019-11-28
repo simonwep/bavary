@@ -1,10 +1,15 @@
+import {CompilerConfig} from '../src/core/compiler/types';
+
 declare module 'bavary' {
 
     /**
      * Compiles a definition-string and returns a function.
      * Returns a function which can be used to parse content with compiled definitions.
      */
-    export const compile: (definitions: string) => (content: string) => object | null;
+    export const compile: (
+        definitions: string,
+        config?: CompilerConfig,
+    ) => (content: string) => object | null;
 
     /**
      * Current version
