@@ -8,13 +8,13 @@ describe('[COM] Functions', () => {
             entry ['(' count([(0 - 9)+], 'size') ')']
         `, {
             functions: {
-                count({setProperty, setString}, value, prop) {
+                count({setProperty, setString}, value, prop): boolean {
                     if (!value || typeof value !== 'string') {
-                        throw 'Group not matched or not a string.';
+                        throw new Error('Group not matched or not a string.');
                     }
 
                     if (typeof prop !== 'string') {
-                        throw 'Second argument must be a string.';
+                        throw new Error('Second argument must be a string.');
                     }
 
                     if (value.length > 8) {
@@ -42,7 +42,7 @@ describe('[COM] Functions', () => {
             ]
         `, {
             functions: {
-                count({setString}) {
+                count({setString}): boolean {
                     setString('Hello World');
                     return true;
                 }
@@ -61,7 +61,7 @@ describe('[COM] Functions', () => {
             ]
         `, {
             functions: {
-                count({setProperty}, chars, prop, nullRef) {
+                count({setProperty}, chars, prop, nullRef): boolean {
                     if (nullRef !== null) {
                         return false;
                     }
