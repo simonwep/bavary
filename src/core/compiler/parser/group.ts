@@ -1,17 +1,19 @@
-import {Group}                                   from '../../ast/types';
-import {serializeParsingResult}                  from '../tools/serialize';
-import {ParsingResult, ParsingResultObjectValue} from '../types';
-import {maybeMultiplier}                         from './multiplier';
+import {Group}                    from '../../ast/types';
+import {serializeParsingResult}   from '../tools/serialize';
+import {ParsingResultObjectValue} from '../types';
+import {maybeMultiplier}          from './multiplier';
 
 module.exports = maybeMultiplier<ParsingResultObjectValue, Group>((
-    config,
-    stream,
-    decl,
-    scope,
-    result: ParsingResult = {
-        obj: {},
-        str: '',
-        pure: true
+    {
+        config,
+        stream,
+        decl,
+        scope,
+        result = {
+            obj: {},
+            str: '',
+            pure: true
+        }
     }
 ): ParsingResultObjectValue => {
     const declaration = require('./declaration');
@@ -22,10 +24,10 @@ module.exports = maybeMultiplier<ParsingResultObjectValue, Group>((
 
     const decs = decl.value;
     for (let i = 0; i < decs.length; i++) {
-        const dec = decs[i];
+        const decl = decs[i];
 
         // Parse declaration
-        if (!declaration(config, stream, dec, scope, result)) {
+        if (!declaration({config, stream, decl, scope, result})) {
             stream.pop();
 
             // Serialize remaining types

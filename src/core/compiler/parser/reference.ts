@@ -1,16 +1,17 @@
-import {ModifierTarget, Reference}                                      from '../../ast/types';
-import {Streamable}                                                     from '../../stream';
-import {resolveReference}                                               from '../tools/resolve-scope';
-import {CompilerConfig, ParsingResult, ParsingResultObjectValue, Scope} from '../types';
-import {applyModifications}                                             from './modification';
-import {maybeMultiplier}                                                from './multiplier';
+import {ModifierTarget, Reference}            from '../../ast/types';
+import {resolveReference}                     from '../tools/resolve-scope';
+import {ParserArgs, ParsingResultObjectValue} from '../types';
+import {applyModifications}                   from './modification';
+import {maybeMultiplier}                      from './multiplier';
 
 module.exports = (
-    config: CompilerConfig,
-    stream: Streamable<string>,
-    decl: Reference,
-    scope: Scope,
-    result: ParsingResult
+    {
+        config,
+        stream,
+        decl,
+        scope,
+        result
+    }: ParserArgs<Reference>
 ): boolean => {
     const group = require('./group');
     stream.stash();
@@ -26,8 +27,16 @@ module.exports = (
 
     // Type may have a multiplier attached to it
     const matches = maybeMultiplier<ParsingResultObjectValue, Reference>(
-        () => group(config, stream, targetBody, newScope)
-    )(config, stream, decl, newScope, result);
+        () => group({
+            config,
+            stream,
+            decl: targetBody,
+            scope: newScope
+        })
+    )({
+        config, stream, decl, result,
+        scope: newScope
+    });
 
     // Identify result type
     const isArray = Array.isArray(matches);

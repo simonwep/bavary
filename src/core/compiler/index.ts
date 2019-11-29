@@ -48,7 +48,13 @@ export const compileDeclarations = (
 
         // Parse and return result if successful
         const stream = new Streamable(content);
-        const res = group(config, stream, entryGroup, entryScope);
+        const res = group({
+            config,
+            stream,
+            decl: entryGroup,
+            scope: entryScope
+        });
+
         return stream.hasNext() ? null : res;
     };
 };

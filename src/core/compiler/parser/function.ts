@@ -1,6 +1,5 @@
-import {Func}                                                from '../../ast/types';
-import {Streamable}                                          from '../../stream';
-import {CompilerConfig, ParserActions, ParsingResult, Scope} from '../types';
+import {Func}                                     from '../../ast/types';
+import {ParserActions, ParserArgs, ParsingResult} from '../types';
 
 const createParserActionsObj = (res: ParsingResult): ParserActions => {
     return {
@@ -22,11 +21,13 @@ const createParserActionsObj = (res: ParsingResult): ParserActions => {
 };
 
 module.exports = (
-    config: CompilerConfig,
-    stream: Streamable<string>,
-    decl: Func,
-    scope: Scope,
-    result: ParsingResult
+    {
+        config,
+        stream,
+        decl,
+        scope,
+        result
+    }: ParserArgs<Func>
 ): boolean => {
     const group = require('./group');
 
@@ -40,7 +41,9 @@ module.exports = (
                 break;
             }
             case 'group': {
-                resolvedArgs.push(group(config, stream, arg, scope));
+                resolvedArgs.push(group({
+                    config, stream, decl: arg, scope
+                }));
                 break;
             }
             case 'string': {

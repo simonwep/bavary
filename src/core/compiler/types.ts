@@ -1,4 +1,5 @@
 import {DeclarationValue} from '../ast/types';
+import {Streamable}       from '../stream';
 
 export type ScopeEntryKey = string | symbol;
 export type ScopeEntriesMap = Map<string, ScopeEntry>;
@@ -25,6 +26,14 @@ export type ParsingResult = {
     obj: ParsingResultObject;
     str: string;
     pure: boolean;
+}
+
+export type ParserArgs<DeclarationType> = {
+    config: CompilerConfig;
+    stream: Streamable<string>;
+    decl: DeclarationType;
+    scope: Scope;
+    result: ParsingResult;
 }
 
 export type ParsingResultObjectValue = string | number | object | null;

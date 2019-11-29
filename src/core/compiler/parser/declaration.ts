@@ -1,13 +1,14 @@
-import {GroupValue}                           from '../../ast/types';
-import {Streamable}                           from '../../stream';
-import {CompilerConfig, ParsingResult, Scope} from '../types';
+import {GroupValue} from '../../ast/types';
+import {ParserArgs} from '../types';
 
 module.exports = (
-    config: CompilerConfig,
-    stream: Streamable<string>,
-    decl: GroupValue,
-    scope: Scope,
-    result: ParsingResult
+    {
+        config,
+        stream,
+        decl,
+        scope,
+        result
+    }: ParserArgs<GroupValue>
 ): boolean => {
     const characterSelection = require('./character-selection');
     const combinator = require('./combinator');
@@ -20,7 +21,7 @@ module.exports = (
     switch (decl.type) {
         case 'combinator': {
 
-            if (!combinator(config, stream, decl, scope, result)) {
+            if (!combinator({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
@@ -29,7 +30,7 @@ module.exports = (
         }
         case 'string': {
 
-            if (!string(config, stream, decl, result)) {
+            if (!string({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
@@ -38,7 +39,7 @@ module.exports = (
         }
         case 'character-selection': {
 
-            if (!characterSelection(config, stream, decl, scope, result)) {
+            if (!characterSelection({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
@@ -47,7 +48,7 @@ module.exports = (
         }
         case 'reference': {
 
-            if (!reference(config, stream, decl, scope, result)) {
+            if (!reference({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
@@ -55,7 +56,7 @@ module.exports = (
             break;
         }
         case 'group': {
-            const res = group(config, stream, decl, scope, result);
+            const res = group({config, stream, decl, scope, result});
 
             if (!res) {
                 if (decl.multiplier) {
@@ -75,7 +76,7 @@ module.exports = (
         }
         case 'function': {
 
-            if (!fn(config, stream, decl, scope, result)) {
+            if (!fn({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }

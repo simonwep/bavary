@@ -1,8 +1,9 @@
-import {Str}                           from '../../ast/types';
-import {Streamable}                    from '../../stream';
-import {CompilerConfig, ParsingResult} from '../types';
+import {Str}        from '../../ast/types';
+import {ParserArgs} from '../types';
 
-module.exports = (config: CompilerConfig, stream: Streamable<string>, decl: Str, result: ParsingResult): boolean => {
+module.exports = (
+    {stream, decl, result}: ParserArgs<Str>
+): boolean => {
     const {value} = decl;
 
     stream.stash();

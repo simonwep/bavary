@@ -1,6 +1,5 @@
 import {CharacterSelection, CharacterSelectionArray} from '../../ast/types';
-import {Streamable}                                  from '../../stream';
-import {CompilerConfig, ParsingResult, Scope}        from '../types';
+import {ParserArgs}                                  from '../types';
 import {maybeMultiplier}                             from './multiplier';
 
 /**
@@ -16,11 +15,13 @@ const matchesCharacterSelectionArray = (arr: CharacterSelectionArray, charCode: 
 };
 
 module.exports = (
-    config: CompilerConfig,
-    stream: Streamable<string>,
-    decl: CharacterSelection,
-    scope: Scope,
-    result: ParsingResult
+    {
+        config,
+        stream,
+        decl,
+        scope,
+        result
+    }: ParserArgs<CharacterSelection>
 ): boolean => {
     const {included, excluded} = decl;
 
@@ -42,7 +43,7 @@ module.exports = (
         }
 
         return null;
-    })(config, stream, decl, scope, result);
+    })({config, stream, decl, scope, result});
 
     // Resolve corresponding multiplier
     if (Array.isArray(matches)) {
