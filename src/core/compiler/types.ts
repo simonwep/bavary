@@ -67,7 +67,8 @@ export type ParserActions = {
 }
 
 export type CompilerConfig = {
-    functions: {
+    locationData?: boolean;
+    functions?: {
         [key: string]: ParsingFunction;
     };
 }

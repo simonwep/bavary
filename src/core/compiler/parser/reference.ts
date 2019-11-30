@@ -26,6 +26,7 @@ module.exports = (
     const [newScope, targetBody] = res;
 
     // Type may have a multiplier attached to it
+    const starts = stream.index;
     const matches = maybeMultiplier<ParsingResultObjectValue, Reference>(
         () => group({
             config,
@@ -53,6 +54,12 @@ module.exports = (
         // Apply modifiers if defined
         if (decl.modifiers) {
             applyModifications(matches as ModifierTarget, decl);
+        }
+
+        // Save optional start / end labels
+        if (config.locationData && isObject) {
+            (matches as ModifierTarget).__starts = starts;
+            (matches as ModifierTarget).__ends = stream.index - 1;
         }
 
         if (decl.join) {

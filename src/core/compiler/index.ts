@@ -13,6 +13,7 @@ import {CompilerConfig, Parser, Scope, ScopeEntriesMap, ScopeVariantsMap} from '
 export const compileDeclarations = (
     tree: Array<Declaration>,
     config: CompilerConfig = {
+        locationData: false,
         functions: {}
     }
 ): Parser => {

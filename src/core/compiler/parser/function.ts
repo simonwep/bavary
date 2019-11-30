@@ -54,7 +54,7 @@ module.exports = (
     }
 
     // Resolve function
-    const fn = config.functions[decl.name];
+    const fn = config.functions && config.functions[decl.name];
     if (typeof fn !== 'function') {
         throw new Error(`There is no such function: ${decl.name}`);
     }
