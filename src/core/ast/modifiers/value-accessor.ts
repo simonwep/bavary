@@ -28,16 +28,11 @@ const parseArrayAccessor = maybe<number>(stream => {
     return index.value as number;
 });
 
-// TODO: Allow array as first accessor
 module.exports = maybe<ValueAccessor>(stream => {
     const identifier = require('./identifier');
     const entry = identifier(stream);
 
-    if (!entry) {
-        return null;
-    }
-
-    const accessorPath = [entry];
+    const accessorPath = entry ? [entry] : [];
     const parser = combine<string | number | null>(
         parseObjectAccessor,
         parseArrayAccessor
@@ -46,6 +41,10 @@ module.exports = maybe<ValueAccessor>(stream => {
     // Parse parts
     for (let val = null; (val = parser(stream)) !== null;) {
         accessorPath.push(val);
+    }
+
+    if (!accessorPath.length) {
+        return null;
     }
 
     return {
