@@ -28,6 +28,7 @@ const parseArrayAccessor = maybe<number>(stream => {
     return index.value as number;
 });
 
+// TODO: Allow array as first accessor
 module.exports = maybe<ValueAccessor>(stream => {
     const identifier = require('./identifier');
     const entry = identifier(stream);

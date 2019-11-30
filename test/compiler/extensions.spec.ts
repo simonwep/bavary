@@ -98,20 +98,80 @@ describe('[COM] Modifiers', () => {
         });
     });
 
-    it('Should throw an error if del is used on a non-existing property', () => {
-        const parse = compile(`
-            <uppercase> = [(A - Z)+]
-            <str> = [<uppercase#upper>]
+    it('Should throw an error if delete is used on non-arrays/objects or the accessor is wrong', () => {
+
+        // Object -> Array conflict
+        expect(() => compile(`
+            <upper> = [(A - Z)+]
+            <up> = [<upper#upper>]
+            <chars> = [<up#up>]
 
             entry [
-                <str#res{del lol}>
+                <chars#chars{
+                    del up[1]
+                }>
             ]
-        `);
+        `)('ABC')).to.throw();
 
-        expect(() => parse('ABC')).to.throw();
+        // Array -> Object conflict
+        expect(() => compile(`
+            <up> = [(A - Z)]+
+            <chars> = [<up#up>]
+
+            entry [
+                <chars#chars{
+                    del up.abc
+                }>
+            ]
+        `)('ABC')).to.throw();
+
+        // Parent isn't an array or object
+        expect(() => compile(`
+            <up> = [(A - Z)+]
+            <chars> = [<up#up>]
+
+            entry [
+                <chars#chars{
+                    del up[1]
+                }>
+            ]
+        `)('ABC')).to.throw();
     });
 
-    it('Should parse a definition using a value-accessor', () => {
+    it('Should remove nested properties and array entries', () => {
+        const parse = compile(`
+           <low> = [(a - z)+]
+           <high> = [(A - Z)]+
+           <num> = [(0 - 9)+]
+           <high-low> = [<low#low> <high#high>]
+           
+           <prog> = [
+               <num#num>
+               <high-low#hl>
+           ]
+           
+           entry [
+               <prog#prog{
+                   del hl.low,
+                   del hl.high[1]
+               }>
+           ]
+        `);
+
+        expect(parse('123abcABC')).to.deep.equal({
+            prog: {
+                num: '123',
+                hl: {
+                    high: [
+                        'A',
+                        'C'
+                    ]
+                }
+            }
+        });
+    });
+
+    it('Should define properties using nested properties', () => {
         const parse = compile(`
             <num> = [(0 - 9)]+
 

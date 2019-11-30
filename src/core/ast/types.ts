@@ -55,7 +55,7 @@ export type Reference = {
 
 export type DeleteModifier = {
     type: 'del';
-    param: string;
+    param: ValueAccessor;
 }
 
 export type DefineModifier = {
