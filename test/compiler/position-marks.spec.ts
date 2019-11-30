@@ -47,9 +47,40 @@ describe('[COM] Position marks', () => {
 
         for (let i = 0; i < expectedPositions.length; i++) {
             const [starts, ends] = expectedPositions[i];
-            const {__starts, __ends}= result[i] as {__starts: number; __ends: number};
+            const {__starts, __ends} = result[i] as {__starts: number; __ends: number};
             expect(__starts).to.equal(starts);
             expect(__ends).to.equal(ends);
         }
+    });
+
+    it('Should allow custom location properties', () => {
+        const parse = compile(`
+            <hex-color> = {
+                <hex> = [(0 - 9) | (a - f)]
+                <hex-pair> = [<hex> <hex>]
+                
+                default [
+                    '#'
+                    
+                    // RRGGBBAA & RRGGBB
+                    [<hex-pair#r> <hex-pair#b> <hex-pair#g> <hex-pair#a>?] |
+                    
+                    // RGBA & RGB
+                    [<hex#r> <hex#b> <hex#g> <hex#a>?]
+                ]
+            }
+            
+            entry ['((' <hex-color#col> '))']
+        `, {
+            locationData: {
+                start: 'startsAt',
+                end: 'endsAt'
+            }
+        });
+
+        expect(parse('((#fff))')).to.nested.include({
+            'col.startsAt': 2,
+            'col.endsAt': 5
+        });
     });
 });

@@ -27,6 +27,14 @@ export const compileDeclarations = (
         key: GLOBAL_SCOPE,
     });
 
+    // Set default starts, and ends values on locationData config option
+    if (config.locationData === true) {
+        config.locationData = {
+            start: '__starts',
+            end: '__ends'
+        }
+    }
+
     // Pick entry type
     const entry = globalScope.variants.get(ENTRY_EXPORT);
 

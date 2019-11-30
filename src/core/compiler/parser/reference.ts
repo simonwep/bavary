@@ -1,8 +1,8 @@
-import {ModifierTarget, Reference}            from '../../ast/types';
-import {resolveReference}                     from '../tools/resolve-scope';
-import {ParserArgs, ParsingResultObjectValue} from '../types';
-import {applyModifications}                   from './modification';
-import {maybeMultiplier}                      from './multiplier';
+import {ModifierTarget, Reference}                                from '../../ast/types';
+import {resolveReference}                                         from '../tools/resolve-scope';
+import {LocationDataObject, ParserArgs, ParsingResultObjectValue} from '../types';
+import {applyModifications}                                       from './modification';
+import {maybeMultiplier}                                          from './multiplier';
 
 module.exports = (
     {
@@ -58,8 +58,9 @@ module.exports = (
 
         // Save optional start / end labels
         if (config.locationData && isObject) {
-            (matches as ModifierTarget).__starts = starts;
-            (matches as ModifierTarget).__ends = stream.index - 1;
+            const {end, start} = config.locationData as LocationDataObject;
+            (matches as ModifierTarget)[start] = starts;
+            (matches as ModifierTarget)[end] = stream.index - 1;
         }
 
         if (decl.join) {

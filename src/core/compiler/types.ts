@@ -67,8 +67,13 @@ export type ParserActions = {
 }
 
 export type CompilerConfig = {
-    locationData?: boolean;
+    locationData?: boolean | LocationDataObject;
     functions?: {
         [key: string]: ParsingFunction;
     };
+}
+
+export type LocationDataObject = {
+    start: string;
+    end: string;
 }
