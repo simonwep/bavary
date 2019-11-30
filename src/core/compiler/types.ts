@@ -38,6 +38,7 @@ export type ParserArgs<DeclarationType> = {
 
 export type ParsingResultObjectValue = string | number | object | null;
 export type ParsingResultObject = {
+    // TODO: Support symbol as key, not possible currently? See https://stackoverflow.com/questions/59118271/using-symbol-as-object-key-type-in-typescript
     [key: string]: ParsingResultObjectValue | Array<ParsingResultObjectValue>;
 }
 

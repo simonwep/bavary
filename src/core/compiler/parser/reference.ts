@@ -1,5 +1,6 @@
 import {ModifierTarget, Reference}                                from '../../ast/types';
 import {resolveReference}                                         from '../tools/resolve-scope';
+import {typeOf}                                                   from '../tools/type-of';
 import {LocationDataObject, ParserArgs, ParsingResultObjectValue} from '../types';
 import {applyModifications}                                       from './modification';
 import {maybeMultiplier}                                          from './multiplier';
@@ -40,9 +41,7 @@ module.exports = (
     });
 
     // Identify result type
-    const isArray = Array.isArray(matches);
-    const isString = typeof matches === 'string';
-    const isObject = !isArray && !isString;
+    const matchesType = typeOf(matches);
 
     // If reference has a tag, immediatly attach result
     if (decl.tag) {
@@ -57,7 +56,7 @@ module.exports = (
         }
 
         // Save optional start / end labels
-        if (config.locationData && isObject) {
+        if (config.locationData && matchesType === 'object') {
             const {end, start} = config.locationData as LocationDataObject;
             (matches as ModifierTarget)[start] = starts;
             (matches as ModifierTarget)[end] = stream.index - 1;
@@ -66,33 +65,25 @@ module.exports = (
         if (decl.join) {
             const pipeTarget = decl.join;
             const target = result.obj[pipeTarget];
+            const targetType = typeOf(target);
 
             if (!target) {
-                throw new Error(`Cannot pipe result into "${pipeTarget}". It isn't defined yet or cannot be found.`);
+                throw new Error(`"${pipeTarget}" isn't defined yet or cannot be found.`);
+            } else if (targetType !== matchesType) {
+                throw new Error(`Cannot join because the type of source and target aren't identical. ${matchesType} ≠ ${targetType}.`);
             }
 
-            // TODO: That's a mess, clean it up
-            if (Array.isArray(target)) {
-                if (isArray) {
-                    target.push(...(matches as Array<ParsingResultObjectValue>));
-                } else {
-                    throw new Error(`Cannot pipe result into "${pipeTarget}" since the target isn't an array.`);
-                }
-            } else if (typeof target === 'object') {
-                if (isObject) {
-                    Object.assign(target, matches);
-                } else {
-                    throw new Error(`Cannot pipe result into "${pipeTarget}" since the target isn't an object.`);
-                }
-            } else if (isString) {
+            if (targetType === 'array') {
+                (target as Array<unknown>).push(...(matches as Array<ParsingResultObjectValue>));
+            } else if (targetType === 'object') {
+                Object.assign(target, matches);
+            } else if (targetType === 'string') {
                 (result.obj[pipeTarget] as string) += matches;
-            } else {
-                throw new Error(`Cannot pipe result into "${pipeTarget}" since the target isn't a string.`);
             }
         } else if (decl.spread) {
 
             // Spread operator won't work with strings or arrays
-            if (!isObject) {
+            if (matchesType !== 'object') {
                 throw new Error(`"${decl.value}" doesn't return a object which is required for the spread operator to work.`);
             }
 
@@ -105,9 +96,9 @@ module.exports = (
             result.pure = false;
 
             // Perform appropriate action
-        } else if (isArray && (matches as Array<unknown>).every(v => typeof v === 'string')) {
+        } else if (matchesType === 'array' && (matches as Array<unknown>).every(v => typeof v === 'string')) {
             result.str += (matches as Array<unknown>).join(''); // Concat string sequences
-        } else if (isString) {
+        } else if (matchesType === 'string') {
             result.str += matches as string;
         } else {
             throw new Error(`Type "${decl.value}" is missing a tag.`);
