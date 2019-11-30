@@ -1,6 +1,6 @@
 import {ModifierTarget, Reference}                                from '../../ast/types';
+import {typeOf}                                                   from '../../misc/type-of';
 import {resolveReference}                                         from '../tools/resolve-scope';
-import {typeOf}                                                   from '../tools/type-of';
 import {LocationDataObject, ParserArgs, ParsingResultObjectValue} from '../types';
 import {applyModifications}                                       from './modification';
 import {maybeMultiplier}                                          from './multiplier';
@@ -62,6 +62,7 @@ module.exports = (
             (matches as ModifierTarget)[end] = stream.index - 1;
         }
 
+        /* istanbul ignore if: Parts of it require changes made via custom-functions */
         if (decl.join) {
             const pipeTarget = decl.join;
             const target = result.obj[pipeTarget];
@@ -78,7 +79,11 @@ module.exports = (
             } else if (targetType === 'object') {
                 Object.assign(target, matches);
             } else if (targetType === 'string') {
+
+                // User may modify it via custom-function
                 (result.obj[pipeTarget] as string) += matches;
+            } else {
+                throw new Error(`Invalid target type: ${targetType}`);
             }
         } else if (decl.spread) {
 

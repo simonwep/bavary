@@ -1,7 +1,7 @@
 import {Modifiers, ModifierTarget, Reference} from '../../ast/types';
-import {lookupValue}                          from '../tools/lookup-value';
-import {typeOf}                               from '../tools/type-of';
-import {ParsingResultObject}                  from '../types';
+import {lookupValue}         from '../tools/lookup-value';
+import {typeOf}              from '../../misc/type-of';
+import {ParsingResultObject} from '../types';
 
 export const applyModifications = (res: ModifierTarget, decl: Reference): void => {
     for (const ext of decl.modifiers as Modifiers) {
