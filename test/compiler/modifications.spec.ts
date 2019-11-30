@@ -98,7 +98,7 @@ describe('[COM] Modifiers', () => {
         });
     });
 
-    it('Should throw an error if delete is used on non-arrays/objects or the accessor is wrong', () => {
+    it('Should throw an error on invalid accessor-paths', () => {
 
         // Object -> Array conflict
         expect(() => compile(`
@@ -136,6 +136,35 @@ describe('[COM] Modifiers', () => {
                 }>
             ]
         `)('ABC')).to.throw();
+
+        // Parent couldn't be resolve
+        expect(() => compile(`
+            <high> = [(A - Z)]+
+            
+            entry [
+                <high#noice{
+                    del abc.ab
+                }>
+            ]
+        `)('ABC')).to.throw();
+    });
+
+    it('Should remove a first-level array entry', () => {
+        const parse = compile(`
+            <high> = [(A - Z)]+
+            
+            entry [
+                <high#res{
+                    del [2]
+                }>
+            ]
+        `);
+
+        expect(parse('ABCC')).to.deep.equal({
+            res: [
+                'A', 'B', 'C'
+            ]
+        });
     });
 
     it('Should remove nested properties and array entries', () => {

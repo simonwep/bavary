@@ -23,6 +23,10 @@ export const applyModifications = (res: ModifierTarget, decl: Reference): void =
                 const parentVal = lookupValue(res, path);
                 const parentValType = typeOf(parentVal);
 
+                if (!parentVal) {
+                    throw new Error('Failed to resolve parent value.');
+                }
+
                 if (parentValType === 'array') {
                     if (topType !== 'number') {
                         throw new Error(`To delete a array entry you need to specify a index, got ${top} instead.`);
