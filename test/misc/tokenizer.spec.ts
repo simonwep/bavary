@@ -31,4 +31,15 @@ describe('Tokenizer', () => {
             {type: 'punc', value: '"', start: 10, end: 11}
         ]);
     });
+
+    it('Should skip comments indicated by two slashes (\\\\)', () => {
+        expect(tokenize(`
+            abc // another comment
+            // wow
+            123 // nice
+        `)).to.deep.equal([
+            {type: 'kw', value: 'abc', start: 13, end: 16},
+            {type: 'num', value: 123, start: 67, end: 70}
+        ]);
+    });
 });
