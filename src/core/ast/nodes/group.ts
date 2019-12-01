@@ -6,8 +6,8 @@ import {optional}                                                               
 import {BinaryCombinator, CharacterSelection, Func, Group, GroupValue, Reference, Str} from '../types';
 
 module.exports = maybe<Group>(stream => {
+    const combinator = require('../modifiers/combinator');
     const characterSelection = require('./character-selection');
-    const combinator = require('./combinator');
     const multiplier = require('./multiplier');
     const reference = require('./reference');
     const string = require('./string');
@@ -33,17 +33,17 @@ module.exports = maybe<Group>(stream => {
     let comg: null | BinaryCombinator = null;
     while (!check(stream, 'punc', ']')) {
         const value = parsers(stream);
-        const com = combinator(stream);
+        const sign = combinator(stream);
 
         if (!value) {
             stream.throwError('Expected a type, group or raw string / character-range.');
         }
 
-        if (com) {
+        if (sign) {
 
             // Append to previous group
             if (comg) {
-                if (com.value === comg.sign) {
+                if (sign === comg.sign) {
 
                     // Still the same binary combinator since the sign is the same
                     comg.value.push(value as GroupValue);
@@ -55,8 +55,8 @@ module.exports = maybe<Group>(stream => {
                      */
                     const subCom = {
                         type: 'combinator',
-                        sign: com.value,
-                        value: [value]
+                        value: [value],
+                        sign
                     } as BinaryCombinator;
 
                     comg.value.push(subCom);
@@ -69,8 +69,8 @@ module.exports = maybe<Group>(stream => {
             // No combinator defined, create one with current sign
             comg = {
                 type: 'combinator',
-                sign: com.value,
-                value: [value]
+                value: [value],
+                sign
             } as BinaryCombinator;
 
             values.push(comg);

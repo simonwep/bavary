@@ -1,4 +1,4 @@
-export type ASTNode = Declaration | Combinator | CharacterSelection |
+export type ASTNode = Declaration | CharacterSelection |
     Type | Group | Multiplier | Reference | Block | Str;
 
 export type DeclarationValue = Group | Block;
@@ -77,11 +77,6 @@ export type Func = {
 
 export type Tag = {
     type: 'tag';
-    value: string;
-}
-
-export type Combinator = {
-    type: 'combinator';
     value: string;
 }
 
