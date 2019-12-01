@@ -67,4 +67,18 @@ describe('[COM] Combinators', () => {
         expect(parse('cca')).to.equal(null);
         expect(parse('hg')).to.equal(null);
     });
+
+    it('Should handle weirdly mixed combinators', () => {
+        const parse = compile(`
+            
+            // This is exactly the same as [['a' | ['b' & 'c']] ['e' | ['d' & ['e' | 'f']]]]
+            entry ['a' | 'b' & 'c' 'e' | ['d' & 'e' | 'f']]
+        `);
+
+        expect(parse('ae')).to.equals('ae');
+        expect(parse('cbe')).to.equals('cbe');
+        expect(parse('ade')).to.equals('ade');
+        expect(parse('adf')).to.equals('adf');
+        expect(parse('cbde')).to.equals('cbde');
+    });
 });

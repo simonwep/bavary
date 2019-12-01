@@ -1,4 +1,4 @@
-import {GroupedCombinator}      from '../../ast/types';
+import {BinaryCombinator}       from '../../ast/types';
 import {serializeParsingResult} from '../tools/serialize';
 import {ParserArgs}             from '../types';
 
@@ -9,7 +9,7 @@ module.exports = (
         decl,
         scope,
         result
-    }: ParserArgs<GroupedCombinator>
+    }: ParserArgs<BinaryCombinator>
 ): boolean => {
     const declaration = require('./declaration');
     stream.stash();

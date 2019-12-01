@@ -10,14 +10,14 @@ export type Declaration = {
     value: DeclarationValue;
 }
 
-export type GroupValue = Reference | Str | GroupedCombinator | Group | CharacterSelection | Func;
+export type GroupValue = Reference | Str | BinaryCombinator | Group | CharacterSelection | Func;
 export type Group = {
     type: 'group';
     multiplier: Multiplier;
     value: Array<GroupValue>;
 }
 
-export type GroupedCombinator = {
+export type BinaryCombinator = {
     type: 'combinator';
     sign: string;
     value: Array<GroupValue>;
