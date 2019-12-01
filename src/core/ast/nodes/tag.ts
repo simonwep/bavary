@@ -8,6 +8,7 @@ module.exports = maybe<Tag | null>(stream => {
     }
 
     const ident = require('../modifiers/identifier')(stream);
+
     if (!ident) {
         stream.throwError('Expected tag-identifier');
     }

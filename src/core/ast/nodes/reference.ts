@@ -9,6 +9,7 @@ module.exports = maybe<Reference>(stream => {
     const joinTarget = require('../modifiers/join-target');
     const identifier = require('../modifiers/identifier');
     const parseMultipliers = require('./multiplier');
+    const parseTag = require('./tag');
 
     // It may have a spread operator attached to it
     const spread = !!spreadOperator(stream);
@@ -41,14 +42,7 @@ module.exports = maybe<Reference>(stream => {
     }
 
     // It may have a tag
-    let tag: string | null = null;
-    if (optional(stream, 'punc', '#')) {
-        tag = identifier(stream);
-
-        if (!tag) {
-            stream.throwError('Expected string or identifier as tag.');
-        }
-    }
+    let tag = parseTag(stream);
 
     // A tag shouldn't be combined with a spread operator
     if (spread && tag) {
@@ -68,11 +62,11 @@ module.exports = maybe<Reference>(stream => {
 
     return {
         type: 'reference',
+        tag: tag ? tag.value : null,
         multiplier,
         modifiers,
         spread,
         value,
-        join,
-        tag
+        join
     } as Reference;
 });
