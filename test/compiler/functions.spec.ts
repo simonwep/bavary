@@ -82,6 +82,34 @@ describe('[COM] Functions', () => {
         });
     });
 
+    it('Should accept a reference as argument', () => {
+        const parse = compile(`
+            <num> = [(0 - 9)+]
+            entry [ number(<num>, 'num') ]
+        `, {
+            functions: {
+                number({setProperty}, val, tag): boolean {
+                    if (!tag || typeof tag !== 'string') {
+                        throw new Error('Tag missing or not a string.');
+                    } else if (!val) {
+                        return false;
+                    }
+
+                    const res = Number(val);
+                    if (Number.isNaN(res)) {
+                        return false;
+                    }
+
+                    setProperty(tag, res);
+                    return true;
+                }
+            }
+        });
+
+        expect(parse('123')).to.deep.equal({num: 123});
+        expect(parse('abc')).to.equal(null);
+    });
+
     it('Should throw an error if function is undefined', () => {
         const parse = compile(`
             entry [count([(0 - 9)+])]

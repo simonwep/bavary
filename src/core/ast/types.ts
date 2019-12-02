@@ -68,7 +68,7 @@ export type Modifier = DefineModifier | DeleteModifier;
 export type Modifiers = Array<Modifier>;
 export type ModifierTarget = {[key: string]: unknown};
 
-export type FuncArgument = Group | Str | Tag;
+export type FuncArgument = Group | Str | Tag | Reference;
 export type Func = {
     type: 'function';
     name: string;
@@ -88,7 +88,6 @@ export type CharacterSelection = {
 }
 
 export type CharacterSelectionArray = Array<CharacterSelectionRange | CharacterSelectionCode>;
-
 export type CharacterSelectionCode = {
     type: 'character';
     value: number;

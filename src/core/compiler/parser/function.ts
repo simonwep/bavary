@@ -29,6 +29,7 @@ module.exports = (
         result
     }: ParserArgs<Func>
 ): boolean => {
+    const rawReference = require('./reference');
     const group = require('./group');
 
     // Resolve arguments
@@ -49,6 +50,13 @@ module.exports = (
             case 'string': {
                 resolvedArgs.push(arg.value);
                 break;
+            }
+            case 'reference': {
+                resolvedArgs.push(rawReference({
+                    config, stream, scope,
+                    result: {pure: false, obj: {}, str: ''},
+                    decl: arg
+                }));
             }
         }
     }
