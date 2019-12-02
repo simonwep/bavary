@@ -7,25 +7,12 @@ const path = require('path');
 module.exports = {
     mode: 'production',
 
-    module: {
-        rules: [
-            {
-                test: /\.(js|ts)$/,
-                include: path.resolve(__dirname, 'src'),
-                use: [
-                    'ts-loader',
-                    'eslint-loader'
-                ]
-            }
-        ]
+    entry: {
+        'bavary.js': './src/core/index.ts'
     },
 
     resolve: {
         extensions: ['.ts', '.js']
-    },
-
-    entry: {
-        'bavary.js': './src/core/index.ts'
     },
 
     output: {
@@ -46,6 +33,19 @@ module.exports = {
                     return Function('return this')();
                 }
             })()`
+    },
+
+    module: {
+        rules: [
+            {
+                test: /\.(js|ts)$/,
+                include: path.resolve(__dirname, 'src'),
+                use: [
+                    'ts-loader',
+                    'eslint-loader'
+                ]
+            }
+        ]
     },
 
     plugins: [

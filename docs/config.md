@@ -68,7 +68,7 @@ count(actions: ParserActions, ...args: object | string): boolean
 The function should return a `boolean` whenever everything went fine.
 On `false` the parent-group will return `null` e.g. fail.
 
-A custom function accepts [groups](./syntax.md#group-definition), tags (`#tag`: reference to the tag property) or raw strings (`'Hello World'`).
+A custom function accepts [groups](./syntax.md#group-definition), tags (`#tag`: reference to the tag property), a reference or raw strings (`'Hello World'`).
 
 
 ### Location Data

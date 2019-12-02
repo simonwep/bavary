@@ -5,17 +5,17 @@
 <br>
 
 <p align="center">
-    <img alt="gzip size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/bavary@0.0.3/dist/bavary.min.js?compression=gzip&style=flat-square">
-    <img alt="brotli size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/bavary@0.0.3/dist/bavary.min.js?compression=brotli&style=flat-square">
+    <img alt="gzip size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/@bavary/core/lib/bavary.js?compression=gzip&style=flat-square">
+    <img alt="brotli size" src="https://img.badgesize.io/https://cdn.jsdelivr.net/npm/@bavary/core/lib/bavary.js?compression=brotli&style=flat-square">
     <a href='https://coveralls.io/github/Simonwep/bavary?branch=master'><img
        src='https://img.shields.io/coveralls/github/Simonwep/bavary?style=flat-square'
        alt='Coverage Status'/></a>
     <a href="https://travis-ci.org/Simonwep/bavary"><img
        alt="Build Status"
        src="https://img.shields.io/travis/Simonwep/bavary.svg?style=flat-square"></a>
-    <a href="https://www.npmjs.com/package/bavary"><img
+    <a href="https://www.npmjs.com/package/@bavary/core"><img
        alt="Download count"
-       src="https://img.shields.io/npm/dm/bavary.svg?style=flat-square"></a>
+       src="https://img.shields.io/npm/dm/@bavary/core.svg?style=flat-square"></a>
     <img alt="Current version" src="https://img.shields.io/github/tag/Simonwep/bavary.svg?color=21068E&label=version&style=flat-square">
     <a href="https://www.patreon.com/simonwep"><img
        alt="Support me"
@@ -29,24 +29,24 @@ The API might change and all `0.0.x` releases should be treated as test / previe
 
 Install via npm:
 ```shell
-$ npm install bavary
+$ npm install @bavary/core
 ```
 
 Install via yarn:
 ```shell
-$ yarn add bavary
+$ yarn add @bavary/core
 ```
 
 Include directly via jsdelivr:
 ```html
-<script src="https://cdn.jsdelivr.net/npm/bavary/lib/bavary.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@bavary/core/lib/bavary.js"></script>
 ```
 
 Bavary also has a cli: [@bavary/cli](https://github.com/Simonwep/bavary-cli)
 
 ## Usage
 ```js
-import {compile} from 'bavary';
+import {compile} from '@bavary/core';
 
 // Compile definitions
 const parse = compile(`
