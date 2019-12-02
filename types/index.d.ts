@@ -1,6 +1,6 @@
 import {CompilerConfig} from '../src/core/compiler/types';
 
-declare module 'bavary' {
+declare module bavary {
 
     /**
      * Compiles a definition-string and returns a function.
@@ -16,3 +16,6 @@ declare module 'bavary' {
      */
     export const version: string;
 }
+
+export = bavary;
+export as namespace bavary;
