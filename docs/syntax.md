@@ -265,7 +265,7 @@ Each kw-pair must be seperated with commas, the name must be a valid identifier 
 | Modifier | Explanation | Example |
 | -------- | ----------- | ------- |
 | def | Add custom values to a result or select a specific value | `def key = 'wow'` `def sub = obj.arr[2].v` |
-| del | Remove a property from the result-set | `del key` |
+| del | Remove a property (can be a nested one) from the result-set | `del key` `del baz.bam[2].foo` |
 
 > They can be used in combination with the spread operator!
 

@@ -42,7 +42,7 @@ module.exports = maybe<Reference>(stream => {
     }
 
     // It may have a tag
-    let tag = parseTag(stream);
+    const tag = parseTag(stream);
 
     // A tag shouldn't be combined with a spread operator
     if (spread && tag) {
