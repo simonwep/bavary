@@ -9,7 +9,7 @@ const parseObjectAccessor = maybe<string>(stream => {
         return null;
     }
 
-    const ident = require('./identifier')(stream);
+    const ident = require('../modifiers/identifier')(stream);
     if (!ident) {
         stream.throwError('Expected identifier.');
     }
@@ -29,7 +29,7 @@ const parseArrayAccessor = maybe<number>(stream => {
 });
 
 module.exports = maybe<ValueAccessor>(stream => {
-    const identifier = require('./identifier');
+    const identifier = require('../modifiers/identifier');
     const entry = identifier(stream);
 
     const accessorPath = entry ? [entry] : [];

@@ -52,7 +52,7 @@ module.exports = (
 
         // Apply modifiers if defined
         if (decl.modifiers) {
-            applyModifications(matches as ModifierTarget, decl);
+            applyModifications( matches as ModifierTarget, decl);
         }
 
         // Save optional start / end labels

@@ -3,7 +3,7 @@ import {RawType}        from '../../../tokenizer/types';
 import {DeleteModifier} from '../../types';
 
 export const parseDeleteModifier = (stream: Streamable<RawType>): DeleteModifier => {
-    const valueAccessor = require('../value-accessor');
+    const valueAccessor = require('../../nodes/value-accessor');
 
     const param = valueAccessor(stream);
     if (!param) {
