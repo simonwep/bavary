@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const pkg = require('./package');
 const path = require('path');
 
-const base = {
+module.exports = {
     mode: 'production',
 
     module: {
@@ -22,24 +22,20 @@ const base = {
 
     resolve: {
         extensions: ['.ts', '.js']
-    }
-};
+    },
 
-module.exports = [
-    {
-        ...base,
-        entry: {
-            'bavary.js': './src/core/index.ts'
-        },
+    entry: {
+        'bavary.js': './src/core/index.ts'
+    },
 
-        output: {
-            filename: '[name]',
-            path: `${__dirname}/lib`,
-            library: 'Bavary',
-            libraryTarget: 'umd',
+    output: {
+        filename: '[name]',
+        path: `${__dirname}/lib`,
+        library: 'Bavary',
+        libraryTarget: 'umd',
 
-            // See https://github.com/webpack/webpack/issues/6525
-            globalObject: `(() => {
+        // See https://github.com/webpack/webpack/issues/6525
+        globalObject: `(() => {
                 if (typeof self !== 'undefined') {
                     return self;
                 } else if (typeof window !== 'undefined') {
@@ -50,84 +46,33 @@ module.exports = [
                     return Function('return this')();
                 }
             })()`
-        },
-
-        plugins: [
-            new webpack.BannerPlugin({
-                banner: `Bavary ${version} MIT | https://github.com/Simonwep/bavary`
-            }),
-
-            new webpack.SourceMapDevToolPlugin({
-                filename: '[name].map'
-            }),
-
-            new webpack.DefinePlugin({
-                VERSION: JSON.stringify(pkg.version)
-            })
-        ],
-
-        optimization: {
-            minimize: true,
-            minimizer: [
-                new TerserPlugin({
-                    extractComments: false,
-                    sourceMap: true,
-                    terserOptions: {
-                        module: true,
-                        ecma: 6
-                    }
-                })
-            ]
-        }
     },
 
-    {
-        ...base,
-        target: 'node',
+    plugins: [
+        new webpack.BannerPlugin({
+            banner: `Bavary ${version} MIT | https://github.com/Simonwep/bavary`
+        }),
 
-        entry: {
-            'cli.js': './src/cli/index.ts'
-        },
+        new webpack.SourceMapDevToolPlugin({
+            filename: '[name].map'
+        }),
 
-        output: {
-            filename: '[name]',
-            path: `${__dirname}/lib`
-        },
+        new webpack.DefinePlugin({
+            VERSION: JSON.stringify(pkg.version)
+        })
+    ],
 
-        externals: {
-            glob: 'require("glob")',
-            chalk: 'require("chalk")',
-            chokidar: 'require("chokidar")',
-            commander: 'require("commander")'
-        },
-
-        plugins: [
-            new webpack.BannerPlugin({
-                banner: `Bavary CLI ${version} MIT | https://github.com/Simonwep/bavary`
-            }),
-
-            new webpack.DefinePlugin({
-                VERSION: JSON.stringify(pkg.version)
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false,
+                sourceMap: true,
+                terserOptions: {
+                    module: true,
+                    ecma: 6
+                }
             })
-        ],
-
-        optimization: {
-            minimize: true,
-            minimizer: [
-                new TerserPlugin({
-                    extractComments: false,
-                    sourceMap: false,
-                    terserOptions: {
-                        keep_classnames: true,
-                        keep_fnames: true,
-                        mangle: false,
-                        compress: false,
-                        output: {
-                            beautify: true
-                        }
-                    }
-                })
-            ]
-        }
+        ]
     }
-];
+};

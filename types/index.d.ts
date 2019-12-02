@@ -9,7 +9,12 @@ declare module bavary {
     export const compile: (
         definitions: string,
         config?: CompilerConfig,
-    ) => (content: string) => object | null;
+    ) => Parser;
+
+    /**
+     * Parser function.
+     */
+    export type Parser = (content: string) => object | null;
 
     /**
      * Current version

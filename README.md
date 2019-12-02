@@ -42,6 +42,7 @@ Include directly via jsdelivr:
 <script src="https://cdn.jsdelivr.net/npm/bavary/lib/bavary.js"></script>
 ```
 
+Bavary also has a cli: [@bavary/cli](https://github.com/Simonwep/bavary-cli)
 
 ## Usage
 ```js
@@ -68,20 +69,3 @@ Check out the [documentation](docs/syntax.md) to get started or jump directly in
 1. [string](docs/examples/string.md) - Parsing strings and support escaped quotes.
 2. [hex-color](docs/examples/hex-color.md) - Parsing different kinds of color types in the hexadecimal format.
 3. [number](docs/examples/number.md) - Parsing floats and integers with optional scientific notation.
-
-
-## CLI
-Usage:
-```bash
-$ bvc [files] [options...]
-```
-Where `files` can be any kind of directory, file or [glob-pattern](https://en.wikipedia.org/wiki/Glob_%28programming%29).
-If no output file is specified (via `--output`) it'll print the result to the console.
-
-| Flag | Explanation | Example |
-| ---- | ----------- | ------- |
-| `-w, --watch` | Watches source-files matched by `[files]` | `$ bva src/**/*.bv input.txt --watch` |
-| `-v, --version` | Prints the current version | `$ bva --version` |
-| `-o, --output <file>` | Write results to disk | `$ bva --output result.json` |
-| `-p, --prettify` | Prettify result (Works only in combination with `--output`)  | `$ bva --output result.json --prettify` |
-| `-h, --help` | Shows usage info | `$ bva --help` |
