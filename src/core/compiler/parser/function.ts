@@ -1,24 +1,22 @@
 import {Func}                                     from '../../ast/types';
 import {ParserActions, ParserArgs, ParsingResult} from '../types';
 
-const createParserActionsObj = (res: ParsingResult): ParserActions => {
-    return {
-        state: res,
+const createParserActionsObj = (res: ParsingResult): ParserActions => ({
+    state: res,
 
-        setString(str): void {
-            if (!res.pure) {
-                throw new Error('Can\'t apply string, result isn\'t pure.');
-            }
-
-            res.str = str;
-        },
-
-        setProperty(key, val): void {
-            res.obj[key] = val;
-            res.pure = false;
+    setString(str): void {
+        if (!res.pure) {
+            throw new Error('Can\'t apply string, result isn\'t pure.');
         }
-    };
-};
+
+        res.str = str;
+    },
+
+    setProperty(key, val): void {
+        res.obj[key] = val;
+        res.pure = false;
+    }
+});
 
 module.exports = (
     {
