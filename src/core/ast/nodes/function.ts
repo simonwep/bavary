@@ -6,7 +6,7 @@ import {optional}                         from '../tools/optional';
 import {Func, Group, Reference, Str, Tag} from '../types';
 
 module.exports = maybe<Func>(stream => {
-    const identifier = require('../modifiers/identifier');
+    const identifier = require('./identifier');
     const name = identifier(stream);
 
     if (!name || !optional(stream, 'punc', '(')) {
@@ -38,7 +38,7 @@ module.exports = maybe<Func>(stream => {
     expect(stream, 'punc', ')');
     return {
         type: 'function',
-        name,
+        name: name.value,
         args,
     } as Func;
 });

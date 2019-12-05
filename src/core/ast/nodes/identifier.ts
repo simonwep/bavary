@@ -1,11 +1,12 @@
-import {RawType} from '../../tokenizer/types';
-import {maybe}   from '../tools/maybe';
+import {RawType}    from '../../tokenizer/types';
+import {maybe}      from '../tools/maybe';
+import {Identifier} from '../types';
 
 /**
  * Parses an identifier made out of keywords, numbers or hyphens
  * @type {Function}
  */
-module.exports = maybe<string>(stream => {
+module.exports = maybe<Identifier>(stream => {
     let name = '';
 
     while (stream.hasNext()) {
@@ -23,5 +24,8 @@ module.exports = maybe<string>(stream => {
         return null;
     }
 
-    return name;
+    return {
+        type: 'identifier',
+        value: name
+    } as Identifier;
 });

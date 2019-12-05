@@ -38,6 +38,11 @@ export type Str = {
     value: string;
 }
 
+export type Identifier = {
+    type: 'identifier';
+    value: string;
+}
+
 export type Type = {
     type: 'type';
     value: string;

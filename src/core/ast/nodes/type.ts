@@ -4,21 +4,21 @@ import {optional} from '../tools/optional';
 import {Type}     from '../types';
 
 module.exports = maybe<Type | null>(stream => {
-    const identifier = require('../modifiers/identifier');
+    const identifier = require('./identifier');
 
     // It may be a type
     if (!optional(stream, 'punc', '<')) {
         return null;
     }
 
-    const value = identifier(stream);
-    if (!value) {
+    const ident = identifier(stream);
+    if (!ident) {
         stream.throwError('Expected identifier.');
     }
 
     expect(stream, 'punc', '>');
     return {
         type: 'type',
-        value
+        value: ident.value
     } as Type;
 });

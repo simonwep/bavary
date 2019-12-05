@@ -6,7 +6,7 @@ import {DefineModifier} from '../../types';
 export const parseDefineModifier = (stream: Streamable<RawType>): DefineModifier => {
     const valueAccessor = require('../../nodes/value-accessor');
     const string = require('../../nodes/string');
-    const identifier = require('../identifier');
+    const identifier = require('../../nodes/identifier');
 
     const key = identifier(stream);
     if (!key) {
@@ -23,6 +23,6 @@ export const parseDefineModifier = (stream: Streamable<RawType>): DefineModifier
     return {
         type: 'def',
         value: val,
-        key
+        key: key.value
     } as DefineModifier;
 };

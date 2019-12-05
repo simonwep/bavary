@@ -7,7 +7,7 @@ module.exports = maybe<Reference>(stream => {
     const spreadOperator = require('../modifiers/spread-operator');
     const parseModifiers = require('../modifiers/modifications');
     const joinTarget = require('../modifiers/join-target');
-    const identifier = require('../modifiers/identifier');
+    const identifier = require('./identifier');
     const parseMultipliers = require('./multiplier');
     const parseTag = require('./tag');
 
@@ -27,7 +27,7 @@ module.exports = maybe<Reference>(stream => {
 
         if (next) {
             expectIdentifier = false;
-            value.push(next);
+            value.push(next.value);
         } else if (!optional(stream, 'punc', ':')) {
             break;
         } else {
