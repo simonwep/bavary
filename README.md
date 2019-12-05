@@ -60,10 +60,23 @@ const parsed = parse('A');
 console.log(parsed);
 ```
 
-The function `compile` accepts as second argument a [config object](docs/config.md);
+The function `compile` accepts as second argument a [config object](docs/config.md).
 
 
-## Getting started
+## Compiling in chunks
+It's possible to (re-)compile just parts of your entire code-base to speed up the process:
+
+```js
+import {compile, compileChunk,} from '@bavary/core';
+const entry = compileChunk(`entry [<abc>]`);
+const abc = compileChunk(`<abc> = [(a - c)+]`);
+const parse = compile([...entry, ...abc]);
+
+console.log(parse('aabbccc')); // Prints 'aabbccc'
+```
+
+
+## What's next?
 Check out the [documentation](docs/syntax.md) to get started or jump directly into one of the examples:
 
 1. [string](docs/examples/string.md) - Parsing strings and support escaped quotes.
