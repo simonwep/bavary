@@ -27,7 +27,7 @@ module.exports = (
         result
     }: ParserArgs<Func>
 ): boolean => {
-    const rawReference = require('./reference');
+    const rawReference = require('./resolve-reference');
     const group = require('./group');
 
     // Resolve arguments
