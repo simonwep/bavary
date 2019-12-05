@@ -1,9 +1,9 @@
-import {check}                            from '../tools/check';
-import {combine}                          from '../tools/combine';
-import {expect}                           from '../tools/expect';
-import {maybe}                            from '../tools/maybe';
-import {optional}                         from '../tools/optional';
-import {Func, Group, Reference, Str, Tag} from '../types';
+import {check}                                        from '../tools/check';
+import {combine}                                      from '../tools/combine';
+import {expect}                                       from '../tools/expect';
+import {maybe}                                        from '../tools/maybe';
+import {optional}                                     from '../tools/optional';
+import {Func, Group, Identifier, Reference, Str, Tag} from '../types';
 
 module.exports = maybe<Func>(stream => {
     const identifier = require('./identifier');
@@ -13,7 +13,8 @@ module.exports = maybe<Func>(stream => {
         return null;
     }
 
-    const parse = combine<Tag | Group | Str | Reference>(
+    const parse = combine<Tag | Group | Str | Reference | Identifier>(
+        require('./identifier'),
         require('./tag'),
         require('./group'),
         require('./string'),

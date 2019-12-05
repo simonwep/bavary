@@ -45,7 +45,8 @@ module.exports = (
                 }));
                 break;
             }
-            case 'string': {
+            case 'string':
+            case 'identifier': {
                 resolvedArgs.push(arg.value);
                 break;
             }

@@ -85,7 +85,7 @@ describe('[COM] Functions', () => {
     it('Should accept a reference as argument', () => {
         const parse = compile(`
             <num> = [(0 - 9)+]
-            entry [ number(<num>, 'num') ]
+            entry [ number(<num>, num) ]
         `, {
             functions: {
                 number({setProperty}, val, tag): boolean {

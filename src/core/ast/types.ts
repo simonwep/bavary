@@ -73,7 +73,7 @@ export type Modifier = DefineModifier | DeleteModifier;
 export type Modifiers = Array<Modifier>;
 export type ModifierTarget = {[key: string]: unknown};
 
-export type FuncArgument = Group | Str | Tag | Reference;
+export type FuncArgument = Group | Str | Tag | Reference | Identifier;
 export type Func = {
     type: 'function';
     name: string;
