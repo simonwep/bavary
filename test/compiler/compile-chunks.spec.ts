@@ -1,5 +1,5 @@
 import {expect}                from 'chai';
-import {compile, compileChunk} from '../../src/core';
+import {compile, compileChunk} from '../../src';
 
 describe('[COM] Compile in chunks', () => {
 

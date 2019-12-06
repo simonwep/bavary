@@ -1,9 +1,9 @@
-import {ENV_VERSION}            from '../env';
-import {parseAST}               from './ast';
-import {Declaration}            from './ast/types';
-import {compileDeclarations}    from './compiler';
-import {CompilerConfig, Parser} from './compiler/types';
-import {tokenize}               from './tokenizer';
+import {ENV_VERSION}            from './env';
+import {parseAST}               from './core/ast';
+import {Declaration}            from './core/ast/types';
+import {compileDeclarations}    from './core/compiler';
+import {CompilerConfig, Parser} from './core/compiler/types';
+import {tokenize}               from './core/tokenizer';
 
 /**
  * Compiles a definition-string.

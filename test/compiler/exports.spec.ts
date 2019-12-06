@@ -1,5 +1,5 @@
 import {expect}  from 'chai';
-import {compile} from '../../src/core';
+import {compile} from '../../src';
 
 describe('[COM] Exports', () => {
 

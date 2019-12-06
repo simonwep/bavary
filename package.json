@@ -4,7 +4,7 @@
     "description": "Customizable, elegant and fast syntax-parser",
     "author": "Simon Reinisch <trash@reinisch.io>",
     "main": "lib/bavary.js",
-    "types": "types/index.d.ts",
+    "types": "lib/index.d.ts",
     "license": "MIT",
     "keywords": [
         "parser"
@@ -22,7 +22,6 @@
     "files": [
         "src",
         "lib",
-        "types",
         "docs"
     ],
     "homepage": "https://github.com/Simonwep/bavary#readme",

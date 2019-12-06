@@ -1,4 +1,4 @@
-import {expect}   from 'chai';
+import {expect}     from 'chai';
 import {Streamable} from '../../src/core/stream';
 
 describe('Streams', () => {

@@ -8,7 +8,7 @@ module.exports = {
     mode: 'production',
 
     entry: {
-        'bavary.js': './src/core/index.ts'
+        'bavary.js': './src/index.ts'
     },
 
     resolve: {
@@ -41,7 +41,13 @@ module.exports = {
                 test: /\.(js|ts)$/,
                 include: path.resolve(__dirname, 'src'),
                 use: [
-                    'ts-loader',
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            context: __dirname,
+                            configFile: path.resolve('./tsconfig.build.json')
+                        }
+                    },
                     'eslint-loader'
                 ]
             }
