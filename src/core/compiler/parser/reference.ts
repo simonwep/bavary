@@ -1,7 +1,7 @@
-import {ModifierTarget, Reference}                                from '../../ast/types';
-import {typeOf}                                                   from '../../misc/type-of';
-import {LocationDataObject, ParserArgs, ParsingResultObjectValue} from '../types';
-import {applyModifications}                                       from './modification';
+import {ModifierTarget, Reference}      from '../../ast/types';
+import {typeOf}                         from '../../misc/type-of';
+import {LocationDataObject, ParserArgs} from '../types';
+import {applyModifications}             from './modification';
 
 module.exports = (
     {
@@ -41,30 +41,7 @@ module.exports = (
             (matches as ModifierTarget)[end] = stream.index - 1;
         }
 
-        /* istanbul ignore if: Parts of it require changes made via custom-functions */
-        if (decl.join) {
-            const pipeTarget = decl.join;
-            const target = result.obj[pipeTarget];
-            const targetType = typeOf(target);
-
-            if (!target) {
-                throw new Error(`"${pipeTarget}" isn't defined yet or cannot be found.`);
-            } else if (targetType !== matchesType) {
-                throw new Error(`Cannot join because the type of source and target aren't identical. ${matchesType} ≠ ${targetType}.`);
-            }
-
-            if (targetType === 'array') {
-                (target as Array<unknown>).push(...(matches as Array<ParsingResultObjectValue>));
-            } else if (targetType === 'object') {
-                Object.assign(target, matches);
-            } else if (targetType === 'string') {
-
-                // User may modify it via custom-function
-                (result.obj[pipeTarget] as string) += matches;
-            } else {
-                throw new Error(`Invalid target type: ${targetType}`);
-            }
-        } else if (decl.spread) {
+        if (decl.spread) {
 
             // Spread operator won't work with strings or arrays
             if (matchesType !== 'object') {

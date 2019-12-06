@@ -6,7 +6,6 @@ import {Reference} from '../types';
 module.exports = maybe<Reference>(stream => {
     const spreadOperator = require('../modifiers/spread-operator');
     const parseModifiers = require('../modifiers/modifications');
-    const joinTarget = require('../modifiers/join-target');
     const identifier = require('./identifier');
     const parseMultipliers = require('./multiplier');
     const parseTag = require('./tag');
@@ -53,12 +52,6 @@ module.exports = maybe<Reference>(stream => {
 
     expect(stream, 'punc', '>');
     const multiplier = parseMultipliers(stream);
-    const join = joinTarget(stream);
-
-    // Piping cannot be done in combination with tag / spread
-    if (join && (spread || tag)) {
-        stream.throwError('Piping cannot be done if the spread-operator is used on it or it has a tag.');
-    }
 
     return {
         type: 'reference',
@@ -66,7 +59,6 @@ module.exports = maybe<Reference>(stream => {
         multiplier,
         modifiers,
         spread,
-        value,
-        join
+        value
     } as Reference;
 });

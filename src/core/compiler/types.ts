@@ -43,7 +43,7 @@ export type ParsingResultObject = {
 }
 
 export type Parser = (content: string) => null | object;
-export type ParsingFunction = (res: ParserActions, ...args: Array<string | object>) => boolean;
+export type ParsingFunction = (res: ParserActions, ...args: Array<Array<ParsingResultObjectValue> | ParsingResultObjectValue>) => boolean;
 export type ParserActions = {
 
     /**

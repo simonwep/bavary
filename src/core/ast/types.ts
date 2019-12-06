@@ -53,7 +53,6 @@ export type Reference = {
     multiplier: Multiplier | null;
     modifiers: Modifiers | null;
     value: Array<string>;
-    join: string | null;
     tag: string | null;
     spread: boolean;
 }

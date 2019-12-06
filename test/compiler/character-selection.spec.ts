@@ -20,7 +20,7 @@ describe('[COM] Character selection', () => {
     });
 
     it('Should return null for excludet character', () => {
-        const parse = compile('entry [(a - z except f - j)+]');
+        const parse = compile('entry [(a - b, b - z except f - j)+]');
 
         expect(parse('abcde')).to.equal('abcde');
         expect(parse('klm')).to.equal('klm');
