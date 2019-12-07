@@ -10,8 +10,7 @@
 7. [Tags](#tags) _- Give used [types](#type-definition) a name._
 8. [Operators](#operators) _- Specify how a result should be processed._  
    8.1. [Spread Operator](#spread-operator) _- Let the result of a [type](#type-definition) bubble up._  
-   8.2. [Modifiers](#modifiers) _- Alter the result of a [type](#type-definition)._  
-   8.3. [Joins](#joins) _- Concatenate results._
+   8.2. [Modifiers](#modifiers) _- Alter the result of a [type](#type-definition)._
 
 ### Entry type
 Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type declaration](#type-definition) **or**
@@ -268,29 +267,3 @@ Each kw-pair must be seperated with commas, the name must be a valid identifier 
 | del | Remove a property (can be a nested one) from the result-set | `del key` `del baz.bam[2].foo` |
 
 > They can be used in combination with the spread operator!
-
-
-#### Joins
-Joins can be used to concatenate objects, strings or arrays.
-Example with arrays:
-
-```js
-const parse = compile(`
-    <num> = [(0 - 9)]+
-    <cha> = [(a - z)]+
-
-    entry [
-        <cha#chars> // Chars is in this case an array
-        <num> -> chars // Array too, but without tag but a join-operator
-    ]
-`);
-
-console.log(parse('ABC123'));
-```
-
-As we can see we use a `->` operator, pointing to `chars`, instead of using a tag.
-
-`<num>` will return `['1', '2', '3']` and `<cha>`: `['A', 'B', 'C']`, instead of saving both results
-into different properties the array out of `<num>` will be added to `chars`.
-
-> Joins can be used to join strings, object _or_ arrays. Both sides need to be of the same type!

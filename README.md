@@ -17,11 +17,12 @@
        alt="Download count"
        src="https://img.shields.io/npm/dm/@bavary/core.svg?style=flat-square"></a>
     <img alt="Current version" src="https://img.shields.io/github/tag/Simonwep/bavary.svg?color=21068E&label=version&style=flat-square">
-    <a href="https://www.patreon.com/simonwep"><img
+    <a href="https://github.com/sponsors/Simonwep"><img
        alt="Support me"
-       src="https://img.shields.io/badge/patreon-support-260DD3.svg?style=flat-square"></a>
+       src="https://img.shields.io/badge/github-support-387eff.svg?style=flat-square"></a>
 </p>
 
+> Checkout [related packages](#related-packages)
 
 ## Getting Started
 ⚠ Bavary is currently **not stable** and **heavily under development**.
@@ -42,7 +43,6 @@ Include directly via jsdelivr:
 <script src="https://cdn.jsdelivr.net/npm/@bavary/core/lib/bavary.js"></script>
 ```
 
-Bavary also has a cli: [@bavary/cli](https://github.com/Simonwep/bavary-cli)
 
 ## Usage
 ```js
@@ -82,3 +82,9 @@ Check out the [documentation](docs/syntax.md) to get started or jump directly in
 1. [string](docs/examples/string.md) - Parsing strings and support escaped quotes.
 2. [hex-color](docs/examples/hex-color.md) - Parsing different kinds of color types in the hexadecimal format.
 3. [number](docs/examples/number.md) - Parsing floats and integers with optional scientific notation.
+
+
+#### Related packages
+* [@bavary/core](https://github.com/Simonwep/bavary) _- Parser and compiler._
+* [@bavary/cli](https://github.com/Simonwep/bavary-cli) _- CLI with development server._
+* [@bavary/lib](https://github.com/Simonwep/bavary-lib) _- Standard library with extensions for bavary._
