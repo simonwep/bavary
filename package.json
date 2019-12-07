@@ -1,13 +1,20 @@
 {
     "name": "@bavary/core",
-    "version": "0.0.14",
+    "version": "0.0.15",
     "description": "Customizable, elegant and fast syntax-parser",
     "author": "Simon Reinisch <trash@reinisch.io>",
     "main": "lib/bavary.js",
     "types": "lib/types/index.d.ts",
     "license": "MIT",
     "keywords": [
-        "parser"
+        "parser",
+        "library",
+        "ast",
+        "compiler",
+        "language",
+        "programming-language",
+        "regex",
+        "regexp"
     ],
     "scripts": {
         "build": "webpack",
@@ -22,8 +29,7 @@
     },
     "files": [
         "src",
-        "lib",
-        "docs"
+        "lib"
     ],
     "homepage": "https://github.com/Simonwep/bavary#readme",
     "repository": "github:Simonwep/bavary",
