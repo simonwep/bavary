@@ -4,7 +4,7 @@
     "description": "Customizable, elegant and fast syntax-parser",
     "author": "Simon Reinisch <trash@reinisch.io>",
     "main": "lib/bavary.js",
-    "types": "lib/index.d.ts",
+    "types": "lib/types/index.d.ts",
     "license": "MIT",
     "keywords": [
         "parser"
@@ -14,6 +14,7 @@
         "lint": "eslint src/**/*.ts test/**/*.ts --fix",
         "debug:build": "node --inspect-brk ./node_modules/webpack/bin/webpack.js",
         "lint:watch": "nodemon --exec eslint src/**/*.ts --fix --watch ./src/**/*.ts -e ts",
+        "test:lint": "eslint src/**/*.ts test/**/*.ts",
         "test": "mocha -r ts-node/register test/**/*.spec.ts --timeout 10000",
         "test:coverage": "nyc npm test",
         "test:report": "nyc report --reporter=text-lcov | coveralls",
