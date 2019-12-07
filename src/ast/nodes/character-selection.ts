@@ -1,7 +1,7 @@
-import {Streamable}                                  from '../../stream';
-import {RawType}            from '../../tokenizer/types';
-import {parseUnicodeEscape} from '../modifiers/unicode-escape';
-import {expect}             from '../tools/expect';
+import {Streamable}                                  from '../../misc/stream';
+import {RawType}                                     from '../../tokenizer/types';
+import {parseUnicodeEscape}                          from '../modifiers/unicode-escape';
+import {expect}                                      from '../tools/expect';
 import {maybe}                                       from '../tools/maybe';
 import {optional}                                    from '../tools/optional';
 import {CharacterSelection, CharacterSelectionArray} from '../types';

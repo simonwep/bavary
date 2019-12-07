@@ -1,4 +1,4 @@
-import {RangeInformation} from '../stream';
+import {RangeInformation} from '../misc/stream';
 
 export type TokenType = 'punc' | 'num' | 'str' | 'kw';
 

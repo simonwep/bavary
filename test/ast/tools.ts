@@ -1,7 +1,7 @@
 import {expect}      from 'chai';
-import {parseAST}    from '../../src/core/ast';
-import {Declaration} from '../../src/core/ast/types';
-import {tokenize}    from '../../src/core/tokenizer';
+import {parseAST}    from '../../src/ast';
+import {Declaration} from '../../src/ast/types';
+import {tokenize}    from '../../src/tokenizer';
 
 export const parse = (str: string): Array<Declaration> => parseAST(tokenize(str), str);
 export const failAll = (tests: Array<string>): void => {

@@ -1,4 +1,4 @@
-import {Streamable} from '../../stream';
+import {Streamable} from '../../misc/stream';
 import {isNumeric}  from '../tools/is';
 import {RawType}    from '../types';
 

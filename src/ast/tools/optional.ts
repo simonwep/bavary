@@ -1,4 +1,4 @@
-import {Streamable}         from '../../stream';
+import {Streamable}         from '../../misc/stream';
 import {RawType, TokenType} from '../../tokenizer/types';
 import {check}              from './check';
 

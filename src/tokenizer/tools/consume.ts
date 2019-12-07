@@ -1,4 +1,4 @@
-import {Streamable} from '../../stream';
+import {Streamable} from '../../misc/stream';
 
 export const cunsumeWhile = (stream: Streamable<string>, predicate: (str: string) => boolean): string => {
     let result = '';

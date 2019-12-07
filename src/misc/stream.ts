@@ -1,4 +1,4 @@
-import {ParsingError} from './misc/parsing-error';
+import {ParsingError} from './parsing-error';
 
 export type RangeInformation = {
     start: number;

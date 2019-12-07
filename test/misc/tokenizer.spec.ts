@@ -1,5 +1,5 @@
 import {expect}   from 'chai';
-import {tokenize} from '../../src/core/tokenizer';
+import {tokenize} from '../../src/tokenizer';
 
 describe('Tokenizer', () => {
     it('Should parse "<num-sign> = [ "+" | "-" ]{2,3}"', () => {

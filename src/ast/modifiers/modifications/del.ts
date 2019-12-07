@@ -1,4 +1,4 @@
-import {Streamable}     from '../../../stream';
+import {Streamable}     from '../../../misc/stream';
 import {RawType}        from '../../../tokenizer/types';
 import {DeleteModifier} from '../../types';
 

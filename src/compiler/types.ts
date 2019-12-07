@@ -1,5 +1,5 @@
 import {DeclarationValue} from '../ast/types';
-import {Streamable}       from '../stream';
+import {Streamable}       from '../misc/stream';
 
 export type ScopeEntryKey = string | symbol;
 export type ScopeEntriesMap = Map<string, ScopeEntry>;

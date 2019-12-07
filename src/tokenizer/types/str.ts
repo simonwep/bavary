@@ -1,4 +1,4 @@
-import {Streamable}     from '../../stream';
+import {Streamable}     from '../../misc/stream';
 import {consumeEscaped} from '../tools/escaped';
 import {RawType}        from '../types';
 
