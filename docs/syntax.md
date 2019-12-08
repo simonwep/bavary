@@ -34,12 +34,11 @@ Everything is build upon matching different types of single characters / -ranges
 | Character range with excludet characters | Excludes a char-range or single character | `(a - z except g, h)`  |
 | UTF-8 Range | Matches every character between two utf8 character-codes | `(\uxxxx - \uxxxx)` where `x` must be a valid hexadecimal value |
 
-Attention: all **punctuation characters** (such as `"`, `,` , `-`...) need to be escaped (`\\,`) or quoted (`","`)!
-
 Character selection could also have [multipliers](#multipliers) attached to it, for example `(a - z, except d - g, z){4, 7}`: Matches all characters **between `a` and `z`** except the range `d` to `g` and the character `z`
 4 to 7 times.
 
-**All punctuation characters** need to be escaped: `(\- - \+)` (`-` to `+`) / `(\\\n - \t)` (`\n` to `\t`, line-breaks need to be escaped too)
+**All punctuation characters** need to be escaped: `(\- - \+)` (`-` to `+`) / `(\\\n - \t)` (`\n` to `\t`, line-breaks need to be escaped too). How often these
+need to be escaped depends on the way you load your definitions (string-literal e.g. inline, text-file etc.).
 
 
 ### Group definition
@@ -47,7 +46,7 @@ Groups can be used to group related items together or to bypass precedence rules
 Each group can additionally contain containers to other types, groups or single characters:
 ```html
 <1-or-2> = ['1' | '2']
-<a-b-c> = ['abc' <1-or-2>
+<a-b-c> = ['abc' <1-or-2>]
 entry [<a-b-c>]
 ```
 
