@@ -32,7 +32,16 @@ describe('[COM] Arguments', () => {
         expect(() =>
             compile(`
                 <escaped> = ['A']
-                entry [<escaped wow=["test"]>]
+                entry [<escaped abc=["test"]>]
+            `)('A')
+        ).to.throw();
+    });
+
+    it('Should throw an error if redundant arguments were passed', () => {
+        expect(() =>
+            compile(`
+                <escaped efg=['"']> = ['A']
+                entry [<escaped abc=["test"]>]
             `)('A')
         ).to.throw();
     });

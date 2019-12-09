@@ -1,5 +1,5 @@
-import {Declaration, Reference}               from '../../ast/types';
-import {resolveReference}                     from '../tools/resolve-scope';
+import {Reference}                            from '../../ast/types';
+import {injectDeclaration, resolveReference}  from '../tools/scope-utils';
 import {ParserArgs, ParsingResultObjectValue} from '../types';
 import {maybeMultiplier}                      from './multiplier';
 
@@ -23,7 +23,7 @@ module.exports = (
 
     const [newScope, target] = res;
     const typeArguments = target.arguments;
-    const refArguments = decl.arguments;
+    const refArguments = [...(decl.arguments || [])];
 
     // Check if target expects arguments
     if (typeArguments) {
@@ -32,28 +32,25 @@ module.exports = (
         for (const {value, name} of typeArguments) {
 
             // Lookup value in arguments, use default as fallback
-            // TODO: What about redundant arguments
-            const argVal = refArguments?.find(v => v.name === name)?.value || value;
+            let argVal = value;
+            const targetIndex = refArguments.findIndex(v => v.name === name);
+
+            if (~targetIndex) {
+                ([{value: argVal}] = refArguments.splice(targetIndex, 1));
+            }
 
             // Neither does the target argument have a default-value or something was passed into it
             if (!argVal) {
-                throw new Error(`Argument "${name}" is missing default value.`);
+                throw new Error(`Argument "${name}" is missing on type ${target.name}.`);
             }
 
-            // TODO: Check if scope already contains this type
-            // TODO: Looks shitty
-            newScope.entries.set(name, {
-                type: 'value',
-                value: {
-                    type: 'declaration',
-                    arguments: null,
-                    variant: null,
-                    name,
-                    value: argVal
-                } as Declaration
-            });
+            injectDeclaration(newScope, name, argVal);
         }
-    } else if (refArguments) {
+
+        if (refArguments.length) {
+            throw new Error(`These arguments were passed into "${target.name}" but not expected: ${refArguments.map(v => v.name).join(', ')}`);
+        }
+    } else if (refArguments.length) {
         throw new Error(`Type "${target.name}" does not expect any arguments.`);
     }
 

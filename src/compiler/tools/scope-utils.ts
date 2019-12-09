@@ -1,6 +1,6 @@
-import {Declaration, Reference}             from '../../ast/types';
-import {Scope, ScopeEntriesMap, ScopeEntry} from '../types';
-import {DEFAULT_EXPORT, EXPORTS}            from './create-scope';
+import {Declaration, DeclarationValue, Reference} from '../../ast/types';
+import {Scope, ScopeEntriesMap, ScopeEntry}       from '../types';
+import {DEFAULT_EXPORT, EXPORTS}                  from './create-scope';
 
 /**
  * Resolves the default export in a scope
@@ -19,6 +19,31 @@ export function resolveDefaultExport(scope: Scope): [Scope, Declaration] {
     }
 
     return [scope, defaultExport.value as Declaration];
+}
+
+/**
+ * Injects a value into a scope
+ * @param scope Target scope
+ * @param name Referece name
+ * @param value Declaration value
+ */
+export function injectDeclaration(scope: Scope, name: string, value: DeclarationValue): void {
+    const {entries} = scope;
+
+    entries.set(name, {
+
+        // We inject an actual value
+        type: 'value',
+
+        // Synthetically craft a declaration
+        value: {
+            type: 'declaration',
+            arguments: null,
+            variant: null,
+            value,
+            name,
+        } as Declaration
+    });
 }
 
 /**
