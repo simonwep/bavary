@@ -38,8 +38,8 @@ module.exports = maybe<Declaration>(stream => {
 
     return {
         type: 'declaration',
-        name: name ? name.value : null,
-        variant: variant ? variant.value : null,
+        name: name?.value || null,
+        variant: variant?.value || null,
         value: body,
         arguments: args
     } as Declaration;

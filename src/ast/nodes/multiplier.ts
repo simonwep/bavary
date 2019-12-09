@@ -32,7 +32,7 @@ module.exports = maybe<Multiplier | null>(stream => {
             type: 'range',
             value: {
                 start: start.value,
-                end: end ? end.value : -1
+                end: end?.value || -1
             }
         } as Multiplier;
     }

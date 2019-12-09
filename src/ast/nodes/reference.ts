@@ -52,14 +52,14 @@ module.exports = maybe<Reference>(stream => {
     }
 
     const modifiers = parseModifiers(stream);
-    const args = parseArguments(stream); // TODO: What about empty arguments?
+    const args = parseArguments(stream);
 
     expect(stream, 'punc', '>');
     const multiplier = parseMultipliers(stream);
 
     return {
         type: 'reference',
-        tag: tag ? tag.value : null,
+        tag: tag?.value || null,
         arguments: args,
         multiplier,
         modifiers,

@@ -26,7 +26,7 @@ module.exports = maybe<Arguments>(stream => {
 
         args.push({
             type: 'argument',
-            name: name.value, // TODO: Use optional chaining
+            name: name.value,
             value
         });
     }

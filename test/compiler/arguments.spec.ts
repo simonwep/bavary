@@ -14,8 +14,8 @@ describe('[COM] Arguments', () => {
             entry [...<escaped content=[(a - z, A - Z)+]>]
         `);
 
-        expect(parse('"supernice"')).to.deep.equal({
-            body: 'supernice'
+        expect(parse('"hello"')).to.deep.equal({
+            body: 'hello'
         });
     });
 
@@ -44,5 +44,35 @@ describe('[COM] Arguments', () => {
                 entry [<escaped abc=["test"]>]
             `)('A')
         ).to.throw();
+    });
+
+    it('Should properly resolve a deep reference inside an argument', () => {
+        const parse = compile(`
+            <escaped sign=['"'] content> = [
+                <sign>
+                <content#body>
+                <sign>
+            ]
+            
+            <utils> = {
+                export <uppercase> = [(A - Z)+]
+                export <lowercase> = [(a - z)+]
+            }
+            
+            entry [
+                ...<escaped content=[
+                    <utils:uppercase#up>
+                    ' '
+                    <utils:lowercase#low>
+                ]>
+            ]
+        `);
+
+        expect(parse('"HELLO world"')).to.deep.equal({
+            body: {
+                up: 'HELLO',
+                low: 'world'
+            }
+        });
     });
 });
