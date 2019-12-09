@@ -72,6 +72,16 @@ describe('[COM] Essentials', () => {
 
     it('Should compile and parse zero-infinity sequences', () => {
         const parse = compile(`
+            <spaces> = [(' ')*]
+            entry [<spaces> 'a']
+        `);
+
+        expect(parse('a')).to.equal('a');
+        expect(parse('   a')).to.equal('   a');
+    });
+
+    it('Should accept types which may return nothing', () => {
+        const parse = compile(`
             entry <abc> = ['A' 'B']*
         `);
 

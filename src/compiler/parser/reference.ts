@@ -27,7 +27,7 @@ module.exports = (
     }
 
     stream.stash();
-    if (matches) {
+    if (matches !== null) {
 
         // Apply modifiers if defined
         if (decl.modifiers) {
