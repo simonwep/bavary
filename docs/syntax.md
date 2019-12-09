@@ -10,7 +10,8 @@
 7. [Tags](#tags) _- Give used [types](#type-definition) a name._
 8. [Operators](#operators) _- Specify how a result should be processed._  
    8.1. [Spread Operator](#spread-operator) _- Let the result of a [type](#type-definition) bubble up._  
-   8.2. [Modifiers](#modifiers) _- Alter the result of a [type](#type-definition)._
+   8.2. [Modifiers](#modifiers) _- Alter the result of a [type](#type-definition)._  
+9. [Types with Arguments](#types-with-arguments) _- Dynamically inject groups into [types](#type-definition)_
 
 ### Entry type
 Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type declaration](#type-definition) **or**
@@ -266,3 +267,28 @@ Each kw-pair must be seperated with commas, the name must be a valid identifier 
 | del | Remove a property (can be a nested one) from the result-set | `del key` `del baz.bam[2].foo` |
 
 > They can be used in combination with the spread operator!
+
+
+#### Types with arguments
+Types are able to receive groups passed as arguments:
+
+```js
+const parse = compile(`
+    // You can specify default values by using the assign operator on arguments
+    <string sign=['"'] content> = [
+        <sign> // Arguments are used just like types
+        <content#body>
+        <sign>
+    ]
+    
+    entry [
+        
+        // Arguments with default-value aren't mandatory
+        // and can be overridden any time.
+        ...<string content=[(a - z, A - Z, 0 - 9)+]>
+    ]
+`);
+
+// Prints {body: 'hello'}
+console.log(parse('"hello"'));
+```
