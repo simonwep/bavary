@@ -8,6 +8,14 @@ export type Declaration = {
     name: string | null;
     variant: DeclarationVariant;
     value: DeclarationValue;
+    arguments: Arguments | null;
+}
+
+export type Arguments = Array<Argument>;
+export type Argument = {
+    type: 'argument';
+    name: string;
+    value: Group | null;
 }
 
 export type GroupValue = Reference | Str | BinaryCombinator | Group | CharacterSelection | Func;
@@ -52,6 +60,7 @@ export type Reference = {
     type: 'reference';
     multiplier: Multiplier | null;
     modifiers: Modifiers | null;
+    arguments: Arguments | null;
     value: Array<string>;
     tag: string | null;
     spread: boolean;

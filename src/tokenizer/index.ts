@@ -16,6 +16,7 @@ const parser = [
 
 /**
  * Parses a sequence of characters into a list of processable tokens
+ * TODO: Fix whitespace mess
  * @param str
  * @returns {[]}
  */

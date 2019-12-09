@@ -23,6 +23,23 @@ module.exports = (
 
     const [newScope, targetBody] = res;
 
+    // Inject argument into scope
+    // TODO: Check if arguments count match / default is specified
+    if (decl.arguments) {
+
+
+        for (const {value, name} of decl.arguments) {
+
+            // TODO: Check if scope already contains this type
+            if (value) {
+                newScope.entries.set(name, {
+                    type: 'value',
+                    value
+                });
+            }
+        }
+    }
+
     // Type may have a multiplier attached to it
     return maybeMultiplier<ParsingResultObjectValue, Reference>(
         () => group({
