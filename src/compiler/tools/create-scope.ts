@@ -1,4 +1,4 @@
-import {Declaration, DeclarationValue}                                                          from '../../ast/types';
+import {Declaration}                                                                            from '../../ast/types';
 import {Scope, ScopeEntriesMap, ScopeEntry, ScopeEntryKey, ScopeEntryVariant, ScopeVariantsMap} from '../types';
 
 export const GLOBAL_SCOPE = Symbol('Global scope');
@@ -21,11 +21,11 @@ export function createScope(decs: Array<Declaration>, current: Scope): Scope {
      * @param key
      */
     function register(
-        value: DeclarationValue,
+        value: Declaration,
         target: Map<ScopeEntryKey, ScopeEntry | ScopeEntryVariant>,
         key: ScopeEntryKey
     ): void {
-        if (value.type === 'group') {
+        if (value.value.type === 'group') {
 
             target.set(key as string, {
                 type: 'value',
@@ -43,13 +43,13 @@ export function createScope(decs: Array<Declaration>, current: Scope): Scope {
 
             target.set(key, {
                 type: 'scope',
-                value: createScope(value.value, subScope)
+                value: createScope(value.value.value, subScope) // Declaration.block.value
             });
         }
     }
 
     for (const dec of decs) {
-        const {value, name} = dec;
+        const {name} = dec;
 
         switch (dec.variant) {
             case 'default': {
@@ -61,7 +61,7 @@ export function createScope(decs: Array<Declaration>, current: Scope): Scope {
                     throw new Error('There\'s already a default export.');
                 }
 
-                register(value, variants, DEFAULT_EXPORT);
+                register(dec, variants, DEFAULT_EXPORT);
                 break;
             }
             case 'entry': {
@@ -73,7 +73,7 @@ export function createScope(decs: Array<Declaration>, current: Scope): Scope {
                     throw new Error('There\'s already an entry defined.');
                 }
 
-                register(value, variants, ENTRY_EXPORT);
+                register(dec, variants, ENTRY_EXPORT);
                 break;
             }
             case 'export': {
@@ -95,7 +95,7 @@ export function createScope(decs: Array<Declaration>, current: Scope): Scope {
                     variants.get(EXPORTS) as ScopeEntryVariant
                 ).value as ScopeEntriesMap;
 
-                register(value, exportedMembers, name as string); // Identifiers of types cannot be empty
+                register(dec, exportedMembers, name as string); // Identifiers of types cannot be empty
                 break;
             }
         }
@@ -109,7 +109,7 @@ export function createScope(decs: Array<Declaration>, current: Scope): Scope {
                 throw new Error(`There's already a type named ${name}`);
             }
 
-            register(value, entries, name);
+            register(dec, entries, name);
         }
     }
 

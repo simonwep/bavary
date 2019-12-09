@@ -1,5 +1,5 @@
-import {DeclarationValue} from '../ast/types';
-import {Streamable}       from '../misc/stream';
+import {Declaration} from '../ast/types';
+import {Streamable}  from '../misc/stream';
 
 export type ScopeEntryKey = string | symbol;
 export type ScopeEntriesMap = Map<string, ScopeEntry>;
@@ -7,12 +7,12 @@ export type ScopeVariantsMap = Map<symbol, ScopeEntryVariant>;
 
 export type ScopeEntryVariant = {
     type: 'entries' /* Exported */ | 'scope' /* Block Declaration */ | 'value';
-    value: ScopeEntriesMap | Scope | DeclarationValue;
+    value: ScopeEntriesMap | Scope | Declaration;
 }
 
 export type ScopeEntry = {
     type: 'scope' /* Block Declaration */ | 'value';
-    value: Scope | DeclarationValue;
+    value: Scope | Declaration;
 }
 
 export type Scope = {

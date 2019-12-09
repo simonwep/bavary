@@ -24,12 +24,9 @@ module.exports = maybe<Declaration>(stream => {
         // Parse arguments
         args = parseArguments(stream);
         expect(stream, 'punc', '>');
-
-        if (name) {
-            expect(stream, 'punc', '=');
-        } else if (!variant) {
-            stream.throwError('Expected declaration.');
-        }
+        expect(stream, 'punc', '=');
+    } else if (!variant) {
+        stream.throwError('Expected declaration.');
     }
 
     // A declaration value could be either a group or scoped block

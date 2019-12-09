@@ -1,4 +1,4 @@
-import {Reference}                            from '../../ast/types';
+import {Declaration, Reference}               from '../../ast/types';
 import {resolveReference}                     from '../tools/resolve-scope';
 import {ParserArgs, ParsingResultObjectValue} from '../types';
 import {maybeMultiplier}                      from './multiplier';
@@ -21,23 +21,40 @@ module.exports = (
         throw new Error(`Failed to resolve "${decl.value.join(':')}".`);
     }
 
-    const [newScope, targetBody] = res;
+    const [newScope, target] = res;
+    const typeArguments = target.arguments;
+    const refArguments = decl.arguments;
 
-    // Inject argument into scope
-    // TODO: Check if arguments count match / default is specified
-    if (decl.arguments) {
+    // Check if target expects arguments
+    if (typeArguments) {
 
+        // Validate arguments and use default in case none were provided
+        for (const {value, name} of typeArguments) {
 
-        for (const {value, name} of decl.arguments) {
+            // Lookup value in arguments, use default as fallback
+            // TODO: What about redundant arguments
+            const argVal = refArguments?.find(v => v.name === name)?.value || value;
+
+            // Neither does the target argument have a default-value or something was passed into it
+            if (!argVal) {
+                throw new Error(`Argument "${name}" is missing default value.`);
+            }
 
             // TODO: Check if scope already contains this type
-            if (value) {
-                newScope.entries.set(name, {
-                    type: 'value',
-                    value
-                });
-            }
+            // TODO: Looks shitty
+            newScope.entries.set(name, {
+                type: 'value',
+                value: {
+                    type: 'declaration',
+                    arguments: null,
+                    variant: null,
+                    name,
+                    value: argVal
+                } as Declaration
+            });
         }
+    } else if (refArguments) {
+        throw new Error(`Type "${target.name}" does not expect any arguments.`);
     }
 
     // Type may have a multiplier attached to it
@@ -45,7 +62,7 @@ module.exports = (
         () => group({
             config,
             stream,
-            decl: targetBody,
+            decl: target.value,
             scope: newScope
         })
     )({

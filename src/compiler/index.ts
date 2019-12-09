@@ -47,9 +47,11 @@ export const compileDeclarations = (
     let entryScope: Scope | null = null;
 
     if (entry.type === 'scope') {
-        [entryScope, entryGroup] = resolveDefaultExport(entry.value as Scope);
+        const [scope, decl] = resolveDefaultExport(entry.value as Scope);
+        entryScope = scope;
+        entryGroup = decl.value as Group;
     } else {
-        entryGroup = entry.value as Group;
+        entryGroup = (entry.value as Declaration).value as Group;
         entryScope = globalScope;
     }
 

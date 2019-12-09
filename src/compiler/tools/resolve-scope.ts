@@ -1,4 +1,4 @@
-import {Group, Reference}                   from '../../ast/types';
+import {Declaration, Reference}             from '../../ast/types';
 import {Scope, ScopeEntriesMap, ScopeEntry} from '../types';
 import {DEFAULT_EXPORT, EXPORTS}            from './create-scope';
 
@@ -6,7 +6,7 @@ import {DEFAULT_EXPORT, EXPORTS}            from './create-scope';
  * Resolves the default export in a scope
  * @param scope
  */
-export function resolveDefaultExport(scope: Scope): [Scope, Group] {
+export function resolveDefaultExport(scope: Scope): [Scope, Declaration] {
     const defaultExport = scope.variants.get(DEFAULT_EXPORT);
 
     if (!defaultExport) {
@@ -17,8 +17,8 @@ export function resolveDefaultExport(scope: Scope): [Scope, Group] {
     if (type === 'scope') {
         return resolveDefaultExport(value as Scope);
     }
-    return [scope, value as Group];
 
+    return [scope, defaultExport.value as Declaration];
 }
 
 /**
@@ -27,7 +27,7 @@ export function resolveDefaultExport(scope: Scope): [Scope, Group] {
  * @param ref
  * @param offset
  */
-export function resolveReference(scope: Scope, ref: Reference, offset = 0): [Scope, Group] | null {
+export function resolveReference(scope: Scope, ref: Reference, offset = 0): [Scope, Declaration] | null {
     const parts = ref.value;
     const lastItem = offset + 1 === parts.length;
     const targetName = ref.value[offset];
@@ -59,14 +59,12 @@ export function resolveReference(scope: Scope, ref: Reference, offset = 0): [Sco
 
                 // Dive down
                 return resolveReference(res.value as Scope, ref, offset + 1);
-
             }
             case 'value': {
-                const val = res.value as Group;
 
                 // The last item should be a group
                 if (lastItem) {
-                    return [scope, val];
+                    return [scope, res.value as Declaration];
                 }
 
                 throw new Error(`Reference "${targetName}" from "${parts.join(':')}" does not point to a block declaration.`);
