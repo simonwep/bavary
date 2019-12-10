@@ -6,6 +6,8 @@ describe('[AST] Types', () => {
         '<> = ["A"]',
         '<abc>',
         '<abc> = ["A" | <>]',
+        '<ab- c> = ["A"]',
+        '<-ab c> = ["A"]',
         '<abc> = [...<a#b>]',
         '<abc> = ["A" | <a:b:>]',
         'entry <sup> = '

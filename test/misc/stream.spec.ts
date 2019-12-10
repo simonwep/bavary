@@ -40,8 +40,9 @@ describe('Streams', () => {
         stream.next();
     });
 
-    it('Should return null for next if there are no items left', () => {
+    it('Should return null for next and peek if there are no items left', () => {
         expect(stream.next()).to.equal('o');
+        expect(stream.peek()).to.equal(null);
         expect(stream.next()).to.equal(null);
         expect(stream.next()).to.equal(null);
     });

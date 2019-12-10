@@ -12,12 +12,11 @@ export const expect = (stream: TokenStream, type: TokenType, ...values: Array<st
 
     // Check if next token matches type and value
     const expected = optional(stream, type, ...values);
-
     if (expected !== null) {
         return expected;
     }
 
-    const next = stream.hasNext() ? stream.peek() : null;
+    const next = stream.next();
     if (next !== null) {
         stream.throwError(`Expected ${values.join(', ')} (${type}) but got ${next.value} (${next.type})`);
     } else {

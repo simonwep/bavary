@@ -9,29 +9,34 @@ import {Identifier} from '../types';
 module.exports = maybe<Identifier>(stream => {
     let name = '';
 
-    while (stream.hasNext()) {
-        const {type, value} = stream.peek() as RawType;
+    // Skip leading whitespace
+    if (stream.peek(true)?.type === 'ws') {
+        stream.next(true);
+    }
+
+    while (stream.hasNext(true)) {
+        const {type, value} = stream.peek(true) as RawType;
 
         if (type === 'ws') {
             break;
         } else if (
+            (type === 'punc' && value === '-' && name.length) ||
             (type === 'num') ||
-            (type === 'kw' && (!name || name.endsWith('-'))) ||
-            (type === 'punc' && (value === '-'))
+            ( type === 'kw')
         ) {
             name += value;
-            stream.next();
+            stream.next(true);
         } else {
             break;
         }
     }
 
-    if (!name.length) {
-        return null;
+    if (name.endsWith('-')) {
+        stream.throwError('Identifier cannot end with a hyphen');
     }
 
-    return {
+    return name.length ? {
         type: 'identifier',
         value: name
-    } as Identifier;
+    } as Identifier : null;
 });
