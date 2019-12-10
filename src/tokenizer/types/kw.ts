@@ -1,19 +1,15 @@
 import {Streamable}                 from '../../misc/stream';
-import {cunsumeWhile}               from '../tools/consume';
+import {consumeWhile}               from '../tools/consume';
 import {isNonWhitespace, isNumeric} from '../tools/is';
 import {RawType}                    from '../types';
 
 export const kw = (stream: Streamable<string>): RawType | null => {
+    const str = consumeWhile(stream, (v, c) => {
+        return isNonWhitespace(v) || !!(isNumeric(v) && c.length);
+    });
 
-    if (isNonWhitespace(stream.peek() as string)) {
-        const str = cunsumeWhile(stream, v => isNonWhitespace(v) || isNumeric(v));
-
-        return {
-            type: 'kw',
-            value: str
-        } as RawType;
-    }
-
-    return null;
-
+    return str.length ? {
+        type: 'kw',
+        value: str
+    } as RawType : null;
 };

@@ -1,5 +1,5 @@
 import {Streamable}   from '../misc/stream';
-import {cunsumeWhile} from './tools/consume';
+import {consumeWhile} from './tools/consume';
 import {isWhiteSpace} from './tools/is';
 import {RawType}      from './types';
 import {kw}           from './types/kw';
@@ -28,7 +28,7 @@ export const tokenize = (str: string): Array<RawType> => {
     outer: while (stream.hasNext()) {
 
         // Ignore whitespace
-        cunsumeWhile(stream, isWhiteSpace);
+        consumeWhile(stream, isWhiteSpace);
 
         if (!stream.hasNext()) {
             break;
