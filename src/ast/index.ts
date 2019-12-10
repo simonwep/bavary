@@ -1,4 +1,4 @@
-import {Streamable}  from '../misc/stream';
+import {TokenStream} from '../misc/token-stream';
 import {RawType}     from '../tokenizer/types';
 import {Declaration} from './types';
 
@@ -9,7 +9,7 @@ import {Declaration} from './types';
  */
 export const parseAST = (tokens: Array<RawType>, source: string): Array<Declaration> => {
     const declaration = require('./nodes/declaration');
-    const stream = new Streamable(tokens, source);
+    const stream = new TokenStream(tokens, source);
     const declarations: Array<Declaration> = [];
 
     while (stream.hasNext()) {

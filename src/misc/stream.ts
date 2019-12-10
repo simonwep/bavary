@@ -13,13 +13,15 @@ export type RangeInformation = {
  */
 export class Streamable<T extends RangeInformation | string> {
 
-    public index: number;
-    private readonly vals: ArrayLike<T>;
     private readonly source: string | null;
-    private stashed: Array<number>;
+    public index: number;
+    protected readonly vals: ArrayLike<T>;
+    protected readonly length: number;
+    private readonly stashed: Array<number>;
 
     constructor(vals: ArrayLike<T>, source: string | null = null) {
         this.vals = vals;
+        this.length = vals.length;
         this.source = source;
         this.index = 0;
         this.stashed = [];

@@ -14,7 +14,6 @@ export const maybeMultiplier = <expectedResult, declarationType extends typesWho
         const parseAll = (): Array<expectedResult> => {
             const values: Array<expectedResult> = [];
 
-            // TODO: Smth fishy here with result
             for (let res; (res = parse());) {
                 values.push(res);
             }

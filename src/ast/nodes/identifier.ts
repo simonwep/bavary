@@ -12,9 +12,13 @@ module.exports = maybe<Identifier>(stream => {
     while (stream.hasNext()) {
         const {type, value} = stream.peek() as RawType;
 
-        if ((type === 'kw' && (!name || name.endsWith('-'))) ||
-            type === 'num' ||
-            (type === 'punc' && (value === '-'))) {
+        if (type === 'ws') {
+            break;
+        } else if (
+            (type === 'num') ||
+            (type === 'kw' && (!name || name.endsWith('-'))) ||
+            (type === 'punc' && (value === '-'))
+        ) {
             name += value;
             stream.next();
         } else {

@@ -1,5 +1,5 @@
-import {Streamable}         from '../../misc/stream';
-import {RawType, TokenType} from '../../tokenizer/types';
+import {TokenStream} from '../../misc/token-stream';
+import {TokenType}   from '../../tokenizer/types';
 
 /**
  * Checks if the next token matches type and a list of optional values
@@ -8,7 +8,7 @@ import {RawType, TokenType} from '../../tokenizer/types';
  * @param vals
  * @returns {boolean}
  */
-export const check = (stream: Streamable<RawType>, type: TokenType, ...vals: Array<string | number>): boolean => {
+export const check = (stream: TokenStream, type: TokenType, ...vals: Array<string | number>): boolean => {
     const peek = stream.peek();
 
     // Check if type matches

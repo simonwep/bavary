@@ -1,8 +1,7 @@
-import {Streamable}     from '../../../misc/stream';
-import {RawType}        from '../../../tokenizer/types';
+import {TokenStream}    from '../../../misc/token-stream';
 import {DeleteModifier} from '../../types';
 
-export const parseDeleteModifier = (stream: Streamable<RawType>): DeleteModifier => {
+export const parseDeleteModifier = (stream: TokenStream): DeleteModifier => {
     const valueAccessor = require('../../nodes/value-accessor');
 
     const param = valueAccessor(stream);

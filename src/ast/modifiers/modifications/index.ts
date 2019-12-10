@@ -1,5 +1,4 @@
-import {Streamable}          from '../../../misc/stream';
-import {RawType}             from '../../../tokenizer/types';
+import {TokenStream}         from '../../../misc/token-stream';
 import {expect}              from '../../tools/expect';
 import {maybe}               from '../../tools/maybe';
 import {optional}            from '../../tools/optional';
@@ -8,7 +7,7 @@ import {parseDefineModifier} from './def';
 import {parseDeleteModifier} from './del';
 
 const parsers: {
-    [key: string]: (stream: Streamable<RawType>) => Modifier;
+    [key: string]: (stream: TokenStream) => Modifier;
 } = {
     def: parseDefineModifier,
     del: parseDeleteModifier

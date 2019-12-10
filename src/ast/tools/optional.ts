@@ -1,4 +1,4 @@
-import {Streamable}         from '../../misc/stream';
+import {TokenStream}        from '../../misc/token-stream';
 import {RawType, TokenType} from '../../tokenizer/types';
 import {check}              from './check';
 
@@ -8,7 +8,7 @@ import {check}              from './check';
  * @param type
  * @param vals
  */
-export const optional = (stream: Streamable<RawType>, type: TokenType, ...vals: Array<string | number>): RawType | null => {
+export const optional = (stream: TokenStream, type: TokenType, ...vals: Array<string | number>): RawType | null => {
 
     if (check(stream, type, ...vals)) {
         return stream.next();

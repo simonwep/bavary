@@ -1,6 +1,5 @@
-import {Streamable} from '../../misc/stream';
-import {RawType}    from '../../tokenizer/types';
-import {ASTNode}    from '../types';
+import {TokenStream} from '../../misc/token-stream';
+import {ASTNode}     from '../types';
 
 /**
  * Accepts a list of parser and returns the first who matches the input
@@ -8,8 +7,8 @@ import {ASTNode}    from '../types';
  * @returns {Function}
  */
 export const combine = <T = ASTNode>(
-    ...parsers: Array<(stream: Streamable<RawType>) => T>
-) => (stream: Streamable<RawType>): T | null => {
+    ...parsers: Array<(stream: TokenStream) => T>
+) => (stream: TokenStream): T | null => {
         for (const parser of parsers) {
             const result = parser(stream);
 

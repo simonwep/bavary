@@ -1,13 +1,13 @@
-import {Streamable}   from '../misc/stream';
-import {consumeWhile} from './tools/consume';
-import {isWhiteSpace} from './tools/is';
-import {RawType}      from './types';
-import {kw}           from './types/kw';
-import {num}          from './types/num';
-import {punc}         from './types/punc';
-import {str}          from './types/str';
+import {Streamable} from '../misc/stream';
+import {RawType}    from './types';
+import {kw}         from './types/kw';
+import {num}        from './types/num';
+import {punc}       from './types/punc';
+import {str}        from './types/str';
+import {ws}         from './types/ws';
 
 const parser = [
+    ws,
     str,
     kw,
     num,
@@ -26,13 +26,6 @@ export const tokenize = (str: string): Array<RawType> => {
 
     /* eslint-disable no-labels */
     outer: while (stream.hasNext()) {
-
-        // Ignore whitespace
-        consumeWhile(stream, isWhiteSpace);
-
-        if (!stream.hasNext()) {
-            break;
-        }
 
         // Find matching parser
         for (const parse of parser) {

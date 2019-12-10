@@ -1,4 +1,4 @@
-import {Streamable}                                  from '../../misc/stream';
+import {TokenStream}                                 from '../../misc/token-stream';
 import {RawType}                                     from '../../tokenizer/types';
 import {parseUnicodeEscape}                          from '../modifiers/unicode-escape';
 import {expect}                                      from '../tools/expect';
@@ -6,7 +6,7 @@ import {maybe}                                       from '../tools/maybe';
 import {optional}                                    from '../tools/optional';
 import {CharacterSelection, CharacterSelectionArray} from '../types';
 
-const parseToken = (stream: Streamable<RawType>): number | null => {
+const parseToken = (stream: TokenStream): number | null => {
     const unicode = parseUnicodeEscape(stream);
 
     if (unicode !== null) {
@@ -48,7 +48,7 @@ const parseToken = (stream: Streamable<RawType>): number | null => {
     return nextValue.charCodeAt(0);
 };
 
-const parseSequence = (stream: Streamable<RawType>): CharacterSelectionArray => {
+const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
     const sequence: CharacterSelectionArray = [];
 
     while (true) {
