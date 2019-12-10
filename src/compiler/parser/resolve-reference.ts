@@ -1,6 +1,7 @@
-import {Reference}                            from '../../ast/types';
+import {ModifierTarget, Reference}            from '../../ast/types';
 import {injectDeclaration, resolveReference}  from '../tools/scope-utils';
 import {ParserArgs, ParsingResultObjectValue} from '../types';
+import {applyModifications}                   from './modification';
 import {maybeMultiplier}                      from './multiplier';
 
 module.exports = (
@@ -55,7 +56,7 @@ module.exports = (
     }
 
     // Type may have a multiplier attached to it
-    return maybeMultiplier<ParsingResultObjectValue, Reference>(
+    const matches = maybeMultiplier<ParsingResultObjectValue, Reference>(
         () => group({
             config,
             stream,
@@ -66,4 +67,13 @@ module.exports = (
         config, stream, decl, result,
         scope: newScope
     });
+
+    // Apply modifiers if defined
+    if (matches) {
+        if (decl.modifiers) {
+            applyModifications(matches as ModifierTarget, decl);
+        }
+    }
+
+    return matches;
 };

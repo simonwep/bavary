@@ -1,7 +1,6 @@
 import {ModifierTarget, Reference}      from '../../ast/types';
 import {typeOf}                         from '../../misc/type-of';
 import {LocationDataObject, ParserArgs} from '../types';
-import {applyModifications}             from './modification';
 
 module.exports = (
     {
@@ -28,11 +27,6 @@ module.exports = (
 
     stream.stash();
     if (matches !== null) {
-
-        // Apply modifiers if defined
-        if (decl.modifiers) {
-            applyModifications(matches as ModifierTarget, decl);
-        }
 
         // Save optional start / end labels
         if (config.locationData && matchesType === 'object') {
