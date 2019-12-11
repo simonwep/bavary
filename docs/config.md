@@ -3,7 +3,7 @@
 | Option | Description | Example | Available since |
 | ------ | ----------- | ------- | --------------- |
 | `functions` | Inject custom-function written in JS / TS to manipulate the result | See [custom functions](#custom-functions) | [0.0.11](../../releases/tag/0.0.11) |
-| `locationData` | Apply location properties to each object | See [location data][#location-data] | [0.0.12](../../releases/tag/0.0.12) |
+| `locationData` | Apply location properties to each object | See [location data](#location-data) | [0.0.12](../../releases/tag/0.0.12) |
 
 
 ### Custom Functions
