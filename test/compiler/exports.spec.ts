@@ -85,4 +85,18 @@ describe('[COM] Exports', () => {
             entry [<escaped:abc:aha:deep>]
         `)('A')).to.throw();
     });
+
+    it('Should allow named default exports', () => {
+        const parse = compile(`
+            <utils> = {
+                <lowercase> = [(a - z)+]
+                default <uppercase> = [(A - Z)+]
+                export <both> = [<lowercase> <uppercase>]
+            }
+            
+            entry [<utils:both>]
+        `);
+
+        expect(parse('abcABC')).to.equal('abcABC');
+    });
 });

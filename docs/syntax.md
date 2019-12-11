@@ -133,6 +133,7 @@ sub-types, and an arbitrary amount of _exported_ types:
 entry [<characters>+]
 ```
 
+> Default exports can have a name like entries and exports!
 
 ### Tags
 So far you would only get a string, (nested-) array of strings or `null` if nothing got matched.

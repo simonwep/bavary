@@ -78,7 +78,11 @@ export class Scope {
                     throw new Error('The global scope can\'t have default exports.');
                 }
 
-                // TODO: Default export names?
+                // It may be a named default export
+                if (dec.name !== null) {
+                    this.setMember(dec.name, resolved);
+                }
+
                 this.defaultExport = resolved;
                 break;
             }
