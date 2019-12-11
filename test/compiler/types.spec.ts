@@ -3,6 +3,17 @@ import {compile} from '../../src';
 
 describe('[COM] Nested types', () => {
 
+    it('Should throw an error if type cannot be found', () => {
+        expect(() => compile(`
+            entry [<unknown>]
+        `)('A')).to.throw();
+
+        expect(() => compile(`
+            <unknown> = {}
+            entry [<unknown:abc>]
+        `)('A')).to.throw();
+    });
+
     it('Should throw an error if more than one entry-type is defined', () => {
         expect(() => compile(`
             entry <abc> = ['A']

@@ -1,26 +1,5 @@
-import {Declaration} from '../ast/types';
-import {Streamable}  from '../misc/stream';
-
-export type ScopeEntryKey = string | symbol;
-export type ScopeEntriesMap = Map<string, ScopeEntry>;
-export type ScopeVariantsMap = Map<symbol, ScopeEntryVariant>;
-
-export type ScopeEntryVariant = {
-    type: 'entries' /* Exported */ | 'scope' /* Block Declaration */ | 'value';
-    value: ScopeEntriesMap | Scope | Declaration;
-}
-
-export type ScopeEntry = {
-    type: 'scope' /* Block Declaration */ | 'value';
-    value: Scope | Declaration;
-}
-
-export type Scope = {
-    variants: ScopeVariantsMap;
-    entries: ScopeEntriesMap;
-    parent: Scope | null;
-    key: ScopeEntryKey;
-}
+import {Streamable} from '../misc/stream';
+import {Scope}      from './scope';
 
 export type ParsingResult = {
     obj: ParsingResultObject;

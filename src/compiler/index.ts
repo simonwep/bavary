@@ -1,8 +1,7 @@
-import {Declaration, Group}                                               from '../ast/types';
-import {Streamable}                                                       from '../misc/stream';
-import {createScope, ENTRY_EXPORT, GLOBAL_SCOPE}                          from './tools/create-scope';
-import {resolveDefaultExport}                                             from './tools/scope-utils';
-import {CompilerConfig, Parser, Scope, ScopeEntriesMap, ScopeVariantsMap} from './types';
+import {Declaration}            from '../ast/types';
+import {Streamable}             from '../misc/stream';
+import {Scope}                  from './scope';
+import {CompilerConfig, Parser} from './types';
 
 /**
  * Compiles a pre-calcuated set of declarations.
@@ -20,41 +19,26 @@ export const compileDeclarations = (
     const group = require('./parser/group');
 
     // Resolve sub-scopes
-    const globalScope = createScope(tree, {
-        variants: new Map() as ScopeVariantsMap,
-        entries: new Map() as ScopeEntriesMap,
-        parent: null,
-        key: GLOBAL_SCOPE,
-    });
+    const globalScope = new Scope({global: true});
+    globalScope.registerAll(tree);
 
     // Set default starts, and ends values on locationData config option
     if (config.locationData === true) {
         config.locationData = {
             start: '__starts',
             end: '__ends'
-        }
+        };
     }
 
     // Pick entry type
-    const entry = globalScope.variants.get(ENTRY_EXPORT);
+    const entry = globalScope.lookupEntry();
 
     // Check if entry node is declared
     if (!entry) {
         throw new Error('Couldn\'t resolve entry type. Use the entry keyword to declare one.');
     }
 
-    let entryGroup: Group | null = null;
-    let entryScope: Scope | null = null;
-
-    if (entry.type === 'scope') {
-        const [scope, decl] = resolveDefaultExport(entry.value as Scope);
-        entryScope = scope;
-        entryGroup = decl.value as Group;
-    } else {
-        entryGroup = (entry.value as Declaration).value as Group;
-        entryScope = globalScope;
-    }
-
+    const [decl, scope] = entry;
     return (content: string): null | object => {
 
         // Parse and return result if successful
@@ -62,8 +46,8 @@ export const compileDeclarations = (
         const res = group({
             config,
             stream,
-            decl: entryGroup,
-            scope: entryScope
+            decl: decl.value,
+            scope
         });
 
         return stream.hasNext() ? null : res;

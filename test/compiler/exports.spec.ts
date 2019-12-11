@@ -58,4 +58,31 @@ describe('[COM] Exports', () => {
         expect(parse('ABb')).to.deep.equal({deep: null, mixed: ['A', 'B', 'b']});
         expect(parse('4')).to.equal('4');
     });
+
+    it('Should throw an error if a name is used more than once', () => {
+        expect(() =>
+            compile(`
+                <abc> = [
+                    export <sup> </sup>
+                ]
+                
+                entry [<abc>]
+            `)
+        ).to.throw();
+    });
+
+    it('Should throw an error if path does not point to a block', () => {
+        expect(() => compile(`
+            <escaped> = ["A"]
+            entry [<escaped:abc>]
+        `)('A')).to.throw();
+
+        expect(() => compile(`
+            <escaped> = {
+                export <abc> = {}
+            }
+            
+            entry [<escaped:abc:aha:deep>]
+        `)('A')).to.throw();
+    });
 });

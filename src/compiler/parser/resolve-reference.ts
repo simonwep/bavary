@@ -1,5 +1,4 @@
 import {ModifierTarget, Reference}            from '../../ast/types';
-import {injectDeclaration, resolveReference}  from '../tools/scope-utils';
 import {ParserArgs, ParsingResultObjectValue} from '../types';
 import {applyModifications}                   from './modification';
 import {maybeMultiplier}                      from './multiplier';
@@ -16,13 +15,13 @@ module.exports = (
     const group = require('./group');
 
     // Resolve reference
-    const res = resolveReference(scope, decl);
+    const res = scope.lookupByPath(decl.value);
 
     if (!res) {
         throw new Error(`Failed to resolve "${decl.value.join(':')}".`);
     }
 
-    const [newScope, target] = res;
+    const [target, newScope] = res;
     const typeArguments = target.arguments;
     const refArguments = [...(decl.arguments || [])];
 
@@ -45,7 +44,7 @@ module.exports = (
                 throw new Error(`Argument "${name}" is missing on type ${target.name}.`);
             }
 
-            injectDeclaration(newScope, name, argVal);
+            newScope.injectValue(argVal, name);
         }
 
         if (refArguments.length) {
