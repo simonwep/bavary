@@ -31,7 +31,7 @@ export const compileDeclarations = (
     }
 
     // Pick entry type
-    const entry = globalScope.lookupEntry();
+    const entry = globalScope.lookup('entry');
 
     // Check if entry node is declared
     if (!entry) {

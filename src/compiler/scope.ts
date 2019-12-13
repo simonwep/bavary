@@ -1,9 +1,14 @@
 import {Declaration, Group} from '../ast/types';
 
+export type SpecialMember = 'entry' | 'default';
+
 export class Scope {
 
     // Optional parent scope
     private readonly parent: Scope | null;
+
+    // If scope defines global scope, not everything is possible in there!
+    private readonly global: boolean;
 
     // Exported members
     private readonly exports: Map<string, Declaration | Scope>;
@@ -11,14 +16,8 @@ export class Scope {
     // Declared members (without any variant)
     private readonly members: Map<string, Declaration | Scope>;
 
-    // If scope defines global scope, not everything is possible in there!
-    private readonly global: boolean;
-
-    // Default export
-    private defaultExport: Declaration | Scope | null;
-
-    // Entry
-    private entry: Declaration | Scope | null;
+    // Special members (entry & default)
+    private readonly specials: Map<SpecialMember, Declaration | Scope>;
 
     /**
      * Creates a new scope
@@ -31,8 +30,7 @@ export class Scope {
     }) {
         this.exports = new Map();
         this.members = new Map();
-        this.defaultExport = null;
-        this.entry = null;
+        this.specials = new Map();
         this.parent = parent;
         this.global = global;
     }
@@ -56,7 +54,7 @@ export class Scope {
 
         switch (dec.variant) {
             case 'entry': {
-                if (this.entry) {
+                if (this.specials.has('entry')) {
                     throw new Error('There can only be one entry.');
                 } else if (!this.global) {
                     throw new Error('Only the global scope can contain entries.');
@@ -67,12 +65,12 @@ export class Scope {
                     this.setMember(dec.name, resolved);
                 }
 
-                this.entry = resolved;
+                this.specials.set('entry', resolved);
                 break;
             }
             case 'default': {
 
-                if (this.defaultExport) {
+                if (this.specials.has('default')) {
                     throw new Error('There can only be one default export.');
                 } else if (this.global) {
                     throw new Error('The global scope can\'t have default exports.');
@@ -83,7 +81,7 @@ export class Scope {
                     this.setMember(dec.name, resolved);
                 }
 
-                this.defaultExport = resolved;
+                this.specials.set('default', resolved);
                 break;
             }
             case 'export': {
@@ -132,6 +130,48 @@ export class Scope {
         });
     }
 
+    /**
+     * Looks up a reference-path
+     * @param path
+     */
+    public lookupByPath(path: Array<string>): [Declaration, Scope] | null {
+        const [cur, ...followUps] = path;
+
+        // Resolve first type upwards
+        const val = this.lookupByName(cur);
+
+        if (!val) {
+            return null;
+        } else if (val instanceof Scope) {
+            return val.lookupDeepReference(followUps);
+        } else if (!followUps.length) {
+            return [val, this];
+        }
+
+        return null;
+    }
+
+    /**
+     * Lookups special-types of declarations
+     * @param type
+     */
+    public lookup(type: SpecialMember): [Declaration, Scope] | null {
+        const entry = this.specials.get(type);
+
+        if (entry) {
+            return entry instanceof Scope ? // It may be a scope
+                entry.lookup('default') :  // Lookup in parent
+                [entry, this]; // Return current
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the declaration itself if its a group and new scope
+     * in case of a block
+     * @param dec
+     */
     private resolveValueFor(dec: Declaration): Declaration | Scope {
 
         // Create sub-scope if it's a block
@@ -148,7 +188,7 @@ export class Scope {
      * Looks up a member by name
      * @param name
      */
-    public lookupByName(name: string): Declaration | Scope | null {
+    private lookupByName(name: string): Declaration | Scope | null {
 
         // Lookup type in current scope
         if (this.members.has(name)) {
@@ -159,58 +199,21 @@ export class Scope {
         return this.parent ? this.parent.lookupByName(name) : null;
     }
 
-    public lookupByPath(path: Array<string>): [Declaration, Scope] | null {
-        const [cur, ...followUps] = path;
-        const val = this.lookupByName(cur);
-
-        if (!val) {
-            return null;
-        } else if (val instanceof Scope) {
-            return val.lookupDeepReference(followUps);
-        } else if (!followUps.length) {
-            return [val, this];
-        }
-
-        return null;
-    }
-
-    public lookupDeepReference(path: Array<string>): [Declaration, Scope] | null {
+    /**
+     * Resolves a deep reference relative to the current path
+     * @param path
+     */
+    private lookupDeepReference(path: Array<string>): [Declaration, Scope] | null {
         const member = path.length ? this.exports.get(path.shift() as string) : null;
 
         if (!member) {
-            return path.length ? null : this.lookupDefault();
+            return path.length ? null : this.lookup('default');
         }
 
         if (member instanceof Scope) {
             return member.lookupDeepReference(path);
         } else if (!path.length) {
             return [member, this];
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns the default-export
-     */
-    public lookupDefault(): [Declaration, Scope] | null {
-        if (this.defaultExport) {
-            return this.defaultExport instanceof Scope ?
-                this.defaultExport.lookupDefault() :
-                [this.defaultExport, this];
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns the entry value
-     */
-    public lookupEntry(): [Declaration, Scope] | null {
-        if (this.entry) {
-            return this.entry instanceof Scope ?
-                this.entry.lookupDefault() :
-                [this.entry, this];
         }
 
         return null;
