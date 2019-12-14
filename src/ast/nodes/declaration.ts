@@ -30,12 +30,19 @@ module.exports = maybe<Declaration>(stream => {
     }
 
     // A declaration value could be either a group or scoped block
-    const body = group(stream) || block(stream);
+    let body;
+    if (args?.length) {
+        body = group(stream);
 
-    if (!body) {
-        stream.throwError('A declaration consists of one group or block statement.');
-    } else if (body.type === 'block' && args?.length) {
-        stream.throwError('Block statements cannot take arguments.');
+        if (!body) {
+            stream.throwError('Expected a group.');
+        }
+    } else {
+        body = group(stream) || block(stream);
+
+        if (!body) {
+            stream.throwError('Expected a group or block-statement.');
+        }
     }
 
     return {

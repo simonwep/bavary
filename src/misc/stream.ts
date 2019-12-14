@@ -14,10 +14,10 @@ export type RangeInformation = {
 export class Streamable<T extends RangeInformation | string> {
 
     private readonly source: string | null;
-    public index: number;
     protected readonly vals: ArrayLike<T>;
     protected readonly length: number;
     private readonly stashed: Array<number>;
+    public index: number;
 
     constructor(vals: ArrayLike<T>, source: string | null = null) {
         this.vals = vals;

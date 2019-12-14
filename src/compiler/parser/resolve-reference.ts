@@ -18,7 +18,7 @@ module.exports = (
     const res = scope.lookupByPath(decl.value);
 
     if (!res) {
-        throw new Error(`Failed to resolve "${decl.value.join(':')}".`);
+        throw new Error(`Failed to resolve "${decl.value.join(':')}". If it's a block a default export may be missing.`);
     }
 
     const [target, newScope] = res;
