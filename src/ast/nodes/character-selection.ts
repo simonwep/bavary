@@ -60,7 +60,7 @@ const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
         }
 
         // There may be a range seletion
-        if (optional(stream, 'punc', '-')) {
+        if (optional(stream, false, 'punc', '-')) {
             b = parseToken(stream);
 
             if (b === null) {
@@ -84,7 +84,7 @@ const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
         }
 
         // Character (sets) must be seperated by commas
-        if (!optional(stream, 'punc', ',')) {
+        if (!optional(stream, false, 'punc', ',')) {
             break;
         }
     }
@@ -95,7 +95,7 @@ const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
 module.exports = maybe<CharacterSelection>(stream => {
     const multiplier = require('./multiplier');
 
-    if (!optional(stream, 'punc', '(')) {
+    if (!optional(stream, false, 'punc', '(')) {
         return null;
     }
 
@@ -103,11 +103,11 @@ module.exports = maybe<CharacterSelection>(stream => {
     const excluded: CharacterSelectionArray = [];
     included.push(...parseSequence(stream));
 
-    if (optional(stream, 'kw', 'except')) {
+    if (optional(stream, false, 'kw', 'except')) {
         excluded.push(...parseSequence(stream));
     }
 
-    expect(stream, 'punc', ')');
+    expect(stream, false, 'punc', ')');
     return {
         type: 'character-selection',
         multiplier: multiplier(stream),

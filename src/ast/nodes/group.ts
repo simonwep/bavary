@@ -15,7 +15,7 @@ module.exports = maybe<Group>(stream => {
     const fn = require('./function');
 
     // It may be a group
-    if (!optional(stream, 'punc', '[')) {
+    if (!optional(stream, false, 'punc', '[')) {
         return null;
     }
 
@@ -31,7 +31,7 @@ module.exports = maybe<Group>(stream => {
     // The following code is chaos, and thats ok.
     // It works as intended and does the job just fine.
     let comg: null | BinaryCombinator = null;
-    while (!check(stream, 'punc', ']')) {
+    while (!check(stream, false, 'punc', ']')) {
         const value = parsers(stream);
         const sign = combinator(stream);
 
@@ -91,7 +91,7 @@ module.exports = maybe<Group>(stream => {
         stream.throwError('Combinator is missing a value!');
     }
 
-    expect(stream, 'punc', ']');
+    expect(stream, false, 'punc', ']');
 
     return {
         type: 'group',

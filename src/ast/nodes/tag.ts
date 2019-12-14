@@ -3,7 +3,7 @@ import {optional} from '../tools/optional';
 import {Tag}      from '../types';
 
 module.exports = maybe<Tag | null>(stream => {
-    if (!optional(stream, 'punc', '#')) {
+    if (!optional(stream, false, 'punc', '#')) {
         return null;
     }
 

@@ -7,7 +7,7 @@ import {optional} from '../tools/optional';
  */
 export const parseUnicodeEscape = maybe<number>(stream => {
 
-    if (!optional(stream, 'punc', '\\') || !stream.hasNext()) {
+    if (!optional(stream, false, 'punc', '\\') || !stream.hasNext()) {
         return null;
     }
 

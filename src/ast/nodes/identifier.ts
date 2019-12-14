@@ -9,11 +9,6 @@ import {Identifier} from '../types';
 module.exports = maybe<Identifier>(stream => {
     let name = '';
 
-    // Skip leading whitespace
-    if (stream.peek(true)?.type === 'ws') {
-        stream.next(true);
-    }
-
     while (stream.hasNext(true)) {
         const {type, value} = stream.peek(true) as RawType;
 

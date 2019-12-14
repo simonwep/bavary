@@ -2,6 +2,7 @@ import {TokenStream}         from '../../../misc/token-stream';
 import {expect}              from '../../tools/expect';
 import {maybe}               from '../../tools/maybe';
 import {optional}            from '../../tools/optional';
+import {skipWhitespace}      from '../../tools/skip-whitespace';
 import {Modifier, Modifiers} from '../../types';
 import {parseDefineModifier} from './def';
 import {parseDeleteModifier} from './del';
@@ -18,7 +19,7 @@ const parsers: {
  * @type {Function}
  */
 module.exports = maybe<Modifiers | null>(stream => {
-    if (!optional(stream, 'punc', '{')) {
+    if (!optional(stream, false, 'punc', '{')) {
         return null;
     }
 
@@ -26,17 +27,18 @@ module.exports = maybe<Modifiers | null>(stream => {
 
     // Parse key-value combies
     do {
-        const op = optional(stream, 'kw', 'def', 'del');
+        const op = optional(stream, false, 'kw', 'def', 'del');
 
         if (!op) {
             stream.throwError('Expected operator');
         } else {
+            skipWhitespace(stream);
             set.push(parsers[op.value](stream));
         }
 
         // Pairs are seperated via a comma
-    } while (optional(stream, 'punc', ','));
+    } while (optional(stream, false, 'punc', ','));
 
-    expect(stream, 'punc', '}');
+    expect(stream, false, 'punc', '}');
     return set;
 });

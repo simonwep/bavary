@@ -7,7 +7,7 @@ import {optional} from '../tools/optional';
  */
 module.exports = maybe<true | null>(stream => {
     for (let i = 0; i < 3; i++) {
-        if (!optional(stream, 'punc', '.')) {
+        if (!optional(stream, false, 'punc', '.')) {
             return null;
         }
     }

@@ -10,11 +10,11 @@ module.exports = maybe<Declaration>(stream => {
     const block = require('./block');
 
     // Parse optional variant
-    const variant = optional(stream, 'kw', 'entry', 'default', 'export');
+    const variant = optional(stream, false, 'kw', 'entry', 'default', 'export');
     let name = null, args = null;
 
     // It may be a named one
-    if (optional(stream, 'punc', '<')) {
+    if (optional(stream, false, 'punc', '<')) {
 
         name = identifier(stream);
         if (!name) {
@@ -23,8 +23,8 @@ module.exports = maybe<Declaration>(stream => {
 
         // Parse arguments
         args = parseArguments(stream);
-        expect(stream, 'punc', '>');
-        expect(stream, 'punc', '=');
+        expect(stream, false, 'punc', '>');
+        expect(stream, false, 'punc', '=');
     } else if (!variant) {
         stream.throwError('Expected declaration.');
     }

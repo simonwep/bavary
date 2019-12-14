@@ -15,7 +15,7 @@ module.exports = maybe<Reference>(stream => {
     const spread = !!spreadOperator(stream);
 
     // It may be a type
-    if (!optional(stream, 'punc', '<')) {
+    if (!optional(stream, false, 'punc', '<')) {
         return null;
     }
 
@@ -30,17 +30,15 @@ module.exports = maybe<Reference>(stream => {
             value.push(next.value);
         }
 
-        if (!optional(stream, 'punc', ':')) {
+        if (!optional(stream, false, 'punc', ':')) {
             break;
         } else {
             expectIdentifier = true;
         }
     }
 
-    if (expectIdentifier) {
+    if (expectIdentifier || !value.length) {
         stream.throwError('Expected identifier');
-    } else if (!value.length) {
-        stream.throwError('Expected a reference.');
     }
 
     // It may have a tag
@@ -54,7 +52,7 @@ module.exports = maybe<Reference>(stream => {
     const modifiers = parseModifiers(stream);
     const args = parseArguments(stream);
 
-    expect(stream, 'punc', '>');
+    expect(stream, false, 'punc', '>');
     const multiplier = parseMultipliers(stream);
 
     return {

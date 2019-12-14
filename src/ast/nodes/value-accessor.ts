@@ -5,7 +5,7 @@ import {optional}      from '../tools/optional';
 import {ValueAccessor} from '../types';
 
 const parseObjectAccessor = maybe<string>(stream => {
-    if (!optional(stream, 'punc', '.')) {
+    if (!optional(stream, false, 'punc', '.')) {
         return null;
     }
 
@@ -18,12 +18,12 @@ const parseObjectAccessor = maybe<string>(stream => {
 });
 
 const parseArrayAccessor = maybe<number>(stream => {
-    if (!optional(stream, 'punc', '[')) {
+    if (!optional(stream, false, 'punc', '[')) {
         return null;
     }
 
-    const index = expect(stream, 'num');
-    expect(stream, 'punc', ']');
+    const index = expect(stream, false, 'num');
+    expect(stream, false, 'punc', ']');
 
     return index.value as number;
 });

@@ -1,6 +1,7 @@
-import {maybe}     from '../tools/maybe';
-import {optional}  from '../tools/optional';
-import {Arguments} from '../types';
+import {maybe}          from '../tools/maybe';
+import {optional}       from '../tools/optional';
+import {skipWhitespace} from '../tools/skip-whitespace';
+import {Arguments}      from '../types';
 
 module.exports = maybe<Arguments>(stream => {
     const identifier = require('./identifier');
@@ -8,6 +9,7 @@ module.exports = maybe<Arguments>(stream => {
     const args: Arguments = [];
 
     while (true) {
+        skipWhitespace(stream);
         const name = identifier(stream);
 
         if (!name) {
@@ -16,7 +18,7 @@ module.exports = maybe<Arguments>(stream => {
 
         // It may have a value
         let value = null;
-        if (optional(stream, 'punc', '=')) {
+        if (optional(stream, false, 'punc', '=')) {
             value = group(stream);
 
             if (!value) {

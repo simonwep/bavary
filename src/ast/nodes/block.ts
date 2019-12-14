@@ -8,18 +8,18 @@ module.exports = maybe<Block>(stream => {
     const declaration = require('./declaration');
 
     // It may be a block
-    if (!optional(stream, 'punc', '{')) {
+    if (!optional(stream, false, 'punc', '{')) {
         return null;
     }
 
     // Parse declarations
     const declarations: Array<Declaration> = [];
 
-    while (!check(stream, 'punc', '}')) {
+    while (!check(stream, false, 'punc', '}')) {
         declarations.push(declaration(stream));
     }
 
-    expect(stream, 'punc', '}');
+    expect(stream, false, 'punc', '}');
     return {
         type: 'block',
         value: declarations

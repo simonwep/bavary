@@ -11,13 +11,13 @@ const types: {[key: string]: string} = {
 };
 
 module.exports = maybe<Multiplier | null>(stream => {
-    const mp = optional(stream, 'punc', '*', '+', '?', '{');
+    const mp = optional(stream, false, 'punc', '*', '+', '?', '{');
 
     if (mp && mp.value === '{') {
-        const start = expect(stream, 'num');
+        const start = expect(stream, false, 'num');
 
-        expect(stream, 'punc', ',');
-        const end = optional(stream, 'num') as RawType;
+        expect(stream, false, 'punc', ',');
+        const end = optional(stream, false, 'num') as RawType;
 
         if (end) {
 
@@ -27,7 +27,7 @@ module.exports = maybe<Multiplier | null>(stream => {
             }
         }
 
-        expect(stream, 'punc', '}');
+        expect(stream, false, 'punc', '}');
         return {
             type: 'range',
             value: {

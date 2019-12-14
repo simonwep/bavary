@@ -5,13 +5,14 @@ import {check}              from './check';
 /**
  * Same as check but consumes the value
  * @param stream
+ * @param strict
  * @param type
  * @param vals
  */
-export const optional = (stream: TokenStream, type: TokenType, ...vals: Array<string | number>): RawType | null => {
+export const optional = (stream: TokenStream, strict: boolean, type: TokenType, ...vals: Array<string | number>): RawType | null => {
 
-    if (check(stream, type, ...vals)) {
-        return stream.next();
+    if (check(stream, strict, type, ...vals)) {
+        return stream.next(strict);
     }
 
     return null;

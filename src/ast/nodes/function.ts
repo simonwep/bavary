@@ -3,13 +3,15 @@ import {combine}                                      from '../tools/combine';
 import {expect}                                       from '../tools/expect';
 import {maybe}                                        from '../tools/maybe';
 import {optional}                                     from '../tools/optional';
+import {skipWhitespace}                               from '../tools/skip-whitespace';
 import {Func, Group, Identifier, Reference, Str, Tag} from '../types';
 
 module.exports = maybe<Func>(stream => {
     const identifier = require('./identifier');
-    const name = identifier(stream);
 
-    if (!name || !optional(stream, 'punc', '(')) {
+    skipWhitespace(stream);
+    const name = identifier(stream);
+    if (!name || !optional(stream, false, 'punc', '(')) {
         return null;
     }
 
@@ -23,11 +25,13 @@ module.exports = maybe<Func>(stream => {
 
     // Parse arguments
     const args = [];
-    while (!check(stream, 'punc', ')')) {
+    while (!check(stream, false, 'punc', ')')) {
+        skipWhitespace(stream);
         if (args.length) {
-            expect(stream, 'punc', ',');
+            expect(stream, false, 'punc', ',');
         }
 
+        skipWhitespace(stream);
         const arg = parse(stream);
         if (!arg) {
             stream.throwError('Expected an a group, tag or identifier.');
@@ -36,7 +40,7 @@ module.exports = maybe<Func>(stream => {
         args.push(arg);
     }
 
-    expect(stream, 'punc', ')');
+    expect(stream, false, 'punc', ')');
     return {
         type: 'function',
         name: name.value,

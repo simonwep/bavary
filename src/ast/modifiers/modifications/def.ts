@@ -1,5 +1,6 @@
 import {TokenStream}    from '../../../misc/token-stream';
 import {expect}         from '../../tools/expect';
+import {skipWhitespace} from '../../tools/skip-whitespace';
 import {DefineModifier} from '../../types';
 
 export const parseDefineModifier = (stream: TokenStream): DefineModifier => {
@@ -12,9 +13,10 @@ export const parseDefineModifier = (stream: TokenStream): DefineModifier => {
         stream.throwError('Expected identifier');
     }
 
-    expect(stream, 'punc', '=');
-    const val = string(stream) || valueAccessor(stream);
+    expect(stream, false, 'punc', '=');
+    skipWhitespace(stream);
 
+    const val = string(stream) || valueAccessor(stream);
     if (!val) {
         stream.throwError('Expected string, function-call or value-accessor.');
     }
