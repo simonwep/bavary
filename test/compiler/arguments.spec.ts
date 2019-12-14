@@ -46,6 +46,15 @@ describe('[COM] Arguments', () => {
         ).to.throw();
     });
 
+    it('Should throw an error if arguments are used on block statements', () => {
+        expect(() =>
+            compile(`
+                <escaped efg=['"']> = {}
+                entry ['A']
+            `)('A')
+        ).to.throw();
+    });
+
     it('Should properly resolve a deep reference inside an argument', () => {
         const parse = compile(`
             <escaped sign=['"'] content> = [

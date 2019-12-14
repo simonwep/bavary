@@ -34,6 +34,8 @@ module.exports = maybe<Declaration>(stream => {
 
     if (!body) {
         stream.throwError('A declaration consists of one group or block statement.');
+    } else if (body.type === 'block' && args?.length) {
+        stream.throwError('Block statements cannot take arguments.');
     }
 
     return {
