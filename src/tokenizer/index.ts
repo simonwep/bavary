@@ -16,7 +16,6 @@ const parser = [
 
 /**
  * Parses a sequence of characters into a list of processable tokens
- * TODO: Fix whitespace mess
  * @param str
  * @returns {[]}
  */
@@ -37,7 +36,7 @@ export const tokenize = (str: string): Array<RawType> => {
             }
 
             // Check if token could be the beginning of a comment
-            if (parsed.value === '/' && stream.hasNext() && stream.peek() === '/') {
+            if (parsed.value === '/' && stream.peek() === '/') {
                 while (stream.hasNext()) {
                     if (stream.peek() === '\n') {
                         break;
@@ -46,6 +45,14 @@ export const tokenize = (str: string): Array<RawType> => {
                     stream.next();
                 }
 
+                continue outer;
+            }
+
+            // There may be a comment between whitespace, concatenate that
+            if (parsed.type === 'ws' && tokens.length && tokens[tokens.length - 1].type === 'ws') {
+                const last = tokens[tokens.length - 1];
+                last.value += parsed.value as string;
+                last.end = stream.index;
                 continue outer;
             }
 

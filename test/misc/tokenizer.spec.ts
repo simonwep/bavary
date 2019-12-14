@@ -38,12 +38,9 @@ describe('Tokenizer', () => {
         `)).to.deep.equal([
             {type: 'ws', value: '\n            ', start: 0, end: 13},
             {type: 'kw', value: 'abc', start: 13, end: 16},
-            {type: 'ws', value: ' ', start: 16, end: 17},
-            {type: 'ws', value: '\n            ', start: 35, end: 48},
-            {type: 'ws', value: '\n            ', start: 54, end: 67},
+            {type: 'ws', value: ' \n            \n            ', start: 16, end: 67},
             {type: 'num', value: 123, start: 67, end: 70},
-            {type: 'ws', value: ' ', start: 70, end: 71},
-            {type: 'ws', value: '\n        ', start: 78, end: 87}
+            {type: 'ws', value: ' \n        ', start: 70, end: 87}
         ]);
     });
 });
