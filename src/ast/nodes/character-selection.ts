@@ -71,16 +71,12 @@ const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
         }
 
         if (b !== null) {
-            sequence.push({
-                type: 'range',
-                from: Math.min(a, b),
-                to: Math.max(a, b)
-            });
+            sequence.push([
+                Math.min(a, b),
+                Math.max(a, b)
+            ]);
         } else {
-            sequence.push({
-                type: 'character',
-                value: a
-            });
+            sequence.push(a);
         }
 
         // Character (sets) must be seperated by commas

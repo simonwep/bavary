@@ -100,17 +100,7 @@ export type CharacterSelection = {
     excluded: CharacterSelectionArray;
 }
 
-export type CharacterSelectionArray = Array<CharacterSelectionRange | CharacterSelectionCode>;
-export type CharacterSelectionCode = {
-    type: 'character';
-    value: number;
-}
-
-export type CharacterSelectionRange = {
-    type: 'range';
-    from: number;
-    to: number;
-}
+export type CharacterSelectionArray = Array<number | [number, number]>;
 
 export type Block = {
     type: 'block';

@@ -9,8 +9,9 @@ import {maybeMultiplier}                             from './multiplier';
  */
 const matchesCharacterSelectionArray = (arr: CharacterSelectionArray, charCode: number): boolean => {
     return arr.some(
-        v => v.type === 'character' ? v.value === charCode :
-            charCode >= v.from && charCode <= v.to
+        v => typeof v === 'number' ?
+            v === charCode :
+            charCode >= v[0] && charCode <= v[1]
     );
 };
 

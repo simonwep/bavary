@@ -22,8 +22,8 @@ module.exports = maybe<Group>(stream => {
     const values: Array<GroupValue> = [];
     const parsers = combine<Reference | Group | CharacterSelection | Str | Func>(
         fn,
-        reference,
         group,
+        reference,
         characterSelection,
         string
     );
