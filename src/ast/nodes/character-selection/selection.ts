@@ -1,11 +1,13 @@
-import {TokenStream}                                 from '../../misc/token-stream';
-import {RawType}                                     from '../../tokenizer/types';
-import {parseUnicodeEscape}                          from '../modifiers/unicode-escape';
-import {expect}                                      from '../tools/expect';
-import {maybe}                                       from '../tools/maybe';
-import {optional}                                    from '../tools/optional';
-import {CharacterSelection, CharacterSelectionArray} from '../types';
+import {TokenStream}             from '../../../misc/token-stream';
+import {RawType}                 from '../../../tokenizer/types';
+import {parseUnicodeEscape}      from '../../modifiers/unicode-escape';
+import {optional}                from '../../tools/optional';
+import {CharacterSelectionArray} from '../../types';
 
+/**
+ * Parses a single token, this may be a single
+ * character "a" or an escaped character "\="
+ */
 const parseToken = (stream: TokenStream): number | null => {
     const unicode = parseUnicodeEscape(stream);
 
@@ -48,7 +50,11 @@ const parseToken = (stream: TokenStream): number | null => {
     return nextValue.charCodeAt(0);
 };
 
-const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
+/**
+ * Parses a sequence of character tokens.
+ * These may be (concatenates) ranges / and or characters "A - Z, a, b, c"
+ */
+export const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
     const sequence: CharacterSelectionArray = [];
 
     while (true) {
@@ -87,27 +93,3 @@ const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
 
     return sequence;
 };
-
-module.exports = maybe<CharacterSelection>(stream => {
-    const multiplier = require('./multiplier');
-
-    if (!optional(stream, false, 'punc', '(')) {
-        return null;
-    }
-
-    const included: CharacterSelectionArray = [];
-    const excluded: CharacterSelectionArray = [];
-    included.push(...parseSequence(stream));
-
-    if (optional(stream, false, 'kw', 'except')) {
-        excluded.push(...parseSequence(stream));
-    }
-
-    expect(stream, false, 'punc', ')');
-    return {
-        type: 'character-selection',
-        multiplier: multiplier(stream),
-        included,
-        excluded
-    } as CharacterSelection;
-});
