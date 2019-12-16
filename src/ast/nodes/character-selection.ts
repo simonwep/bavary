@@ -89,7 +89,7 @@ const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
 };
 
 module.exports = maybe<CharacterSelection>(stream => {
-    const multiplier = require('./multiplier');
+    const parseMultiplier = require('./multiplier');
 
     if (!optional(stream, false, 'punc', '(')) {
         return null;
@@ -106,7 +106,7 @@ module.exports = maybe<CharacterSelection>(stream => {
     expect(stream, false, 'punc', ')');
     return {
         type: 'character-selection',
-        multiplier: multiplier(stream),
+        multiplier: parseMultiplier(stream),
         included,
         excluded
     } as CharacterSelection;

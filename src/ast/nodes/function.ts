@@ -7,10 +7,10 @@ import {skipWhitespace}                               from '../tools/skip-whites
 import {Func, Group, Identifier, Reference, Str, Tag} from '../types';
 
 module.exports = maybe<Func>(stream => {
-    const identifier = require('./identifier');
+    const parseIdentifier = require('./identifier');
 
     skipWhitespace(stream);
-    const name = identifier(stream);
+    const name = parseIdentifier(stream);
     if (!name || !optional(stream, false, 'punc', '(')) {
         return null;
     }

@@ -16,7 +16,7 @@ module.exports = maybeMultiplier<ParsingResultObjectValue, Group>((
         }
     }
 ): ParsingResultObjectValue => {
-    const declaration = require('./declaration');
+    const parseDeclaration = require('./declaration');
     stream.stash();
 
     // Remember current raw result in case the group fails
@@ -27,7 +27,7 @@ module.exports = maybeMultiplier<ParsingResultObjectValue, Group>((
         const decl = decs[i];
 
         // Parse declaration
-        if (!declaration({config, stream, decl, scope, result})) {
+        if (!parseDeclaration({config, stream, decl, scope, result})) {
             stream.pop();
 
             // Set all tages used within this declaration to null

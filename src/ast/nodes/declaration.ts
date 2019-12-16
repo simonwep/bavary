@@ -4,10 +4,10 @@ import {optional}    from '../tools/optional';
 import {Declaration} from '../types';
 
 module.exports = maybe<Declaration>(stream => {
-    const identifier = require('./identifier');
+    const parseIdentifier = require('./identifier');
     const parseArguments = require('./arguments');
-    const group = require('./group');
-    const block = require('./block');
+    const parseGroup = require('./group');
+    const parseBlock = require('./block');
 
     // Parse optional variant
     const variant = optional(stream, false, 'kw', 'entry', 'default', 'export');
@@ -16,7 +16,7 @@ module.exports = maybe<Declaration>(stream => {
     // It may be a named one
     if (optional(stream, false, 'punc', '<')) {
 
-        name = identifier(stream);
+        name = parseIdentifier(stream);
         if (!name) {
             stream.throwError('Expected identifier.');
         }
@@ -32,13 +32,13 @@ module.exports = maybe<Declaration>(stream => {
     // A declaration value could be either a group or scoped block
     let body;
     if (args?.length) {
-        body = group(stream);
+        body = parseGroup(stream);
 
         if (!body) {
             stream.throwError('Expected a group.');
         }
     } else {
-        body = group(stream) || block(stream);
+        body = parseGroup(stream) || parseBlock(stream);
 
         if (!body) {
             stream.throwError('Expected a group or block-statement.');

@@ -11,7 +11,7 @@ module.exports = (
         result
     }: ParserArgs<BinaryCombinator>
 ): boolean => {
-    const declaration = require('./declaration');
+    const parseDeclaration = require('./declaration');
     stream.stash();
 
     // Serialize remaining types
@@ -23,7 +23,7 @@ module.exports = (
             // Match one of the items
             const decs = decl.value;
             for (let i = 0; i < decs.length; i++) {
-                if (declaration({config, stream, decl: decs[i], scope, result})) {
+                if (parseDeclaration({config, stream, decl: decs[i], scope, result})) {
                     stream.recycle();
                     return true;
                 }
@@ -37,7 +37,7 @@ module.exports = (
 
             // Match items ignoring the order
             for (let i = 0; i < cpy.length; i++) {
-                if (declaration({config, stream, decl: cpy[i], scope, result})) {
+                if (parseDeclaration({config, stream, decl: cpy[i], scope, result})) {
                     cpy.splice(i, 1);
                     i = -1;
                 }

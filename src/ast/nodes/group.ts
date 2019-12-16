@@ -6,14 +6,14 @@ import {optional}                                                               
 import {BinaryCombinator, CharacterSelection, ConditionalStatement, Func, Group, GroupValue, Reference, Str} from '../types';
 
 module.exports = maybe<Group>(stream => {
-    const combinator = require('../modifiers/combinator');
-    const conditionalStatement = require('./conditional-statement');
-    const characterSelection = require('./character-selection');
-    const multiplier = require('./multiplier');
-    const reference = require('./reference');
-    const string = require('./string');
-    const group = require('./group');
-    const fn = require('./function');
+    const parseCombinator = require('../modifiers/combinator');
+    const parseConditionalStatement = require('./conditional-statement');
+    const parseCharacterSelection = require('./character-selection');
+    const parseMultiplier = require('./multiplier');
+    const parseReference = require('./reference');
+    const parseString = require('./string');
+    const parseGroup = require('./group');
+    const parseFunction = require('./function');
 
     // It may be a group
     if (!optional(stream, false, 'punc', '[')) {
@@ -22,12 +22,12 @@ module.exports = maybe<Group>(stream => {
 
     const values: Array<GroupValue> = [];
     const parsers = combine<Reference | Group | CharacterSelection | ConditionalStatement | Str | Func>(
-        fn,
-        group,
-        reference,
-        conditionalStatement,
-        characterSelection,
-        string
+        parseFunction,
+        parseGroup,
+        parseReference,
+        parseConditionalStatement,
+        parseCharacterSelection,
+        parseString
     );
 
     // The following code is chaos, and thats ok.
@@ -35,7 +35,7 @@ module.exports = maybe<Group>(stream => {
     let comg: null | BinaryCombinator = null;
     while (!check(stream, false, 'punc', ']')) {
         const value = parsers(stream);
-        const sign = combinator(stream);
+        const sign = parseCombinator(stream);
 
         if (!value) {
             stream.throwError('Expected a type, group or raw string / character-range.');
@@ -97,7 +97,7 @@ module.exports = maybe<Group>(stream => {
 
     return {
         type: 'group',
-        multiplier: multiplier(stream),
+        multiplier: parseMultiplier(stream),
         value: values
     } as Group;
 });

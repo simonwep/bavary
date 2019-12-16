@@ -29,8 +29,8 @@ const parseArrayAccessor = maybe<number>(stream => {
 });
 
 module.exports = maybe<ValueAccessor>(stream => {
-    const identifier = require('./identifier');
-    const entry = identifier(stream);
+    const parseIdentifier = require('./identifier');
+    const entry = parseIdentifier(stream);
 
     const accessorPath = entry ? [entry.value] : [];
     const parser = combine<string | number | null>(

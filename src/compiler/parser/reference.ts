@@ -11,11 +11,11 @@ module.exports = (
         result
     }: ParserArgs<Reference>
 ): boolean => {
-    const rawReference = require('./resolve-reference');
+    const parseRawReference = require('./resolve-reference');
 
     // Type may have a multiplier attached to it
     const starts = stream.index;
-    const matches = rawReference({config, stream, decl, scope, result});
+    const matches = parseRawReference({config, stream, decl, scope, result});
 
     // Identify result type
     const matchesType = typeOf(matches);

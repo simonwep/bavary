@@ -5,7 +5,7 @@ import {optional}           from '../tools/optional';
 import {Block, Declaration} from '../types';
 
 module.exports = maybe<Block>(stream => {
-    const declaration = require('./declaration');
+    const parseDeclaration = require('./declaration');
 
     // It may be a block
     if (!optional(stream, false, 'punc', '{')) {
@@ -16,7 +16,7 @@ module.exports = maybe<Block>(stream => {
     const declarations: Array<Declaration> = [];
 
     while (!check(stream, false, 'punc', '}')) {
-        declarations.push(declaration(stream));
+        declarations.push(parseDeclaration(stream));
     }
 
     expect(stream, false, 'punc', '}');

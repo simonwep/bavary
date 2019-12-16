@@ -27,8 +27,8 @@ module.exports = (
         result
     }: ParserArgs<Func>
 ): boolean => {
-    const rawReference = require('./resolve-reference');
-    const group = require('./group');
+    const parseRawReference = require('./resolve-reference');
+    const parseGroup = require('./group');
 
     // Resolve arguments
     const resolvedArgs = [];
@@ -40,7 +40,7 @@ module.exports = (
                 break;
             }
             case 'group': {
-                resolvedArgs.push(group({
+                resolvedArgs.push(parseGroup({
                     config, stream, decl: arg, scope
                 }));
                 break;
@@ -51,7 +51,7 @@ module.exports = (
                 break;
             }
             case 'reference': {
-                resolvedArgs.push(rawReference({
+                resolvedArgs.push(parseRawReference({
                     config, stream, scope,
                     result: {pure: false, obj: {}, str: ''},
                     decl: arg

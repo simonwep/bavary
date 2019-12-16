@@ -10,19 +10,19 @@ module.exports = (
         result
     }: ParserArgs<GroupValue>
 ): boolean => {
-    const conditionalStatement = require('./conditional-statement');
-    const characterSelection = require('./character-selection');
-    const combinator = require('./combinator');
-    const reference = require('./reference');
-    const string = require('./string');
-    const group = require('./group');
-    const fn = require('./function');
+    const parseConditionalStatement = require('./conditional-statement');
+    const parseCharacterSelection = require('./character-selection');
+    const parseCombinator = require('./combinator');
+    const parseReference = require('./reference');
+    const parseFunction = require('./function');
+    const parseString = require('./string');
+    const parseGroup = require('./group');
 
     stream.stash();
     switch (decl.type) {
         case 'combinator': {
 
-            if (!combinator({config, stream, decl, scope, result})) {
+            if (!parseCombinator({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
@@ -31,7 +31,7 @@ module.exports = (
         }
         case 'string': {
 
-            if (!string({config, stream, decl, scope, result})) {
+            if (!parseString({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
@@ -40,7 +40,7 @@ module.exports = (
         }
         case 'character-selection': {
 
-            if (!characterSelection({config, stream, decl, scope, result})) {
+            if (!parseCharacterSelection({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
@@ -49,7 +49,7 @@ module.exports = (
         }
         case 'reference': {
 
-            if (!reference({config, stream, decl, scope, result})) {
+            if (!parseReference({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
@@ -57,7 +57,7 @@ module.exports = (
             break;
         }
         case 'group': {
-            const res = group({config, stream, decl, scope, result});
+            const res = parseGroup({config, stream, decl, scope, result});
 
             if (!res) {
                 if (decl.multiplier) {
@@ -77,7 +77,7 @@ module.exports = (
         }
         case 'function': {
 
-            if (!fn({config, stream, decl, scope, result})) {
+            if (!parseFunction({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
@@ -86,7 +86,7 @@ module.exports = (
         }
         case 'conditional-statement': {
 
-            if (!conditionalStatement({config, stream, decl, scope, result})) {
+            if (!parseConditionalStatement({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }

@@ -12,7 +12,7 @@ module.exports = (
         result
     }: ParserArgs<Reference>
 ): ParsingResultObjectValue => {
-    const group = require('./group');
+    const parseGroup = require('./group');
 
     // Resolve reference
     const res = scope.lookupByPath(decl.value);
@@ -56,7 +56,7 @@ module.exports = (
 
     // Type may have a multiplier attached to it
     const matches = maybeMultiplier<ParsingResultObjectValue, Reference>(
-        () => group({
+        () => parseGroup({
             config,
             stream,
             decl: target.value,

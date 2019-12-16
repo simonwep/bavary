@@ -4,15 +4,15 @@ import {optional}  from '../tools/optional';
 import {Reference} from '../types';
 
 module.exports = maybe<Reference>(stream => {
-    const spreadOperator = require('../modifiers/spread-operator');
+    const parseSpreadOperator = require('../modifiers/spread-operator');
     const parseModifiers = require('../modifiers/modifications');
     const parseMultipliers = require('./multiplier');
-    const identifier = require('./identifier');
+    const parseIdentifier = require('./identifier');
     const parseArguments = require('./arguments');
     const parseTag = require('./tag');
 
     // It may have a spread operator attached to it
-    const spread = !!spreadOperator(stream);
+    const spread = !!parseSpreadOperator(stream);
 
     // It may be a type
     if (!optional(stream, false, 'punc', '<')) {
@@ -23,7 +23,7 @@ module.exports = maybe<Reference>(stream => {
     let expectIdentifier = false;
 
     while (stream.hasNext()) {
-        const next = identifier(stream);
+        const next = parseIdentifier(stream);
 
         if (next) {
             expectIdentifier = false;

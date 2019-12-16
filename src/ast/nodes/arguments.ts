@@ -4,13 +4,13 @@ import {skipWhitespace} from '../tools/skip-whitespace';
 import {Arguments}      from '../types';
 
 module.exports = maybe<Arguments>(stream => {
-    const identifier = require('./identifier');
-    const group = require('./group');
+    const parseIdentifier = require('./identifier');
+    const parseGroup = require('./group');
     const args: Arguments = [];
 
     while (true) {
         skipWhitespace(stream);
-        const name = identifier(stream);
+        const name = parseIdentifier(stream);
 
         if (!name) {
             break;
@@ -19,7 +19,7 @@ module.exports = maybe<Arguments>(stream => {
         // It may have a value
         let value = null;
         if (optional(stream, false, 'punc', '=')) {
-            value = group(stream);
+            value = parseGroup(stream);
 
             if (!value) {
                 stream.throwError('Expected a group.');
