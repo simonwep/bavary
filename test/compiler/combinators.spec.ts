@@ -59,10 +59,10 @@ describe('[COM] Combinators', () => {
         expect(parse('0x')).to.deep.equal({a: '0', b: null, c: 'x'});
         expect(parse('z')).to.deep.equal({a: null, b: null, c: 'z'});
         expect(parse('y0b')).to.deep.equal({a: '0', b: 'b', c: 'y'});
-        expect(parse('cba')).to.equal('cba');
-        expect(parse('bac')).to.equal('bac');
-        expect(parse('gh')).to.equal('gh');
-        expect(parse('e')).to.equal('e');
+        expect(parse('gh')).to.deep.equal({a: null, b: null, c: null});
+        expect(parse('cba')).to.deep.equal({a: null, b: null, c: null});
+        expect(parse('bac')).to.deep.equal({a: null, b: null, c: null});
+        expect(parse('e')).to.deep.equal({a: null, b: null, c: null});
         expect(parse('abbc')).to.equal(null);
         expect(parse('cca')).to.equal(null);
         expect(parse('hg')).to.equal(null);

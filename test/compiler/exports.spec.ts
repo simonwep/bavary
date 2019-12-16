@@ -56,7 +56,7 @@ describe('[COM] Exports', () => {
 
         expect(parse('a')).to.deep.equal({deep: 'a', mixed: null});
         expect(parse('ABb')).to.deep.equal({deep: null, mixed: ['A', 'B', 'b']});
-        expect(parse('4')).to.equal('4');
+        expect(parse('4')).to.deep.equal({deep: null, mixed: null});
     });
 
     it('Should throw an error if a name is used more than once', () => {

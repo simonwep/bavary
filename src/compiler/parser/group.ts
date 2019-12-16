@@ -30,8 +30,8 @@ module.exports = maybeMultiplier<ParsingResultObjectValue, Group>((
         if (!declaration({config, stream, decl, scope, result})) {
             stream.pop();
 
-            // Serialize remaining types
-            serializeParsingResult(decs, result.obj, true);
+            // Set all tages used within this declaration to null
+            serializeParsingResult(decs, result, true);
 
             // Restore previous state
             result.str = previousRawString;
@@ -39,9 +39,8 @@ module.exports = maybeMultiplier<ParsingResultObjectValue, Group>((
         }
     }
 
-    // TODO: Serialization dosn't work properly
     // Serialize remaining types
-    serializeParsingResult(decs, result.obj, false);
+    serializeParsingResult(decs, result);
 
     stream.recycle();
     return result.pure ? result.str : result.obj;

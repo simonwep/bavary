@@ -14,6 +14,9 @@ module.exports = (
     const declaration = require('./declaration');
     stream.stash();
 
+    // Serialize remaining types
+    serializeParsingResult(decl.value, result);
+
     switch (decl.sign) {
         case '|': {
 
@@ -22,9 +25,6 @@ module.exports = (
             for (let i = 0; i < decs.length; i++) {
                 if (declaration({config, stream, decl: decs[i], scope, result})) {
                     stream.recycle();
-
-                    // Serialize remaining types
-                    serializeParsingResult(decs.slice(i), result.obj);
                     return true;
                 }
             }
@@ -42,9 +42,6 @@ module.exports = (
                     i = -1;
                 }
             }
-
-            // Serialize remaining types
-            serializeParsingResult(cpy, result.obj);
 
             if (!cpy.length || (decl.sign === '&&' && cpy.length < decl.value.length)) {
                 stream.recycle();

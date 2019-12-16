@@ -16,8 +16,8 @@ describe('[COM] Conditional statement', () => {
 
         expect(parse('0')).to.equal(null);
         expect(parse('0A')).to.deep.equal({value: '0'});
-        expect(parse('0B')).to.equal(null);
-        expect(parse('B')).to.equal('B');
+        expect(parse('0B')).to.deep.equal(null);
+        expect(parse('B')).to.deep.equal({value: null});
     });
 
     it('Should resolve deep accessors', () => {
@@ -40,7 +40,7 @@ describe('[COM] Conditional statement', () => {
         });
 
         expect(parse('0B')).to.equal(null);
-        expect(parse('B')).to.equal('B');
+        expect(parse('B')).to.deep.equal({num: null});
     });
 
     it('Should ignore the else branch if none is defined', () => {
@@ -54,6 +54,8 @@ describe('[COM] Conditional statement', () => {
             ]
         `);
 
-        expect(parse('abc')).to.equal('abc');
+        expect(parse('abc')).to.deep.equal({
+            num: null
+        });
     });
 });
