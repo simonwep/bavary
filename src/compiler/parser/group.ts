@@ -39,6 +39,10 @@ module.exports = maybeMultiplier<ParsingResultObjectValue, Group>((
         }
     }
 
+    // TODO: Serialization dosn't work properly
+    // Serialize remaining types
+    serializeParsingResult(decs, result.obj, false);
+
     stream.recycle();
     return result.pure ? result.str : result.obj;
 });

@@ -15,6 +15,9 @@ export function serializeParsingResult(rest: Array<GroupValue>, target: ParsingR
             target[item.tag] = null;
         } else if (item.type === 'group') {
             serializeParsingResult(item.value, target);
+        } else if (item.type === 'conditional-statement') {
+            serializeParsingResult([item.then], target);
+            item.alternative && serializeParsingResult([item.alternative], target);
         }
     }
 }

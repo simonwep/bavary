@@ -1,12 +1,13 @@
-import {check}                                                                         from '../tools/check';
-import {combine}                                                                       from '../tools/combine';
-import {expect}                                                                        from '../tools/expect';
-import {maybe}                                                                         from '../tools/maybe';
-import {optional}                                                                      from '../tools/optional';
-import {BinaryCombinator, CharacterSelection, Func, Group, GroupValue, Reference, Str} from '../types';
+import {check}                                                                                               from '../tools/check';
+import {combine}                                                                                             from '../tools/combine';
+import {expect}                                                                                              from '../tools/expect';
+import {maybe}                                                                                               from '../tools/maybe';
+import {optional}                                                                                            from '../tools/optional';
+import {BinaryCombinator, CharacterSelection, ConditionalStatement, Func, Group, GroupValue, Reference, Str} from '../types';
 
 module.exports = maybe<Group>(stream => {
     const combinator = require('../modifiers/combinator');
+    const conditionalStatement = require('./conditional-statement');
     const characterSelection = require('./character-selection');
     const multiplier = require('./multiplier');
     const reference = require('./reference');
@@ -20,10 +21,11 @@ module.exports = maybe<Group>(stream => {
     }
 
     const values: Array<GroupValue> = [];
-    const parsers = combine<Reference | Group | CharacterSelection | Str | Func>(
+    const parsers = combine<Reference | Group | CharacterSelection | ConditionalStatement | Str | Func>(
         fn,
         group,
         reference,
+        conditionalStatement,
         characterSelection,
         string
     );

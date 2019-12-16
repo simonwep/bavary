@@ -18,7 +18,9 @@ export type Argument = {
     value: Group | null;
 }
 
-export type GroupValue = Reference | Str | BinaryCombinator | Group | CharacterSelection | Func;
+export type GroupValue = Reference | Str | BinaryCombinator | Group |
+    CharacterSelection | ConditionalStatement | Func;
+
 export type Group = {
     type: 'group';
     multiplier: Multiplier;
@@ -111,4 +113,11 @@ export type ValueAccessorPath = Array<string | number>; // <identifier | array-i
 export type ValueAccessor = {
     type: 'value-accessor';
     value: ValueAccessorPath;
+}
+
+export type ConditionalStatement = {
+    type: 'conditional-statement';
+    condition: [Tag, ValueAccessorPath | null];
+    then: Group;
+    alternative: Group | null;
 }

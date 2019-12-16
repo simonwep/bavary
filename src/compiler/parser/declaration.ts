@@ -10,6 +10,7 @@ module.exports = (
         result
     }: ParserArgs<GroupValue>
 ): boolean => {
+    const conditionalStatement = require('./conditional-statement');
     const characterSelection = require('./character-selection');
     const combinator = require('./combinator');
     const reference = require('./reference');
@@ -77,6 +78,15 @@ module.exports = (
         case 'function': {
 
             if (!fn({config, stream, decl, scope, result})) {
+                stream.pop();
+                return false;
+            }
+
+            break;
+        }
+        case 'conditional-statement': {
+
+            if (!conditionalStatement({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
