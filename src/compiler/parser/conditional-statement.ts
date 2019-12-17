@@ -15,16 +15,18 @@ module.exports = (
     }: ParserArgs<ConditionalStatement>
 ): boolean => {
     const parseGroup = require('./group');
-    const {condition, then, alternative} = decl;
+    const {condition, then, alternative, negated} = decl;
     const [tag, accessor] = condition;
     const tagValue = result.obj[tag.value];
 
     // Check condition based on whenever the value is not falsy
-    const branch = tagValue && (
-        !accessor ||
-        !isNullOrUndefined(lookupValue(tagValue, accessor))
-    ) ? then :
-        alternative;
+    const evaluatedCondition = tagValue && (
+        !accessor ||  // There's also no deep-accessor attached to it
+        !isNullOrUndefined(lookupValue(tagValue, accessor)) // Deep accessor present but points to nothing
+    );
+
+    // Choose branch and take into account that the user may negate the value
+    const branch = !evaluatedCondition === negated ? then : alternative;
 
     // Branch not declared, that's fine
     if (!branch) {

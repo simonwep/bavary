@@ -11,7 +11,8 @@ module.exports = maybe<ConditionalStatement>(stream => {
         return null;
     }
 
-    // TODO: Add not keyword to negate expected result
+    // User may used the not-keyword to negate the condition
+    const negated = !!optional(stream, false, 'kw', 'not');
 
     // Parse tag
     const tag = parseTag(stream);
@@ -41,6 +42,7 @@ module.exports = maybe<ConditionalStatement>(stream => {
     return {
         type: 'conditional-statement',
         condition: [tag, accessorPath],
+        negated,
         then, alternative
     } as ConditionalStatement;
 });

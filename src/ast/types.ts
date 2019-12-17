@@ -118,6 +118,7 @@ export type ValueAccessor = {
 export type ConditionalStatement = {
     type: 'conditional-statement';
     condition: [Tag, ValueAccessorPath | null];
+    negated: boolean;
     then: Group;
     alternative: Group | null;
 }

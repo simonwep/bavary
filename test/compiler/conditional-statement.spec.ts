@@ -50,11 +50,26 @@ describe('[COM] Conditional statement', () => {
             entry [
                 [(a - z)+]
                 <number#num>?
-                if #num.value ['A']
+                if #num ['A']
             ]
         `);
 
         expect(parse('abc')).to.deep.equal({
+            num: null
+        });
+    });
+
+    it('Should nagate the condition if the not-keyword is used', () => {
+        const parse = compile(`
+            <number> = [(0 - 9)+]
+            
+            entry [
+                <number#num>?
+                if not #num ['A']
+            ]
+        `);
+
+        expect(parse('A')).to.deep.equal({
             num: null
         });
     });
