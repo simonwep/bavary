@@ -11,7 +11,8 @@
 8. [Operators](#operators) _- Specify how a result should be processed._  
    8.1. [Spread Operator](#spread-operator) _- Let the result of a [type](#type-definition) bubble up._  
    8.2. [Modifiers](#modifiers) _- Alter the result of a [type](#type-definition)._  
-9. [Types with Arguments](#types-with-arguments) _- Dynamically inject groups into [types](#type-definition)_
+9. [Types with Arguments](#types-with-arguments) _- Dynamically inject groups into [types](#type-definition)._
+10. [Conditional Statements](#conditional-statements) _- Parse by condition._
 
 ### Entry type
 Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type declaration](#type-definition) **or**
@@ -292,4 +293,52 @@ const parse = compile(`
 
 // Prints {body: 'hello'}
 console.log(parse('"hello"'));
+```
+
+
+#### Conditional Statements
+It's possible to use if-statements to parse by condition:
+
+```js
+const parse = compile(`
+    <number> = [(0 - 9)+]
+    <character> = [(A - Z)+]
+    
+    entry [
+        <number#num>?
+        <character#chars>
+        
+        // Expect a exclamation-mark if #num got successfully parsed
+        if #num ['!']
+    ]
+`);
+
+// Logs {num: null, chars: 'ABC'}, an exclamation-mark is only required
+// if #num is not null
+console.log(parse('ABC'));
+
+// Logs null since an exclamation-mark is missing (#num is not null)
+console.log(parse('123ABC'));
+
+// Logs { num: '123', chars: 'ABC' }, we've added the missing exclamation-mark
+console.log(parse('123ABC!'));
+```
+
+The else-clause is optional:
+```
+...
+if #num [
+  // If #num is not null
+] else [
+  // If #num is null
+]
+...
+```
+
+It's possible to refer to deeply nested attributes like you'd do in JS:
+```
+if #foo.bam[3].baz [
+    // If foo is not null, bam neither, bam got a third non-null value and is an actual array
+    // and the array element has an attribute baz which isn't null.
+]
 ```
