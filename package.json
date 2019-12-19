@@ -1,6 +1,6 @@
 {
     "name": "@bavary/core",
-    "version": "0.0.17",
+    "version": "0.0.18",
     "description": "Customizable, elegant and fast syntax-parser",
     "author": "Simon Reinisch <trash@reinisch.io>",
     "main": "lib/bavary.js",
