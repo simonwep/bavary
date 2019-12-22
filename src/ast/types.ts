@@ -103,7 +103,6 @@ export type CharacterSelection = {
 }
 
 export type CharacterSelectionArray = Array<number | [number, number]>;
-
 export type Block = {
     type: 'block';
     value: Array<Declaration>;
@@ -117,7 +116,7 @@ export type ValueAccessor = {
 
 export type ConditionalStatement = {
     type: 'conditional-statement';
-    condition: [Tag, ValueAccessorPath | null];
+    condition: ValueAccessorPath;
     negated: boolean;
     then: Group;
     alternative: Group | null;

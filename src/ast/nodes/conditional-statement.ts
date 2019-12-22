@@ -21,7 +21,7 @@ module.exports = maybe<ConditionalStatement>(stream => {
     }
 
     // The accessor-path is optional
-    const accessorPath = parseValueAccessor(stream)?.value || null;
+    const accessorPath = parseValueAccessor(stream)?.value || [];
 
     // Parse then-block
     const then = parseGroup(stream);
@@ -41,7 +41,7 @@ module.exports = maybe<ConditionalStatement>(stream => {
 
     return {
         type: 'conditional-statement',
-        condition: [tag, accessorPath],
+        condition: [tag.value, ...accessorPath],
         negated,
         then, alternative
     } as ConditionalStatement;

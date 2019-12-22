@@ -16,13 +16,13 @@ module.exports = (
 ): boolean => {
     const parseGroup = require('./group');
     const {condition, then, alternative, negated} = decl;
-    const [tag, accessor] = condition;
-    const tagValue = result.obj[tag.value];
+    const [tag, ...path] = condition;
+    const tagValue = result.obj[tag];
 
     // Check condition based on whenever the value is not falsy
     const evaluatedCondition = tagValue && (
-        !accessor ||  // There's also no deep-accessor attached to it
-        !isNullOrUndefined(lookupValue(tagValue, accessor)) // Deep accessor present but points to nothing
+        !path ||  // There's also no deep-accessor attached to it
+        !isNullOrUndefined(lookupValue(tagValue, path)) // Deep accessor present but points to nothing
     );
 
     // Choose branch and take into account that the user may negate the value
