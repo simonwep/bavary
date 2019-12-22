@@ -1,22 +1,6 @@
-import {Func}                                     from '../../ast/types';
-import {ParserActions, ParserArgs, ParsingResult} from '../types';
-
-const createParserActionsObj = (res: ParsingResult): ParserActions => ({
-    state: res,
-
-    setString(str): void {
-        if (!res.pure) {
-            throw new Error('Can\'t apply string, result isn\'t pure.');
-        }
-
-        res.str = str;
-    },
-
-    setProperty(key, val): void {
-        res.obj[key] = val;
-        res.pure = false;
-    }
-});
+import {Func}                      from '../../ast/types';
+import {createCustomFunctionUtils} from '../tools/create-custom-function-utils';
+import {ParserArgs}                from '../types';
 
 module.exports = (
     {
@@ -68,7 +52,7 @@ module.exports = (
 
     try {
         return fn(
-            createParserActionsObj(result),
+            createCustomFunctionUtils(result),
             ...resolvedArgs
         );
     } catch (e) {

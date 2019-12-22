@@ -22,8 +22,8 @@ export type ParsingResultObject = {
 }
 
 export type Parser = (content: string) => null | object;
-export type ParsingFunction = (res: ParserActions, ...args: Array<Array<ParsingResultObjectValue> | ParsingResultObjectValue>) => boolean;
-export type ParserActions = {
+export type CustomFunction = (res: CustomFunctionUtils, ...args: Array<Array<ParsingResultObjectValue> | ParsingResultObjectValue>) => boolean;
+export type CustomFunctionUtils = {
 
     /**
      * Current state.
@@ -49,7 +49,7 @@ export type ParserActions = {
 export type CompilerConfig = {
     locationData?: boolean | LocationDataObject;
     functions?: {
-        [key: string]: ParsingFunction;
+        [key: string]: CustomFunction;
     };
 }
 
