@@ -1,12 +1,19 @@
 import {ValueAccessorPath} from '../../ast/types';
+import {typeOf}            from '../../misc/type-of';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const lookupValue = (source: any, path: ValueAccessorPath): unknown => {
 
     for (const ent of path) {
-        if (typeof ent === 'string') {
+        const sourceType = typeOf(source);
 
-            // TODO: Support .length on arrays and strings?
+        // Allow access to length propertie of strings and arrays
+        if ((sourceType === 'array' || sourceType === 'string') && ent === 'length') {
+            source = source.length;
+            continue;
+        }
+
+        if (typeof ent === 'string') {
             if (typeof source === 'object' && source !== null) {
                 source = source[ent];
 

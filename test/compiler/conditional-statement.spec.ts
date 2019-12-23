@@ -167,4 +167,22 @@ describe('[COM] Conditional statement', () => {
         expect(parse('AuXY')).to.not.equal(null);
         expect(parse('Au')).to.equal(null);
     });
+
+    it('Should compare the length of a string', () => {
+        const parse = compile(`
+            <upper> = [(A - Z)+]
+            
+            entry [
+                <upper#upp>
+                
+                if (#upp.length > 3) [
+                    'x'
+                ]
+            ]
+        `);
+
+        expect(parse('ABCDx')).to.not.equal(null);
+        expect(parse('ABC')).to.not.equal(null);
+        expect(parse('ABCx')).to.equal(null);
+    });
 });

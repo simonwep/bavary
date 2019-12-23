@@ -25,9 +25,14 @@ function resolveValueOf(result: ParsingResult, bexv: BinaryExpressionValue): str
  * @param bex
  */
 export function evalBinaryExpression(result: ParsingResult, bex: BinaryExpression): boolean {
-    const {operator} = bex;
-    const leftVal = resolveValueOf(result, bex.left);
-    const rightVal = resolveValueOf(result, bex.right);
+    let {operator} = bex;
+    let leftVal = resolveValueOf(result, bex.left);
+    let rightVal = resolveValueOf(result, bex.right);
+
+    if (operator === '>') {
+        operator = '<';
+        [leftVal, rightVal] = [rightVal, leftVal];
+    }
 
     switch (operator) {
         case '|':
@@ -38,16 +43,10 @@ export function evalBinaryExpression(result: ParsingResult, bex: BinaryExpressio
             return leftVal === rightVal;
         case '<': {
 
-            // TODO: Add number / array comparison?
             if (typeof leftVal === 'string' && typeof rightVal === 'string') {
                 return leftVal.localeCompare(rightVal) === -1;
-            }
-
-            return false;
-        }
-        case '>': {
-            if (typeof leftVal === 'string' && typeof rightVal === 'string') {
-                return rightVal.localeCompare(leftVal) === -1;
+            } else if (typeof leftVal === 'number' && typeof rightVal === 'number') {
+                return leftVal < rightVal;
             }
 
             return false;

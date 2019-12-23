@@ -43,6 +43,11 @@ export type Multiplier = {
     value: MultiplierRange | '*' | '+' | '?';
 }
 
+export type Num = {
+    type: 'number';
+    value: number;
+}
+
 export type Str = {
     type: 'string';
     value: string;
@@ -122,7 +127,7 @@ export type ConditionalStatement = {
     alternative: Group | null; // TODO: Choose more appropriate name for them
 }
 
-export type BinaryExpressionValue = BinaryExpression | Str | ValueAccessor;
+export type BinaryExpressionValue = BinaryExpression | Str | Num | ValueAccessor;
 export type BinaryOperator = '|' | '&' | '=' | '<' | '>';
 export type BinaryExpression = {
     type: 'binary-expression';

@@ -79,7 +79,8 @@ function maybeBinary(
 module.exports = maybe<BinaryExpression>(stream => {
     const parse = combine(
         taggedValueAccessorPath,
-        require('./string')
+        require('./string'),
+        require('./number')
     );
 
     // TODO: Support parentencies
