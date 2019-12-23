@@ -60,7 +60,7 @@ module.exports = maybe<ConditionalStatement>(stream => {
         type: 'conditional-statement',
         condition,
         negated,
-        then,
-        alternative
+        consequent: then,
+        alternate: alternative
     } as ConditionalStatement;
 });

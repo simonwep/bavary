@@ -25,8 +25,8 @@ export function serializeParsingResult(rest: Array<GroupValue>, target: ParsingR
         } else if (item.type === 'group' || item.type === 'combinator') {
             serializeParsingResult(item.value, target, nullish);
         } else if (item.type === 'conditional-statement') {
-            serializeParsingResult([item.then], target, nullish);
-            item.alternative && serializeParsingResult([item.alternative], target, nullish);
+            serializeParsingResult([item.consequent], target, nullish);
+            item.alternate && serializeParsingResult([item.alternate], target, nullish);
         }
     }
 }

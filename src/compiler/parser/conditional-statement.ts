@@ -15,7 +15,7 @@ module.exports = (
     }: ParserArgs<ConditionalStatement>
 ): boolean => {
     const parseGroup = require('./group');
-    const {condition, then, alternative, negated} = decl;
+    const {condition, consequent, alternate, negated} = decl;
     let conditionValue = false;
 
     switch (condition.type) {
@@ -33,7 +33,7 @@ module.exports = (
     }
 
     // Choose branch and take into account that the user may negate the value
-    const branch = !conditionValue === negated ? then : alternative;
+    const branch = !conditionValue === negated ? consequent : alternate;
 
     // Branch not declared, that's fine
     if (!branch) {
