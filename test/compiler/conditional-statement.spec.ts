@@ -62,7 +62,6 @@ describe('[COM] Conditional statement', () => {
     it('Should nagate the condition if the not-keyword is used', () => {
         const parse = compile(`
             <number> = [(0 - 9)+]
-            
             entry [
                 <number#num>?
                 if not #num ['A']
@@ -72,5 +71,100 @@ describe('[COM] Conditional statement', () => {
         expect(parse('A')).to.deep.equal({
             num: null
         });
+    });
+
+    it('Should evaluate a comparison', () => {
+        const parse = compile(`
+            <upper> = [(A - Z)+]
+            entry [
+                <upper#upp>
+                if (#upp = 'ABC') ['0']
+            ]
+        `);
+
+        expect(parse('ABC0')).to.not.equal(null);
+        expect(parse('ABD')).to.not.equal(null);
+        expect(parse('ABD0')).to.equal(null);
+    });
+
+    it('Should evaluate a larger-than comparison', () => {
+        const parse = compile(`
+            <upper> = [(A - Z)+]
+            entry [
+                <upper#upp>
+                if (#upp > 'CCC') ['0']
+            ]
+        `);
+
+        expect(parse('CCZ0')).to.not.equal(null);
+        expect(parse('AAA')).to.not.equal(null);
+        expect(parse('AAA0')).to.equal(null);
+    });
+
+    it('Should properly evaluate an or-operator', () => {
+        const parse = compile(`
+            <upper> = [(A - Z)+]
+            entry [
+                <upper#upp>
+                if (#upp = 'A' | #upp = 'Z') ['0']
+            ]
+        `);
+
+        expect(parse('A0')).to.not.equal(null);
+        expect(parse('Z0')).to.not.equal(null);
+        expect(parse('C')).to.not.equal(null);
+        expect(parse('A')).to.equal(null);
+    });
+
+    it('Should properly evaluate an and-operator', () => {
+        const parse = compile(`
+            <upper> = [(A - Z)+]
+            <lower> = [(a - z)+]
+            
+            entry [
+                <upper#upp>
+                <lower#low>
+                
+                if (#upp = 'AA' & #low = 'bb') ['XY']
+            ]
+        `);
+
+        expect(parse('AAbbXY')).to.not.equal(null);
+        expect(parse('Ab')).to.not.equal(null);
+        expect(parse('AAbb')).to.equal(null);
+    });
+
+    it('Should evaluate a nested condition', () => {
+        const parse = compile(`
+            <upper> = [(A - Z)+]
+            <lower> = [(a - z)+]
+            
+            entry [
+                <upper#upp>
+                <lower#low>
+                
+                if (#upp = 'AA' | #low < 'cc') ['XY']
+            ]
+        `);
+
+        expect(parse('AAuuXY')).to.not.equal(null);
+        expect(parse('XabXY')).to.not.equal(null);
+    });
+
+    it('Should return false for nullish / undefined comparison', () => {
+        const parse = compile(`
+            <upper> = [(A - Z)+]
+            <lower> = [(a - z)+]
+            
+            entry [
+                <upper#upp>
+                <lower#low>
+                
+                if (#upp.x < 'x' | #low.x > 'y' | #upp = 'A') ['XY']
+            ]
+        `);
+
+        expect(parse('AuXY')).to.not.equal(null);
+        expect(parse('Au')).to.equal(null);
     });
 });

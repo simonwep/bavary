@@ -1,5 +1,5 @@
 export type ASTNode = Declaration | CharacterSelection |
-    Type | Group | Multiplier | Reference | Block | Str;
+    BinaryExpressionValue | Type | Group | Multiplier | Reference | Block | Str;
 
 export type DeclarationValue = Group | Block;
 export type DeclarationVariant = 'entry' | 'default' | 'export' | null;
@@ -116,8 +116,17 @@ export type ValueAccessor = {
 
 export type ConditionalStatement = {
     type: 'conditional-statement';
-    condition: ValueAccessorPath;
+    condition: ValueAccessor | BinaryExpression;
     negated: boolean;
     then: Group;
-    alternative: Group | null;
+    alternative: Group | null; // TODO: Choose more appropriate name for them
+}
+
+export type BinaryExpressionValue = BinaryExpression | Str | ValueAccessor;
+export type BinaryOperator = '|' | '&' | '=' | '<' | '>';
+export type BinaryExpression = {
+    type: 'binary-expression';
+    operator: BinaryOperator;
+    left: BinaryExpressionValue;
+    right: BinaryExpressionValue;
 }

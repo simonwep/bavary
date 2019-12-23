@@ -6,6 +6,9 @@ describe('[AST] Conditional statement', () => {
         'entry [if]',
         'entry [if #abc',
         'entry [if #abc []',
-        'entry [if #abc [] else]'
+        'entry [if #abc [] else]',
+        'entry [if ()]',
+        'entry [if (#abc)]',
+        'entry [if (#abc >)]'
     ]);
 });

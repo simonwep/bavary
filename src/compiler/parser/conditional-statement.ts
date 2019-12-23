@@ -1,9 +1,9 @@
 import {ConditionalStatement} from '../../ast/types';
+import {evalBinaryExpression} from '../tools/eval-binary-expression';
+import {isNullOrUndefined}    from '../tools/is-null-or-undefined';
 import {lookupValue}          from '../tools/lookup-value';
 import {ParserArgs}           from '../types';
 
-
-const isNullOrUndefined = (v: unknown): boolean => v === null || v === undefined;
 
 module.exports = (
     {
@@ -16,17 +16,24 @@ module.exports = (
 ): boolean => {
     const parseGroup = require('./group');
     const {condition, then, alternative, negated} = decl;
-    const [tag, ...path] = condition;
-    const tagValue = result.obj[tag];
+    let conditionValue = false;
 
-    // Check condition based on whenever the value is not falsy
-    const evaluatedCondition = tagValue && (
-        !path ||  // There's also no deep-accessor attached to it
-        !isNullOrUndefined(lookupValue(tagValue, path)) // Deep accessor present but points to nothing
-    );
+    switch (condition.type) {
+        case 'binary-expression': {
+            conditionValue = evalBinaryExpression(result, condition);
+            break;
+        }
+        case 'value-accessor': {
+            conditionValue = !isNullOrUndefined(
+                lookupValue(result.obj, condition.value)
+            );
+
+            break;
+        }
+    }
 
     // Choose branch and take into account that the user may negate the value
-    const branch = !evaluatedCondition === negated ? then : alternative;
+    const branch = !conditionValue === negated ? then : alternative;
 
     // Branch not declared, that's fine
     if (!branch) {

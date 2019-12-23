@@ -1,8 +1,10 @@
-import {maybe}                from '../tools/maybe';
-import {optional}             from '../tools/optional';
-import {ConditionalStatement} from '../types';
+import {expect}                                                from '../tools/expect';
+import {maybe}                                                 from '../tools/maybe';
+import {optional}                                              from '../tools/optional';
+import {BinaryExpression, ConditionalStatement, ValueAccessor} from '../types';
 
 module.exports = maybe<ConditionalStatement>(stream => {
+    const parseBinaryExpression = require('./binary-expression');
     const parseValueAccessor = require('./value-accessor');
     const parseGroup = require('./group');
     const parseTag = require('./tag');
@@ -13,15 +15,30 @@ module.exports = maybe<ConditionalStatement>(stream => {
 
     // User may used the not-keyword to negate the condition
     const negated = !!optional(stream, false, 'kw', 'not');
+    let condition: ValueAccessor | BinaryExpression;
 
-    // Parse tag
-    const tag = parseTag(stream);
-    if (!tag) { // TODO: Create util to expect a value
-        stream.throwError('Expected a tag.');
+    if (optional(stream, false, 'punc', '(')) {
+
+        // Binary expression
+        condition = parseBinaryExpression(stream);
+        if (!condition) {
+            stream.throwError('Expected a binary expression.');
+        }
+
+        expect(stream, false, 'punc', ')');
+    } else {
+
+        // Parse tag
+        const tag = parseTag(stream);
+        if (!tag) {
+            stream.throwError('Expected a tag.');
+        }
+
+        condition = {
+            type: 'value-accessor',
+            value: [tag.value, ...(parseValueAccessor(stream)?.value || [])]
+        };
     }
-
-    // The accessor-path is optional
-    const accessorPath = parseValueAccessor(stream)?.value || [];
 
     // Parse then-block
     const then = parseGroup(stream);
@@ -41,8 +58,9 @@ module.exports = maybe<ConditionalStatement>(stream => {
 
     return {
         type: 'conditional-statement',
-        condition: [tag.value, ...accessorPath],
+        condition,
         negated,
-        then, alternative
+        then,
+        alternative
     } as ConditionalStatement;
 });
