@@ -160,7 +160,9 @@ describe('[COM] Conditional statement', () => {
                 <upper#upp>
                 <lower#low>
                 
-                if (#upp.x < 'x' | #low.x > 'y' | #upp = 'A') ['XY']
+                if (#upp.x < 'x' | #low.x > 'y' | #upp = 'A') [
+                    'XY'
+                ]
             ]
         `);
 
@@ -174,15 +176,28 @@ describe('[COM] Conditional statement', () => {
             
             entry [
                 <upper#upp>
-                
-                if (#upp.length > 3) [
-                    'x'
-                ]
+                if (#upp.length > 3) ['x']
             ]
         `);
 
         expect(parse('ABCDx')).to.not.equal(null);
         expect(parse('ABC')).to.not.equal(null);
         expect(parse('ABCx')).to.equal(null);
+    });
+
+    it('Should strictly check falsy values', () => {
+        const parse = compile(`
+            <upper> = [(A - Z)*]
+        
+            entry [
+                <upper#upp>
+        
+                if (#upp.xy | #upp) ["ab"]
+            ]
+        `);
+
+        expect(parse('ab')).to.not.equal(null);
+        expect(parse('ABab')).to.not.equal(null);
+        expect(parse('AB')).to.equal(null);
     });
 });

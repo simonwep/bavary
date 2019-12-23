@@ -20,6 +20,14 @@ function resolveValueOf(result: ParsingResult, bexv: BinaryExpressionValue): str
 }
 
 /**
+ * Returns true if val is strictly
+ * @param val
+ */
+function strictBoolean(val: unknown) {
+    return !(val === false || val === undefined || val === null);
+}
+
+/**
  * Evaluates a binary expression to a single, boolsche value
  * @param result
  * @param bex
@@ -36,9 +44,9 @@ export function evalBinaryExpression(result: ParsingResult, bex: BinaryExpressio
 
     switch (operator) {
         case '|':
-            return !!(leftVal || rightVal); // TODO: What about falsy values
+            return strictBoolean(leftVal) || strictBoolean(rightVal);
         case '&':
-            return !!(leftVal && rightVal);
+            return strictBoolean(leftVal) && strictBoolean(rightVal);
         case '=':
             return leftVal === rightVal;
         case '<': {
