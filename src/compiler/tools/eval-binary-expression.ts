@@ -23,7 +23,7 @@ function resolveValueOf(result: ParsingResult, bexv: BinaryExpressionValue): str
  * Returns true if val is strictly
  * @param val
  */
-function strictBoolean(val: unknown) {
+function strictBoolean(val: unknown): boolean {
     return !(val === false || val === undefined || val === null);
 }
 

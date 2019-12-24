@@ -200,4 +200,25 @@ describe('[COM] Conditional statement', () => {
         expect(parse('ABab')).to.not.equal(null);
         expect(parse('AB')).to.equal(null);
     });
+
+    it('Should allow bypassing precedence rules and allow parentheses', () => {
+        const parse = compile(`
+            <upper> = [(A - Z)+]
+            <lower> = [(a - z)+]
+            <numbe> = [(0 - 9)+]
+            
+            entry [
+                <upper#upp>
+                <lower#low>
+                <numbe#num>
+        
+                if (#upp = 'A' & (#low = 'a' | #num = '0')) ['!']
+            ]
+        `);
+
+        expect(parse('Aa1!')).to.not.equal(null);
+        expect(parse('Vc0!')).to.equal(null);
+        expect(parse('Ac1!')).to.equal(null);
+        expect(parse('Aa1')).to.equal(null);
+    });
 });

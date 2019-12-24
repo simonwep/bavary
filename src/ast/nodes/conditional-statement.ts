@@ -1,4 +1,4 @@
-import {expect}                                                from '../tools/expect';
+import {check}                                                 from '../tools/check';
 import {maybe}                                                 from '../tools/maybe';
 import {optional}                                              from '../tools/optional';
 import {BinaryExpression, ConditionalStatement, ValueAccessor} from '../types';
@@ -17,15 +17,13 @@ module.exports = maybe<ConditionalStatement>(stream => {
     const negated = !!optional(stream, false, 'kw', 'not');
     let condition: ValueAccessor | BinaryExpression;
 
-    if (optional(stream, false, 'punc', '(')) {
+    if (check(stream, false, 'punc', '(')) {
 
         // Binary expression
         condition = parseBinaryExpression(stream);
         if (!condition) {
             stream.throwError('Expected a binary expression.');
         }
-
-        expect(stream, false, 'punc', ')');
     } else {
 
         // Parse tag

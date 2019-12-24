@@ -1,5 +1,6 @@
 import {TokenStream}                                                 from '../../misc/token-stream';
 import {combine}                                                     from '../tools/combine';
+import {expect}                                                      from '../tools/expect';
 import {maybe}                                                       from '../tools/maybe';
 import {optional}                                                    from '../tools/optional';
 import {BinaryExpression, BinaryExpressionValue, Str, ValueAccessor} from '../types';
@@ -7,9 +8,9 @@ import {BinaryExpression, BinaryExpressionValue, Str, ValueAccessor} from '../ty
 const operatorPriority = {
     '|': 1,
     '&': 2,
-    '<': 3,
-    '>': 3,
-    '=': 3
+    '=': 3,
+    '<': 4,
+    '>': 4
 } as {[key: string]: number};
 
 const operators = Object.keys(operatorPriority);
@@ -31,7 +32,6 @@ const taggedValueAccessorPath = maybe<ValueAccessor>(stream => {
         ]
     } as ValueAccessor;
 });
-
 
 /**
  * Parses a binary expression
@@ -77,13 +77,16 @@ function maybeBinary(
 }
 
 module.exports = maybe<BinaryExpression>(stream => {
+    if (!optional(stream, false, 'punc', '(')) {
+        return null;
+    }
+
     const parse = combine(
         taggedValueAccessorPath,
+        require('./binary-expression'),
         require('./string'),
         require('./number')
     );
-
-    // TODO: Support parentencies
 
     const left = parse(stream);
     if (!left) {
@@ -96,5 +99,6 @@ module.exports = maybe<BinaryExpression>(stream => {
         stream.throwError('Expected binary expression.');
     }
 
+    expect(stream, false, 'punc', ')');
     return bex as BinaryExpression;
 });
