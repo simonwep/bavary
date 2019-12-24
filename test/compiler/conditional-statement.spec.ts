@@ -221,4 +221,14 @@ describe('[COM] Conditional statement', () => {
         expect(parse('Ac1!')).to.equal(null);
         expect(parse('Aa1')).to.equal(null);
     });
+
+    it('Should throw an error if a tag is not defined anywhere', () => {
+        const parse = compile(`
+            entry [
+                if (#lol = 0) []
+            ]
+        `);
+
+        expect(() => parse('A')).to.throw();
+    });
 });

@@ -10,12 +10,23 @@ import {lookupValue}                             from './lookup-value';
  */
 function resolveValueOf(result: ParsingResult, bexv: BinaryExpressionValue): string | number | boolean | null {
     switch (bexv.type) {
-        case 'binary-expression':
+        case 'binary-expression': {
             return evalBinaryExpression(result, bexv);
-        case 'value-accessor':
+        }
+        case 'value-accessor': {
+
+            // Strictly check if tag is defined in the current result
+            const [tag] = bexv.value;
+
+            if (result.obj[tag] === undefined) {
+                throw new Error(`Tag "${tag}" isn't defined anywhere but used in a condition.`);
+            }
+
             return lookupValue(result.obj, bexv.value) as string | number | boolean | null;
-        default:
+        }
+        default: {
             return bexv.value;
+        }
     }
 }
 
