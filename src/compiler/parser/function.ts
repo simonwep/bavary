@@ -20,7 +20,12 @@ module.exports = (
         switch (arg.type) {
             case 'tag': {
                 const val = result.obj[arg.value];
-                resolvedArgs.push(typeof val === 'undefined' ? null : val);
+
+                if (val === undefined) {
+                    throw new Error(`Tag "${val}" isn't defined anywhere but used in a function call.`);
+                }
+
+                resolvedArgs.push(val);
                 break;
             }
             case 'group': {

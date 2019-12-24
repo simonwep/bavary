@@ -57,15 +57,11 @@ describe('[COM] Functions', () => {
             <char> = [(a - z)+]
             entry [
                 <char#chars>
-                count(#chars, 'size', #wow)
+                count(#chars, 'size')
             ]
         `, {
             functions: {
-                count({setProperty}, chars, prop, nullRef): boolean {
-                    if (nullRef !== null) {
-                        return false;
-                    }
-
+                count({setProperty}, chars, prop): boolean {
                     if (chars && typeof chars === 'string' && typeof prop === 'string' && prop.length) {
                         setProperty(prop, chars.length);
                         return true;
@@ -116,5 +112,15 @@ describe('[COM] Functions', () => {
         `);
 
         expect(() => parse('(12)')).to.throw();
+    });
+
+    it('Should throw an error if a argument is not defined', () => {
+        const parse = compile(`
+            entry [
+                count(#hi)
+            ]
+        `);
+
+        expect(() => parse('1')).to.throw();
     });
 });
