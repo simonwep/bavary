@@ -342,3 +342,25 @@ if #foo.bam[3].baz [
     // and the array element has an attribute baz which isn't null.
 ]
 ```
+
+> If a property dosn't exist it'll be the same as `null`. Undefined tags throw an error though.
+
+###### Operators
+| Sign | Description | Example |
+| ---- | ----------- | ------- |
+| `<` / `>`  | Greater- / Smaller-than, compatible with both strings and numbers | `if (#a < #b) [...]` |
+| `=` | Equal, strictly compares numbers, strings and `null` values | `if (#a = "ABC") [...]` |
+| `\|` | or-operator, one of the conditions need to be true | `if (#a = "ABC" \| #b < 10) [...]` |
+| `&` | and-operator, both conditions need to be true | `if (#a > 20 & #b < #a) [...]` |
+ 
+It's possible to use [tags](#tags) and javascript-like property-lookups.
+You may use parenthesis to bypass precedence rules.
+
+```
+if (#numA > 100 & #strA < #strB | (#numA = #obj[3].a)) [
+    // #numA is bigger than 100
+    // #strA is smaller than #strB
+    // #numA is the sameas the propery a from the third element in #obj
+]
+```
+
