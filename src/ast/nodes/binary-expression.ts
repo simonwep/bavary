@@ -9,6 +9,7 @@ const operatorPriority = {
     '|': 1,
     '&': 2,
     '=': 3,
+    '!': 3,
     '<': 4,
     '>': 4
 } as {[key: string]: number};
@@ -54,6 +55,11 @@ function maybeBinary(
         return left;
     }
 
+    // It may be a not-equal operator
+    if (operator === '!' && !optional(stream, true, 'punc', '=')) {
+        stream.throwError('Expected "="');
+    }
+
     // Check whenever the operator has a higher priority than the previous one
     const pr = operatorPriority[operator];
     if (pr > base) {
@@ -66,7 +72,7 @@ function maybeBinary(
 
         return maybeBinary({
             type: 'binary-expression',
-            operator,
+            operator: operator === '!' ? `${operator}=` : operator, // TODO: That's ugly, refactor it
             right: maybeBinary(rightValue as BinaryExpressionValue, stream, parse, pr),
             left
         } as BinaryExpression, stream, parse, base);

@@ -60,6 +60,8 @@ export function evalBinaryExpression(result: ParsingResult, bex: BinaryExpressio
             return strictBoolean(leftVal) && strictBoolean(rightVal);
         case '=':
             return leftVal === rightVal;
+        case '!=':
+            return leftVal !== rightVal;
         case '<': {
 
             if (typeof leftVal === 'string' && typeof rightVal === 'string') {

@@ -222,6 +222,20 @@ describe('[COM] Conditional statement', () => {
         expect(parse('Aa1')).to.equal(null);
     });
 
+    it('Should work with a not-equal operator', () => {
+        const parse = compile(`
+            <upper> = [(A - Z)+]
+            
+            entry [
+                <upper#upp>
+                if (#upp != 'A') ['!']
+            ]
+        `);
+
+        expect(parse('B!')).to.not.equal(null);
+        expect(parse('A!')).to.equal(null);
+    });
+
     it('Should throw an error if a tag is not defined anywhere', () => {
         const parse = compile(`
             entry [
