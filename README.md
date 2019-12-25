@@ -87,4 +87,5 @@ Check out the [documentation](docs/syntax.md) to get started or jump directly in
 #### Related packages
 * [@bavary/core](https://github.com/Simonwep/bavary) _- Parser and compiler._
 * [@bavary/cli](https://github.com/Simonwep/bavary-cli) _- CLI with development server._
-* [@bavary/lib](https://github.com/Simonwep/bavary-lib) _- Standard library with extensions for bavary._
+* [@bavary/bavary-lib](https://github.com/Simonwep/bavary-lib) _- Standard library with extensions for bavary._
+* [@bavary/webpack-loader](https://github.com/Simonwep/bavary-webpack-loader) _- Webpack loader for declaration files._
