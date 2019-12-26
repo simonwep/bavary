@@ -295,72 +295,44 @@ const parse = compile(`
 console.log(parse('"hello"'));
 ```
 
+### Conditional Statements
+It's possible to use if-statements to execute a group by condition.
+In your condition you can to use [tags](#tags) and javascript-like property-lookups.
 
-#### Conditional Statements
-It's possible to use if-statements to parse by condition:
-
-```js
-const parse = compile(`
-    <number> = [(0 - 9)+]
-    <character> = [(A - Z)+]
-    
-    entry [
-        <number#num>?
-        <character#chars>
-        
-        // Expect a exclamation-mark if #num got successfully parsed
-        if #num ['!']
-    ]
-`);
-
-// Logs {num: null, chars: 'ABC'}, an exclamation-mark is only required
-// if #num is not null
-console.log(parse('ABC'));
-
-// Logs null since an exclamation-mark is missing (#num is not null)
-console.log(parse('123ABC'));
-
-// Logs { num: '123', chars: 'ABC' }, we've added the missing exclamation-mark
-console.log(parse('123ABC!'));
 ```
-
-The else-clause is optional:
-```
-...
-if #num [
-  // If #num is not null
-] else [
-  // If #num is null
-]
-...
-```
-
-It's possible to refer to deeply nested attributes like you'd do in JS:
-```
-if #foo.bam[3].baz [
+if (#foo.bam[3].baz != null) [
     // If foo is not null, bam neither, bam got a third non-null value and is an actual array
     // and the array element has an attribute baz which isn't null.
 ]
 ```
 
-> If a property dosn't exist it'll be the same as `null`. Undefined tags throw an error though.
+> If a property (or array-value) is missing it'll be treated as `null`. 
+> Undefined tags throw an error!
 
-###### Operators
+#### Operators
+Use these to fine-tune your condition:
+
 | Sign | Description | Example |
 | ---- | ----------- | ------- |
 | `<` / `>`  | Greater- / Smaller-than, compatible with both strings and numbers | `if (#a < #b) [...]` |
 | `=` | Equal, strictly compares numbers, strings and `null` values | `if (#a = "ABC") [...]` |
+| `!=` | Not equal, strictly compares numbers, strings and `null` values | `if (#a != 25) [...]` |
 | `\|` | or-operator, one of the conditions need to be true | `if (#a = "ABC" \| #b < 10) [...]` |
 | `&` | and-operator, both conditions need to be true | `if (#a > 20 & #b < #a) [...]` |
  
-It's possible to use [tags](#tags) and javascript-like property-lookups.
-You may use parenthesis to bypass precedence rules.
+Use parenthesis to bypass precedence rules:
 
 ```
 if (#numA > 100 & #strA < #strB | (#numA = #obj[3].a)) [
     // #numA is bigger than 100
     // #strA is smaller than #strB
-    // #numA is the sameas the propery a from the third element in #obj
+    // #numA is the same as the propery "a" from the third element in #obj
+] else [
+    // Alternate content
 ]
 ```
 
+#### Constants
+| Name | Description | Example |
+| ---- | ----------- | ------- |
+| `null` | `null`-value, used to determine whenever a value is null | `if (#a = null) [...]` |
