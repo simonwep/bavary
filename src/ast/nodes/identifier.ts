@@ -17,7 +17,7 @@ module.exports = maybe<Identifier>(stream => {
         } else if (
             (type === 'punc' && value === '-' && name.length) ||
             (type === 'num') ||
-            ( type === 'kw')
+            (type === 'kw')
         ) {
             name += value;
             stream.next(true);

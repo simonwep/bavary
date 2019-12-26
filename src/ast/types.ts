@@ -127,7 +127,7 @@ export type ConditionalStatement = {
     alternate: Group | null;
 }
 
-export type BinaryExpressionValue = BinaryExpression | Str | Num | ValueAccessor;
+export type BinaryExpressionValue = BinaryExpression | Str | Identifier | Num | ValueAccessor;
 export type BinaryOperator = '|' | '&' | '=' | '!=' | '<' | '>';
 export type BinaryExpression = {
     type: 'binary-expression';

@@ -24,6 +24,14 @@ function resolveValueOf(result: ParsingResult, bexv: BinaryExpressionValue): str
 
             return lookupValue(result.obj, bexv.value) as string | number | boolean | null;
         }
+        case 'identifier': {
+
+            if (bexv.value === 'null') {
+                return null;
+            }
+
+            throw new Error(`Unknown constant: "${bexv.value}"`);
+        }
         default: {
             return bexv.value;
         }

@@ -236,6 +236,22 @@ describe('[COM] Conditional statement', () => {
         expect(parse('A!')).to.equal(null);
     });
 
+    it('Should resolve null-comparison', () => {
+        const parse = compile(`
+            <upper> = [(A - Z)+]
+            
+            entry [
+                <upper#upp>?
+
+                if (#upp = null) ['!']
+            ]
+        `);
+
+        expect(parse('AA')).to.not.equal(null);
+        expect(parse('!')).to.not.equal(null);
+        expect(parse('A!')).to.equal(null);
+    });
+
     it('Should throw an error if a tag is not defined anywhere', () => {
         const parse = compile(`
             entry [
@@ -253,6 +269,19 @@ describe('[COM] Conditional statement', () => {
             entry [
                 <upper#upp>
                 if (#upp > 4) []
+            ]
+        `);
+
+        expect(() => parse('A')).to.throw();
+    });
+
+    it('Should throw an error on unknown constants', () => {
+        const parse = compile(`
+            <upper> = [(A - Z)+]
+
+            entry [
+                <upper#upp>
+                if (#upp != hello) []
             ]
         `);
 

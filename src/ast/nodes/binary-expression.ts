@@ -3,6 +3,7 @@ import {combine}                                                     from '../to
 import {expect}                                                      from '../tools/expect';
 import {maybe}                                                       from '../tools/maybe';
 import {optional}                                                    from '../tools/optional';
+import {skipWhitespace}                                              from '../tools/skip-whitespace';
 import {BinaryExpression, BinaryExpressionValue, Str, ValueAccessor} from '../types';
 
 const operatorPriority = {
@@ -65,6 +66,7 @@ function maybeBinary(
     if (pr > base) {
 
         // Parse right-hand value
+        skipWhitespace(stream);
         const rightValue = parse(stream);
         if (!rightValue) {
             stream.throwError('Expected right-hand value');
@@ -91,7 +93,8 @@ module.exports = maybe<BinaryExpression>(stream => {
         taggedValueAccessorPath,
         require('./binary-expression'),
         require('./string'),
-        require('./number')
+        require('./number'),
+        require('./identifier')
     );
 
     const left = parse(stream);
