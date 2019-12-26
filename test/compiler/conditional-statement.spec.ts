@@ -10,7 +10,7 @@ describe('[COM] Conditional statement', () => {
             entry [
                 <number#value>?
                 
-                if #value ['A'] else ['B']
+                if (#value != null) ['A'] else ['B']
             ]
         `);
 
@@ -28,7 +28,7 @@ describe('[COM] Conditional statement', () => {
             entry [
                 <w-num#num>?
                 
-                if #num.value ['A'] else ['B']
+                if (#num.value != null) ['A'] else ['B']
             ]
         `);
 
@@ -50,25 +50,11 @@ describe('[COM] Conditional statement', () => {
             entry [
                 [(a - z)+]
                 <number#num>?
-                if #num ['A']
+                if (#num != null) ['A']
             ]
         `);
 
         expect(parse('abc')).to.deep.equal({
-            num: null
-        });
-    });
-
-    it('Should nagate the condition if the not-keyword is used', () => {
-        const parse = compile(`
-            <number> = [(0 - 9)+]
-            entry [
-                <number#num>?
-                if not #num ['A']
-            ]
-        `);
-
-        expect(parse('A')).to.deep.equal({
             num: null
         });
     });

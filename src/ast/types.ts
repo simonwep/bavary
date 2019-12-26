@@ -121,8 +121,7 @@ export type ValueAccessor = {
 
 export type ConditionalStatement = {
     type: 'conditional-statement';
-    condition: ValueAccessor | BinaryExpression;
-    negated: boolean;
+    condition: BinaryExpression;
     consequent: Group;
     alternate: Group | null;
 }

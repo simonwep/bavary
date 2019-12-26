@@ -1,41 +1,19 @@
-import {check}                                                 from '../tools/check';
-import {maybe}                                                 from '../tools/maybe';
-import {optional}                                              from '../tools/optional';
-import {BinaryExpression, ConditionalStatement, ValueAccessor} from '../types';
+import {maybe}                from '../tools/maybe';
+import {optional}             from '../tools/optional';
+import {ConditionalStatement} from '../types';
 
 module.exports = maybe<ConditionalStatement>(stream => {
     const parseBinaryExpression = require('./binary-expression');
-    const parseValueAccessor = require('./value-accessor');
     const parseGroup = require('./group');
-    const parseTag = require('./tag');
 
     if (!optional(stream, false, 'kw', 'if')) {
         return null;
     }
 
-    // User may used the not-keyword to negate the condition
-    const negated = !!optional(stream, false, 'kw', 'not');
-    let condition: ValueAccessor | BinaryExpression;
-
-    if (check(stream, false, 'punc', '(')) {
-
-        // Binary expression
-        condition = parseBinaryExpression(stream);
-        if (!condition) {
-            stream.throwError('Expected a binary expression.');
-        }
-    } else {
-
-        // Parse tag
-        const tag = parseTag(stream);
-        if (!tag) {
-            stream.throwError('Expected a tag.');
-        }
-
-        condition = {
-            type: 'value-accessor',
-            value: [tag.value, ...(parseValueAccessor(stream)?.value || [])]
-        };
+    // Parse condition
+    const condition = parseBinaryExpression(stream);
+    if (!condition) {
+        stream.throwError('Expected a binary expression.');
     }
 
     // Parse then-block
@@ -57,7 +35,6 @@ module.exports = maybe<ConditionalStatement>(stream => {
     return {
         type: 'conditional-statement',
         condition,
-        negated,
         consequent: then,
         alternate: alternative
     } as ConditionalStatement;
