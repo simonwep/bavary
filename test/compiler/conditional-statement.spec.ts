@@ -245,4 +245,17 @@ describe('[COM] Conditional statement', () => {
 
         expect(() => parse('A')).to.throw();
     });
+
+    it('Should throw an error if types aren\'t compatible', () => {
+        const parse = compile(`
+            <upper> = [(A - Z)+]
+            
+            entry [
+                <upper#upp>
+                if (#upp > 4) []
+            ]
+        `);
+
+        expect(() => parse('A')).to.throw();
+    });
 });

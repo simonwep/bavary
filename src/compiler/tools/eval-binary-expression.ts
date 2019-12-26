@@ -63,11 +63,15 @@ export function evalBinaryExpression(result: ParsingResult, bex: BinaryExpressio
         case '!=':
             return leftVal !== rightVal;
         case '<': {
+            const leftType = typeof leftVal;
+            const rightType = typeof rightVal;
 
-            if (typeof leftVal === 'string' && typeof rightVal === 'string') {
-                return leftVal.localeCompare(rightVal) === -1;
-            } else if (typeof leftVal === 'number' && typeof rightVal === 'number') {
-                return leftVal < rightVal;
+            if (leftType === 'string' && rightType === 'string') {
+                return (leftVal as string).localeCompare(rightVal as string) === -1;
+            } else if (leftType === 'number' && rightType === 'number') {
+                return (leftVal as number) < (rightVal as number);
+            } else if (leftVal !== null && rightVal !== null) {
+                throw new Error(`Invalid types used in comparison: ${leftType} ("${leftVal}") ≠ ${rightType} ("${rightVal}")`);
             }
 
             return false;
