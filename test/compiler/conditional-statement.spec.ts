@@ -238,6 +238,31 @@ describe('[COM] Conditional statement', () => {
         expect(parse('A!')).to.equal(null);
     });
 
+    it('Should handle else-if statements', () => {
+        const parse = compile(`
+            <string> = [(A - Z, a - z)+]
+            
+            entry [
+                <string#str>?
+
+                if (#str = null) [
+                    'nothing'
+                ] else if (#str = 'Hello') [
+                    ' world'
+                ] else if (#str = 'Good') [
+                    ' bye'
+                ]
+            ]
+        `);
+
+        expect(parse('nothing')).to.not.equal(null);
+        expect(parse('Hello world')).to.not.equal(null);
+        expect(parse('Good bye')).to.not.equal(null);
+        expect(parse('Hello')).to.equal(null);
+        expect(parse('Good')).to.equal(null);
+        expect(parse('')).to.equal(null);
+    });
+
     it('Should throw an error if a tag is not defined anywhere', () => {
         const parse = compile(`
             entry [

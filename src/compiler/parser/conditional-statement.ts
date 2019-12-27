@@ -11,6 +11,7 @@ module.exports = (
         result
     }: ParserArgs<ConditionalStatement>
 ): boolean => {
+    const parseConditinalStatement = require('./conditional-statement');
     const parseGroup = require('./group');
     const {condition, consequent, alternate} = decl;
     const conditionValue = evalBinaryExpression(result, condition);
@@ -24,7 +25,10 @@ module.exports = (
     }
 
     // Try to match branch
-    const res = parseGroup({
+    const res = (
+        branch.type === 'group' ?
+            parseGroup : parseConditinalStatement
+    )({
         config,
         stream,
         scope,
@@ -32,5 +36,5 @@ module.exports = (
         decl: branch
     });
 
-    return res !== null;
+    return res !== null && res !== false;
 };

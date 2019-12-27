@@ -123,7 +123,7 @@ export type ConditionalStatement = {
     type: 'conditional-statement';
     condition: BinaryExpression;
     consequent: Group;
-    alternate: Group | null;
+    alternate: Group | ConditionalStatement | null;
 }
 
 export type BinaryExpressionValue = BinaryExpression | Str | Identifier | Num | ValueAccessor;

@@ -1,9 +1,10 @@
-import {maybe}                from '../tools/maybe';
-import {optional}             from '../tools/optional';
-import {ConditionalStatement} from '../types';
+import {maybe}                       from '../tools/maybe';
+import {optional}                    from '../tools/optional';
+import {ConditionalStatement, Group} from '../types';
 
 module.exports = maybe<ConditionalStatement>(stream => {
     const parseBinaryExpression = require('./binary-expression');
+    const parseConditionalStatement = require('./conditional-statement');
     const parseGroup = require('./group');
 
     if (!optional(stream, false, 'kw', 'if')) {
@@ -23,9 +24,9 @@ module.exports = maybe<ConditionalStatement>(stream => {
     }
 
     // The else-branch is optional
-    let alternative = null;
+    let alternative: Group | ConditionalStatement | null = null;
     if (optional(stream, false, 'kw', 'else')) {
-        alternative = parseGroup(stream);
+        alternative = parseGroup(stream) || parseConditionalStatement(stream);
 
         if (!alternative) {
             stream.throwError('Expected a group.');
