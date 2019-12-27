@@ -23,7 +23,7 @@ export type GroupValue = Reference | Str | BinaryCombinator | Group |
 
 export type Group = {
     type: 'group';
-    multiplier: Multiplier;
+    multiplier: Multiplier | null;
     value: Array<GroupValue>;
 }
 
