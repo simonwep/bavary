@@ -1,8 +1,9 @@
-import {BinaryCombinator}       from '../../ast/types';
-import {serializeParsingResult} from '../tools/serialize';
-import {ParserArgs}             from '../types';
+import {BinaryCombinator}          from '../../ast/types';
+import {evalDeclaration}           from '../internal';
+import {serializeParsingResult}    from '../tools/serialize';
+import {ParserArgs, ParsingResult} from '../types';
 
-module.exports = (
+export const evalCombiantor = (
     {
         config,
         stream,
@@ -11,11 +12,10 @@ module.exports = (
         result
     }: ParserArgs<BinaryCombinator>
 ): boolean => {
-    const parseDeclaration = require('./declaration');
     stream.stash();
 
     // Serialize remaining types
-    serializeParsingResult(decl.value, result);
+    serializeParsingResult(decl.value, (result as ParsingResult));
 
     switch (decl.sign) {
         case '|': {
@@ -23,7 +23,7 @@ module.exports = (
             // Match one of the items
             const decs = decl.value;
             for (let i = 0; i < decs.length; i++) {
-                if (parseDeclaration({config, stream, decl: decs[i], scope, result})) {
+                if (evalDeclaration({config, stream, decl: decs[i], scope, result})) {
                     stream.recycle();
                     return true;
                 }
@@ -37,7 +37,7 @@ module.exports = (
 
             // Match items ignoring the order
             for (let i = 0; i < cpy.length; i++) {
-                if (parseDeclaration({config, stream, decl: cpy[i], scope, result})) {
+                if (evalDeclaration({config, stream, decl: cpy[i], scope, result})) {
                     cpy.splice(i, 1);
                     i = -1;
                 }

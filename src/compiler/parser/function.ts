@@ -1,8 +1,9 @@
-import {Func}                      from '../../ast/types';
-import {createCustomFunctionUtils} from '../tools/create-custom-function-utils';
-import {ParserArgs}                from '../types';
+import {Func}                                                from '../../ast/types';
+import {evalGroup, evalRawReference}                         from '../internal';
+import {createCustomFunctionUtils}                           from '../tools/create-custom-function-utils';
+import {ParserArgs, ParsingResult, ParsingResultObjectValue} from '../types';
 
-module.exports = (
+export const evalFunction = (
     {
         config,
         stream,
@@ -11,15 +12,13 @@ module.exports = (
         result
     }: ParserArgs<Func>
 ): boolean => {
-    const parseRawReference = require('./resolve-reference');
-    const parseGroup = require('./group');
 
     // Resolve arguments
     const resolvedArgs = [];
     for (const arg of decl.args) {
         switch (arg.type) {
             case 'tag': {
-                const val = result.obj[arg.value];
+                const val = (result as ParsingResult).obj[arg.value];
 
                 if (val === undefined) {
                     throw new Error(`Tag "${val}" isn't defined anywhere but used in a function call.`);
@@ -29,7 +28,7 @@ module.exports = (
                 break;
             }
             case 'group': {
-                resolvedArgs.push(parseGroup({
+                resolvedArgs.push(evalGroup({
                     config, stream, decl: arg, scope
                 }));
                 break;
@@ -40,7 +39,7 @@ module.exports = (
                 break;
             }
             case 'reference': {
-                resolvedArgs.push(parseRawReference({
+                resolvedArgs.push(evalRawReference({
                     config, stream, scope,
                     result: {pure: false, obj: {}, str: ''},
                     decl: arg
@@ -57,8 +56,8 @@ module.exports = (
 
     try {
         return fn(
-            createCustomFunctionUtils(result),
-            ...resolvedArgs
+            createCustomFunctionUtils((result as ParsingResult)),
+            ...(resolvedArgs as Array<Array<ParsingResultObjectValue> | ParsingResultObjectValue>) // TODO: Create a seperate type for that
         );
     } catch (e) {
         throw new Error(`Function "${decl.name}" throwed an error:\n${e.message}`);

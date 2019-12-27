@@ -1,8 +1,9 @@
-import {ModifierTarget, Reference}      from '../../ast/types';
-import {typeOf}                         from '../../misc/type-of';
-import {LocationDataObject, ParserArgs} from '../types';
+import {ModifierTarget, Reference}                     from '../../ast/types';
+import {typeOf}                                        from '../../misc/type-of';
+import {evalRawReference}                              from '../internal';
+import {LocationDataObject, ParserArgs, ParsingResult} from '../types';
 
-module.exports = (
+export const evalReference = (
     {
         config,
         stream,
@@ -11,18 +12,17 @@ module.exports = (
         result
     }: ParserArgs<Reference>
 ): boolean => {
-    const parseRawReference = require('./resolve-reference');
 
     // Type may have a multiplier attached to it
     const starts = stream.index;
-    const matches = parseRawReference({config, stream, decl, scope, result});
+    const matches = evalRawReference({config, stream, decl, scope, result});
 
     // Identify result type
     const matchesType = typeOf(matches);
 
     // If reference has a tag, immediatly attach result
     if (decl.tag) {
-        result.obj[decl.tag] = matches;
+        (result as ParsingResult).obj[decl.tag] = matches;
     }
 
     stream.stash();
@@ -43,18 +43,18 @@ module.exports = (
             }
 
             // Assign result to current object
-            Object.assign(result.obj, matches);
-            result.pure = false;
+            Object.assign((result as ParsingResult).obj, matches);
+            (result as ParsingResult).pure = false;
         } else if (decl.tag) {
 
             // Since something was matched the result is not anymore "just a string"
-            result.pure = false;
+            (result as ParsingResult).pure = false;
 
             // Perform appropriate action
         } else if (matchesType === 'array' && (matches as Array<unknown>).every(v => typeof v === 'string')) {
-            result.str += (matches as Array<unknown>).join(''); // Concat string sequences
+            (result as ParsingResult).str += (matches as Array<unknown>).join(''); // Concat string sequences
         } else if (matchesType === 'string') {
-            result.str += matches as string;
+            (result as ParsingResult).str += matches as string;
         } else {
             throw new Error(`Type "${decl.value}" is missing a tag.`);
         }

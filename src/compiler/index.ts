@@ -1,7 +1,8 @@
-import {Declaration}            from '../ast/types';
-import {Streamable}             from '../misc/stream';
-import {Scope}                  from './scope';
-import {CompilerConfig, Parser} from './types';
+import {Declaration, Group}                               from '../ast/types';
+import {Streamable}                                       from '../misc/stream';
+import {evalGroup}                                        from './internal';
+import {Scope}                                            from './scope';
+import {CompilerConfig, Parser, ParsingResultObjectValue} from './types';
 
 /**
  * Compiles a pre-calcuated set of declarations.
@@ -16,7 +17,6 @@ export const compileDeclarations = (
         functions: {}
     }
 ): Parser => {
-    const group = require('./parser/group');
 
     // Resolve sub-scopes
     const globalScope = new Scope({global: true});
@@ -39,15 +39,15 @@ export const compileDeclarations = (
     }
 
     const [decl, scope] = entry;
-    return (content: string): null | object => {
+    return (content: string): null | ParsingResultObjectValue => {
 
         // Parse and return result if successful
         const stream = new Streamable(content);
-        const res = group({
+        const res = evalGroup({
             config,
             stream,
-            decl: decl.value,
-            scope
+            scope,
+            decl: decl.value as Group
         });
 
         return stream.hasNext() ? null : res;

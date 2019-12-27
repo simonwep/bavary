@@ -1,9 +1,9 @@
-import {ModifierTarget, Reference}            from '../../ast/types';
+import {Group, ModifierTarget, Reference}     from '../../ast/types';
+import {evalGroup, evalModification}          from '../internal';
 import {ParserArgs, ParsingResultObjectValue} from '../types';
-import {applyModifications}                   from './modification';
 import {maybeMultiplier}                      from './multiplier';
 
-module.exports = (
+export const evalRawReference = (
     {
         config,
         stream,
@@ -12,7 +12,6 @@ module.exports = (
         result
     }: ParserArgs<Reference>
 ): ParsingResultObjectValue => {
-    const parseGroup = require('./group');
 
     // Resolve reference
     const res = scope.lookupByPath(decl.value);
@@ -56,10 +55,10 @@ module.exports = (
 
     // Type may have a multiplier attached to it
     const matches = maybeMultiplier<ParsingResultObjectValue, Reference>(
-        () => parseGroup({
+        () => evalGroup({
             config,
             stream,
-            decl: target.value,
+            decl: target.value as Group,
             scope: newScope
         })
     )({
@@ -70,7 +69,7 @@ module.exports = (
     // Apply modifiers if defined
     if (matches) {
         if (decl.modifiers) {
-            applyModifications(matches as ModifierTarget, decl);
+            evalModification(matches as ModifierTarget, decl);
         }
     }
 

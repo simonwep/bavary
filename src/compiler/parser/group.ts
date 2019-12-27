@@ -1,9 +1,10 @@
 import {Group}                    from '../../ast/types';
+import {evalDeclaration}          from '../internal';
 import {serializeParsingResult}   from '../tools/serialize';
 import {ParsingResultObjectValue} from '../types';
 import {maybeMultiplier}          from './multiplier';
 
-module.exports = maybeMultiplier<ParsingResultObjectValue, Group>((
+export const evalGroup = maybeMultiplier<ParsingResultObjectValue, Group>((
     {
         config,
         stream,
@@ -16,7 +17,6 @@ module.exports = maybeMultiplier<ParsingResultObjectValue, Group>((
         }
     }
 ): ParsingResultObjectValue => {
-    const parseDeclaration = require('./declaration');
     stream.stash();
 
     // Remember current raw result in case the group fails
@@ -27,7 +27,7 @@ module.exports = maybeMultiplier<ParsingResultObjectValue, Group>((
         const decl = decs[i];
 
         // Parse declaration
-        if (!parseDeclaration({config, stream, decl, scope, result})) {
+        if (!evalDeclaration({config, stream, decl, scope, result})) {
             stream.pop();
 
             // Set all tages used within this declaration to null

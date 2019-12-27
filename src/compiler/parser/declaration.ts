@@ -1,7 +1,8 @@
-import {GroupValue} from '../../ast/types';
-import {ParserArgs} from '../types';
+import {GroupValue}                                                                                                           from '../../ast/types';
+import {evalCharacterSelection, evalCombiantor, evalConditionalStatement, evalFunction, evalGroup, evalReference, evalString} from '../internal';
+import {ParserArgs}                                                                                                           from '../types';
 
-module.exports = (
+export const evalDeclaration = (
     {
         config,
         stream,
@@ -10,19 +11,12 @@ module.exports = (
         result
     }: ParserArgs<GroupValue>
 ): boolean => {
-    const parseConditionalStatement = require('./conditional-statement');
-    const parseCharacterSelection = require('./character-selection');
-    const parseCombinator = require('./combinator');
-    const parseReference = require('./reference');
-    const parseFunction = require('./function');
-    const parseString = require('./string');
-    const parseGroup = require('./group');
 
     stream.stash();
     switch (decl.type) {
         case 'combinator': {
 
-            if (!parseCombinator({config, stream, decl, scope, result})) {
+            if (!evalCombiantor({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
@@ -31,7 +25,7 @@ module.exports = (
         }
         case 'string': {
 
-            if (!parseString({config, stream, decl, scope, result})) {
+            if (!evalString({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
@@ -40,7 +34,7 @@ module.exports = (
         }
         case 'character-selection': {
 
-            if (!parseCharacterSelection({config, stream, decl, scope, result})) {
+            if (!evalCharacterSelection({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
@@ -49,7 +43,7 @@ module.exports = (
         }
         case 'reference': {
 
-            if (!parseReference({config, stream, decl, scope, result})) {
+            if (!evalReference({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
@@ -57,7 +51,7 @@ module.exports = (
             break;
         }
         case 'group': {
-            const res = parseGroup({config, stream, decl, scope, result});
+            const res = evalGroup({config, stream, decl, scope, result});
 
             if (!res) {
                 if (decl.multiplier) {
@@ -77,7 +71,7 @@ module.exports = (
         }
         case 'function': {
 
-            if (!parseFunction({config, stream, decl, scope, result})) {
+            if (!evalFunction({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }
@@ -86,7 +80,7 @@ module.exports = (
         }
         case 'conditional-statement': {
 
-            if (!parseConditionalStatement({config, stream, decl, scope, result})) {
+            if (!evalConditionalStatement({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }

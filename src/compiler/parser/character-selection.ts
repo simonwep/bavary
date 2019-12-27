@@ -1,5 +1,5 @@
 import {CharacterSelection, CharacterSelectionArray} from '../../ast/types';
-import {ParserArgs}                                  from '../types';
+import {ParserArgs, ParsingResult}                   from '../types';
 import {maybeMultiplier}                             from './multiplier';
 
 /**
@@ -15,7 +15,7 @@ const matchesCharacterSelectionArray = (arr: CharacterSelectionArray, charCode: 
     );
 };
 
-module.exports = (
+export const evalCharacterSelection = (
     {
         config,
         stream,
@@ -48,9 +48,9 @@ module.exports = (
 
     // Resolve corresponding multiplier
     if (Array.isArray(matches)) {
-        result.str += (matches).join('');
+        (result as ParsingResult).str += (matches).join('');
     } else if (typeof matches === 'string') {
-        result.str += matches;
+        (result as ParsingResult).str += matches;
     } else if (!matches && !decl.multiplier || (decl.multiplier && decl.multiplier.type !== 'optional')) {
         return false;
     }
