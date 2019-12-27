@@ -1,19 +1,13 @@
-import {check}                                                                                               from '../tools/check';
-import {combine}                                                                                             from '../tools/combine';
-import {expect}                                                                                              from '../tools/expect';
-import {maybe}                                                                                               from '../tools/maybe';
-import {optional}                                                                                            from '../tools/optional';
-import {BinaryCombinator, CharacterSelection, ConditionalStatement, Func, Group, GroupValue, Reference, Str} from '../types';
+import {characterSelecton, conditionalStatement, func, multiplier, reference, string} from '../internal';
+import {combinator}                                                                   from '../modifiers/combinator';
+import {check}                                                                        from '../tools/check';
+import {combine}                                                                      from '../tools/combine';
+import {expect}                                                                       from '../tools/expect';
+import {maybe}                                                                        from '../tools/maybe';
+import {optional}                                                                     from '../tools/optional';
+import {BinaryCombinator, Group, GroupValue}                                          from '../types';
 
-module.exports = maybe<Group>(stream => {
-    const parseCombinator = require('../modifiers/combinator');
-    const parseConditionalStatement = require('./conditional-statement');
-    const parseCharacterSelection = require('./character-selection');
-    const parseMultiplier = require('./multiplier');
-    const parseReference = require('./reference');
-    const parseString = require('./string');
-    const parseGroup = require('./group');
-    const parseFunction = require('./function');
+export const group = maybe<Group>(stream => {
 
     // It may be a group
     if (!optional(stream, false, 'punc', '[')) {
@@ -21,13 +15,13 @@ module.exports = maybe<Group>(stream => {
     }
 
     const values: Array<GroupValue> = [];
-    const parsers = combine<Reference | Group | CharacterSelection | ConditionalStatement | Str | Func>(
-        parseConditionalStatement,
-        parseFunction,
-        parseGroup,
-        parseReference,
-        parseCharacterSelection,
-        parseString
+    const parsers = combine<GroupValue | null>(
+        conditionalStatement,
+        func,
+        group,
+        reference,
+        characterSelecton,
+        string
     );
 
     // The following code is chaos, and thats ok.
@@ -35,7 +29,7 @@ module.exports = maybe<Group>(stream => {
     let comg: null | BinaryCombinator = null;
     while (!check(stream, false, 'punc', ']')) {
         const value = parsers(stream);
-        const sign = parseCombinator(stream);
+        const sign = combinator(stream);
 
         if (!value) {
             stream.throwError('Expected a type, group or raw string / character-range.');
@@ -97,7 +91,7 @@ module.exports = maybe<Group>(stream => {
 
     return {
         type: 'group',
-        multiplier: parseMultiplier(stream),
+        multiplier: multiplier(stream),
         value: values
     } as Group;
 });

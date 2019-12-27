@@ -1,16 +1,15 @@
-import {maybe}          from '../tools/maybe';
-import {optional}       from '../tools/optional';
-import {skipWhitespace} from '../tools/skip-whitespace';
-import {Arguments}      from '../types';
+import {group, identifier} from '../internal';
+import {maybe}             from '../tools/maybe';
+import {optional}          from '../tools/optional';
+import {skipWhitespace}    from '../tools/skip-whitespace';
+import {Arguments}         from '../types';
 
-module.exports = maybe<Arguments>(stream => {
-    const parseIdentifier = require('./identifier');
-    const parseGroup = require('./group');
+export const argument = maybe<Arguments>(stream => {
     const args: Arguments = [];
 
     while (true) {
         skipWhitespace(stream);
-        const name = parseIdentifier(stream);
+        const name = identifier(stream);
 
         if (!name) {
             break;
@@ -19,7 +18,7 @@ module.exports = maybe<Arguments>(stream => {
         // It may have a value
         let value = null;
         if (optional(stream, false, 'punc', '=')) {
-            value = parseGroup(stream);
+            value = group(stream);
 
             if (!value) {
                 stream.throwError('Expected a group.');

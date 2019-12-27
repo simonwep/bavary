@@ -1,13 +1,10 @@
-import {TokenStream}    from '../../../misc/token-stream';
-import {expect}         from '../../tools/expect';
-import {skipWhitespace} from '../../tools/skip-whitespace';
-import {DefineModifier} from '../../types';
+import {TokenStream}                       from '../../../misc/token-stream';
+import {identifier, string, valueAccessor} from '../../internal';
+import {expect}                            from '../../tools/expect';
+import {skipWhitespace}                    from '../../tools/skip-whitespace';
+import {DefineModifier}                    from '../../types';
 
 export const parseDefineModifier = (stream: TokenStream): DefineModifier => {
-    const valueAccessor = require('../../nodes/value-accessor');
-    const string = require('../../nodes/string');
-    const identifier = require('../../nodes/identifier');
-
     const key = identifier(stream);
     if (!key) {
         stream.throwError('Expected identifier');

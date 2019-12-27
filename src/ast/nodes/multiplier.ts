@@ -10,7 +10,7 @@ const types: {[key: string]: string} = {
     '?': 'optional'
 };
 
-module.exports = maybe<Multiplier | null>(stream => {
+export const multiplier = maybe<Multiplier | null>(stream => {
     const mp = optional(stream, false, 'punc', '*', '+', '?', '{');
 
     if (mp && mp.value === '{') {

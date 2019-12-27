@@ -1,10 +1,11 @@
-import {TokenStream}                                                 from '../../misc/token-stream';
-import {combine}                                                     from '../tools/combine';
-import {expect}                                                      from '../tools/expect';
-import {maybe}                                                       from '../tools/maybe';
-import {optional}                                                    from '../tools/optional';
-import {skipWhitespace}                                              from '../tools/skip-whitespace';
-import {BinaryExpression, BinaryExpressionValue, Str, ValueAccessor} from '../types';
+import {TokenStream}                                            from '../../misc/token-stream';
+import {identifier, number, string, tag, valueAccessor}         from '../internal';
+import {combine}                                                from '../tools/combine';
+import {expect}                                                 from '../tools/expect';
+import {maybe}                                                  from '../tools/maybe';
+import {optional}                                               from '../tools/optional';
+import {skipWhitespace}                                         from '../tools/skip-whitespace';
+import {BinaryExpression, BinaryExpressionValue, ValueAccessor} from '../types';
 
 const operatorPriority = {
     '|': 1,
@@ -18,19 +19,17 @@ const operatorPriority = {
 const operators = Object.keys(operatorPriority);
 
 const taggedValueAccessorPath = maybe<ValueAccessor>(stream => {
-    const parseValueAccessor = require('./value-accessor');
-    const parseTag = require('./tag');
-    const tag = parseTag(stream);
+    const tagVal = tag(stream);
 
-    if (!tag) {
+    if (!tagVal) {
         return null;
     }
 
     return {
         type: 'value-accessor',
         value: [
-            tag.value,
-            ...(parseValueAccessor(stream)?.value || [])
+            tagVal.value,
+            ...(valueAccessor(stream)?.value || [])
         ]
     } as ValueAccessor;
 });
@@ -45,7 +44,7 @@ const taggedValueAccessorPath = maybe<ValueAccessor>(stream => {
 function maybeBinary(
     left: BinaryExpression | BinaryExpressionValue,
     stream: TokenStream,
-    parse: (stream: TokenStream) => ValueAccessor | Str | null,
+    parse: (stream: TokenStream) => BinaryExpressionValue | null,
     base = 0
 ): BinaryExpression | BinaryExpressionValue {
     stream.stash();
@@ -75,7 +74,7 @@ function maybeBinary(
         return maybeBinary({
             type: 'binary-expression',
             operator: operator === '!' ? `${operator}=` : operator, // TODO: That's ugly, refactor it
-            right: maybeBinary(rightValue as BinaryExpressionValue, stream, parse, pr),
+            right: maybeBinary(rightValue, stream, parse, pr),
             left
         } as BinaryExpression, stream, parse, base);
     }
@@ -84,17 +83,17 @@ function maybeBinary(
     return left;
 }
 
-module.exports = maybe<BinaryExpression>(stream => {
+export const binaryExpression = maybe<BinaryExpression>(stream => {
     if (!optional(stream, false, 'punc', '(')) {
         return null;
     }
 
-    const parse = combine(
+    const parse = combine<BinaryExpressionValue | null>(
         taggedValueAccessorPath,
-        require('./binary-expression'),
-        require('./string'),
-        require('./number'),
-        require('./identifier')
+        binaryExpression,
+        string,
+        number,
+        identifier
     );
 
     const left = parse(stream);

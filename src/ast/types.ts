@@ -1,4 +1,4 @@
-export type ASTNode = Declaration | CharacterSelection |
+export type ASTNode = Declaration | CharacterSelection | ValueAccessor |
     BinaryExpressionValue | Type | Group | Multiplier | Reference | Block | Str;
 
 export type DeclarationValue = Group | Block;

@@ -1,19 +1,20 @@
-import {maybe}    from '../tools/maybe';
-import {optional} from '../tools/optional';
-import {Tag}      from '../types';
+import {identifier}      from '../internal';
+import {maybe}           from '../tools/maybe';
+import {optional}        from '../tools/optional';
+import {Identifier, Tag} from '../types';
 
-module.exports = maybe<Tag | null>(stream => {
+export const tag = maybe<Tag | null>(stream => {
     if (!optional(stream, false, 'punc', '#')) {
         return null;
     }
 
-    const ident = require('./identifier')(stream);
+    const ident = identifier(stream);
     if (!ident) {
         stream.throwError('Expected tag-identifier');
     }
 
     return {
         type: 'tag',
-        value: ident.value
+        value: (ident as Identifier).value // TODO: Is there a bug with the IDE???
     };
 });

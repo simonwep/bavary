@@ -1,24 +1,23 @@
+import {TokenStream}                 from '../../misc/token-stream';
+import {binaryExpression, group}     from '../internal';
 import {maybe}                       from '../tools/maybe';
 import {optional}                    from '../tools/optional';
 import {ConditionalStatement, Group} from '../types';
 
-module.exports = maybe<ConditionalStatement>(stream => {
-    const parseBinaryExpression = require('./binary-expression');
-    const parseConditionalStatement = require('./conditional-statement');
-    const parseGroup = require('./group');
-
+// TODO: This is awful
+export const conditionalStatement: (stream: TokenStream) => ConditionalStatement | null = maybe<ConditionalStatement>(stream => {
     if (!optional(stream, false, 'kw', 'if')) {
         return null;
     }
 
     // Parse condition
-    const condition = parseBinaryExpression(stream);
+    const condition = binaryExpression(stream);
     if (!condition) {
         stream.throwError('Expected a binary expression.');
     }
 
     // Parse then-block
-    const then = parseGroup(stream);
+    const then = group(stream);
     if (!then) {
         stream.throwError('Expected a group.');
     }
@@ -26,7 +25,7 @@ module.exports = maybe<ConditionalStatement>(stream => {
     // The else-branch is optional
     let alternative: Group | ConditionalStatement | null = null;
     if (optional(stream, false, 'kw', 'else')) {
-        alternative = parseGroup(stream) || parseConditionalStatement(stream);
+        alternative = group(stream) || conditionalStatement(stream);
 
         if (!alternative) {
             stream.throwError('Expected a group.');
