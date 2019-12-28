@@ -296,7 +296,7 @@ console.log(parse('"hello"'));
 ```
 
 ### Conditional Statements
-It's possible to use if-statements to execute a group by condition.
+It's possible to use if-statements within a group to execute another group by condition.
 In your condition you can to use [tags](#tags) and javascript-like property-lookups.
 
 ```
@@ -331,6 +331,18 @@ if (#numA > 100 & #strA < #strB | (#numA = #obj[3].a)) [
     // Alternate content
 ]
 ```
+
+The `else`-branch is optional therefore it's possible to chain if-statements (you can still add a `else`-branch at the end if you want though):
+
+```
+if (...) [
+ 
+] else if (...) [
+
+]
+```
+
+> You can chain as many if-statements as you want.
 
 #### Constants
 | Name | Description | Example |
