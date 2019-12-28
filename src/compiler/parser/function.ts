@@ -1,7 +1,7 @@
-import {Func}                                                from '../../ast/types';
-import {evalGroup, evalRawReference}                         from '../internal';
-import {createCustomFunctionUtils}                           from '../tools/create-custom-function-utils';
-import {ParserArgs, ParsingResult, ParsingResultObjectValue} from '../types';
+import {Func}                        from '../../ast/types';
+import {evalGroup, evalRawReference} from '../internal';
+import {createCustomFunctionUtils}   from '../tools/create-custom-function-utils';
+import {ParserArgs}                  from '../types';
 
 export const evalFunction = (
     {
@@ -18,7 +18,7 @@ export const evalFunction = (
     for (const arg of decl.args) {
         switch (arg.type) {
             case 'tag': {
-                const val = (result as ParsingResult).obj[arg.value];
+                const val = result.obj[arg.value];
 
                 if (val === undefined) {
                     throw new Error(`Tag "${val}" isn't defined anywhere but used in a function call.`);
@@ -56,8 +56,8 @@ export const evalFunction = (
 
     try {
         return fn(
-            createCustomFunctionUtils((result as ParsingResult)),
-            ...(resolvedArgs as Array<Array<ParsingResultObjectValue> | ParsingResultObjectValue>) // TODO: Create a seperate type for that
+            createCustomFunctionUtils(result),
+            ...resolvedArgs
         );
     } catch (e) {
         throw new Error(`Function "${decl.name}" throwed an error:\n${e.message}`);

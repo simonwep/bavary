@@ -1,7 +1,7 @@
 import {Group, ModifierTarget, Reference}     from '../../ast/types';
 import {evalGroup, evalModification}          from '../internal';
+import {maybeMultiplier}                      from '../tools/multiplier';
 import {ParserArgs, ParsingResultObjectValue} from '../types';
-import {maybeMultiplier}                      from './multiplier';
 
 export const evalRawReference = (
     {

@@ -1,7 +1,7 @@
-import {BinaryCombinator}          from '../../ast/types';
-import {evalDeclaration}           from '../internal';
-import {serializeParsingResult}    from '../tools/serialize';
-import {ParserArgs, ParsingResult} from '../types';
+import {BinaryCombinator}       from '../../ast/types';
+import {evalDeclaration}        from '../internal';
+import {serializeParsingResult} from '../tools/serialize';
+import {ParserArgs}             from '../types';
 
 export const evalCombiantor = (
     {
@@ -15,7 +15,7 @@ export const evalCombiantor = (
     stream.stash();
 
     // Serialize remaining types
-    serializeParsingResult(decl.value, (result as ParsingResult));
+    serializeParsingResult(decl.value, result);
 
     switch (decl.sign) {
         case '|': {

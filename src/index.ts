@@ -1,8 +1,8 @@
-import {ENV_VERSION}            from './env';
 import {parseAST}               from './ast';
 import {Declaration}            from './ast/types';
 import {compileDeclarations}    from './compiler';
 import {CompilerConfig, Parser} from './compiler/types';
+import {ENV_VERSION}            from './env';
 import {tokenize}               from './tokenizer';
 
 /**

@@ -1,13 +1,20 @@
 import {CharacterSelection, Group, MultiplierRange, Reference} from '../../ast/types';
-import {ParserArgs}                                            from '../types';
+import {ParserArgs, ParsingResult}                             from '../types';
 
 type typesWhoCouldHaveMultiplierAttachedToIt = Group | Reference | CharacterSelection;
 
+
+type OptionalResult<T> = {
+    [P in Exclude<keyof ParserArgs<T>, 'result'>]: ParserArgs<T>[P];
+} & {
+    result?: ParsingResult;
+}
+
 export const maybeMultiplier = <expectedResult, declarationType extends typesWhoCouldHaveMultiplierAttachedToIt>(
-    fn: (args: ParserArgs<declarationType>) => expectedResult | null
+    fn: (args: OptionalResult<declarationType>) => expectedResult | null
 ) => {
 
-    return (args: ParserArgs<declarationType>): expectedResult | Array<expectedResult> | null => {
+    return (args: OptionalResult<declarationType>): expectedResult | Array<expectedResult> | null => {
         const {stream, decl} = args;
 
         const parse = (): expectedResult | null => fn(args);

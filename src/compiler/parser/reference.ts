@@ -1,7 +1,7 @@
-import {ModifierTarget, Reference}                     from '../../ast/types';
-import {typeOf}                                        from '../../misc/type-of';
-import {evalRawReference}                              from '../internal';
-import {LocationDataObject, ParserArgs, ParsingResult} from '../types';
+import {ModifierTarget, Reference}      from '../../ast/types';
+import {typeOf}                         from '../../misc/type-of';
+import {evalRawReference}               from '../internal';
+import {LocationDataObject, ParserArgs} from '../types';
 
 export const evalReference = (
     {
@@ -22,7 +22,7 @@ export const evalReference = (
 
     // If reference has a tag, immediatly attach result
     if (decl.tag) {
-        (result as ParsingResult).obj[decl.tag] = matches;
+        result.obj[decl.tag] = matches;
     }
 
     stream.stash();
@@ -43,18 +43,18 @@ export const evalReference = (
             }
 
             // Assign result to current object
-            Object.assign((result as ParsingResult).obj, matches);
-            (result as ParsingResult).pure = false;
+            Object.assign(result.obj, matches);
+            result.pure = false;
         } else if (decl.tag) {
 
             // Since something was matched the result is not anymore "just a string"
-            (result as ParsingResult).pure = false;
+            result.pure = false;
 
             // Perform appropriate action
         } else if (matchesType === 'array' && (matches as Array<unknown>).every(v => typeof v === 'string')) {
-            (result as ParsingResult).str += (matches as Array<unknown>).join(''); // Concat string sequences
+            result.str += (matches as Array<unknown>).join(''); // Concat string sequences
         } else if (matchesType === 'string') {
-            (result as ParsingResult).str += matches as string;
+            result.str += matches as string;
         } else {
             throw new Error(`Type "${decl.value}" is missing a tag.`);
         }

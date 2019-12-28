@@ -1,5 +1,5 @@
-import {Str}                       from '../../ast/types';
-import {ParserArgs, ParsingResult} from '../types';
+import {Str}        from '../../ast/types';
+import {ParserArgs} from '../types';
 
 export const evalString = (
     {stream, decl, result}: ParserArgs<Str>
@@ -18,6 +18,6 @@ export const evalString = (
     }
 
     stream.recycle();
-    (result as ParsingResult).str += value;
+    result.str += value;
     return true;
 };

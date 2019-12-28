@@ -12,7 +12,7 @@ export type ParserArgs<DeclarationType> = {
     stream: Streamable<string>;
     decl: DeclarationType;
     scope: Scope;
-    result?: ParsingResult;
+    result: ParsingResult;
 }
 
 export type ParsingResultObjectValue = Array<ParsingResultObjectValue> | ParsingResultObject | string | number | null ;
