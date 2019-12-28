@@ -47,7 +47,7 @@ export const parseReference = maybe<Reference>(stream => {
     }
 
     const mods = parseModification(stream);
-    const args = parseArguments(stream); // TODO: This names are shitty
+    const args = parseArguments(stream);
 
     expect(stream, false, 'punc', '>');
     const mult = parseMultiplier(stream);

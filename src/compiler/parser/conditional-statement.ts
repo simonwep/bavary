@@ -1,7 +1,7 @@
-import {ConditionalStatement} from '../../ast/types';
-import {evalGroup}            from '../internal';
-import {evalBinaryExpression} from '../tools/eval-binary-expression';
-import {ParserArgs}           from '../types';
+import {ConditionalStatement, Group} from '../../ast/types';
+import {evalGroup}                   from '../internal';
+import {evalBinaryExpression}        from '../tools/eval-binary-expression';
+import {ParserArgs}                  from '../types';
 
 export const evalConditionalStatement = (
     {
@@ -24,26 +24,13 @@ export const evalConditionalStatement = (
     }
 
     // Try to match branch
-    let res;
-
-    // TODO: Simplify that
-    if (branch.type === 'group') {
-        res = evalGroup({
-            config,
-            stream,
-            scope,
-            result,
-            decl: branch
-        });
-    } else {
-        res = evalConditionalStatement({
-            config,
-            stream,
-            scope,
-            result,
-            decl: branch
-        });
-    }
+    const res = (branch.type === 'group' ? evalGroup : evalConditionalStatement)({
+        config,
+        stream,
+        scope,
+        result,
+        decl: branch as (Group & ConditionalStatement)
+    });
 
     return res !== null && res !== false;
 };

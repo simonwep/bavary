@@ -80,10 +80,9 @@ export class Streamable<T extends RangeInformation | string> {
             // Expect peeked value to be of type RangeInformation
             const peek = this.peek() as RangeInformation;
             throw new ParsingError(source, msg, peek.start, peek.end);
-        } else {
-
-            // Otherwise use current index as start and end value
-            throw new ParsingError(source, msg, index, index);
         }
+
+        // Otherwise use current index as start and end value
+        throw new ParsingError(source, msg, index, index);
     }
 }

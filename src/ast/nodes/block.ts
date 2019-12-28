@@ -16,8 +16,6 @@ export const parseBlock = maybe<Block>(stream => {
     const declarations: Array<Declaration> = [];
 
     while (!check(stream, false, 'punc', '}')) {
-
-        // TODO: let decl be nullable
         declarations.push(parseDeclaration(stream) as Declaration);
     }
 
