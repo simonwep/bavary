@@ -1,11 +1,9 @@
-import {TokenStream}                       from '../../misc/token-stream';
-import {parseBinaryExpression, parseGroup} from '../internal';
-import {maybe}                             from '../tools/maybe';
-import {optional}                          from '../tools/optional';
-import {ConditionalStatement, Group}       from '../types';
+import {parseBinaryExpression, parseGroup}           from '../internal';
+import {maybe}                                       from '../tools/maybe';
+import {optional}                                    from '../tools/optional';
+import {ConditionalStatement, Group, ParserFunction} from '../types';
 
-// TODO: This is awful
-export const parseConditionalStatement: (stream: TokenStream) => ConditionalStatement | null = maybe<ConditionalStatement>(stream => {
+export const parseConditionalStatement: ParserFunction<ConditionalStatement> = maybe(stream => {
     if (!optional(stream, false, 'kw', 'if')) {
         return null;
     }

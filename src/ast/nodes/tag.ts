@@ -3,7 +3,7 @@ import {maybe}           from '../tools/maybe';
 import {optional}        from '../tools/optional';
 import {Identifier, Tag} from '../types';
 
-export const parseTag = maybe<Tag | null>(stream => {
+export const parseTag = maybe<Tag>(stream => {
     if (!optional(stream, false, 'punc', '#')) {
         return null;
     }

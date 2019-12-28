@@ -1,5 +1,9 @@
-export type ASTNode = Declaration | CharacterSelection | ValueAccessor |
-    BinaryExpressionValue | Type | Group | Multiplier | Reference | Block | Str;
+import {TokenStream} from '../misc/token-stream';
+
+export type ASTNode = Declaration | CharacterSelection | ValueAccessor | ConditionalStatement |
+    Arguments | Func | Multiplier | Tag | BinaryExpressionValue | Type | Group | Multiplier | Reference | Block | Str;
+
+export type ParserFunction<T> = (stream: TokenStream) => T | null;
 
 export type DeclarationValue = Group | Block;
 export type DeclarationVariant = 'entry' | 'default' | 'export' | null;
