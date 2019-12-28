@@ -1,6 +1,6 @@
 import {TokenStream}                                 from '../../misc/token-stream';
 import {RawType}                                     from '../../tokenizer/types';
-import {multiplier}                                  from '../internal';
+import {parseMultiplier}                             from '../internal';
 import {parseUnicodeEscape}                          from '../modifiers/unicode-escape';
 import {expect}                                      from '../tools/expect';
 import {maybe}                                       from '../tools/maybe';
@@ -89,7 +89,7 @@ const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
     return sequence;
 };
 
-export const characterSelecton = maybe<CharacterSelection>(stream => {
+export const parseCharacterSelecton = maybe<CharacterSelection>(stream => {
     if (!optional(stream, false, 'punc', '(')) {
         return null;
     }
@@ -105,7 +105,7 @@ export const characterSelecton = maybe<CharacterSelection>(stream => {
     expect(stream, false, 'punc', ')');
     return {
         type: 'character-selection',
-        multiplier: multiplier(stream),
+        multiplier: parseMultiplier(stream),
         included,
         excluded
     } as CharacterSelection;

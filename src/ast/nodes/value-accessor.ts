@@ -1,4 +1,4 @@
-import {identifier}                from '../internal';
+import {parseIdentifier}           from '../internal';
 import {combine}                   from '../tools/combine';
 import {expect}                    from '../tools/expect';
 import {maybe}                     from '../tools/maybe';
@@ -10,7 +10,7 @@ const parseObjectAccessor = maybe<string>(stream => {
         return null;
     }
 
-    const ident = identifier(stream);
+    const ident = parseIdentifier(stream);
     if (!ident) {
         stream.throwError('Expected identifier.');
     }
@@ -29,8 +29,8 @@ const parseArrayAccessor = maybe<number>(stream => {
     return index.value as number;
 });
 
-export const valueAccessor = maybe<ValueAccessor>(stream => {
-    const entry = identifier(stream);
+export const parseValueAccessor = maybe<ValueAccessor>(stream => {
+    const entry = parseIdentifier(stream);
 
     const accessorPath = entry ? [entry.value] : [];
     const parser = combine<string | number | null>(

@@ -1,15 +1,15 @@
-import {argument, identifier, multiplier, tag} from '../internal';
-import {modifiers}                             from '../modifiers/modifications';
-import {spreadOperator}                        from '../modifiers/spread-operator';
-import {expect}                                from '../tools/expect';
-import {maybe}                                 from '../tools/maybe';
-import {optional}                              from '../tools/optional';
-import {Reference}                             from '../types';
+import {parseArguments, parseIdentifier, parseMultiplier, parseTag} from '../internal';
+import {parseModification}                                          from '../modifiers/modifications';
+import {parseSpreadOperator}                                        from '../modifiers/spread-operator';
+import {expect}                                                     from '../tools/expect';
+import {maybe}                                                      from '../tools/maybe';
+import {optional}                                                   from '../tools/optional';
+import {Reference}                                                  from '../types';
 
-export const reference = maybe<Reference>(stream => {
+export const parseReference = maybe<Reference>(stream => {
 
     // It may have a spread operator attached to it
-    const spread = !!spreadOperator(stream);
+    const spread = !!parseSpreadOperator(stream);
 
     // It may be a type
     if (!optional(stream, false, 'punc', '<')) {
@@ -20,7 +20,7 @@ export const reference = maybe<Reference>(stream => {
     let expectIdentifier = false;
 
     while (stream.hasNext()) {
-        const next = identifier(stream);
+        const next = parseIdentifier(stream);
 
         if (next) {
             expectIdentifier = false;
@@ -39,22 +39,22 @@ export const reference = maybe<Reference>(stream => {
     }
 
     // It may have a tag
-    const tagVal = tag(stream);
+    const tag = parseTag(stream);
 
     // A tag shouldn't be combined with a spread operator
-    if (spread && tagVal) {
+    if (spread && tag) {
         stream.throwError('Type cannot have both a tag an spread operator attached to it.');
     }
 
-    const mods = modifiers(stream);
-    const args = argument(stream); // TODO: This names are shitty
+    const mods = parseModification(stream);
+    const args = parseArguments(stream); // TODO: This names are shitty
 
     expect(stream, false, 'punc', '>');
-    const mult = multiplier(stream);
+    const mult = parseMultiplier(stream);
 
     return {
         type: 'reference',
-        tag: tagVal?.value || null,
+        tag: tag?.value || null,
         arguments: args,
         modifiers: mods,
         multiplier: mult,

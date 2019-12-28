@@ -1,11 +1,11 @@
-import {TokenStream}                       from '../../../misc/token-stream';
-import {identifier, string, valueAccessor} from '../../internal';
-import {expect}                            from '../../tools/expect';
-import {skipWhitespace}                    from '../../tools/skip-whitespace';
-import {DefineModifier}                    from '../../types';
+import {TokenStream}                                      from '../../../misc/token-stream';
+import {parseIdentifier, parseString, parseValueAccessor} from '../../internal';
+import {expect}                                           from '../../tools/expect';
+import {skipWhitespace}                                   from '../../tools/skip-whitespace';
+import {DefineModifier}                                   from '../../types';
 
 export const parseDefineModifier = (stream: TokenStream): DefineModifier => {
-    const key = identifier(stream);
+    const key = parseIdentifier(stream);
     if (!key) {
         stream.throwError('Expected identifier');
     }
@@ -13,7 +13,7 @@ export const parseDefineModifier = (stream: TokenStream): DefineModifier => {
     expect(stream, false, 'punc', '=');
     skipWhitespace(stream);
 
-    const val = string(stream) || valueAccessor(stream);
+    const val = parseString(stream) || parseValueAccessor(stream);
     if (!val) {
         stream.throwError('Expected string, function-call or value-accessor.');
     }

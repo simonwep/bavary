@@ -1,8 +1,8 @@
-import {TokenStream} from '../misc/token-stream';
-import {RawType}     from '../tokenizer/types';
+import {TokenStream}      from '../misc/token-stream';
+import {RawType}          from '../tokenizer/types';
 import './internal';
-import {declaration} from './nodes/declaration';
-import {Declaration} from './types';
+import {parseDeclaration} from './nodes/declaration';
+import {Declaration}      from './types';
 
 /**
  * Converts a array of tokens into an ast-tree.
@@ -14,7 +14,7 @@ export const parseAST = (tokens: Array<RawType>, source: string): Array<Declarat
     const declarations: Array<Declaration> = [];
 
     while (stream.hasNext()) {
-        declarations.push(declaration(stream) as Declaration);
+        declarations.push(parseDeclaration(stream) as Declaration);
     }
 
     return declarations;

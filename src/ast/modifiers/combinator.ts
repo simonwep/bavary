@@ -1,7 +1,7 @@
 import {maybe}    from '../tools/maybe';
 import {optional} from '../tools/optional';
 
-export const combinator = maybe<string>(stream => {
+export const parseCombinator = maybe<string>(stream => {
     const combinator = optional(stream, false, 'punc', '|', '&');
 
     if (!combinator) {

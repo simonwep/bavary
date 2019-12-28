@@ -1,10 +1,10 @@
-import {argument, block, group, identifier} from '../internal';
-import {expect}                             from '../tools/expect';
-import {maybe}                              from '../tools/maybe';
-import {optional}                           from '../tools/optional';
-import {Declaration}                        from '../types';
+import {parseArguments, parseBlock, parseGroup, parseIdentifier} from '../internal';
+import {expect}                                                  from '../tools/expect';
+import {maybe}                                                   from '../tools/maybe';
+import {optional}                                                from '../tools/optional';
+import {Declaration}                                             from '../types';
 
-export const declaration = maybe<Declaration>(stream => {
+export const parseDeclaration = maybe<Declaration>(stream => {
 
     // Parse optional variant
     const variant = optional(stream, false, 'kw', 'entry', 'default', 'export');
@@ -13,13 +13,13 @@ export const declaration = maybe<Declaration>(stream => {
     // It may be a named one
     if (optional(stream, false, 'punc', '<')) {
 
-        name = identifier(stream);
+        name = parseIdentifier(stream);
         if (!name) {
             stream.throwError('Expected identifier.');
         }
 
         // Parse arguments
-        args = argument(stream);
+        args = parseArguments(stream);
         expect(stream, false, 'punc', '>');
         expect(stream, false, 'punc', '=');
     } else if (!variant) {
@@ -29,13 +29,13 @@ export const declaration = maybe<Declaration>(stream => {
     // A declaration value could be either a group or scoped block
     let body;
     if (args?.length) {
-        body = group(stream);
+        body = parseGroup(stream);
 
         if (!body) {
             stream.throwError('Expected a group.');
         }
     } else {
-        body = group(stream) || block(stream);
+        body = parseGroup(stream) || parseBlock(stream);
 
         if (!body) {
             stream.throwError('Expected a group or block-statement.');

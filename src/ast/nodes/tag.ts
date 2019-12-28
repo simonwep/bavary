@@ -1,14 +1,14 @@
-import {identifier}      from '../internal';
+import {parseIdentifier} from '../internal';
 import {maybe}           from '../tools/maybe';
 import {optional}        from '../tools/optional';
 import {Identifier, Tag} from '../types';
 
-export const tag = maybe<Tag | null>(stream => {
+export const parseTag = maybe<Tag | null>(stream => {
     if (!optional(stream, false, 'punc', '#')) {
         return null;
     }
 
-    const ident = identifier(stream);
+    const ident = parseIdentifier(stream);
     if (!ident) {
         stream.throwError('Expected tag-identifier');
     }

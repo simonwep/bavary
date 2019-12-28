@@ -1,23 +1,23 @@
-import {TokenStream}                 from '../../misc/token-stream';
-import {binaryExpression, group}     from '../internal';
-import {maybe}                       from '../tools/maybe';
-import {optional}                    from '../tools/optional';
-import {ConditionalStatement, Group} from '../types';
+import {TokenStream}                       from '../../misc/token-stream';
+import {parseBinaryExpression, parseGroup} from '../internal';
+import {maybe}                             from '../tools/maybe';
+import {optional}                          from '../tools/optional';
+import {ConditionalStatement, Group}       from '../types';
 
 // TODO: This is awful
-export const conditionalStatement: (stream: TokenStream) => ConditionalStatement | null = maybe<ConditionalStatement>(stream => {
+export const parseConditionalStatement: (stream: TokenStream) => ConditionalStatement | null = maybe<ConditionalStatement>(stream => {
     if (!optional(stream, false, 'kw', 'if')) {
         return null;
     }
 
     // Parse condition
-    const condition = binaryExpression(stream);
+    const condition = parseBinaryExpression(stream);
     if (!condition) {
         stream.throwError('Expected a binary expression.');
     }
 
     // Parse then-block
-    const then = group(stream);
+    const then = parseGroup(stream);
     if (!then) {
         stream.throwError('Expected a group.');
     }
@@ -25,7 +25,7 @@ export const conditionalStatement: (stream: TokenStream) => ConditionalStatement
     // The else-branch is optional
     let alternative: Group | ConditionalStatement | null = null;
     if (optional(stream, false, 'kw', 'else')) {
-        alternative = group(stream) || conditionalStatement(stream);
+        alternative = parseGroup(stream) || parseConditionalStatement(stream);
 
         if (!alternative) {
             stream.throwError('Expected a group.');

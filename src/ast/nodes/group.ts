@@ -1,13 +1,13 @@
-import {characterSelecton, conditionalStatement, func, multiplier, reference, string} from '../internal';
-import {combinator}                                                                   from '../modifiers/combinator';
-import {check}                                                                        from '../tools/check';
-import {combine}                                                                      from '../tools/combine';
-import {expect}                                                                       from '../tools/expect';
-import {maybe}                                                                        from '../tools/maybe';
-import {optional}                                                                     from '../tools/optional';
-import {BinaryCombinator, Group, GroupValue}                                          from '../types';
+import {parseCharacterSelecton, parseConditionalStatement, parseFunction, parseMultiplier, parseReference, parseString} from '../internal';
+import {parseCombinator}                                                                                                from '../modifiers/combinator';
+import {check}                                                                                                          from '../tools/check';
+import {combine}                                                                                                        from '../tools/combine';
+import {expect}                                                                                                         from '../tools/expect';
+import {maybe}                                                                                                          from '../tools/maybe';
+import {optional}                                                                                                       from '../tools/optional';
+import {BinaryCombinator, Group, GroupValue}                                                                            from '../types';
 
-export const group = maybe<Group>(stream => {
+export const parseGroup = maybe<Group>(stream => {
 
     // It may be a group
     if (!optional(stream, false, 'punc', '[')) {
@@ -16,12 +16,12 @@ export const group = maybe<Group>(stream => {
 
     const values: Array<GroupValue> = [];
     const parsers = combine<GroupValue | null>(
-        conditionalStatement,
-        func,
-        group,
-        reference,
-        characterSelecton,
-        string
+        parseConditionalStatement,
+        parseFunction,
+        parseGroup,
+        parseReference,
+        parseCharacterSelecton,
+        parseString
     );
 
     // The following code is chaos, and thats ok.
@@ -29,7 +29,7 @@ export const group = maybe<Group>(stream => {
     let comg: null | BinaryCombinator = null;
     while (!check(stream, false, 'punc', ']')) {
         const value = parsers(stream);
-        const sign = combinator(stream);
+        const sign = parseCombinator(stream);
 
         if (!value) {
             stream.throwError('Expected a type, group or raw string / character-range.');
@@ -91,7 +91,7 @@ export const group = maybe<Group>(stream => {
 
     return {
         type: 'group',
-        multiplier: multiplier(stream),
+        multiplier: parseMultiplier(stream),
         value: values
     } as Group;
 });

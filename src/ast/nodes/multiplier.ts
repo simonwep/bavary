@@ -10,7 +10,7 @@ const types: {[key: string]: string} = {
     '?': 'optional'
 };
 
-export const multiplier = maybe<Multiplier | null>(stream => {
+export const parseMultiplier = maybe<Multiplier | null>(stream => {
     const mp = optional(stream, false, 'punc', '*', '+', '?', '{');
 
     if (mp && mp.value === '{') {

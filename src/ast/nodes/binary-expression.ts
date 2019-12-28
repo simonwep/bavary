@@ -1,11 +1,11 @@
-import {TokenStream}                                            from '../../misc/token-stream';
-import {identifier, number, string, tag, valueAccessor}         from '../internal';
-import {combine}                                                from '../tools/combine';
-import {expect}                                                 from '../tools/expect';
-import {maybe}                                                  from '../tools/maybe';
-import {optional}                                               from '../tools/optional';
-import {skipWhitespace}                                         from '../tools/skip-whitespace';
-import {BinaryExpression, BinaryExpressionValue, ValueAccessor} from '../types';
+import {TokenStream}                                                             from '../../misc/token-stream';
+import {parseIdentifier, parseNumber, parseString, parseTag, parseValueAccessor} from '../internal';
+import {combine}                                                                 from '../tools/combine';
+import {expect}                                                                  from '../tools/expect';
+import {maybe}                                                                   from '../tools/maybe';
+import {optional}                                                                from '../tools/optional';
+import {skipWhitespace}                                                          from '../tools/skip-whitespace';
+import {BinaryExpression, BinaryExpressionValue, ValueAccessor}                  from '../types';
 
 const operatorPriority = {
     '|': 1,
@@ -19,17 +19,17 @@ const operatorPriority = {
 const operators = Object.keys(operatorPriority);
 
 const taggedValueAccessorPath = maybe<ValueAccessor>(stream => {
-    const tagVal = tag(stream);
+    const tag = parseTag(stream);
 
-    if (!tagVal) {
+    if (!tag) {
         return null;
     }
 
     return {
         type: 'value-accessor',
         value: [
-            tagVal.value,
-            ...(valueAccessor(stream)?.value || [])
+            tag.value,
+            ...(parseValueAccessor(stream)?.value || [])
         ]
     } as ValueAccessor;
 });
@@ -83,17 +83,17 @@ function maybeBinary(
     return left;
 }
 
-export const binaryExpression = maybe<BinaryExpression>(stream => {
+export const parseBinaryExpression = maybe<BinaryExpression>(stream => {
     if (!optional(stream, false, 'punc', '(')) {
         return null;
     }
 
     const parse = combine<BinaryExpressionValue | null>(
         taggedValueAccessorPath,
-        binaryExpression,
-        string,
-        number,
-        identifier
+        parseBinaryExpression,
+        parseString,
+        parseNumber,
+        parseIdentifier
     );
 
     const left = parse(stream);

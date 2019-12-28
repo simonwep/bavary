@@ -1,11 +1,11 @@
-import {declaration}        from '../internal';
+import {parseDeclaration}   from '../internal';
 import {check}              from '../tools/check';
 import {expect}             from '../tools/expect';
 import {maybe}              from '../tools/maybe';
 import {optional}           from '../tools/optional';
 import {Block, Declaration} from '../types';
 
-export const block = maybe<Block>(stream => {
+export const parseBlock = maybe<Block>(stream => {
 
     // It may be a block
     if (!optional(stream, false, 'punc', '{')) {
@@ -18,7 +18,7 @@ export const block = maybe<Block>(stream => {
     while (!check(stream, false, 'punc', '}')) {
 
         // TODO: let decl be nullable
-        declarations.push(declaration(stream) as Declaration);
+        declarations.push(parseDeclaration(stream) as Declaration);
     }
 
     expect(stream, false, 'punc', '}');

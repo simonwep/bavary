@@ -1,9 +1,9 @@
-import {TokenStream}    from '../../../misc/token-stream';
-import {valueAccessor}  from '../../nodes/value-accessor';
-import {DeleteModifier} from '../../types';
+import {TokenStream}        from '../../../misc/token-stream';
+import {parseValueAccessor} from '../../nodes/value-accessor';
+import {DeleteModifier}     from '../../types';
 
 export const parseDeleteModifier = (stream: TokenStream): DeleteModifier => {
-    const param = valueAccessor(stream);
+    const param = parseValueAccessor(stream);
     if (!param) {
         stream.throwError('Expected a value accessor.');
     }
