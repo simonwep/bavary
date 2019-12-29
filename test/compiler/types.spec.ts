@@ -77,6 +77,18 @@ describe('[COM] Nested types', () => {
         expect(() => parse('a')).to.throw();
     });
 
+    it('Should throw an error if a tag is used within a group with multipliers', () => {
+        const parse = compile(`
+            <abc> = ['abc']
+            entry [
+                [<abc#abc>]+
+            ]
+        `);
+
+        expect(() => parse('abcabc')).to.throw();
+    });
+
+
     it('Should make a difference between types in lower- and uppercase', () => {
         const parse = compile(`
             <STRING> = [(A - Z)]

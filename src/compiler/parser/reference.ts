@@ -22,6 +22,12 @@ export const evalReference = (
 
     // If reference has a tag, immediatly attach result
     if (decl.tag) {
+        const tagValue = result.obj[decl.tag];
+
+        if (tagValue !== undefined && tagValue !== null) {
+            throw new Error(`Tag "${decl.tag}" is already defined (Contains "${tagValue}").\nYou may used it multiple times or within a group + multipliers, you should avoid that.`);
+        }
+
         result.obj[decl.tag] = matches;
     }
 

@@ -17,11 +17,10 @@ export const maybeMultiplier = <expectedResult, declarationType extends typesWho
     return (args: OptionalResult<declarationType>): expectedResult | Array<expectedResult> | null => {
         const {stream, decl} = args;
 
-        const parse = (): expectedResult | null => fn(args);
         const parseAll = (): Array<expectedResult> => {
             const values: Array<expectedResult> = [];
 
-            for (let res; (res = parse());) {
+            for (let res; (res = fn(args));) {
                 values.push(res);
             }
 
@@ -65,6 +64,6 @@ export const maybeMultiplier = <expectedResult, declarationType extends typesWho
         }
 
         stream.recycle();
-        return parse();
+        return fn(args);
     };
 };
