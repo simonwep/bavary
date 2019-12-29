@@ -10,10 +10,7 @@ import {check}              from './check';
  * @param vals
  */
 export const optional = (stream: TokenStream, strict: boolean, type: TokenType, ...vals: Array<string | number>): RawType | null => {
-
-    if (check(stream, strict, type, ...vals)) {
-        return stream.next(strict);
-    }
-
-    return null;
+    return check(stream, strict, type, ...vals) ?
+        stream.next(strict) :
+        null;
 };

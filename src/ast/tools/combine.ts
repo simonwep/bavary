@@ -6,9 +6,8 @@ import {ASTNode}     from '../types';
  * @param parsers
  * @returns {Function}
  */
-export const combine = <T = ASTNode>(
-    ...parsers: Array<(stream: TokenStream) => T>
-) => (stream: TokenStream): T | null => {
+export const combine = <T = ASTNode>(...parsers: Array<(stream: TokenStream) => T>) => {
+    return (stream: TokenStream): T | null => {
         for (const parser of parsers) {
             const result = parser(stream);
 
@@ -19,3 +18,4 @@ export const combine = <T = ASTNode>(
 
         return null;
     };
+};

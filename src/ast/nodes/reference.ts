@@ -9,7 +9,7 @@ import {Reference}                                                  from '../typ
 export const parseReference = maybe<Reference>(stream => {
 
     // It may have a spread operator attached to it
-    const spread = !!parseSpreadOperator(stream);
+    const spread = parseSpreadOperator(stream);
 
     // It may be a type
     if (!optional(stream, false, 'punc', '<')) {

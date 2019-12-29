@@ -20,7 +20,7 @@ export const expect = (stream: TokenStream, strict: boolean, type: TokenType, ..
     const next = stream.next(strict);
     if (next !== null) {
         stream.throwError(`Expected ${values.join(', ')} (${type}) but got ${next.value} (${next.type})`);
-    } else {
-        stream.throwError('Unxpected end of input.');
     }
+
+    stream.throwError('Unxpected end of input.');
 };
