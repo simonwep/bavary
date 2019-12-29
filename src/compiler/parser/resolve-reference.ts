@@ -1,7 +1,7 @@
 import {Group, ModifierTarget, Reference}     from '../../ast/types';
 import {evalGroup, evalModification}          from '../internal';
-import {maybeMultiplier}                      from '../tools/multiplier';
 import {ParserArgs, ParsingResultObjectValue} from '../types';
+import {maybeMultiplier}                      from './multiplier';
 
 export const evalRawReference = (
     {
@@ -67,10 +67,8 @@ export const evalRawReference = (
     });
 
     // Apply modifiers if defined
-    if (matches) {
-        if (decl.modifiers) {
-            evalModification(matches as ModifierTarget, decl);
-        }
+    if (matches && decl.modifiers) {
+        evalModification(matches as ModifierTarget, decl);
     }
 
     return matches;

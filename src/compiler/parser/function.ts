@@ -1,6 +1,5 @@
 import {Func}                        from '../../ast/types';
 import {evalGroup, evalRawReference} from '../internal';
-import {createCustomFunctionUtils}   from '../tools/create-custom-function-utils';
 import {ParserArgs}                  from '../types';
 
 export const evalFunction = (
@@ -56,7 +55,25 @@ export const evalFunction = (
 
     try {
         return fn(
-            createCustomFunctionUtils(result),
+            // Utils
+            {
+                state: result,
+
+                setString(str): void {
+                    if (!result.pure) {
+                        throw new Error('Can\'t apply string, result isn\'t pure.');
+                    }
+
+                    result.str = str;
+                },
+
+                setProperty(key, val): void {
+                    result.obj[key] = val;
+                    result.pure = false;
+                }
+            },
+
+            // Resolved arguments
             ...resolvedArgs
         );
     } catch (e) {

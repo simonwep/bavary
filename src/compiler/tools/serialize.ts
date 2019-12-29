@@ -20,7 +20,7 @@ export function serializeParsingResult(rest: Array<GroupValue>, target: ParsingR
                 obj[item.tag] = null;
             }
 
-
+            // Result is not pure anymore since tags were used within it
             target.pure = false;
         } else if (item.type === 'group' || item.type === 'combinator') {
             serializeParsingResult(item.value, target, nullish);

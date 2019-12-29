@@ -1,5 +1,5 @@
 import {CharacterSelection, CharacterSelectionArray} from '../../ast/types';
-import {maybeMultiplier}                             from '../tools/multiplier';
+import {maybeMultiplier}                             from './multiplier';
 import {ParserArgs}                                  from '../types';
 
 /**

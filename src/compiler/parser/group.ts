@@ -1,7 +1,7 @@
 import {Group}                    from '../../ast/types';
-import {evalDeclaration}          from '../internal';
-import {maybeMultiplier}          from '../tools/multiplier';
-import {serializeParsingResult}   from '../tools/serialize';
+import {evalDeclaration}        from '../internal';
+import {maybeMultiplier}        from './multiplier';
+import {serializeParsingResult} from '../tools/serialize';
 import {ParsingResultObjectValue} from '../types';
 
 export const evalGroup = maybeMultiplier<ParsingResultObjectValue, Group>((
