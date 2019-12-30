@@ -10,7 +10,7 @@ export const parseTag = maybe<Tag>(stream => {
 
     const ident = parseIdentifier(stream);
     if (!ident) {
-        return stream.throwError('Expected tag-identifier');
+        return stream.throwError('Expected identifier');
     }
 
     return {

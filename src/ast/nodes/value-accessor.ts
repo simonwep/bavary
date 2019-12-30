@@ -1,9 +1,9 @@
-import {parseIdentifier}           from '../internal';
-import {combine}                   from '../tools/combine';
-import {expect}                    from '../tools/expect';
-import {maybe}                     from '../tools/maybe';
-import {optional}                  from '../tools/optional';
-import {Identifier, ValueAccessor} from '../types';
+import {parseIdentifier} from '../internal';
+import {combine}         from '../tools/combine';
+import {expect}          from '../tools/expect';
+import {maybe}           from '../tools/maybe';
+import {optional}        from '../tools/optional';
+import {ValueAccessor}   from '../types';
 
 const parseObjectAccessor = maybe<string>(stream => {
     if (!optional(stream, true, 'punc', '.')) {
@@ -12,10 +12,10 @@ const parseObjectAccessor = maybe<string>(stream => {
 
     const ident = parseIdentifier(stream);
     if (!ident) {
-        stream.throwError('Expected identifier.');
+        return stream.throwError('Expected identifier.');
     }
 
-    return (ident as Identifier).value;
+    return ident.value;
 });
 
 const parseArrayAccessor = maybe<number>(stream => {

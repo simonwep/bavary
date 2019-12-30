@@ -18,7 +18,7 @@ export const del = (res: ModifierTarget, mod: DeleteModifier): void | never => {
 
     if (parentValType === 'array') {
         if (topType !== 'number') {
-            throw new Error(`To delete a array entry you need to specify a index, got ${top} instead.`);
+            throw new Error(`To delete an array entry you need to specify a index, got ${top} instead.`);
         }
 
         (parentVal as Array<unknown>).splice(top as number, 1);
