@@ -19,7 +19,7 @@ const parsers: {
  * @type {Function}
  */
 export const parseModification = maybe<Modifiers | null>(stream => {
-    if (!optional(stream, false, 'punc', '{')) {
+    if (!optional(stream, true, 'punc', '{')) {
         return null;
     }
 

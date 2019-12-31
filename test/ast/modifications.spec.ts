@@ -6,6 +6,7 @@ describe('[AST] Modifiers', () => {
         'entry [<abc#wow{>]',
         'entry [<abc#wow{def}>]',
         'entry [<abc#wow{del}>]',
+        'entry [<abc#wow {def hello = "world"}>]',
         'entry [<abc#wow{del hello = }>]',
         'entry [<abc#wow{def hello = }>]',
         'entry [<abc#wow{def hello = "world",}>]',

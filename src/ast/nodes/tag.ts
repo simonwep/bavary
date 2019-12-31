@@ -4,7 +4,7 @@ import {optional}        from '../tools/optional';
 import {Tag}             from '../types';
 
 export const parseTag = maybe<Tag>(stream => {
-    if (!optional(stream, false, 'punc', '#')) {
+    if (!optional(stream, true, 'punc', '#')) {
         return null;
     }
 

@@ -10,7 +10,7 @@ const types: {[key: string]: string} = {
 };
 
 export const parseMultiplier = maybe<Multiplier>(stream => {
-    const mp = optional(stream, false, 'punc', '*', '+', '?', '{');
+    const mp = optional(stream, true, 'punc', '*', '+', '?', '{');
 
     if (mp === '{') {
         const start = expect(stream, false, 'num');
