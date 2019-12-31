@@ -44,8 +44,8 @@ export const parseDeclaration = maybe<Declaration>(stream => {
 
     return {
         type: 'declaration',
-        name: name?.value || null,
-        variant: variant?.value || null,
+        name: name ? name.value : null,
+        variant,
         value: body,
         arguments: args
     } as Declaration;

@@ -1,4 +1,3 @@
-import {RawType}    from '../../tokenizer/types';
 import {expect}     from '../tools/expect';
 import {maybe}      from '../tools/maybe';
 import {optional}   from '../tools/optional';
@@ -13,16 +12,16 @@ const types: {[key: string]: string} = {
 export const parseMultiplier = maybe<Multiplier>(stream => {
     const mp = optional(stream, false, 'punc', '*', '+', '?', '{');
 
-    if (mp && mp.value === '{') {
+    if (mp === '{') {
         const start = expect(stream, false, 'num');
 
         expect(stream, false, 'punc', ',');
-        const end = optional(stream, false, 'num') as RawType;
+        const end = optional(stream, false, 'num');
 
-        if (end) {
+        if (end !== null) {
 
             // Validate range - tokenizer currently parses no negaive numbers
-            if ((end.value as number) - (start.value as number) < 0) {
+            if ((end as number) - (start as number) < 0) {
                 stream.throwError('The difference between start and end-value cannot be negative or zero.');
             }
         }
@@ -31,14 +30,13 @@ export const parseMultiplier = maybe<Multiplier>(stream => {
         return {
             type: 'range',
             value: {
-                start: start.value,
-                end: end?.value || -1
+                start, end
             }
         } as Multiplier;
     }
 
     return mp ? {
-        type: types[mp.value],
-        value: mp.value
+        type: types[mp],
+        value: mp
     } as Multiplier : null;
 });

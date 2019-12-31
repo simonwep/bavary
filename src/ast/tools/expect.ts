@@ -1,6 +1,6 @@
-import {TokenStream}        from '../../misc/token-stream';
-import {RawType, TokenType} from '../../tokenizer/types';
-import {optional}           from './optional';
+import {TokenStream} from '../../misc/token-stream';
+import {TokenType}   from '../../tokenizer/types';
+import {optional}    from './optional';
 
 /**
  * Expects a specific token (and optional value).
@@ -9,7 +9,7 @@ import {optional}           from './optional';
  * @param type
  * @param values
  */
-export const expect = (stream: TokenStream, strict: boolean, type: TokenType, ...values: Array<string | number>): RawType | never => {
+export const expect = (stream: TokenStream, strict: boolean, type: TokenType, ...values: Array<string | number>): string | number | never => {
 
     // Check if next token matches type and value
     const expected = optional(stream, strict, type, ...values);

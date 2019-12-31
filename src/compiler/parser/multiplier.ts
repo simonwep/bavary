@@ -52,7 +52,7 @@ export const maybeMultiplier = <expectedResult, declarationType extends typesWho
                     const {start, end} = value as MultiplierRange;
                     const values = parseAll();
 
-                    if (values.length < start || (~end && values.length > end)) {
+                    if (values.length < start || (end !== null && values.length > end)) {
                         stream.pop();
                         return null;
                     }

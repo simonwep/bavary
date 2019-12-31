@@ -26,7 +26,7 @@ const parseArrayAccessor = maybe<number>(stream => {
     const index = expect(stream, false, 'num');
     expect(stream, true, 'punc', ']');
 
-    return index.value as number;
+    return index as number;
 });
 
 export const parseValueAccessor = maybe<ValueAccessor>(stream => {

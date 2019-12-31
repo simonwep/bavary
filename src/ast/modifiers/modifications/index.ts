@@ -33,7 +33,7 @@ export const parseModification = maybe<Modifiers | null>(stream => {
             stream.throwError('Expected operator');
         } else {
             skipWhitespace(stream);
-            set.push(parsers[op.value](stream));
+            set.push(parsers[op](stream));
         }
 
         // Pairs are seperated via a comma

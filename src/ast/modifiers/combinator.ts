@@ -2,16 +2,16 @@ import {maybe}    from '../tools/maybe';
 import {optional} from '../tools/optional';
 
 export const parseCombinator = maybe<string>(stream => {
-    const combinator = optional(stream, false, 'punc', '|', '&');
+    let combinator = optional(stream, false, 'punc', '|', '&');
 
     if (!combinator) {
         return null;
     }
 
     // It may be a extended combinator
-    if (combinator.value === '&' && optional(stream, false, 'punc', '&')) {
-        combinator.value += '&';
+    if (combinator === '&' && optional(stream, false, 'punc', '&')) {
+        combinator += '&';
     }
 
-    return combinator.value as string;
+    return combinator as string;
 });

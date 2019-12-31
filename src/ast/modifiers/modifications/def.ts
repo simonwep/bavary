@@ -13,14 +13,14 @@ export const parseDefineModifier = (stream: TokenStream): DefineModifier => {
     expect(stream, false, 'punc', '=');
     skipWhitespace(stream);
 
-    const val = parseString(stream) || parseValueAccessor(stream);
-    if (!val) {
+    const value = parseString(stream) || parseValueAccessor(stream);
+    if (!value) {
         stream.throwError('Expected string, function-call or value-accessor.');
     }
 
     return {
         type: 'def',
-        value: val,
-        key: key.value
+        key: key.value,
+        value
     } as DefineModifier;
 };

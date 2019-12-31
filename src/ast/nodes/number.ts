@@ -7,6 +7,6 @@ export const parseNumber = maybe<Num>(stream => {
 
     return num ? {
         type: 'number',
-        value: num.value as number
+        value: num as number
     } as Num : null;
 });

@@ -24,8 +24,8 @@ function maybeBinary(
 ): BinaryExpression | BinaryExpressionValue {
     stream.stash();
 
-    const operator = optional(stream, false, 'punc')?.value as string
-        + (optional(stream, true, 'punc')?.value || '');
+    const operator = optional(stream, false, 'punc') as string
+        + (optional(stream, true, 'punc') || '');
 
     if (!operator || !(operator in operatorPriority)) {
         stream.pop();

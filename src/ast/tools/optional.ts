@@ -9,8 +9,8 @@ import {check}              from './check';
  * @param type
  * @param vals
  */
-export const optional = (stream: TokenStream, strict: boolean, type: TokenType, ...vals: Array<string | number>): RawType | null => {
+export const optional = (stream: TokenStream, strict: boolean, type: TokenType, ...vals: Array<string | number>): string | number | null => {
     return check(stream, strict, type, ...vals) ?
-        stream.next(strict) :
+        (stream.next(strict) as RawType).value :
         null;
 };

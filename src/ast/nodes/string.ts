@@ -5,12 +5,12 @@ import {Str}      from '../types';
 export const parseString = maybe<Str>(stream => {
     const string = optional(stream, false, 'str');
 
-    if (string && !(string.value as string).length) {
+    if (string && !(string as string).length) {
         stream.throwError('Strings shouldn\'t be empty.');
     }
 
     return string ? {
         type: 'string',
-        value: string.value
+        value: string
     } as Str : null;
 });
