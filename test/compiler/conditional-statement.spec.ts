@@ -263,6 +263,44 @@ describe('[COM] Conditional statement', () => {
         expect(parse('')).to.equal(null);
     });
 
+    it('Should be able to tell the difference between < and <=', () => {
+        const parse = compile(`
+            <char> = [(a - z)]
+
+            entry [
+                <char#a>
+                <char#b>
+
+                if (#a < #b) ['<'] 
+                else if (#a <= #b) ['<=']
+            ]
+        `);
+
+        expect(parse('ab<')).to.not.equal(null);
+        expect(parse('bb<')).to.equal(null);
+        expect(parse('bb<=')).to.not.equal(null);
+        expect(parse('cb<=')).to.equal(null);
+    });
+
+    it('Should be able to tell the difference between > and >=', () => {
+        const parse = compile(`
+            <char> = [(a - z)]
+
+            entry [
+                <char#a>
+                <char#b>
+
+                if (#a > #b) ['>'] 
+                else if (#a >= #b) ['>=']
+            ]
+        `);
+
+        expect(parse('ab>')).to.equal(null);
+        expect(parse('bb>')).to.equal(null);
+        expect(parse('bb>=')).to.not.equal(null);
+        expect(parse('cb>')).to.not.equal(null);
+    });
+
     it('Should throw an error if a tag is not defined anywhere', () => {
         const parse = compile(`
             entry [

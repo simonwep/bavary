@@ -56,8 +56,14 @@ export function evalBinaryExpression(result: ParsingResult, bex: BinaryExpressio
     let leftVal = resolveValueOf(result, bex.left);
     let rightVal = resolveValueOf(result, bex.right);
 
+    // "a > b" is the same as "b < a"
     if (operator === '>') {
         operator = '<';
+        [leftVal, rightVal] = [rightVal, leftVal];
+
+        // "a >= b" is the same as "b <= a"
+    } else if (operator === '>=') {
+        operator = '<=';
         [leftVal, rightVal] = [rightVal, leftVal];
     }
 
@@ -78,6 +84,20 @@ export function evalBinaryExpression(result: ParsingResult, bex: BinaryExpressio
                 return (leftVal as string).localeCompare(rightVal as string) === -1;
             } else if (leftType === 'number' && rightType === 'number') {
                 return (leftVal as number) < (rightVal as number);
+            } else if (leftVal !== null && rightVal !== null) {
+                throw new Error(`Invalid types used in comparison: ${leftType} ("${leftVal}") ≠ ${rightType} ("${rightVal}")`);
+            }
+
+            return false;
+        }
+        case '<=': {
+            const leftType = typeof leftVal;
+            const rightType = typeof rightVal;
+
+            if (leftType === 'string' && rightType === 'string') {
+                return (leftVal as string).localeCompare(rightVal as string) < 1;
+            } else if (leftType === 'number' && rightType === 'number') {
+                return (leftVal as number) <= (rightVal as number);
             } else if (leftVal !== null && rightVal !== null) {
                 throw new Error(`Invalid types used in comparison: ${leftType} ("${leftVal}") ≠ ${rightType} ("${rightVal}")`);
             }
