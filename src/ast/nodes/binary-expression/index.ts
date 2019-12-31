@@ -6,9 +6,8 @@ import {maybe}                                     from '../../tools/maybe';
 import {optional}                                  from '../../tools/optional';
 import {skipWhitespace}                            from '../../tools/skip-whitespace';
 import {BinaryExpression, BinaryExpressionValue}   from '../../types';
-import {operatorPriority, operators}               from './operator-priority';
+import {operatorPriority}                          from './operator-priority';
 import {taggedValueAccessor}                       from './tagged-value-accessor';
-
 
 /**
  * Parses a binary expression
@@ -25,15 +24,12 @@ function maybeBinary(
 ): BinaryExpression | BinaryExpressionValue {
     stream.stash();
 
-    // Parse next operator
-    const operator = optional(stream, false, 'punc', ...operators)?.value;
-    if (!operator) {
-        return left;
-    }
+    const operator = optional(stream, false, 'punc')?.value as string
+        + (optional(stream, true, 'punc')?.value || '');
 
-    // It may be a not-equal operator
-    if (operator === '!' && !optional(stream, true, 'punc', '=')) {
-        stream.throwError('Expected "="');
+    if (!operator || !(operator in operatorPriority)) {
+        stream.pop();
+        return left;
     }
 
     // Check whenever the operator has a higher priority than the previous one
@@ -49,8 +45,8 @@ function maybeBinary(
 
         return maybeBinary({
             type: 'binary-expression',
-            operator: operator === '!' ? `${operator}=` : operator, // TODO: That's ugly, refactor it
             right: maybeBinary(rightValue, stream, parse, pr),
+            operator,
             left
         } as BinaryExpression, stream, parse, base);
     }
