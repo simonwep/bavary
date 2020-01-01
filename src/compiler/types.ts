@@ -1,4 +1,4 @@
-import {Streamable} from '../misc/stream';
+import {Streamable} from '../streamable';
 import {Scope}      from './scope';
 
 export type ParsingResult = {

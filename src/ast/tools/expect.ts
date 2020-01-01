@@ -1,4 +1,4 @@
-import {TokenStream} from '../../misc/token-stream';
+import {TokenStream} from '../../tokenizer/stream/token-stream';
 import {TokenType}   from '../../tokenizer/types';
 import {optional}    from './optional';
 

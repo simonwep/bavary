@@ -1,5 +1,5 @@
-import {TokenStream}      from '../misc/token-stream';
-import {RawType}          from '../tokenizer/types';
+import {TokenStream}      from '../tokenizer/stream/token-stream';
+import {Token}            from '../tokenizer/types';
 import './internal';
 import {parseDeclaration} from './nodes/declaration';
 import {Declaration}      from './types';
@@ -9,7 +9,7 @@ import {Declaration}      from './types';
  * @param tokens Array of raw tokens
  * @param source Source-code
  */
-export const parseAST = (tokens: Array<RawType>, source: string): Array<Declaration> => {
+export const parseAST = (tokens: Array<Token>, source: string): Array<Declaration> => {
     const stream = new TokenStream(tokens, source);
     const declarations: Array<Declaration> = [];
 

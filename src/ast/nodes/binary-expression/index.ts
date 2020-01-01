@@ -1,4 +1,4 @@
-import {TokenStream}                               from '../../../misc/token-stream';
+import {TokenStream}                               from '../../../tokenizer/stream/token-stream';
 import {parseIdentifier, parseNumber, parseString} from '../../internal';
 import {combine}                                   from '../../tools/combine';
 import {expect}                                    from '../../tools/expect';

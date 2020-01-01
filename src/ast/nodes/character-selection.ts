@@ -1,5 +1,5 @@
-import {TokenStream}                                 from '../../misc/token-stream';
-import {RawType}                                     from '../../tokenizer/types';
+import {TokenStream}                                 from '../../tokenizer/stream/token-stream';
+import {Token}                                       from '../../tokenizer/types';
 import {parseMultiplier}                             from '../internal';
 import {parseUnicodeEscape}                          from '../modifiers/unicode-escape';
 import {expect}                                      from '../tools/expect';
@@ -19,7 +19,7 @@ const parseToken = (stream: TokenStream): number | null => {
         return null;
     }
 
-    const next = stream.peek() as RawType;
+    const next = stream.peek() as Token;
     const nextValue = String(next.value);
     const escaped = nextValue === '\\';
 
@@ -35,7 +35,7 @@ const parseToken = (stream: TokenStream): number | null => {
             return null;
         }
 
-        const escaped = stream.peek() as RawType;
+        const escaped = stream.peek() as Token;
         const escapedValue = String(escaped.value);
 
         if (escaped.type !== 'punc') {

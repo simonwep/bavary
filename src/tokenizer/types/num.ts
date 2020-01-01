@@ -1,8 +1,8 @@
-import {Streamable} from '../../misc/stream';
+import {Streamable} from '../../streamable';
 import {isNumeric}  from '../tools/is';
-import {RawType}    from '../types';
+import {Token}      from '../types';
 
-export const num = (stream: Streamable<string>): RawType | null => {
+export const num = (stream: Streamable<string>): Token | null => {
 
     let number = '';
     while (stream.hasNext()) {
@@ -20,5 +20,5 @@ export const num = (stream: Streamable<string>): RawType | null => {
     return number.length ? {
         type: 'num',
         value: Number(number)
-    } as RawType : null;
+    } as Token : null;
 };

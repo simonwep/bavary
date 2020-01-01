@@ -1,6 +1,6 @@
 import {ModifierTarget, Reference}      from '../../ast/types';
-import {typeOf}                         from '../../misc/type-of';
 import {evalRawReference}               from '../internal';
+import {typeOf}                         from '../tools/type-of';
 import {LocationDataObject, ParserArgs} from '../types';
 
 export const evalReference = (

@@ -1,4 +1,4 @@
-import {Streamable} from '../../misc/stream';
+import {Streamable} from '../../streamable';
 
 export const consumeEscaped = (stream: Streamable<string>, end: string): string | null => {
     let escaped = false;

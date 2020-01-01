@@ -1,4 +1,4 @@
-import {TokenStream} from '../misc/token-stream';
+import {TokenStream} from '../tokenizer/stream/token-stream';
 
 export type ASTNode = Declaration | CharacterSelection | ValueAccessor | ConditionalStatement |
     Arguments | Func | Multiplier | Tag | BinaryExpressionValue | Type | Group | Multiplier | Reference | Block | Str;

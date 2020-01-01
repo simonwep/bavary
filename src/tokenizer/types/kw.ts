@@ -1,9 +1,9 @@
-import {Streamable}                 from '../../misc/stream';
+import {Streamable}                 from '../../streamable';
 import {consumeWhile}               from '../tools/consume';
 import {isNonWhitespace, isNumeric} from '../tools/is';
-import {RawType}                    from '../types';
+import {Token}                      from '../types';
 
-export const kw = (stream: Streamable<string>): RawType | null => {
+export const kw = (stream: Streamable<string>): Token | null => {
     const str = consumeWhile(stream, (v, c) => {
         return isNonWhitespace(v) || !!(isNumeric(v) && c.length);
     });
@@ -11,5 +11,5 @@ export const kw = (stream: Streamable<string>): RawType | null => {
     return str.length ? {
         type: 'kw',
         value: str
-    } as RawType : null;
+    } as Token : null;
 };

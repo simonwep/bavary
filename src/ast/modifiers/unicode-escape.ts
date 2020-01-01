@@ -1,4 +1,4 @@
-import {RawType}  from '../../tokenizer/types';
+import {Token}    from '../../tokenizer/types';
 import {maybe}    from '../tools/maybe';
 import {optional} from '../tools/optional';
 
@@ -11,7 +11,7 @@ export const parseUnicodeEscape = maybe<number>(stream => {
         return null;
     }
 
-    const sequence = String((stream.next() as RawType).value);
+    const sequence = String((stream.next() as Token).value);
     if (!sequence.startsWith('u')) {
         return null;
     }

@@ -1,4 +1,4 @@
-import {TokenStream}                                      from '../../../misc/token-stream';
+import {TokenStream}                                      from '../../../tokenizer/stream/token-stream';
 import {parseIdentifier, parseString, parseValueAccessor} from '../../internal';
 import {expect}                                           from '../../tools/expect';
 import {skipWhitespace}                                   from '../../tools/skip-whitespace';

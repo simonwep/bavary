@@ -1,4 +1,4 @@
-import {RawType}    from '../../tokenizer/types';
+import {Token}      from '../../tokenizer/types';
 import {maybe}      from '../tools/maybe';
 import {Identifier} from '../types';
 
@@ -10,7 +10,7 @@ export const parseIdentifier = maybe<Identifier>(stream => {
     let name = '';
 
     while (stream.hasNext(true)) {
-        const {type, value} = stream.peek(true) as RawType;
+        const {type, value} = stream.peek(true) as Token;
 
         if (type === 'ws') {
             break;

@@ -1,8 +1,8 @@
-import {Streamable}     from '../../misc/stream';
+import {Streamable}     from '../../streamable';
 import {consumeEscaped} from '../tools/escaped';
-import {RawType}        from '../types';
+import {Token}          from '../types';
 
-export const str = (stream: Streamable<string>): RawType | null => {
+export const str = (stream: Streamable<string>): Token | null => {
 
     for (const char of ['\'', '"', '`']) {
         stream.stash();
@@ -15,7 +15,7 @@ export const str = (stream: Streamable<string>): RawType | null => {
                 return {
                     type: 'str',
                     value
-                } as RawType;
+                } as Token;
             }
         }
 

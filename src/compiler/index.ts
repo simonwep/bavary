@@ -1,5 +1,5 @@
 import {Declaration, Group}                               from '../ast/types';
-import {Streamable}                                       from '../misc/stream';
+import {Streamable}                                       from '../streamable';
 import {evalGroup}                                        from './internal';
 import {Scope}                                            from './scope';
 import {CompilerConfig, Parser, ParsingResultObjectValue} from './types';

@@ -1,19 +1,13 @@
-import {ParsingError} from './parsing-error';
-
-export type RangeInformation = {
-    start: number;
-    end: number;
-}
 
 /**
  * Creates a new stream out of an array of values and an optional "source-map"
  * @param vals
- * @param source Optional source-code to prettify error messages
+ * @param source Optional source
  * @returns Streaming object
  */
-export class Streamable<T extends RangeInformation | string> {
+export class Streamable<T> {
 
-    private readonly source: string | null;
+    protected readonly source: string | null;
     protected readonly vals: ArrayLike<T>;
     protected readonly length: number;
     private readonly stashed: Array<number>;
@@ -61,28 +55,5 @@ export class Streamable<T extends RangeInformation | string> {
      */
     recycle(): void {
         this.stashed.pop();
-    }
-
-    /**
-     * Throws an ParsingError
-     * @param msg
-     */
-    throwError(msg: string): never {
-        const {index, source} = this;
-
-        /* istanbul ignore if */
-        if (!source) {
-
-            // Currently not used, maybe in the future
-            throw new ParsingError(msg);
-        } else if (this.hasNext()) {
-
-            // Expect peeked value to be of type RangeInformation
-            const peek = this.peek() as RangeInformation;
-            throw new ParsingError(source, msg, peek.start, peek.end);
-        }
-
-        // Otherwise use current index as start and end value
-        throw new ParsingError(source, msg, index, index);
     }
 }

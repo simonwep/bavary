@@ -1,4 +1,4 @@
-import {TokenStream}        from '../../../misc/token-stream';
+import {TokenStream}        from '../../../tokenizer/stream/token-stream';
 import {parseValueAccessor} from '../../nodes/value-accessor';
 import {DeleteModifier}     from '../../types';
 

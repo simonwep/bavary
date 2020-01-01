@@ -1,13 +1,13 @@
-import {Streamable}   from '../../misc/stream';
+import {Streamable}   from '../../streamable';
 import {consumeWhile} from '../tools/consume';
 import {isWhiteSpace} from '../tools/is';
-import {RawType}      from '../types';
+import {Token}        from '../types';
 
-export const ws = (stream: Streamable<string>): RawType | null => {
+export const ws = (stream: Streamable<string>): Token | null => {
     const ws = consumeWhile(stream, isWhiteSpace);
 
     return ws.length ? {
         type: 'ws',
         value: ws
-    } as RawType : null;
+    } as Token : null;
 };

@@ -1,5 +1,5 @@
-import {Streamable} from '../misc/stream';
-import {RawType}    from './types';
+import {Streamable} from '../streamable';
+import {Token}      from './types';
 import {kw}         from './types/kw';
 import {num}        from './types/num';
 import {punc}       from './types/punc';
@@ -19,9 +19,9 @@ const parser = [
  * @param str
  * @returns {[]}
  */
-export const tokenize = (str: string): Array<RawType> => {
+export const tokenize = (str: string): Array<Token> => {
     const stream = new Streamable(str);
-    const tokens: Array<RawType> = [];
+    const tokens: Array<Token> = [];
 
     /* eslint-disable no-labels */
     outer: while (stream.hasNext()) {
@@ -60,7 +60,7 @@ export const tokenize = (str: string): Array<RawType> => {
                 ...parsed,
                 start,
                 end: stream.index
-            } as RawType);
+            } as Token);
 
             continue outer;
         }

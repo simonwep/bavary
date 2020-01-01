@@ -1,15 +1,15 @@
-import {Streamable}    from '../../misc/stream';
+import {Streamable}    from '../../streamable';
 import {isPunctuation} from '../tools/is';
-import {RawType}       from '../types';
+import {Token}         from '../types';
 
-export const punc = (stream: Streamable<string>): RawType | null => {
+export const punc = (stream: Streamable<string>): Token | null => {
 
     /* istanbul ignore else */
     if (isPunctuation(stream.peek() as string)) {
         return {
             type: 'punc',
             value: stream.next()
-        } as RawType;
+        } as Token;
     }
 
     // Basicall everyhing which ends here must be a puncuation characters...

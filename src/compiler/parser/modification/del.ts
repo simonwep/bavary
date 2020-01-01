@@ -1,6 +1,6 @@
 import {DeleteModifier, ModifierTarget} from '../../../ast/types';
-import {typeOf}                         from '../../../misc/type-of';
 import {lookupValue}                    from '../../tools/lookup-value';
+import {typeOf}                         from '../../tools/type-of';
 import {ParsingResultObject}            from '../../types';
 
 export const del = (res: ModifierTarget, mod: DeleteModifier): void | never => {

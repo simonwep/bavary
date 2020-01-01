@@ -1,5 +1,5 @@
 import {ValueAccessorPath} from '../../ast/types';
-import {typeOf}            from '../../misc/type-of';
+import {typeOf}            from './type-of';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const lookupValue = (source: any, path: ValueAccessorPath): unknown => {
