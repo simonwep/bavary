@@ -2,9 +2,11 @@ import {Streamable}     from '../../streamable';
 import {consumeEscaped} from '../tools/escaped';
 import {Token}          from '../types';
 
+const quotationCharacters = ['\'', '"'];
+
 export const str = (stream: Streamable<string>): Token | null => {
 
-    for (const char of ['\'', '"', '`']) {
+    for (const char of quotationCharacters) {
         stream.stash();
 
         if (stream.peek() === char) {
