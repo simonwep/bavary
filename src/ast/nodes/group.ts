@@ -1,11 +1,11 @@
-import {parseCharacterSelecton, parseConditionalStatement, parseFunction, parseMultiplier, parseReference, parseString} from '../internal';
-import {parseCombinator}                                                                                                from '../modifiers/combinator';
-import {check}                                                                                                          from '../tools/check';
-import {combine}                                                                                                        from '../tools/combine';
-import {expect}                                                                                                         from '../tools/expect';
-import {maybe}                                                                                                          from '../tools/maybe';
-import {optional}                                                                                                       from '../tools/optional';
-import {BinaryCombinator, Group, GroupValue}                                                                            from '../types';
+import {parseCharacterSelecton, parseConditionalStatement, parseFunction, parseIgnored, parseMultiplier, parseReference, parseString} from '../internal';
+import {parseCombinator}                                                                                                              from '../modifiers/combinator';
+import {check}                                                                                                                        from '../tools/check';
+import {combine}                                                                                                                      from '../tools/combine';
+import {expect}                                                                                                                       from '../tools/expect';
+import {maybe}                                                                                                                        from '../tools/maybe';
+import {optional}                                                                                                                     from '../tools/optional';
+import {BinaryCombinator, Group, GroupValue}                                                                                          from '../types';
 
 export const parseGroup = maybe<Group>(stream => {
 
@@ -18,6 +18,7 @@ export const parseGroup = maybe<Group>(stream => {
     const parsers = combine<GroupValue | null>(
         parseConditionalStatement,
         parseFunction,
+        parseIgnored,
         parseGroup,
         parseReference,
         parseCharacterSelecton,

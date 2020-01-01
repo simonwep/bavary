@@ -50,17 +50,35 @@ export const evalDeclaration = (
 
             break;
         }
-        case 'group': {
-            const res = evalGroup({config, stream, decl, scope, result});
+        case 'ignored': {
+            const {value} = decl;
+            const res = evalGroup({
+                config, stream, scope,
+                decl: value,
+                result: {pure: false, obj: {}, str: ''}
+            });
 
             if (!res) {
-                if (decl.multiplier) {
-                    const {type} = decl.multiplier;
 
-                    // Check if group need to be matched
-                    if (type !== 'one-infinity') {
-                        break;
-                    }
+                // Check if group need to be matched
+                if (value.multiplier && value.multiplier.type !== 'one-infinity') {
+                    break;
+                }
+
+                stream.pop();
+                return false;
+            }
+
+            break;
+        }
+        case 'group': {
+            const res = evalGroup({config, stream, scope, decl, result});
+
+            if (!res) {
+
+                // Check if group need to be matched
+                if (decl.multiplier && decl.multiplier.type !== 'one-infinity') {
+                    break;
                 }
 
                 stream.pop();

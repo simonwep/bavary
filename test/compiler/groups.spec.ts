@@ -33,4 +33,15 @@ describe('[COM] Nested groups', () => {
         expect(parse('')).to.deep.equal([]);
         expect(parse('AC')).to.deep.equal(null);
     });
+
+    it('Should ignore a group if wrapped in slashes', () => {
+        const parse = compile(`
+            entry [
+                'he' /['ll']/ 'o'
+            ]
+        `);
+
+        expect(parse('hello')).to.equal('heo');
+        expect(parse('heo')).to.equal(null);
+    });
 });
