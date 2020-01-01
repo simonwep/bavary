@@ -310,11 +310,12 @@ if (#foo.bam[3].baz != null) [
 > Undefined tags throw an error!
 
 #### Operators
-Use these to fine-tune your condition:
+Use them to fine-tune your conditional statement:
 
 | Sign | Description | Example |
 | ---- | ----------- | ------- |
 | `<` / `>`  | Greater- / Smaller-than, compatible with both strings and numbers | `if (#a < #b) [...]` |
+| `<=` / `>=`  | Greater- / Smaller-or-equal-than | `if (#a <= #b) [...]` |
 | `=` | Equal, strictly compares numbers, strings and `null` values | `if (#a = "ABC") [...]` |
 | `!=` | Not equal, strictly compares numbers, strings and `null` values | `if (#a != 25) [...]` |
 | `\|` | or-operator, one of the conditions need to be true | `if (#a = "ABC" \| #b < 10) [...]` |
@@ -332,8 +333,7 @@ if (#numA > 100 & #strA < #strB | (#numA = #obj[3].a)) [
 ]
 ```
 
-The `else`-branch is optional therefore it's possible to chain if-statements (you can still add a `else`-branch at the end if you want though):
-
+It's possible to directly chain if-statements / using another if-statement as else-branch making an `else-if`-statement.
 ```
 if (...) [
  
@@ -345,6 +345,8 @@ if (...) [
 > You can chain as many if-statements as you want.
 
 #### Constants
+Constants can be used within conditional statements to make comparisons which aren't possible otherwise.
+
 | Name | Description | Example |
 | ---- | ----------- | ------- |
 | `null` | `null`-value, used to determine whenever a value is null | `if (#a = null) [...]` |
