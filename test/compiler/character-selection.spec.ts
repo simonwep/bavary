@@ -29,11 +29,16 @@ describe('[COM] Character selection', () => {
         expect(parse('j')).to.equal(null);
     });
 
-    it('Should work with unicode escapes', () => {
-        const parse = compile('entry [[(\\u0000 - \\uffff except \\uffa1)]+]');
+    it('Should work with hex values', () => {
+        const parse = compile('entry [(\\x0000 - \\xffff except \\xffa1)+]');
 
         expect(parse('äüö')).to.equal('äüö');
         expect(parse('xlkjﾡ')).to.equal(null);
+    });
+
+    it('Should throw an error on invalid hex values', () => {
+        expect(() => compile('entry [(\\xz000)]')).to.throw();
+        expect(() => compile('entry [(\\xf00)]')).to.throw();
     });
 
     it('Should work with multipliers', () => {

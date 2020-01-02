@@ -1,9 +1,9 @@
-import {Token}              from '../../../tokenizer/types';
-import {parseUnicodeEscape} from '../../modifiers/unicode-escape';
-import {maybe}              from '../../tools/maybe';
+import {Token}             from '../../../tokenizer/types';
+import {maybe}             from '../../tools/maybe';
+import {parseHexCharacter} from './hex-character';
 
 export const parseToken = maybe<number>(stream => {
-    const unicode = parseUnicodeEscape(stream);
+    const unicode = parseHexCharacter(stream);
 
     if (unicode !== null) {
         return unicode;
