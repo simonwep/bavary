@@ -5,9 +5,9 @@ Usage of the double-quote in the string itself is possible by escaping it
 ```html
 entry {
     
-    // Allow all characters in the utf-8 range
+    // Match all characters except the quotation character
     <str-body> = [
-        ['\\\\"' | (\\u0000 - \\uffff except \\")]+
+        ['\\\\"' | (. except \\")]+
     ]
     
     default [
@@ -26,9 +26,9 @@ and only then tries to match any character inside of it (except the quotation ma
 const parse = compile(`
     entry {
         
-        // Allow all characters in the utf-8 range
+        // Match all characters except the quotation character
         <str-body> = [
-            ['\\\\"' | (\\u0000 - \\uffff except \\")]+
+            ['\\\\"' | (. except \\")]+
         ]
         
         default [

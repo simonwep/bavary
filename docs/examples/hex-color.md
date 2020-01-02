@@ -4,7 +4,7 @@ It supports the 3- and 4-shorthand as well as the written out 4 and 8 character 
 
 ```html
 entry {
-    <hex> = [(0 - 9) | (a - f)]
+    <hex> = [(\d, a - f)]
     <hex-pair> = [<hex> <hex>]
     
     default [
@@ -27,7 +27,7 @@ The definition will return an object with `r`, `g`, `b` and an optional alpha-va
 ```js
 const parse = compile(`
     entry {
-        <hex> = ['0' to '9' | 'a' to 'f']
+        <hex> = [(\\d, a - f)]
         <hex-pair> = [<hex> <hex>]
         
         default [

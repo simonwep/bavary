@@ -4,7 +4,7 @@ describe('[EXAMPLE] hex-color', () => {
 
     const parse = compile(`
         entry {
-            <hex> = [(0 - 9) | (a - f)]
+            <hex> = [(\\d, a - f)]
             <hex-pair> = [<hex> <hex>]
             
             default [

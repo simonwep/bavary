@@ -7,7 +7,7 @@ describe('[EXAMPLE] strings', () => {
             
             // Allow all characters in the utf-8 range
             <str-body> = [
-                ['\\\\"' | (\\u0000 - \\uffff except \\")]+
+                ['\\\\"' | (. except \\")]+
             ]
             
             default [
