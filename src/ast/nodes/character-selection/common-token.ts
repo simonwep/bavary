@@ -14,13 +14,13 @@ export const parseCommonToken = maybe<CharacterSelectionArray>(stream => {
 
     const token = stream.next(true);
     if (!token) {
-        // TODO: TS-Bug? throwError has as return-type never but a return is required?
-        return stream.throwError('Expected token.');
+        stream.throwError('Expected token.');
     } else if (token.type === 'ws') {
         stream.throwError(`Expected token but got "${token.value}".`);
     }
 
-    const tv = token.value as string;
+    // TODO: TS thinks token could be null, see https://github.com/microsoft/TypeScript/issues/35964
+    const tv = token!.value as string;
     const target = commonTokens[tv];
 
     if (target === undefined) {

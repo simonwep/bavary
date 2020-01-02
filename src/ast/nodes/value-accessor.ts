@@ -12,10 +12,10 @@ const parseObjectAccessor = maybe<string>(stream => {
 
     const ident = parseIdentifier(stream);
     if (!ident) {
-        return stream.throwError('Expected identifier.');
+        stream.throwError('Expected identifier.');
     }
 
-    return ident.value;
+    return ident!.value;
 });
 
 const parseArrayAccessor = maybe<number>(stream => {
