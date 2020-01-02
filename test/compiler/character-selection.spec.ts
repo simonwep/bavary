@@ -59,4 +59,58 @@ describe('[COM] Character selection', () => {
         expect(parse('abcdefg')).to.equal('abcdefg');
         expect(parse('ab')).to.equal(null);
     });
+
+    it('Should translate the common token: \\t (tab)', () => {
+        const parse = compile(`
+            entry [(\\t)+]
+        `);
+
+        expect(parse('\t\t\t')).to.equal('\t\t\t');
+        expect(parse('\t\n\t')).to.equal(null);
+    });
+
+    it('Should translate the common token: \\n (newline)', () => {
+        const parse = compile(`
+            entry [(\\n)+]
+        `);
+
+        expect(parse('\n\n')).to.equal('\n\n');
+        expect(parse('\ns\n')).to.equal(null);
+    });
+
+    it('Should translate the common token: \\s (whitespace)', () => {
+        const parse = compile(`
+            entry [(\\s)+]
+        `);
+
+        expect(parse('      \t\n')).to.equal('      \t\n');
+        expect(parse('    s  \t\n')).to.equal(null);
+    });
+
+    it('Should translate the common token: \\d (digit)', () => {
+        const parse = compile(`
+            entry [(\\d)+]
+        `);
+
+        expect(parse('0123456789')).to.equal('0123456789');
+        expect(parse('01234 56789')).to.equal(null);
+    });
+
+    it('Should translate the common token: \\w (word character)', () => {
+        const parse = compile(`
+            entry [(\\w)+]
+        `);
+
+        expect(parse('HelloWorld_')).to.equal('HelloWorld_');
+        expect(parse('Hello World_')).to.equal(null);
+    });
+
+    it('Should translate the common token: . (anything)', () => {
+        const parse = compile(`
+            entry [(. except \\d)+]
+        `);
+
+        expect(parse('hello world!')).to.equal('hello world!');
+        expect(parse('hello world 2!')).to.equal(null);
+    });
 });

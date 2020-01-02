@@ -1,8 +1,8 @@
-import {TokenStream}        from '../../../tokenizer/stream/token-stream';
 import {Token}              from '../../../tokenizer/types';
 import {parseUnicodeEscape} from '../../modifiers/unicode-escape';
+import {maybe}              from '../../tools/maybe';
 
-export const parseToken = (stream: TokenStream): number | null => {
+export const parseToken = maybe<number>(stream => {
     const unicode = parseUnicodeEscape(stream);
 
     if (unicode !== null) {
@@ -34,7 +34,9 @@ export const parseToken = (stream: TokenStream): number | null => {
         const escapedValue = String(escaped.value);
 
         if (escaped.type !== 'punc') {
-            stream.throwError('Only punctuation characters need to be escaped.');
+
+            // Must be a common-token
+            return null;
         }
 
         stream.next();
@@ -42,4 +44,4 @@ export const parseToken = (stream: TokenStream): number | null => {
     }
 
     return nextValue.charCodeAt(0);
-};
+});
