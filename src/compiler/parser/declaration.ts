@@ -50,37 +50,21 @@ export const evalDeclaration = (
 
             break;
         }
-        case 'ignored': {
-            const {value} = decl;
+        case 'ignored':
+        case 'group': {
+            const group = decl.type === 'ignored' ? decl.value : decl;
             const res = evalGroup({
                 config, stream, scope,
-                decl: value,
-                result: {pure: false, obj: {}, str: ''}
+                decl: group,
+                result: decl.type === 'ignored' ? {pure: false, obj: {}, str: ''} : result
             });
 
-            if (!res) {
-
-                // Check if group need to be matched
-                if (value.multiplier && value.multiplier.type !== 'one-infinity') {
-                    break;
-                }
-
-                stream.pop();
-                return false;
-            }
-
-            break;
-        }
-        case 'group': {
-            const res = evalGroup({config, stream, scope, decl, result});
-
-            if (!res) {
-
-                // Check if group need to be matched
-                if (decl.multiplier && decl.multiplier.type !== 'one-infinity') {
-                    break;
-                }
-
+            /**
+             * The declaration is considered to be false if the result is null
+             * and either no multiplier (The group would be required) or the multipliers
+             * is not "optional" which would be the only one where null counts as true.
+             */
+            if (!res && (!group.multiplier || group.multiplier.type !== 'optional')) {
                 stream.pop();
                 return false;
             }

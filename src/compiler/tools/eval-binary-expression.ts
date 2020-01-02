@@ -67,6 +67,8 @@ export function evalBinaryExpression(result: ParsingResult, bex: BinaryExpressio
         [leftVal, rightVal] = [rightVal, leftVal];
     }
 
+    // There are duplicates which are kept for simplification purposes
+    /* istanbul ignore next */
     switch (operator) {
         case '|':
             return strictBoolean(leftVal) || strictBoolean(rightVal);
