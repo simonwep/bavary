@@ -57,6 +57,16 @@ Groups can always have [multipliers](#multipliers) appended to it:
 entry ['a' | 'b' | ['c' 'd']*]+
 ```
 
+You can prevent the result from being added to your result-obj/str by wrapping a group into slashes (`/`):
+```html
+entry [
+    'hello'
+
+    // The string " world" will be skipped in the final result whereby only "hello" gets returned
+    /[' world']/
+]
+```
+
 
 ### Multipliers
 Groups generally (and types used _in_ groups) can have multipliers to define how often the given sequence should occur:

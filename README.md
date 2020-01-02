@@ -16,7 +16,7 @@
     <a href="https://www.npmjs.com/package/@bavary/core"><img
        alt="Download count"
        src="https://img.shields.io/npm/dm/@bavary/core.svg?style=flat-square"></a>
-    <img alt="Current version" src="https://img.shields.io/github/tag/Simonwep/bavary.svg?color=21068E&label=version&style=flat-square">
+    <img alt="Current version" src="https://img.shields.io/github/tag/Simonwep/bavary.svg?color=387EFF&label=version&style=flat-square">
     <a href="https://github.com/sponsors/Simonwep"><img
        alt="Support me"
        src="https://img.shields.io/badge/github-support-387eff.svg?style=flat-square"></a>
@@ -84,7 +84,7 @@ Check out the [documentation](docs/syntax.md) to get started or jump directly in
 3. [number](docs/examples/number.md) - Parsing floats and integers with optional scientific notation.
 
 
-#### Related packages
+## Related packages
 * [@bavary/core](https://github.com/Simonwep/bavary) _- Parser and compiler._
 * [@bavary/cli](https://github.com/Simonwep/bavary-cli) _- CLI with development server._
 * [@bavary/bavary-lib](https://github.com/Simonwep/bavary-lib) _- Standard library with extensions for bavary._
