@@ -1,5 +1,6 @@
 import {Streamable} from '../streamable';
 import {Token}      from './types';
+import {cmt}        from './types/cmt';
 import {kw}         from './types/kw';
 import {num}        from './types/num';
 import {punc}       from './types/punc';
@@ -7,6 +8,7 @@ import {str}        from './types/str';
 import {ws}         from './types/ws';
 
 const parser = [
+    cmt,
     ws,
     str,
     kw,
@@ -33,19 +35,6 @@ export const tokenize = (str: string): Array<Token> => {
 
             if (!parsed) {
                 continue;
-            }
-
-            // Check if token could be the beginning of a comment
-            if (parsed.value === '/' && stream.peek() === '/') {
-                while (stream.hasNext()) {
-                    if (stream.peek() === '\n') {
-                        break;
-                    }
-
-                    stream.next();
-                }
-
-                continue outer;
             }
 
             // There may be a comment between whitespace, concatenate that
