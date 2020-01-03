@@ -29,11 +29,18 @@ describe('[COM] Character selection', () => {
         expect(parse('j')).to.equal(null);
     });
 
-    it('Should work with hex values', () => {
-        const parse = compile('entry [(\\x0000 - \\xffff except \\xffa1)+]');
+    it('Should work with hex characters points', () => {
+        const parse = compile('entry [(. except \\xffa1)+]');
 
         expect(parse('äüö')).to.equal('äüö');
         expect(parse('xlkjﾡ')).to.equal(null);
+    });
+
+    it('Should work with octal character points', () => {
+        const parse = compile('entry [(\\141 - \\172)+]');
+
+        expect(parse('abcdefgz')).to.equal('abcdefgz');
+        expect(parse('abcDc')).to.equal(null);
     });
 
     it('Should throw an error on invalid hex values', () => {

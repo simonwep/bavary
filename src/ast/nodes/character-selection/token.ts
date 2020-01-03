@@ -1,13 +1,14 @@
-import {TokenStream}       from '../../../tokenizer/stream/token-stream';
-import {Token}             from '../../../tokenizer/types';
-import {maybe}             from '../../tools/maybe';
-import {parseHexCharacter} from './hex-character';
+import {TokenStream}         from '../../../tokenizer/stream/token-stream';
+import {Token}               from '../../../tokenizer/types';
+import {maybe}               from '../../tools/maybe';
+import {parseHexCharacter}   from './hex-character';
+import {parseOctalCharacter} from './octal-character';
 
 export const parseToken = maybe<number>((stream: TokenStream) => {
-    const unicode = parseHexCharacter(stream);
+    const characterCodePoint = parseHexCharacter(stream) || parseOctalCharacter(stream);
 
-    if (unicode !== null) {
-        return unicode;
+    if (characterCodePoint !== null) {
+        return characterCodePoint;
     }
 
     // Check if there are any chars left before using .next()
