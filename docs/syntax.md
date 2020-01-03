@@ -1,18 +1,35 @@
 > Before you start, you can also checkout [examples](examples) directly!
 
 #### Content
-1. [Entry type](#entry-type) _- Each parser starts with it._
-2. [Character Selection](#character-selection) _- Core concept._
-3. [Groups](#group-definition) _- Group related items._
-4. [Multipliers](#multipliers) _- How (and how often) should things get matched._
-5. [Types](#type-definition) _- Give groups or [blocks](#block-definition) a name._
-6. [Blocks](#block-definition) _- Scope [types](#type-definition) an things which are related to each other._
-7. [Tags](#tags) _- Give used [types](#type-definition) a name._
-8. [Operators](#operators) _- Specify how a result should be processed._  
-   8.1. [Spread Operator](#spread-operator) _- Let the result of a [type](#type-definition) bubble up._  
-   8.2. [Modifiers](#modifiers) _- Alter the result of a [type](#type-definition)._  
-9. [Types with Arguments](#types-with-arguments) _- Dynamically inject groups into [types](#type-definition)._
-10. [Conditional Statements](#conditional-statements) _- Parse by condition._
+1. [Comments](#comments) _- Everything should be properly documented, especially parser._
+2. [Entry type](#entry-type) _- Each parser starts with it._
+3. [Character Selection](#character-selection) _- Core concept._
+4. [Groups](#group-definition) _- Group related items._
+5. [Multipliers](#multipliers) _- How (and how often) should things get matched._
+6. [Types](#type-definition) _- Give groups or [blocks](#block-definition) a name._
+7. [Blocks](#block-definition) _- Scope [types](#type-definition) an things which are related to each other._
+8. [Tags](#tags) _- Give used [types](#type-definition) a name._
+9. [Operators](#operators) _- Specify how a result should be processed._  
+   9.1. [Spread Operator](#spread-operator) _- Let the result of a [type](#type-definition) bubble up._  
+   9.2. [Modifiers](#modifiers) _- Alter the result of a [type](#type-definition)._  
+10. [Types with Arguments](#types-with-arguments) _- Dynamically inject groups into [types](#type-definition)._
+11. [Conditional Statements](#conditional-statements) _- Parse by condition._
+
+### Comments
+There are two ways to make comments (and both work the exact same way as in JS):
+
+> Single-line comments
+```
+// Hi! This is a single-line comment as we can see.
+[imagine lots of code here] // They work the same as in JavaScript!
+```
+
+> Multi-line comments
+```
+/** <-- the second asterisk is already part of the comment. It just looks better to use two asterisks :)
+ * Multi-line comments are useful to write larger parts of documentation!
+ */
+```
 
 ### Entry type
 Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type declaration](#type-definition) **or**
@@ -32,15 +49,26 @@ Everything is build upon matching different types of single characters / -ranges
 | Name | Description | Example |
 | ---- | ----------- | ------- |
 | Single Character | Matches exactly the given character | `'A'` |
+| Hex character  | Matches the 16-bit character with the given hex value | `\x0f` `\xfa15` |
 | Character range | Matches every character between two anchor-chars | `(a - z)` |
 | Character range with excludet characters | Excludes a char-range or single character | `(a - z except g, h)`  |
-| UTF-8 Range | Matches every character between two utf8 character-codes | `(\uxxxx - \uxxxx)` where `x` must be a valid hexadecimal value |
 
 Character selection could also have [multipliers](#multipliers) attached to it, for example `(a - z, except d - g, z){4, 7}`: Matches all characters **between `a` and `z`** except the range `d` to `g` and the character `z`
 4 to 7 times.
 
 **All punctuation characters** need to be escaped: `(\- - \+)` (`-` to `+`) / `(\\\n - \t)` (`\n` to `\t`, line-breaks need to be escaped too). How often these
 need to be escaped depends on the way you load your definitions (string-literal e.g. inline, text-file etc.).
+
+You can use a sub-set of common-tokens used in regex to avoid rewriting commonly used sequences:
+
+| Token | Description | Example |
+| ----- | ----------- | ------- | 
+| `.` | Stands for anything, can be used to reverse-select characters | `(. except \d)` |
+| `\t` | Tab character | `(\t)` |
+| `\n` | Newline character | `(\n)` |
+| `\s` | Any whitespace character (Same as  `(' ', \t, \n)`) | `(\s)` |
+| `\d` | Any digit (Same as  `(0 - 9)`) | `(\d)` |
+| `\w` | Any word character (Same as  `(a - z, A - Z, 0 - 9, \_)`) | `(\w)` |
 
 
 ### Group definition
