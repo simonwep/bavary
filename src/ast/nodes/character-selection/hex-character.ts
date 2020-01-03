@@ -1,8 +1,9 @@
-import {isValidHex} from '../../tools/is-valid-hex';
-import {maybe}      from '../../tools/maybe';
-import {optional}   from '../../tools/optional';
+import {TokenStream} from '../../../tokenizer/stream/token-stream';
+import {isValidHex}  from '../../tools/is-valid-hex';
+import {maybe}       from '../../tools/maybe';
+import {optional}    from '../../tools/optional';
 
-export const parseHexCharacter = maybe<number>(stream => {
+export const parseHexCharacter = maybe<number>((stream: TokenStream) => {
 
     if (!optional(stream, false, 'punc', '\\')) {
         return null;

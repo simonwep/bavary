@@ -1,10 +1,11 @@
+import {TokenStream}                                             from '../../tokenizer/stream/token-stream';
 import {parseArguments, parseBlock, parseGroup, parseIdentifier} from '../internal';
 import {expect}                                                  from '../tools/expect';
 import {maybe}                                                   from '../tools/maybe';
 import {optional}                                                from '../tools/optional';
 import {Declaration}                                             from '../types';
 
-export const parseDeclaration = maybe<Declaration>(stream => {
+export const parseDeclaration = maybe<Declaration>((stream: TokenStream) => {
 
     // Parse optional variant
     const variant = optional(stream, false, 'kw', 'entry', 'default', 'export');

@@ -1,13 +1,14 @@
-import {parseGroup} from '../internal';
-import {expect}     from '../tools/expect';
-import {maybe}      from '../tools/maybe';
-import {optional}   from '../tools/optional';
-import {Ignored}    from '../types';
+import {TokenStream} from '../../tokenizer/stream/token-stream';
+import {parseGroup}  from '../internal';
+import {expect}      from '../tools/expect';
+import {maybe}       from '../tools/maybe';
+import {optional}    from '../tools/optional';
+import {Ignored}     from '../types';
 
 /**
  * Parses a group which will later be ignored in the final result
  */
-export const parseIgnored = maybe<Ignored>(stream => {
+export const parseIgnored = maybe<Ignored>((stream: TokenStream) => {
     if (!optional(stream, false, 'punc', '/')) {
         return null;
     }

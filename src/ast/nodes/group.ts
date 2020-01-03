@@ -1,3 +1,4 @@
+import {TokenStream}                                                                                                                  from '../../tokenizer/stream/token-stream';
 import {parseCharacterSelecton, parseConditionalStatement, parseFunction, parseIgnored, parseMultiplier, parseReference, parseString} from '../internal';
 import {parseCombinator}                                                                                                              from '../modifiers/combinator';
 import {check}                                                                                                                        from '../tools/check';
@@ -7,7 +8,7 @@ import {maybe}                                                                  
 import {optional}                                                                                                                     from '../tools/optional';
 import {BinaryCombinator, Group, GroupValue}                                                                                          from '../types';
 
-export const parseGroup = maybe<Group>(stream => {
+export const parseGroup = maybe<Group>((stream: TokenStream) => {
 
     // It may be a group
     if (!optional(stream, false, 'punc', '[')) {
@@ -43,7 +44,7 @@ export const parseGroup = maybe<Group>(stream => {
                 if (sign === comg.sign) {
 
                     // Still the same binary combinator since the sign is the same
-                    comg.value.push(value as GroupValue);
+                    comg.value.push(value);
                 } else {
 
                     /**
@@ -74,12 +75,12 @@ export const parseGroup = maybe<Group>(stream => {
         } else if (comg) {
 
             // Last element of combinator, push it and set current combinator back to null
-            comg.value.push(value as GroupValue);
+            comg.value.push(value);
             comg = null;
         } else {
 
             // Element does no correspond to any binary combinator
-            values.push(value as GroupValue);
+            values.push(value);
         }
     }
 

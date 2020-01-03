@@ -1,7 +1,8 @@
-import {expect}     from '../tools/expect';
-import {maybe}      from '../tools/maybe';
-import {optional}   from '../tools/optional';
-import {Multiplier} from '../types';
+import {TokenStream} from '../../tokenizer/stream/token-stream';
+import {expect}      from '../tools/expect';
+import {maybe}       from '../tools/maybe';
+import {optional}    from '../tools/optional';
+import {Multiplier}  from '../types';
 
 const types: {[key: string]: string} = {
     '*': 'zero-infinity',
@@ -9,7 +10,7 @@ const types: {[key: string]: string} = {
     '?': 'optional'
 };
 
-export const parseMultiplier = maybe<Multiplier>(stream => {
+export const parseMultiplier = maybe<Multiplier>((stream: TokenStream) => {
     const mp = optional(stream, true, 'punc', '*', '+', '?', '{');
 
     if (mp === '{') {

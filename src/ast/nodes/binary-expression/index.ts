@@ -55,7 +55,7 @@ function maybeBinary(
     return left;
 }
 
-export const parseBinaryExpression = maybe<BinaryExpression>(stream => {
+export const parseBinaryExpression = maybe<BinaryExpression>((stream: TokenStream) => {
     if (!optional(stream, false, 'punc', '(')) {
         return null;
     }
@@ -80,5 +80,5 @@ export const parseBinaryExpression = maybe<BinaryExpression>(stream => {
     }
 
     expect(stream, false, 'punc', ')');
-    return bex as BinaryExpression;
+    return bex;
 });

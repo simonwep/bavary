@@ -1,3 +1,4 @@
+import {TokenStream}                                                from '../../tokenizer/stream/token-stream';
 import {parseArguments, parseIdentifier, parseMultiplier, parseTag} from '../internal';
 import {parseModification}                                          from '../modifiers/modifications';
 import {parseSpreadOperator}                                        from '../modifiers/spread-operator';
@@ -6,7 +7,7 @@ import {maybe}                                                      from '../too
 import {optional}                                                   from '../tools/optional';
 import {Reference}                                                  from '../types';
 
-export const parseReference = maybe<Reference>(stream => {
+export const parseReference = maybe<Reference>((stream: TokenStream) => {
 
     // It may have a spread operator attached to it
     const spread = parseSpreadOperator(stream);

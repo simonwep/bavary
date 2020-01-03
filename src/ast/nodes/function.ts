@@ -1,3 +1,4 @@
+import {TokenStream}                                                        from '../../tokenizer/stream/token-stream';
 import {parseGroup, parseIdentifier, parseReference, parseString, parseTag} from '../internal';
 import {check}                                                              from '../tools/check';
 import {combine}                                                            from '../tools/combine';
@@ -7,7 +8,7 @@ import {optional}                                                           from
 import {skipWhitespace}                                                     from '../tools/skip-whitespace';
 import {Func, FuncArgument}                                                 from '../types';
 
-export const parseFunction = maybe<Func>(stream => {
+export const parseFunction = maybe<Func>((stream: TokenStream) => {
 
     skipWhitespace(stream);
     const name = parseIdentifier(stream);

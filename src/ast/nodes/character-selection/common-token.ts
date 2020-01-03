@@ -1,9 +1,10 @@
+import {TokenStream}             from '../../../tokenizer/stream/token-stream';
 import {maybe}                   from '../../tools/maybe';
 import {optional}                from '../../tools/optional';
 import {CharacterSelectionArray} from '../../types';
 import {commonTokens}            from './common-tokens';
 
-export const parseCommonToken = maybe<CharacterSelectionArray>(stream => {
+export const parseCommonToken = maybe<CharacterSelectionArray>((stream: TokenStream) => {
 
     // The . character stands for anything
     if (optional(stream, false, 'punc', '.')) {
@@ -19,8 +20,7 @@ export const parseCommonToken = maybe<CharacterSelectionArray>(stream => {
         stream.throwError(`Expected token but got "${token.value}".`);
     }
 
-    // TODO: TS thinks token could be null, see https://github.com/microsoft/TypeScript/issues/35964
-    const tv = token!.value as string;
+    const tv = token.value as string;
     const target = commonTokens[tv];
 
     if (target === undefined) {

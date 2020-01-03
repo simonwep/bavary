@@ -1,3 +1,4 @@
+import {TokenStream}                                 from '../../../tokenizer/stream/token-stream';
 import {parseMultiplier}                             from '../../internal';
 import {expect}                                      from '../../tools/expect';
 import {maybe}                                       from '../../tools/maybe';
@@ -5,7 +6,7 @@ import {optional}                                    from '../../tools/optional'
 import {CharacterSelection, CharacterSelectionArray} from '../../types';
 import {parseSequence}                               from './sequence';
 
-export const parseCharacterSelecton = maybe<CharacterSelection>(stream => {
+export const parseCharacterSelecton = maybe<CharacterSelection>((stream: TokenStream) => {
     if (!optional(stream, false, 'punc', '(')) {
         return null;
     }

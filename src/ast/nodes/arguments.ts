@@ -1,10 +1,11 @@
+import {TokenStream}                 from '../../tokenizer/stream/token-stream';
 import {parseGroup, parseIdentifier} from '../internal';
 import {maybe}                       from '../tools/maybe';
 import {optional}                    from '../tools/optional';
 import {skipWhitespace}              from '../tools/skip-whitespace';
 import {Arguments}                   from '../types';
 
-export const parseArguments = maybe<Arguments>(stream => {
+export const parseArguments = maybe<Arguments>((stream: TokenStream) => {
     const args: Arguments = [];
 
     while (true) {

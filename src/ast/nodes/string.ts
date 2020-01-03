@@ -1,8 +1,9 @@
-import {maybe}    from '../tools/maybe';
-import {optional} from '../tools/optional';
-import {Str}      from '../types';
+import {TokenStream} from '../../tokenizer/stream/token-stream';
+import {maybe}       from '../tools/maybe';
+import {optional}    from '../tools/optional';
+import {Str}         from '../types';
 
-export const parseString = maybe<Str>(stream => {
+export const parseString = maybe<Str>((stream: TokenStream) => {
     const string = optional(stream, false, 'str');
 
     if (string !== null && !(string as string).length) {

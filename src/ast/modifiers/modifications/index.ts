@@ -18,7 +18,7 @@ const parsers: {
  * Parses a lookup-sequence
  * @type {Function}
  */
-export const parseModification = maybe<Modifiers | null>(stream => {
+export const parseModification = maybe<Modifiers | null>((stream: TokenStream) => {
     if (!optional(stream, true, 'punc', '{')) {
         return null;
     }

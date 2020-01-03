@@ -1,3 +1,4 @@
+import {TokenStream}        from '../../tokenizer/stream/token-stream';
 import {parseDeclaration}   from '../internal';
 import {check}              from '../tools/check';
 import {expect}             from '../tools/expect';
@@ -5,7 +6,7 @@ import {maybe}              from '../tools/maybe';
 import {optional}           from '../tools/optional';
 import {Block, Declaration} from '../types';
 
-export const parseBlock = maybe<Block>(stream => {
+export const parseBlock = maybe<Block>((stream: TokenStream) => {
 
     // It may be a block
     if (!optional(stream, false, 'punc', '{')) {
