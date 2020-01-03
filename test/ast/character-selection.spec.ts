@@ -19,7 +19,8 @@ describe('[AST] Character selection', () => {
         'entry [(a - z a except b)]',
         'entry [(except a)]',
         'entry [(a - z]',
-        'entry [(\\u123l - z)]',
-        'entry [(\\u12322 - z)]'
+        'entry [(\\099)]',
+        'entry [(\\x123l - z)]',
+        'entry [(\\x12322 - z)]'
     ]);
 });
