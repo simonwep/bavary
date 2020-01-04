@@ -1,18 +1,14 @@
 import {TokenStream}                                                        from '../../tokenizer/stream/token-stream';
 import {parseGroup, parseIdentifier, parseReference, parseString, parseTag} from '../internal';
-import {check}                                                              from '../tools/check';
 import {combine}                                                            from '../tools/combine';
-import {expect}                                                             from '../tools/expect';
 import {maybe}                                                              from '../tools/maybe';
-import {optional}                                                           from '../tools/optional';
-import {skipWhitespace}                                                     from '../tools/skip-whitespace';
 import {Func, FuncArgument}                                                 from '../types';
 
 export const parseFunction = maybe<Func>((stream: TokenStream) => {
 
-    skipWhitespace(stream);
+    stream.consumeSpace();
     const name = parseIdentifier(stream);
-    if (!name || !optional(stream, false, 'punc', '(')) {
+    if (!name || !stream.optional(false, 'punc', '(')) {
         return null;
     }
 
@@ -26,13 +22,13 @@ export const parseFunction = maybe<Func>((stream: TokenStream) => {
 
     // Parse arguments
     const args = [];
-    while (!check(stream, false, 'punc', ')')) {
-        skipWhitespace(stream);
+    while (!stream.match(false, 'punc', ')')) {
+        stream.consumeSpace();
         if (args.length) {
-            expect(stream, false, 'punc', ',');
+            stream.expect(false, 'punc', ',');
         }
 
-        skipWhitespace(stream);
+        stream.consumeSpace();
         const arg = parse(stream);
         if (!arg) {
             stream.throwError('Expected an a group, tag or identifier.');
@@ -41,7 +37,7 @@ export const parseFunction = maybe<Func>((stream: TokenStream) => {
         args.push(arg);
     }
 
-    expect(stream, false, 'punc', ')');
+    stream.expect(false, 'punc', ')');
     return {
         type: 'function',
         name: name.value,

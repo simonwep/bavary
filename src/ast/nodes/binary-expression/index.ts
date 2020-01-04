@@ -1,10 +1,7 @@
 import {TokenStream}                               from '../../../tokenizer/stream/token-stream';
 import {parseIdentifier, parseNumber, parseString} from '../../internal';
 import {combine}                                   from '../../tools/combine';
-import {expect}                                    from '../../tools/expect';
 import {maybe}                                     from '../../tools/maybe';
-import {optional}                                  from '../../tools/optional';
-import {skipWhitespace}                            from '../../tools/skip-whitespace';
 import {BinaryExpression, BinaryExpressionValue}   from '../../types';
 import {operatorPriority}                          from './operator-priority';
 import {taggedValueAccessor}                       from './tagged-value-accessor';
@@ -24,8 +21,8 @@ function maybeBinary(
 ): BinaryExpression | BinaryExpressionValue {
     stream.stash();
 
-    const operator = optional(stream, false, 'punc') as string
-        + (optional(stream, true, 'punc') || '');
+    const operator = stream.optional(false, 'punc') as string
+        + (stream.optional(true, 'punc') || '');
 
     if (!operator || !(operator in operatorPriority)) {
         stream.pop();
@@ -37,7 +34,7 @@ function maybeBinary(
     if (pr > base) {
 
         // Parse right-hand value
-        skipWhitespace(stream);
+        stream.consumeSpace();
         const rightValue = parse(stream);
         if (!rightValue) {
             stream.throwError('Expected right-hand value');
@@ -56,7 +53,7 @@ function maybeBinary(
 }
 
 export const parseBinaryExpression = maybe<BinaryExpression>((stream: TokenStream) => {
-    if (!optional(stream, false, 'punc', '(')) {
+    if (!stream.optional(false, 'punc', '(')) {
         return null;
     }
 
@@ -79,6 +76,6 @@ export const parseBinaryExpression = maybe<BinaryExpression>((stream: TokenStrea
         stream.throwError('Expected binary expression.');
     }
 
-    expect(stream, false, 'punc', ')');
+    stream.expect(false, 'punc', ')');
     return bex;
 });

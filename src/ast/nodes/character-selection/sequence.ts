@@ -1,5 +1,4 @@
 import {TokenStream}             from '../../../tokenizer/stream/token-stream';
-import {optional}                from '../../tools/optional';
 import {CharacterSelectionArray} from '../../types';
 import {parseCommonToken}        from './common-token';
 import {parseToken}              from './token';
@@ -25,7 +24,7 @@ export const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
         }
 
         // There may be a range seletion
-        if (optional(stream, false, 'punc', '-')) {
+        if (stream.optional(false, 'punc', '-')) {
             const b = parseToken(stream);
 
             if (b === null) {
@@ -40,7 +39,7 @@ export const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
             sequence.push(a);
         }
 
-    } while (optional(stream, false, 'punc', ','));
+    } while (stream.optional(false, 'punc', ','));
 
     return sequence;
 };

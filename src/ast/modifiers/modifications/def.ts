@@ -1,7 +1,5 @@
 import {TokenStream}                                      from '../../../tokenizer/stream/token-stream';
 import {parseIdentifier, parseString, parseValueAccessor} from '../../internal';
-import {expect}                                           from '../../tools/expect';
-import {skipWhitespace}                                   from '../../tools/skip-whitespace';
 import {DefineModifier}                                   from '../../types';
 
 export const parseDefineModifier = (stream: TokenStream): DefineModifier => {
@@ -10,8 +8,8 @@ export const parseDefineModifier = (stream: TokenStream): DefineModifier => {
         stream.throwError('Expected identifier');
     }
 
-    expect(stream, false, 'punc', '=');
-    skipWhitespace(stream);
+    stream.expect(false, 'punc', '=');
+    stream.consumeSpace();
 
     const value = parseString(stream) || parseValueAccessor(stream);
     if (!value) {

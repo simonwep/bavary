@@ -1,15 +1,13 @@
 import {TokenStream} from '../../tokenizer/stream/token-stream';
 import {parseGroup}  from '../internal';
-import {expect}      from '../tools/expect';
 import {maybe}       from '../tools/maybe';
-import {optional}    from '../tools/optional';
 import {Ignored}     from '../types';
 
 /**
  * Parses a group which will later be ignored in the final result
  */
 export const parseIgnored = maybe<Ignored>((stream: TokenStream) => {
-    if (!optional(stream, false, 'punc', '/')) {
+    if (!stream.optional(false, 'punc', '/')) {
         return null;
     }
 
@@ -19,7 +17,7 @@ export const parseIgnored = maybe<Ignored>((stream: TokenStream) => {
         stream.throwError('Expected group.');
     }
 
-    expect(stream, false, 'punc', '/');
+    stream.expect(false, 'punc', '/');
     return {
         type: 'ignored',
         value: group

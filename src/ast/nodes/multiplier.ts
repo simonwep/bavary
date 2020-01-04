@@ -1,7 +1,5 @@
 import {TokenStream} from '../../tokenizer/stream/token-stream';
-import {expect}      from '../tools/expect';
 import {maybe}       from '../tools/maybe';
-import {optional}    from '../tools/optional';
 import {Multiplier}  from '../types';
 
 const types: {[key: string]: string} = {
@@ -11,13 +9,13 @@ const types: {[key: string]: string} = {
 };
 
 export const parseMultiplier = maybe<Multiplier>((stream: TokenStream) => {
-    const mp = optional(stream, true, 'punc', '*', '+', '?', '{');
+    const mp = stream.optional(true, 'punc', '*', '+', '?', '{');
 
     if (mp === '{') {
-        const start = expect(stream, false, 'num');
+        const start = stream.expect(false, 'num');
 
-        expect(stream, false, 'punc', ',');
-        const end = optional(stream, false, 'num');
+        stream.expect(false, 'punc', ',');
+        const end = stream.optional(false, 'num');
 
         if (end !== null) {
 
@@ -27,7 +25,7 @@ export const parseMultiplier = maybe<Multiplier>((stream: TokenStream) => {
             }
         }
 
-        expect(stream, false, 'punc', '}');
+        stream.expect(false, 'punc', '}');
         return {
             type: 'range',
             value: {

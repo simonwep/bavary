@@ -2,9 +2,7 @@ import {TokenStream}                                                from '../../
 import {parseArguments, parseIdentifier, parseMultiplier, parseTag} from '../internal';
 import {parseModification}                                          from '../modifiers/modifications';
 import {parseSpreadOperator}                                        from '../modifiers/spread-operator';
-import {expect}                                                     from '../tools/expect';
 import {maybe}                                                      from '../tools/maybe';
-import {optional}                                                   from '../tools/optional';
 import {Reference}                                                  from '../types';
 
 export const parseReference = maybe<Reference>((stream: TokenStream) => {
@@ -13,7 +11,7 @@ export const parseReference = maybe<Reference>((stream: TokenStream) => {
     const spread = parseSpreadOperator(stream);
 
     // It may be a type
-    if (!optional(stream, false, 'punc', '<')) {
+    if (!stream.optional(false, 'punc', '<')) {
         return null;
     }
 
@@ -28,7 +26,7 @@ export const parseReference = maybe<Reference>((stream: TokenStream) => {
             value.push(next.value);
         }
 
-        if (!optional(stream, false, 'punc', ':')) {
+        if (!stream.optional(false, 'punc', ':')) {
             break;
         } else {
             expectIdentifier = true;
@@ -50,7 +48,7 @@ export const parseReference = maybe<Reference>((stream: TokenStream) => {
     const mods = parseModification(stream);
     const args = parseArguments(stream);
 
-    expect(stream, false, 'punc', '>');
+    stream.expect(false, 'punc', '>');
     const mult = parseMultiplier(stream);
 
     return {

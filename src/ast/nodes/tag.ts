@@ -1,11 +1,10 @@
 import {TokenStream}     from '../../tokenizer/stream/token-stream';
 import {parseIdentifier} from '../internal';
 import {maybe}           from '../tools/maybe';
-import {optional}        from '../tools/optional';
 import {Tag}             from '../types';
 
 export const parseTag = maybe<Tag>((stream: TokenStream) => {
-    if (!optional(stream, true, 'punc', '#')) {
+    if (!stream.optional(true, 'punc', '#')) {
         return null;
     }
 

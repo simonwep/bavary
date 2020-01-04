@@ -1,15 +1,14 @@
 import {TokenStream}             from '../../../tokenizer/stream/token-stream';
 import {maybe}                   from '../../tools/maybe';
-import {optional}                from '../../tools/optional';
 import {CharacterSelectionArray} from '../../types';
 import {commonTokens}            from './common-tokens';
 
 export const parseCommonToken = maybe<CharacterSelectionArray>((stream: TokenStream) => {
 
     // The . character stands for anything
-    if (optional(stream, false, 'punc', '.')) {
+    if (stream.optional(false, 'punc', '.')) {
         return [[0, 65535]];
-    } else if (!optional(stream, false, 'punc', '\\')) {
+    } else if (!stream.optional(false, 'punc', '\\')) {
         return null;
     }
 

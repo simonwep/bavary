@@ -1,17 +1,14 @@
 import {TokenStream}                                                                                                                  from '../../tokenizer/stream/token-stream';
 import {parseCharacterSelecton, parseConditionalStatement, parseFunction, parseIgnored, parseMultiplier, parseReference, parseString} from '../internal';
 import {parseCombinator}                                                                                                              from '../modifiers/combinator';
-import {check}                                                                                                                        from '../tools/check';
 import {combine}                                                                                                                      from '../tools/combine';
-import {expect}                                                                                                                       from '../tools/expect';
 import {maybe}                                                                                                                        from '../tools/maybe';
-import {optional}                                                                                                                     from '../tools/optional';
 import {BinaryCombinator, Group, GroupValue}                                                                                          from '../types';
 
 export const parseGroup = maybe<Group>((stream: TokenStream) => {
 
     // It may be a group
-    if (!optional(stream, false, 'punc', '[')) {
+    if (!stream.optional(false, 'punc', '[')) {
         return null;
     }
 
@@ -29,7 +26,7 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
     // The following code is chaos, and thats ok.
     // It works as intended and does the job just fine.
     let comg: null | BinaryCombinator = null;
-    while (!check(stream, false, 'punc', ']')) {
+    while (!stream.match(false, 'punc', ']')) {
         const value = parsers(stream);
         const sign = parseCombinator(stream);
 
@@ -89,7 +86,7 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
         stream.throwError('Combinator is missing a value!');
     }
 
-    expect(stream, false, 'punc', ']');
+    stream.expect(false, 'punc', ']');
 
     return {
         type: 'group',

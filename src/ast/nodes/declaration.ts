@@ -1,18 +1,16 @@
 import {TokenStream}                                             from '../../tokenizer/stream/token-stream';
 import {parseArguments, parseBlock, parseGroup, parseIdentifier} from '../internal';
-import {expect}                                                  from '../tools/expect';
 import {maybe}                                                   from '../tools/maybe';
-import {optional}                                                from '../tools/optional';
 import {Declaration}                                             from '../types';
 
 export const parseDeclaration = maybe<Declaration>((stream: TokenStream) => {
 
     // Parse optional variant
-    const variant = optional(stream, false, 'kw', 'entry', 'default', 'export');
+    const variant = stream.optional(false, 'kw', 'entry', 'default', 'export');
     let name = null, args = null;
 
     // It may be a named one
-    if (optional(stream, false, 'punc', '<')) {
+    if (stream.optional(false, 'punc', '<')) {
 
         name = parseIdentifier(stream);
         if (!name) {
@@ -21,8 +19,8 @@ export const parseDeclaration = maybe<Declaration>((stream: TokenStream) => {
 
         // Parse arguments
         args = parseArguments(stream);
-        expect(stream, false, 'punc', '>');
-        expect(stream, false, 'punc', '=');
+        stream.expect(false, 'punc', '>');
+        stream.expect(false, 'punc', '=');
     } else if (!variant) {
         stream.throwError('Expected declaration.');
     }

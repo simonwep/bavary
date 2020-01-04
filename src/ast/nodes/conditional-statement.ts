@@ -1,11 +1,10 @@
 import {TokenStream}                                 from '../../tokenizer/stream/token-stream';
 import {parseBinaryExpression, parseGroup}           from '../internal';
 import {maybe}                                       from '../tools/maybe';
-import {optional}                                    from '../tools/optional';
 import {ConditionalStatement, Group, ParserFunction} from '../types';
 
 export const parseConditionalStatement: ParserFunction<ConditionalStatement> = maybe((stream: TokenStream) => {
-    if (!optional(stream, false, 'kw', 'if')) {
+    if (!stream.optional(false, 'kw', 'if')) {
         return null;
     }
 
@@ -23,7 +22,7 @@ export const parseConditionalStatement: ParserFunction<ConditionalStatement> = m
 
     // The else-branch is optional
     let alternative: Group | ConditionalStatement | null = null;
-    if (optional(stream, false, 'kw', 'else')) {
+    if (stream.optional(false, 'kw', 'else')) {
         alternative = parseGroup(stream) || parseConditionalStatement(stream);
 
         if (!alternative) {

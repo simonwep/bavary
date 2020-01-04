@@ -1,8 +1,5 @@
 import {TokenStream}         from '../../../tokenizer/stream/token-stream';
-import {expect}              from '../../tools/expect';
 import {maybe}               from '../../tools/maybe';
-import {optional}            from '../../tools/optional';
-import {skipWhitespace}      from '../../tools/skip-whitespace';
 import {Modifier, Modifiers} from '../../types';
 import {parseDefineModifier} from './def';
 import {parseDeleteModifier} from './del';
@@ -19,7 +16,7 @@ const parsers: {
  * @type {Function}
  */
 export const parseModification = maybe<Modifiers | null>((stream: TokenStream) => {
-    if (!optional(stream, true, 'punc', '{')) {
+    if (!stream.optional(true, 'punc', '{')) {
         return null;
     }
 
@@ -27,18 +24,18 @@ export const parseModification = maybe<Modifiers | null>((stream: TokenStream) =
 
     // Parse key-value combies
     do {
-        const op = optional(stream, false, 'kw', 'def', 'del');
+        const op = stream.optional(false, 'kw', 'def', 'del');
 
         if (!op) {
             stream.throwError('Expected operator');
         } else {
-            skipWhitespace(stream);
+            stream.consumeSpace();
             set.push(parsers[op](stream));
         }
 
         // Pairs are seperated via a comma
-    } while (optional(stream, false, 'punc', ','));
+    } while (stream.optional(false, 'punc', ','));
 
-    expect(stream, false, 'punc', '}');
+    stream.expect(false, 'punc', '}');
     return set;
 });

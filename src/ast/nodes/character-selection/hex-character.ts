@@ -1,15 +1,14 @@
 import {TokenStream} from '../../../tokenizer/stream/token-stream';
 import {isValidHex}  from '../../tools/is-valid-hex';
 import {maybe}       from '../../tools/maybe';
-import {optional}    from '../../tools/optional';
 
 export const parseHexCharacter = maybe<number>((stream: TokenStream) => {
 
-    if (!optional(stream, false, 'punc', '\\')) {
+    if (!stream.optional(false, 'punc', '\\')) {
         return null;
     }
 
-    const next = optional(stream, false, 'kw');
+    const next = stream.optional(false, 'kw');
     if (!next || !(next as string).startsWith('x')) {
         return null;
     }

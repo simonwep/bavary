@@ -1,13 +1,11 @@
 import {TokenStream}     from '../../tokenizer/stream/token-stream';
 import {parseIdentifier} from '../internal';
 import {combine}         from '../tools/combine';
-import {expect}          from '../tools/expect';
 import {maybe}           from '../tools/maybe';
-import {optional}        from '../tools/optional';
 import {ValueAccessor}   from '../types';
 
 const parseObjectAccessor = maybe<string>((stream: TokenStream) => {
-    if (!optional(stream, true, 'punc', '.')) {
+    if (!stream.optional(true, 'punc', '.')) {
         return null;
     }
 
@@ -20,12 +18,12 @@ const parseObjectAccessor = maybe<string>((stream: TokenStream) => {
 });
 
 const parseArrayAccessor = maybe<number>((stream: TokenStream) => {
-    if (!optional(stream, true, 'punc', '[')) {
+    if (!stream.optional(true, 'punc', '[')) {
         return null;
     }
 
-    const index = expect(stream, false, 'num');
-    expect(stream, true, 'punc', ']');
+    const index = stream.expect(false, 'num');
+    stream.expect(true, 'punc', ']');
 
     return index as number;
 });

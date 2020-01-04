@@ -1,13 +1,11 @@
 import {TokenStream}                                 from '../../../tokenizer/stream/token-stream';
 import {parseMultiplier}                             from '../../internal';
-import {expect}                                      from '../../tools/expect';
 import {maybe}                                       from '../../tools/maybe';
-import {optional}                                    from '../../tools/optional';
 import {CharacterSelection, CharacterSelectionArray} from '../../types';
 import {parseSequence}                               from './sequence';
 
 export const parseCharacterSelecton = maybe<CharacterSelection>((stream: TokenStream) => {
-    if (!optional(stream, false, 'punc', '(')) {
+    if (!stream.optional(false, 'punc', '(')) {
         return null;
     }
 
@@ -15,11 +13,11 @@ export const parseCharacterSelecton = maybe<CharacterSelection>((stream: TokenSt
     const excluded: CharacterSelectionArray = [];
     included.push(...parseSequence(stream));
 
-    if (optional(stream, false, 'kw', 'except')) {
+    if (stream.optional(false, 'kw', 'except')) {
         excluded.push(...parseSequence(stream));
     }
 
-    expect(stream, false, 'punc', ')');
+    stream.expect(false, 'punc', ')');
     return {
         type: 'character-selection',
         multiplier: parseMultiplier(stream),
