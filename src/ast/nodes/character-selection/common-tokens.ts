@@ -11,6 +11,12 @@ export const commonTokens = {
     // Newline character
     'n': [10],
 
+    // Carriage return
+    'r': [13],
+
+    // Null Character
+    '0': [0],
+
     // Any whitespace character
     // [tab; newline; space]
     's': [9, 10, 32],
