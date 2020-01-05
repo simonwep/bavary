@@ -103,6 +103,14 @@ export class Scope {
     }
 
     /**
+     * Removes a member by its name from the scope
+     * @param name
+     */
+    public unregister(name: string): boolean {
+        return this.members.delete(name);
+    }
+
+    /**
      * Adds a new member to this scopes and verifies that there are no duplicates
      * @param name
      * @param value

@@ -23,6 +23,7 @@ export const evalRawReference = (
     const [target, newScope] = res;
     const typeArguments = target.arguments;
     const refArguments = [...(decl.arguments || [])];
+    const registeredTypes = [];
 
     // Check if target expects arguments
     if (typeArguments) {
@@ -44,6 +45,7 @@ export const evalRawReference = (
             }
 
             newScope.injectValue(argVal, name);
+            registeredTypes.push(name);
         }
 
         if (refArguments.length) {
@@ -65,6 +67,11 @@ export const evalRawReference = (
         config, stream, decl, result,
         scope: newScope
     });
+
+    // Remove injected arguments
+    for (const name of registeredTypes) {
+        newScope.unregister(name);
+    }
 
     // Apply modifiers if defined
     if (matches && decl.modifiers) {

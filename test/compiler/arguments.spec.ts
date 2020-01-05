@@ -84,4 +84,19 @@ describe('[COM] Arguments', () => {
             }
         });
     });
+
+    it('Should properly clean-up injected types', () => {
+        const parse = compile(`
+            <wrap-in-braces content> = [
+                /['{']/ <content> /['}']/
+            ]
+        
+            entry [<wrap-in-braces#item content=[(\\w)+]>]+
+        `);
+
+        expect(parse('{abc}{def}')).to.deep.equal([
+            {item: 'abc'},
+            {item: 'def'}
+        ]);
+    });
 });
