@@ -5,7 +5,7 @@ describe('[COM] Position marks', () => {
 
     it('Should add the __starts and __ends property to an object', () => {
         const parse = compile(`
-            <ws> = [' ' | '    ' | '\\\n']*
+            <ws> = [(\\s)*]
             <hex-color> = {
                 <hex> = [(0 - 9) | (a - f)]
                 <hex-pair> = [<hex> <hex>]

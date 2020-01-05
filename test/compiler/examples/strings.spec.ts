@@ -10,7 +10,7 @@ describe('[EXAMPLE] strings', () => {
              * Match escaped quotation-characters first.
              */ 
             <str-body> = [
-                ['\\\\"' | (. except \\")]+
+                ['\\"' | (. except \\")]+
             ]
             
             default [

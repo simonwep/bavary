@@ -12,7 +12,6 @@ export const consumeEscaped = (stream: Streamable<string>, end: string): string 
         }
 
         if (escaped) {
-            str += ch;
             escaped = false;
         } else if (ch === '\\') {
             escaped = true;
@@ -20,9 +19,9 @@ export const consumeEscaped = (stream: Streamable<string>, end: string): string 
             return str;
         } else if (!stream.hasNext()) {
             break;
-        } else {
-            str += ch;
         }
+
+        str += ch;
     }
 
     return null;

@@ -10,7 +10,7 @@ entry {
      * Match escaped quotation-characters first.
      */ 
     <str-body> = [
-        ['\\\\"' | (.^\\")]+
+        ['\\"' | (. except \\")]+
     ]
     
     default [
