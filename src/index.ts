@@ -1,4 +1,4 @@
-import {parseAST}               from './ast';
+import {parse}                  from './ast';
 import {Declaration}            from './ast/types';
 import {compileDeclarations}    from './compiler';
 import {CompilerConfig, Parser} from './compiler/types';
@@ -14,7 +14,7 @@ import {tokenize}               from './tokenizer';
 export const compile = (input: string | Array<Declaration>, config?: CompilerConfig): Parser => {
 
     // Use precompiled declarations or compile raw string
-    const tree = Array.isArray(input) ? input : parseAST(tokenize(input), input);
+    const tree = Array.isArray(input) ? input : parse(tokenize(input), input);
     return compileDeclarations(tree, config);
 };
 
@@ -23,7 +23,7 @@ export const compile = (input: string | Array<Declaration>, config?: CompilerCon
  * Can be passed into the compile function / combined with other pre-compiled declarations.
  * @param str Declarations
  */
-export const compileChunk = (str: string): Array<Declaration> => parseAST(tokenize(str), str);
+export const compileChunk = (str: string): Array<Declaration> => parse(tokenize(str), str);
 
 /**
  * Current version

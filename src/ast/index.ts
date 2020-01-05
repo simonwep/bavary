@@ -9,7 +9,7 @@ import {Declaration}      from './types';
  * @param tokens Array of raw tokens
  * @param source Source-code
  */
-export const parseAST = (tokens: Array<Token>, source: string): Array<Declaration> => {
+export const parse = (tokens: Array<Token>, source: string): Array<Declaration> => {
     const stream = new TokenStream(tokens, source);
     const declarations: Array<Declaration> = [];
 
