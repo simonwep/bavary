@@ -21,24 +21,6 @@ entry {
 
 The definition will return an object with `r`, `g`, `b` and an optional alpha-value (`a`).
 
-#### Usage and possible results:
-
-##### Code
-```js
-const parse = compile(`
-    entry {
-        <hex> = [(\\d, a - f)]
-        <hex-pair> = [<hex> <hex>]
-        
-        default [
-            '#'
-            [<hex-pair#r> <hex-pair#b> <hex-pair#g> <hex-pair#a>?] |
-            [<hex#r> <hex#b> <hex#g> <hex#a>?]
-        ]
-    }
-`);
-```
-
 ##### Valid inputs:
 | Input | Output |
 | ----- | ------ |

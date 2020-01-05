@@ -28,26 +28,6 @@ The definition contains three tags:
 2. `decimal` contains the decimal-place.
 3. `sign` contains (an optional) preceding sign (`+` or `-`).
 
-#### Usage and possible results:
-
-##### Code
-```js
-const parse = compile(`
-    entry {
-        <raw-num> = [(\\d)+]
-        <num-sign> = [ '+' | '-' ]
-        <scientific-notation> = ['e' <num-sign>? <raw-num>]
-        <scientific-num> = [<raw-num> <scientific-notation>?]
-        
-        default [
-            <num-sign#sign>?
-            [<raw-num#num>? '.' <scientific-num#decimal>] |
-            [<scientific-num#num>]
-        ]
-    }
-`);
-```
-
 ##### Valid inputs:
 | Input | Output |
 | ----- | ------ |

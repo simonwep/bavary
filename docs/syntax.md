@@ -50,6 +50,7 @@ Everything is build upon matching different types of single characters / -ranges
 | ---- | ----------- | ------- |
 | Single Character | Matches exactly the given character | `'A'` |
 | Hex character  | Matches the 16-bit character with the given hex value | `\x0f` `\xfa15` |
+| Octal character  | Matches the 8-bit character with the given octal value | `\45` `\167` |
 | Character range | Matches every character between two anchor-chars | `(a - z)` |
 | Character range with excludet characters | Excludes a char-range or single character | `(a - z except g, h)`  |
 
@@ -66,9 +67,12 @@ You can use a sub-set of common-tokens used in regex to avoid rewriting commonly
 | `.` | Stands for anything, can be used to reverse-select characters | `(. except \d)` |
 | `\t` | Tab character | `(\t)` |
 | `\n` | Newline character | `(\n)` |
+| `\r` | Carriage return | `(\r)` |
 | `\s` | Any whitespace character (Same as  `(' ', \t, \n)`) | `(\s)` |
 | `\d` | Any digit (Same as  `(0 - 9)`) | `(\d)` |
 | `\w` | Any word character (Same as  `(a - z, A - Z, 0 - 9, \_)`) | `(\w)` |
+| `\t` | Tab character | `(\t)` |
+| `\0` | Null character | `(\0)` |
 
 
 ### Group definition

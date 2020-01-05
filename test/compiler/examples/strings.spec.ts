@@ -5,7 +5,10 @@ describe('[EXAMPLE] strings', () => {
     const parse = compile(`
         entry {
             
-            // Allow all characters in the utf-8 range
+            /**
+             * Match all characters except the quotation character.
+             * Match escaped quotation-characters first.
+             */ 
             <str-body> = [
                 ['\\\\"' | (. except \\")]+
             ]
