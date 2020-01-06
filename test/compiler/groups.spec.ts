@@ -34,14 +34,16 @@ describe('[COM] Nested groups', () => {
         expect(parse('AC')).to.deep.equal(null);
     });
 
-    it('Should ignore a group if wrapped in slashes', () => {
+    it('Should ignore a group, string, reference, or character-selection if wrapped in slashes', () => {
         const parse = compile(`
+            <a-part> = ['l']
+            
             entry [
-                'he' /['ll']/ 'o'
+                'he' /<a-part>/ /'l'/ /(o - o)/
             ]
         `);
 
-        expect(parse('hello')).to.equal('heo');
+        expect(parse('hello')).to.equal('he');
         expect(parse('heo')).to.equal(null);
     });
 });

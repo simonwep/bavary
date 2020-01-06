@@ -1,7 +1,8 @@
-import {TokenStream} from '../../tokenizer/stream/token-stream';
-import {parseGroup}  from '../internal';
-import {maybe}       from '../tools/maybe';
-import {Ignored}     from '../types';
+import {TokenStream}                                                     from '../../tokenizer/stream/token-stream';
+import {parseCharacterSelecton, parseGroup, parseReference, parseString} from '../internal';
+import {combine}                                                         from '../tools/combine';
+import {maybe}                                                           from '../tools/maybe';
+import {Group, GroupValue, Ignored}                                      from '../types';
 
 /**
  * Parses a group which will later be ignored in the final result
@@ -12,14 +13,24 @@ export const parseIgnored = maybe<Ignored>((stream: TokenStream) => {
     }
 
     // The ignored statement accepts exactly one argument
-    const group = parseGroup(stream);
-    if (!group) {
-        stream.throwError('Expected group.');
+    const value = combine<GroupValue | null>(
+        parseGroup,
+        parseReference,
+        parseCharacterSelecton,
+        parseString
+    )(stream);
+
+    if (!value) {
+        stream.throwError('Expected a group-value or a group.');
     }
 
     stream.expect(false, 'punc', '/');
     return {
         type: 'ignored',
-        value: group
+        value: {
+            type: 'group',
+            multiplier: null,
+            value: [value]
+        } as Group
     } as Ignored;
 });
