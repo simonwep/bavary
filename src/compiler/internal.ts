@@ -1,4 +1,3 @@
-export * from './parser/modification';
 export * from './parser/character-selection';
 export * from './parser/combinator';
 export * from './parser/conditional-statement';

@@ -1,7 +1,7 @@
-import {ModifierTarget, Reference}      from '../../ast/types';
-import {evalRawReference}               from '../internal';
-import {typeOf}                         from '../tools/type-of';
-import {LocationDataObject, ParserArgs} from '../types';
+import {Reference}                                           from '../../ast/types';
+import {evalRawReference}                                    from '../internal';
+import {typeOf}                                              from '../tools/type-of';
+import {LocationDataObject, ParserArgs, ParsingResultObject} from '../types';
 
 export const evalReference = (
     {
@@ -37,8 +37,8 @@ export const evalReference = (
         // Save optional start / end labels
         if (config.locationData && matchesType === 'object') {
             const {end, start} = config.locationData as LocationDataObject;
-            (matches as ModifierTarget)[start] = starts;
-            (matches as ModifierTarget)[end] = stream.index - 1;
+            (matches as ParsingResultObject)[start] = starts;
+            (matches as ParsingResultObject)[end] = stream.index - 1;
         }
 
         if (decl.spread) {

@@ -1,6 +1,6 @@
 import {TokenStream}                                                                                                                  from '../../tokenizer/stream/token-stream';
 import {parseCharacterSelecton, parseConditionalStatement, parseFunction, parseIgnored, parseMultiplier, parseReference, parseString} from '../internal';
-import {parseCombinator}                                                                                                              from '../modifiers/combinator';
+import {parseCombinator}                                                                                                              from '../misc/combinator';
 import {combine}                                                                                                                      from '../tools/combine';
 import {maybe}                                                                                                                        from '../tools/maybe';
 import {BinaryCombinator, Group, GroupValue}                                                                                          from '../types';

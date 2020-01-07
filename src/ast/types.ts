@@ -75,27 +75,11 @@ export type Type = {
 export type Reference = {
     type: 'reference';
     multiplier: Multiplier | null;
-    modifiers: Modifiers | null;
     arguments: Arguments | null;
     value: Array<string>;
     tag: string | null;
     spread: boolean;
 }
-
-export type DeleteModifier = {
-    type: 'del';
-    param: ValueAccessor;
-}
-
-export type DefineModifier = {
-    type: 'def';
-    key: string;
-    value: Str | ValueAccessor;
-}
-
-export type Modifier = DefineModifier | DeleteModifier;
-export type Modifiers = Array<Modifier>;
-export type ModifierTarget = {[key: string]: unknown};
 
 export type FuncArgument = Group | Str | Tag | Reference | Identifier;
 export type Func = {
