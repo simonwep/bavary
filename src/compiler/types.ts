@@ -1,11 +1,6 @@
 import {Streamable} from '../streamable';
 import {Scope}      from './scope';
 
-export type ParsingResult = {
-    obj: ParsingResultObject;
-    str: string;
-    pure: boolean;
-}
 
 export type ParserArgs<DeclarationType> = {
     config: CompilerConfig;
@@ -14,6 +9,10 @@ export type ParserArgs<DeclarationType> = {
     scope: Scope;
     result: ParsingResult;
 }
+
+export type ParsingResult = {type: 'string'; value: string} |
+    {type: 'object'; value: ParsingResultObject} |
+    {type: 'array'; value: Array<ParsingResultObjectValue>};
 
 export type ParsingResultObjectValue = Array<ParsingResultObjectValue> | ParsingResultObject | string | number | null ;
 export type ParsingResultObject = {

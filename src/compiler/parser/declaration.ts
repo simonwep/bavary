@@ -56,7 +56,7 @@ export const evalDeclaration = (
             const res = evalGroup({
                 config, stream, scope,
                 decl: group,
-                result: decl.type === 'ignored' ? {pure: false, obj: {}, str: ''} : result
+                result: decl.type === 'ignored' ? undefined : result
             });
 
             /**
@@ -88,6 +88,43 @@ export const evalDeclaration = (
             }
 
             break;
+        }
+        case 'define': {
+            if (result.type !== 'object') {
+                throw new Error('Can\'t use define within arrays or strings.');
+            }
+
+            const value = (typeof decl.value === 'string') ? decl.value : evalGroup({
+                decl: decl.value,
+                scope,
+                config,
+                stream
+            });
+
+            if (value) {
+                result.value[decl.name] = value;
+            } else {
+                return false;
+            }
+
+            break;
+        }
+        case 'push': {
+            if (result.type !== 'array') {
+                throw new Error('Can\'t use define within arrays or strings.');
+            }
+
+            const value = (typeof decl.value === 'string') ? decl.value : evalGroup({
+                decl: decl.value,
+                result,
+                scope,
+                config,
+                stream
+            });
+
+            if (!value) {
+                return false;
+            }
         }
     }
 

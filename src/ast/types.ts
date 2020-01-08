@@ -23,13 +23,28 @@ export type Argument = {
 }
 
 export type GroupValue = Reference | Str | BinaryCombinator | Group |
-    CharacterSelection | ConditionalStatement | Func | Ignored;
+    CharacterSelection | GroupStatement | ConditionalStatement | Func | Ignored;
 
 export type Group = {
     type: 'group';
+    mode: 'object' | 'array' | 'string';
     multiplier: Multiplier | null;
     value: Array<GroupValue>;
 }
+
+// TODO: Use better names for them
+export type GroupStatement = GroupObjectDefineStatement | GroupArrayPushStatement;
+export type GroupObjectDefineStatement = {
+    type: 'define';
+    name: string;
+    value: Group | string;
+}
+
+export type GroupArrayPushStatement = {
+    type: 'push';
+    value: Group | string;
+}
+
 
 export type Ignored = {
     type: 'ignored';

@@ -2,7 +2,11 @@ import {Str}        from '../../ast/types';
 import {ParserArgs} from '../types';
 
 export const evalString = (
-    {stream, decl, result}: ParserArgs<Str>
+    {
+        stream,
+        decl,
+        result
+    }: ParserArgs<Str>
 ): boolean => {
     const {value} = decl;
 
@@ -18,6 +22,9 @@ export const evalString = (
     }
 
     stream.recycle();
-    result.str += value;
+    if (result.type === 'string') {
+        result.value += value;
+    }
+
     return true;
 };

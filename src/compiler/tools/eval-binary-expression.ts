@@ -18,11 +18,13 @@ function resolveValueOf(result: ParsingResult, bexv: BinaryExpressionValue): str
             // Strictly check if tag is defined in the current result
             const [tag] = bexv.value;
 
-            if (result.obj[tag] === undefined) {
+            if (result.type !== 'object') {
+                throw new Error(`Value accessor can only be used within objects.`);
+            } else if (result.value[tag] === undefined) {
                 throw new Error(`Tag "${tag}" isn't defined anywhere but used in a condition.`);
             }
 
-            return lookupValue(result.obj, bexv.value) as string | number | boolean | null;
+            return lookupValue(result.value, bexv.value) as string | number | boolean | null;
         }
         case 'identifier': {
 

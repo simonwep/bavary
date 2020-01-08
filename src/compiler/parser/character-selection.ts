@@ -1,6 +1,6 @@
 import {CharacterSelection, CharacterSelectionArray} from '../../ast/types';
-import {maybeMultiplier}                             from './multiplier';
 import {ParserArgs}                                  from '../types';
+import {maybeMultiplier}                             from './multiplier';
 
 /**
  * Checks if any range or value of a CharacterSelectionArray matches the given char-code
@@ -48,9 +48,23 @@ export const evalCharacterSelection = (
 
     // Resolve corresponding multiplier
     if (Array.isArray(matches)) {
-        result.str += (matches).join('');
+        const strValue = (matches).join('');
+
+
+        if (result.type === 'string') {
+            result.value += strValue;
+        } else if (result.type === 'array') {
+            result.value.push(strValue);
+        }
+
     } else if (typeof matches === 'string') {
-        result.str += matches;
+
+        if (result.type === 'string') {
+            result.value += matches;
+        } else if (result.type === 'array') {
+            result.value.push(matches);
+        }
+
     } else if (!matches && !decl.multiplier || (decl.multiplier && decl.multiplier.type !== 'optional')) {
         return false;
     }

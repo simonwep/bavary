@@ -1,9 +1,22 @@
-import {TokenStream}                                                                                                                  from '../../tokenizer/stream/token-stream';
-import {parseCharacterSelecton, parseConditionalStatement, parseFunction, parseIgnored, parseMultiplier, parseReference, parseString} from '../internal';
-import {parseCombinator}                                                                                                              from '../misc/combinator';
-import {combine}                                                                                                                      from '../tools/combine';
-import {maybe}                                                                                                                        from '../tools/maybe';
-import {BinaryCombinator, Group, GroupValue}                                                                                          from '../types';
+import {TokenStream}     from '../../tokenizer/stream/token-stream';
+import {
+    parseCharacterSelecton,
+    parseConditionalStatement,
+    parseFunction,
+    parseGroupStatement,
+    parseIgnored,
+    parseMultiplier,
+    parseReference,
+    parseString
+}                        from '../internal';
+import {parseCombinator} from '../misc/combinator';
+import {combine}         from '../tools/combine';
+import {maybe}           from '../tools/maybe';
+import {
+    BinaryCombinator,
+    Group,
+    GroupValue
+}                        from '../types';
 
 export const parseGroup = maybe<Group>((stream: TokenStream) => {
 
@@ -12,8 +25,19 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
         return null;
     }
 
+    // TODO: Outsource
+    // TODO: What about functions?
+    stream.stash();
+    const mode = stream.optional(true, 'kw', 'object', 'array', 'string');
+    if (mode && !stream.optional(true, 'punc', ':')) {
+        stream.pop();
+        return null;
+    }
+
+    stream.recycle();
     const values: Array<GroupValue> = [];
     const parsers = combine<GroupValue | null>(
+        parseGroupStatement,
         parseConditionalStatement,
         parseFunction,
         parseIgnored,
@@ -90,6 +114,7 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
 
     return {
         type: 'group',
+        mode: mode || 'string',
         multiplier: parseMultiplier(stream),
         value: values
     } as Group;
