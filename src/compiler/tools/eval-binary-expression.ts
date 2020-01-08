@@ -19,7 +19,7 @@ function resolveValueOf(result: ParsingResult, bexv: BinaryExpressionValue): str
             const [tag] = bexv.value;
 
             if (result.type !== 'object') {
-                throw new Error(`Value accessor can only be used within objects.`);
+                throw new Error('Value accessor can only be used within objects.');
             } else if (result.value[tag] === undefined) {
                 throw new Error(`Tag "${tag}" isn't defined anywhere but used in a condition.`);
             }

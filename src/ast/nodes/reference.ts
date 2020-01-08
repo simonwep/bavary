@@ -1,8 +1,8 @@
-import {TokenStream}                                                from '../../tokenizer/stream/token-stream';
-import {parseArguments, parseIdentifier, parseMultiplier, parseTag} from '../internal';
-import {parseSpreadOperator}                                        from '../misc/spread-operator';
-import {maybe}                                                      from '../tools/maybe';
-import {Reference}                                                  from '../types';
+import {TokenStream}                                      from '../../tokenizer/stream/token-stream';
+import {parseArguments, parseIdentifier, parseMultiplier} from '../internal';
+import {parseSpreadOperator}                              from '../misc/spread-operator';
+import {maybe}                                            from '../tools/maybe';
+import {Reference}                                        from '../types';
 
 export const parseReference = maybe<Reference>((stream: TokenStream) => {
 
@@ -36,19 +36,10 @@ export const parseReference = maybe<Reference>((stream: TokenStream) => {
         stream.throwError('Expected identifier');
     }
 
-    // It may have a tag
-    const tag = parseTag(stream);
-
-    // A tag shouldn't be combined with a spread operator
-    if (spread && tag) {
-        stream.throwError('Type cannot have both a tag an spread operator attached to it.');
-    }
-
     const args = parseArguments(stream);
     stream.expect(false, 'punc', '>');
     return {
         type: 'reference',
-        tag: tag?.value || null,
         arguments: args,
         multiplier: parseMultiplier(stream),
         spread,

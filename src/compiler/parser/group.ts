@@ -27,5 +27,5 @@ export const evalGroup = maybeMultiplier<ParsingResultObjectValue, Group>((
     }
 
     stream.recycle();
-    return (result).value;
+    return result.value;
 });

@@ -50,7 +50,6 @@ export const evalCharacterSelection = (
     if (Array.isArray(matches)) {
         const strValue = (matches).join('');
 
-
         if (result.type === 'string') {
             result.value += strValue;
         } else if (result.type === 'array') {

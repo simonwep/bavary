@@ -1,7 +1,7 @@
-import {Reference}                                           from '../../ast/types';
-import {evalRawReference}                                    from '../internal';
-import {typeOf}                                              from '../tools/type-of';
-import {LocationDataObject, ParserArgs, ParsingResultObject} from '../types';
+import {Reference}                                                                     from '../../ast/types';
+import {evalRawReference}                                                              from '../internal';
+import {typeOf}                                                                        from '../tools/type-of';
+import {LocationDataObject, ParserArgs, ParsingResultObject, ParsingResultObjectValue} from '../types';
 
 export const evalReference = (
     {
@@ -20,17 +20,6 @@ export const evalReference = (
     // Identify result type
     const matchesType = typeOf(matches);
 
-    // If reference has a tag, immediatly attach result
-    if (decl.tag) {
-        const tagValue = result.obj[decl.tag];
-
-        if (tagValue !== undefined && tagValue !== null) {
-            throw new Error(`Tag "${decl.tag}" is already defined (Contains "${tagValue}").\nYou may used it multiple times or within a group + multipliers, you should avoid that.`);
-        }
-
-        result.obj[decl.tag] = matches;
-    }
-
     stream.stash();
     if (matches !== null) {
 
@@ -46,21 +35,30 @@ export const evalReference = (
             // Spread operator won't work with strings or arrays
             if (matchesType !== 'object') {
                 throw new Error(`"${decl.value}" doesn't return a object which is required for the spread operator to work.`);
+            } else if (result.type !== 'object') {
+
+                // TODO: Weird error message though
+                throw new Error('Spread operator can only be used within objects.');
             }
 
             // Assign result to current object
-            Object.assign(result.obj, matches);
-            result.pure = false;
-        } else if (decl.tag) {
+            Object.assign(result.value, matches);
+        } else if (matchesType === 'array') {
 
-            // Since something was matched the result is not anymore "just a string"
-            result.pure = false;
+            if (result.type === 'string' && (matches as Array<unknown>).every(v => typeof v === 'string')) {
+                result.value += (matches as Array<unknown>).join('');
+            } else if (result.type === 'array') {
+                result.value.push(...(matches as Array<ParsingResultObjectValue>));
+            } else {
+                // TODO: What happens in this case?
+            }
 
-            // Perform appropriate action
-        } else if (matchesType === 'array' && (matches as Array<unknown>).every(v => typeof v === 'string')) {
-            result.str += (matches as Array<unknown>).join(''); // Concat string sequences
         } else if (matchesType === 'string') {
-            result.str += matches as string;
+            if (result.type === 'string') {
+                result.value += matches;
+            } else if (result.type === 'array') {
+                result.value.push(matches);
+            }
         } else {
             throw new Error(`Type "${decl.value}" is missing a tag.`);
         }

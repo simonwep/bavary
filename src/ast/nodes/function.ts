@@ -1,8 +1,8 @@
-import {TokenStream}                                                        from '../../tokenizer/stream/token-stream';
-import {parseGroup, parseIdentifier, parseReference, parseString, parseTag} from '../internal';
-import {combine}                                                            from '../tools/combine';
-import {maybe}                                                              from '../tools/maybe';
-import {Func, FuncArgument}                                                 from '../types';
+import {TokenStream}                                        from '../../tokenizer/stream/token-stream';
+import {parseGroup, parseIdentifier, parseString, parseTag} from '../internal';
+import {combine}                                            from '../tools/combine';
+import {maybe}                                              from '../tools/maybe';
+import {Func, FuncArgument}                                 from '../types';
 
 export const parseFunction = maybe<Func>((stream: TokenStream) => {
 
@@ -16,8 +16,7 @@ export const parseFunction = maybe<Func>((stream: TokenStream) => {
         parseIdentifier,
         parseTag,
         parseGroup,
-        parseString,
-        parseReference
+        parseString
     );
 
     // Parse arguments

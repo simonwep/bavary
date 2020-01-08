@@ -92,11 +92,10 @@ export type Reference = {
     multiplier: Multiplier | null;
     arguments: Arguments | null;
     value: Array<string>;
-    tag: string | null;
     spread: boolean;
 }
 
-export type FuncArgument = Group | Str | Tag | Reference | Identifier;
+export type FuncArgument = Group | Str | Tag | Identifier;
 export type Func = {
     type: 'function';
     name: string;

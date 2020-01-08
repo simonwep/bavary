@@ -1,6 +1,6 @@
-import {Func}                        from '../../ast/types';
-import {evalGroup, evalRawReference} from '../internal';
-import {ParserArgs}                  from '../types';
+import {Func}       from '../../ast/types';
+import {evalGroup}  from '../internal';
+import {ParserArgs} from '../types';
 
 export const evalFunction = (
     {
@@ -17,8 +17,12 @@ export const evalFunction = (
     for (const arg of decl.args) {
         switch (arg.type) {
             case 'tag': {
-                const val = result.obj[arg.value];
 
+                if (result.type !== 'object') {
+                    throw new Error('Tags can only be used within objects.');
+                }
+
+                const val = result.value[arg.value];
                 if (val === undefined) {
                     throw new Error(`Tag "${val}" isn't defined anywhere but used in a function call.`);
                 }
@@ -37,13 +41,6 @@ export const evalFunction = (
                 resolvedArgs.push(arg.value);
                 break;
             }
-            case 'reference': {
-                resolvedArgs.push(evalRawReference({
-                    config, stream, scope,
-                    result: {pure: false, obj: {}, str: ''},
-                    decl: arg
-                }));
-            }
         }
     }
 
@@ -60,17 +57,22 @@ export const evalFunction = (
                 state: result,
 
                 setString(str): void {
-                    if (!result.pure) {
-                        throw new Error('Can\'t apply string, result isn\'t pure.');
+                    if (result.type !== 'string') {
+                        throw new Error('setString can only be used on strings');
                     }
 
-                    result.str = str;
+                    result.value = str;
                 },
 
                 setProperty(key, val): void {
-                    result.obj[key] = val;
-                    result.pure = false;
+                    if (result.type !== 'object') {
+                        throw new Error('setProperty can only be used on objects');
+                    }
+
+                    result.value[key] = val;
                 }
+
+                // TODO: Add pushValue method
             },
 
             // Resolved arguments
