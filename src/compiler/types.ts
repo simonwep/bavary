@@ -10,13 +10,16 @@ export type ParserArgs<DeclarationType> = {
     result: ParsingResult;
 }
 
-export type ParsingResultValue = string | ParsingResultObject | Array<ParsingResultObjectValue>;
-export type ParsingResult = {type: 'string'; value: string} |
-    {type: 'object'; value: ParsingResultObject} |
-    {type: 'array'; value: Array<ParsingResultObjectValue>};
 
-export type ParsingResultObjectValue = Array<ParsingResultObjectValue> | ParsingResultObject | string | number | null ;
-export type ParsingResultObject = {
+// Different kinds of parsing results
+export type ParsingResultString = {type: 'string'; value: string};
+export type ParsingResultObject = {type: 'object'; value: ParsingResultObjectKVSet};
+export type ParsingResultArray = {type: 'array'; value: Array<ParsingResultObjectValue>};
+export type ParsingResult = ParsingResultString | ParsingResultObject | ParsingResultArray
+
+export type ParsingResultValue = string | ParsingResultObjectKVSet | Array<ParsingResultObjectValue>;
+export type ParsingResultObjectValue = Array<ParsingResultObjectValue> | ParsingResultObjectKVSet | string | number | null ;
+export type ParsingResultObjectKVSet = {
     // TODO: See https://stackoverflow.com/questions/59118271/using-symbol-as-object-key-type-in-typescript
     [key: string]: ParsingResultObjectValue;
 }

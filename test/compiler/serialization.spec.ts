@@ -10,9 +10,13 @@ describe('[COM] Type serialization', () => {
                 <abc> = [(a - c)]
                 <xyz> = [(x - z)]
                 
-                default [
-                    [<num#num> <abc#abc>] |
-                    [<xyz#xyz>]
+                default [object:
+                    [
+                        def num = [<num>] 
+                        def abc = [<abc>]
+                    ] | [
+                        def xyz = [<xyz>]
+                    ]
                 ]
             }
         `);
@@ -29,9 +33,9 @@ describe('[COM] Type serialization', () => {
                 <abc> = [(a - c)]
                 <xyz> = [(x - z)]
                 
-                default [
-                    [<num#a> <abc#b>] |
-                    [<num#c> <num#d>]
+                default [object:
+                    [def a = [<num>] def b = [<abc>]] |
+                    [def c = [<num>] def d = [<num>]]
                 ]
             }
         `);
@@ -48,11 +52,11 @@ describe('[COM] Type serialization', () => {
                 <abc> = [(a - c)]
                 <xyz> = [(x - z)]
                 
-                default [
-                    [<num#a> <abc#b> | <xyz#c>] |
+                default [object:
+                    [def a = [<num>] def b = [<abc>] | def c = [<xyz>]] |
                     [
-                        [<abc#b> <xyz#c> <num#a>] |
-                        [<num#a> & <abc#b> & <xyz#c>]
+                        [def b = [<abc>] def c = [<xyz>] def a = [<num>]] |
+                        [def a = [<num>] & def b = [<abc>] & def c = [<xyz>]]
                     ]
                 ]
             }

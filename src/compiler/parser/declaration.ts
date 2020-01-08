@@ -106,7 +106,7 @@ export const evalDeclaration = (
                     stream
                 });
 
-                if (res) {
+                if (res !== null) {
                     result.value[decl.name] = res;
                 } else {
                     return value.multiplier?.type === 'optional';
@@ -132,7 +132,7 @@ export const evalDeclaration = (
                     stream
                 });
 
-                return !!res || (value.multiplier?.type === 'optional');
+                return (res !== null) || (value.multiplier?.type === 'optional');
             }
         }
     }

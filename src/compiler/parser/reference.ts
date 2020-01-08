@@ -1,7 +1,7 @@
 import {Reference}                                                                     from '../../ast/types';
 import {evalRawReference}                                                              from '../internal';
-import {typeOf}                                                                        from '../tools/type-of';
-import {LocationDataObject, ParserArgs, ParsingResultObject, ParsingResultObjectValue} from '../types';
+import {typeOf}                                                                             from '../tools/type-of';
+import {LocationDataObject, ParserArgs, ParsingResultObjectKVSet, ParsingResultObjectValue} from '../types';
 
 export const evalReference = (
     {
@@ -26,8 +26,8 @@ export const evalReference = (
         // Save optional start / end labels
         if (config.locationData && matchesType === 'object') {
             const {end, start} = config.locationData as LocationDataObject;
-            (matches as ParsingResultObject)[start] = starts;
-            (matches as ParsingResultObject)[end] = stream.index - 1;
+            (matches as ParsingResultObjectKVSet)[start] = starts;
+            (matches as ParsingResultObjectKVSet)[end] = stream.index - 1;
         }
 
         if (decl.spread) {
@@ -59,9 +59,7 @@ export const evalReference = (
             } else if (result.type === 'array') {
                 result.value.push(matches);
             }
-        } else {
-            throw new Error(`Type "${decl.value}" is missing a tag.`);
-        }
+        } // TODO: Throw error if nothing happens?
     } else {
 
         // Restore previous stack position

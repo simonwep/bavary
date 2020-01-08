@@ -10,18 +10,26 @@ describe('[COM] Position marks', () => {
                 <hex> = [(0 - 9) | (a - f)]
                 <hex-pair> = [<hex> <hex>]
                 
-                default [
+                default [object:
                     '#'
                     
                     // RRGGBBAA & RRGGBB
-                    [<hex-pair#r> <hex-pair#b> <hex-pair#g> <hex-pair#a>?] |
-                    
-                    // RGBA & RGB
-                    [<hex#r> <hex#b> <hex#g> <hex#a>?]
+                    [
+                        def r = [<hex-pair>]
+                        def g = [<hex-pair>]
+                        def b = [<hex-pair>]
+                        def a = [<hex-pair>]?
+                    ] | [
+                        // RGBA & RGB
+                        def r = [<hex>]
+                        def g = [<hex>]
+                        def b = [<hex>] 
+                        def a = [<hex>]?
+                    ]
                 ]
             }
             
-            entry [
+            entry [object:
                 <ws>
                 ...<hex-color>
                 <ws>
@@ -59,18 +67,26 @@ describe('[COM] Position marks', () => {
                 <hex> = [(0 - 9) | (a - f)]
                 <hex-pair> = [<hex> <hex>]
                 
-                default [
+                default [object:
                     '#'
                     
                     // RRGGBBAA & RRGGBB
-                    [<hex-pair#r> <hex-pair#b> <hex-pair#g> <hex-pair#a>?] |
-                    
-                    // RGBA & RGB
-                    [<hex#r> <hex#b> <hex#g> <hex#a>?]
+                    [
+                        def r = [<hex-pair>]
+                        def g = [<hex-pair>]
+                        def b = [<hex-pair>]
+                        def a = [<hex-pair>]?
+                    ] | [
+                        // RGBA & RGB
+                        def r = [<hex>]
+                        def g = [<hex>]
+                        def b = [<hex>] 
+                        def a = [<hex>]?
+                    ]
                 ]
             }
             
-            entry ['((' <hex-color#col> '))']
+            entry [object: '((' def col = [<hex-color>] '))']
         `, {
             locationData: {
                 start: 'startsAt',
