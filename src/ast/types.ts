@@ -37,12 +37,12 @@ export type GroupStatement = GroupObjectDefineStatement | GroupArrayPushStatemen
 export type GroupObjectDefineStatement = {
     type: 'define';
     name: string;
-    value: Group | string;
+    value: Group | Str;
 }
 
 export type GroupArrayPushStatement = {
     type: 'push';
-    value: Group | string;
+    value: Group | Str;
 }
 
 

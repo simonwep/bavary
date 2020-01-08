@@ -15,6 +15,7 @@ export const evalGroup = maybeMultiplier<ParsingResultObjectValue, Group>((
 ): ParsingResultObjectValue => {
     stream.stash();
 
+    // TODO: Serialization
     const decs = decl.value;
     for (let i = 0; i < decs.length; i++) {
         const decl = decs[i];

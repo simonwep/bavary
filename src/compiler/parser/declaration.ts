@@ -94,17 +94,23 @@ export const evalDeclaration = (
                 throw new Error('Can\'t use define within arrays or strings.');
             }
 
-            const value = (typeof decl.value === 'string') ? decl.value : evalGroup({
-                decl: decl.value,
-                scope,
-                config,
-                stream
-            });
-
-            if (value) {
-                result.value[decl.name] = value;
+            // TODO: Outsource
+            const {value} = decl;
+            if (value.type === 'string') {
+                result.value[decl.name] = value.value;
             } else {
-                return false;
+                const res = evalGroup({
+                    decl: value,
+                    scope,
+                    config,
+                    stream
+                });
+
+                if (res) {
+                    result.value[decl.name] = res;
+                } else {
+                    return value.multiplier?.type === 'optional';
+                }
             }
 
             break;
@@ -114,16 +120,19 @@ export const evalDeclaration = (
                 throw new Error('Can\'t use define within arrays or strings.');
             }
 
-            const value = (typeof decl.value === 'string') ? decl.value : evalGroup({
-                decl: decl.value,
-                result,
-                scope,
-                config,
-                stream
-            });
+            const {value} = decl;
+            if (value.type === 'string') {
+                result.value.push(value);
+            } else {
+                const res = evalGroup({
+                    decl: value,
+                    result,
+                    scope,
+                    config,
+                    stream
+                });
 
-            if (!value) {
-                return false;
+                return !!res || (value.multiplier?.type === 'optional');
             }
         }
     }
