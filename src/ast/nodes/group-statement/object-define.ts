@@ -3,8 +3,6 @@ import {maybe}                      from '../../tools/maybe';
 import {GroupObjectDefineStatement} from '../../types';
 
 export const parseGroupObjectDefineStatement = maybe<GroupObjectDefineStatement>(stream => {
-
-    // TODO: Allow strings
     const name = stream.expect(false, 'kw');
     stream.expect(false, 'punc', '=');
 

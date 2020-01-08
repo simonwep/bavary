@@ -26,7 +26,6 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
     }
 
     // TODO: Outsource
-    // TODO: What about functions?
     stream.stash();
     const mode = stream.optional(true, 'kw', 'object', 'array', 'string');
     if (mode && !stream.optional(true, 'punc', ':')) {
