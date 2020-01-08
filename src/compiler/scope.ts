@@ -111,19 +111,6 @@ export class Scope {
     }
 
     /**
-     * Adds a new member to this scopes and verifies that there are no duplicates
-     * @param name
-     * @param value
-     */
-    private setMember(name: string, value: Scope | Declaration): void {
-        if (this.members.has(name)) {
-            throw new Error(`The type named "${name}" is already declared.`);
-        }
-
-        this.members.set(name, value);
-    }
-
-    /**
      * Injects a declaration into the current scope
      * @param value
      * @param name
@@ -173,6 +160,19 @@ export class Scope {
         }
 
         return null;
+    }
+
+    /**
+     * Adds a new member to this scopes and verifies that there are no duplicates
+     * @param name
+     * @param value
+     */
+    private setMember(name: string, value: Scope | Declaration): void {
+        if (this.members.has(name)) {
+            throw new Error(`The type named "${name}" is already declared.`);
+        }
+
+        this.members.set(name, value);
     }
 
     /**

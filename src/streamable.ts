@@ -1,4 +1,3 @@
-
 /**
  * Creates a new stream out of an array of values and an optional "source-map"
  * @param vals
@@ -7,11 +6,11 @@
  */
 export class Streamable<T> {
 
+    public index: number;
     protected readonly source: string | null;
     protected readonly vals: ArrayLike<T>;
     protected readonly length: number;
     private readonly stashed: Array<number>;
-    public index: number;
 
     constructor(vals: ArrayLike<T>, source: string | null = null) {
         this.vals = vals;

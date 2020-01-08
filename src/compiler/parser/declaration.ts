@@ -94,6 +94,8 @@ export const evalDeclaration = (
                 throw new Error('Can\'t use define within arrays or strings.');
             }
 
+            // TODO: Allow reference as direct value
+
             // TODO: Outsource
             const {value} = decl;
             if (value.type === 'string') {

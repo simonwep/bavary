@@ -1,7 +1,7 @@
-import {Reference}                                                                     from '../../ast/types';
-import {evalRawReference}                                                              from '../internal';
-import {typeOf}                                                                             from '../tools/type-of';
-import {LocationDataObject, ParserArgs, ParsingResultObjectKVSet, ParsingResultObjectValue} from '../types';
+import {Reference}                            from '../../ast/types';
+import {evalRawReference}                     from '../internal';
+import {typeOf}                               from '../tools/type-of';
+import {ParserArgs, ParsingResultObjectValue} from '../types';
 
 export const evalReference = (
     {
@@ -13,8 +13,7 @@ export const evalReference = (
     }: ParserArgs<Reference>
 ): boolean => {
 
-    // Type may have a multiplier attached to it
-    const starts = stream.index;
+    // Resolve value of reference
     const matches = evalRawReference({config, stream, decl, scope, result});
 
     // Identify result type
@@ -22,13 +21,6 @@ export const evalReference = (
 
     stream.stash();
     if (matches !== null) {
-
-        // Save optional start / end labels
-        if (config.locationData && matchesType === 'object') {
-            const {end, start} = config.locationData as LocationDataObject;
-            (matches as ParsingResultObjectKVSet)[start] = starts;
-            (matches as ParsingResultObjectKVSet)[end] = stream.index - 1;
-        }
 
         if (decl.spread) {
 

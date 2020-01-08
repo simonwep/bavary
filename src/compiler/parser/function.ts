@@ -1,6 +1,7 @@
-import {Func}       from '../../ast/types';
-import {evalGroup}  from '../internal';
-import {ParserArgs} from '../types';
+import {Func}                                 from '../../ast/types';
+import {evalGroup}                            from '../internal';
+import {lookupValue}                          from '../tools/lookup-value';
+import {ParserArgs, ParsingResultObjectValue} from '../types';
 
 export const evalFunction = (
     {
@@ -16,18 +17,8 @@ export const evalFunction = (
     const resolvedArgs = [];
     for (const arg of decl.args) {
         switch (arg.type) {
-            case 'tag': {
-
-                if (result.type !== 'object') {
-                    throw new Error('Tags can only be used within objects.');
-                }
-
-                const val = result.value[arg.value];
-                if (val === undefined) {
-                    throw new Error(`Tag "${val}" isn't defined anywhere but used in a function call.`);
-                }
-
-                resolvedArgs.push(val);
+            case 'value-accessor': {
+                resolvedArgs.push(lookupValue(result.value, arg.value) as ParsingResultObjectValue);
                 break;
             }
             case 'group': {
@@ -52,7 +43,6 @@ export const evalFunction = (
 
     try {
         return fn(
-
             // Current state
             {state: result.value},
 

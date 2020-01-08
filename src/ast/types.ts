@@ -95,7 +95,7 @@ export type Reference = {
     spread: boolean;
 }
 
-export type FuncArgument = Group | Str | Tag | Identifier;
+export type FuncArgument = Group | Str | Identifier | ValueAccessor ;
 export type Func = {
     type: 'function';
     name: string;

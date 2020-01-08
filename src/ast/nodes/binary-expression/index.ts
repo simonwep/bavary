@@ -3,7 +3,7 @@ import {parseIdentifier, parseNumber, parseString} from '../../internal';
 import {combine}                                   from '../../tools/combine';
 import {maybe}                                     from '../../tools/maybe';
 import {BinaryExpression, BinaryExpressionValue}   from '../../types';
-import {instanceValueAccessor}                     from './instance-value-accessor';
+import {parseInstanceValueAccessor}                from './instance-value-accessor';
 import {operatorPriority}                          from './operator-priority';
 
 /**
@@ -58,7 +58,7 @@ export const parseBinaryExpression = maybe<BinaryExpression>((stream: TokenStrea
     }
 
     const parse = combine<BinaryExpressionValue | null>(
-        instanceValueAccessor,
+        parseInstanceValueAccessor,
         parseBinaryExpression,
         parseString,
         parseNumber,

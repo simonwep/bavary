@@ -8,6 +8,8 @@ export const parseConditionalStatement: ParserFunction<ConditionalStatement> = m
         return null;
     }
 
+    // TODO: Add type-of to determine group type
+
     // Parse condition
     const condition = parseBinaryExpression(stream);
     if (!condition) {
