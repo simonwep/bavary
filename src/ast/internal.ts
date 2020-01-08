@@ -12,6 +12,5 @@ export * from './nodes/ignored';
 export * from './nodes/number';
 export * from './nodes/reference';
 export * from './nodes/string';
-export * from './nodes/tag';
 export * from './nodes/value-accessor';
 export * from './nodes/group-statement';

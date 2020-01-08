@@ -1,7 +1,7 @@
 import {TokenStream} from '../tokenizer/stream/token-stream';
 
 export type ASTNode = Declaration | CharacterSelection | ValueAccessor | ConditionalStatement |
-    Ignored | Arguments | Func | Multiplier | Tag | BinaryExpressionValue | Type | Group | Reference | Block | Str;
+    Ignored | Arguments | Func | Multiplier | BinaryExpressionValue | Type | Group | Reference | Block | Str;
 
 export type ParserFunction<T> = (stream: TokenStream) => T | null;
 
@@ -100,11 +100,6 @@ export type Func = {
     type: 'function';
     name: string;
     args: Array<FuncArgument>;
-}
-
-export type Tag = {
-    type: 'tag';
-    value: string;
 }
 
 export type CharacterSelection = {

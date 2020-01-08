@@ -17,25 +17,23 @@ export const parseConditionalStatement: ParserFunction<ConditionalStatement> = m
     }
 
     // Parse then-block
-    const then = parseGroup(stream);
-    if (!then) {
+    const consequent = parseGroup(stream);
+    if (!consequent) {
         stream.throwError('Expected a group.');
     }
 
     // The else-branch is optional
-    let alternative: Group | ConditionalStatement | null = null;
+    let alternate: Group | ConditionalStatement | null = null;
     if (stream.optional(false, 'kw', 'else')) {
-        alternative = parseGroup(stream) || parseConditionalStatement(stream);
+        alternate = parseGroup(stream) || parseConditionalStatement(stream);
 
-        if (!alternative) {
+        if (!alternate) {
             stream.throwError('Expected a group.');
         }
     }
 
     return {
         type: 'conditional-statement',
-        condition,
-        consequent: then,
-        alternate: alternative
+        condition, consequent, alternate
     } as ConditionalStatement;
 });
