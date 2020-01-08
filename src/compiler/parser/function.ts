@@ -52,28 +52,9 @@ export const evalFunction = (
 
     try {
         return fn(
-            // Utils
-            {
-                state: result,
 
-                setString(str): void {
-                    if (result.type !== 'string') {
-                        throw new Error('setString can only be used on strings');
-                    }
-
-                    result.value = str;
-                },
-
-                setProperty(key, val): void {
-                    if (result.type !== 'object') {
-                        throw new Error('setProperty can only be used on objects');
-                    }
-
-                    result.value[key] = val;
-                }
-
-                // TODO: Add pushValue method
-            },
+            // Current state
+            {state: result.value},
 
             // Resolved arguments
             ...resolvedArgs

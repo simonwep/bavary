@@ -10,6 +10,7 @@ export type ParserArgs<DeclarationType> = {
     result: ParsingResult;
 }
 
+export type ParsingResultValue = string | ParsingResultObject | Array<ParsingResultObjectValue>;
 export type ParsingResult = {type: 'string'; value: string} |
     {type: 'object'; value: ParsingResultObject} |
     {type: 'array'; value: Array<ParsingResultObjectValue>};
@@ -21,28 +22,14 @@ export type ParsingResultObject = {
 }
 
 export type Parser = (content: string) => null | ParsingResultObjectValue;
-export type CustomFunction = (res: CustomFunctionUtils, ...args: Array<Array<ParsingResultObjectValue> | ParsingResultObjectValue>) => boolean;
-export type CustomFunctionUtils = {
+export type CustomFunction = (res: CustomFunctionValues, ...args: Array<Array<ParsingResultObjectValue> | ParsingResultObjectValue>) => boolean;
+export type CustomFunctionValues = {
 
     /**
      * Current state.
-     * Should only be used to access properties.
+     * Is either a array, string or object - depends on the context where it's used.
      */
-    state: ParsingResult;
-
-    /**
-     * Updates the current raw-result. Only possible if not an object already.
-     * Throws an error if the target is an object.
-     * @param str
-     */
-    setString: (str: string) => void;
-
-    /**
-     * Defines / overrides a property of the result.
-     * @param key
-     * @param value
-     */
-    setProperty: (key: string, value: ParsingResultObjectValue) => void;
+    state: ParsingResultValue;
 }
 
 export type CompilerConfig = {
