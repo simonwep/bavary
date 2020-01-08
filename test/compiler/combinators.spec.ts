@@ -42,14 +42,18 @@ describe('[COM] Combinators', () => {
 
     it('Should handle mixed combinators', () => {
         const parse = compile(`
-            entry {
+            entry { 
                 <num> = [(0 - 9)]
                 <abc> = [(a - c)]
                 <xyz> = [(x - z)]
             
-                default [
+                default [object:
                     ['a' & 'b' & 'c'] | 
-                    [<num#a> && <abc#b> && <xyz#c>] | 
+                    [
+                        def a = [<num>] && 
+                        def b = [<abc>] && 
+                        def c = [<xyz>]
+                    ] | 
                     ['e' | 'f'] | 
                     ['g' 'h']
                 ]

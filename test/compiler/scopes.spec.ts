@@ -152,7 +152,7 @@ describe('[COM] Scopes', () => {
                 default [<uppercase> | <lowercase>]
             }
 
-            entry [<characters#result>+]
+            entry [object: def result = [<characters>]+]
         `);
 
         expect(parse('ABCabzABC')).to.equal(null);

@@ -29,7 +29,7 @@ describe('[COM] Exports', () => {
                 default [<lowercase-letters> <uppercase-letters>]
             }
     
-            entry [<chars#chars>]
+            entry [object: def chars = [<chars>]]
         `);
 
         expect(parse('aB')).to.deep.equal({chars: 'aB'});
@@ -50,7 +50,10 @@ describe('[COM] Exports', () => {
                 default [<numbers> | <string-stuff>]
             }
             
-            entry [<chars:string-stuff:lowercase-letters#deep> | <chars:string-stuff#mixed> | <chars:numbers>]
+            entry [object:
+                def deep = [<chars:string-stuff:lowercase-letters>] | 
+                def mixed = [array: <chars:string-stuff>] | <chars:numbers>
+            ]
         `);
 
 

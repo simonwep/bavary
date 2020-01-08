@@ -31,7 +31,7 @@ describe('[COM] Position marks', () => {
             
             entry [object:
                 <ws>
-                ...<hex-color>
+                def hex = [object: <hex-color>]
                 <ws>
             ]+
         `, {
@@ -55,7 +55,7 @@ describe('[COM] Position marks', () => {
 
         for (let i = 0; i < expectedPositions.length; i++) {
             const [starts, ends] = expectedPositions[i];
-            const {__starts, __ends} = result[i] as {__starts: number; __ends: number};
+            const {__starts, __ends} = (result[i] as {hex: object}).hex as {__starts: number; __ends: number};
             expect(__starts).to.equal(starts);
             expect(__ends).to.equal(ends);
         }
@@ -86,7 +86,7 @@ describe('[COM] Position marks', () => {
                 ]
             }
             
-            entry [object: '((' def col = [<hex-color>] '))']
+            entry [object: '((' def col = [object: ...<hex-color>] '))']
         `, {
             locationData: {
                 start: 'startsAt',

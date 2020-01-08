@@ -5,13 +5,13 @@ describe('[COM] Arguments', () => {
 
     it('Should inject arguments as types and use defaults as fallback', () => {
         const parse = compile(`
-            <escaped sign=['"'] content> = [
+            <escaped sign=['"'] content> = [object:
                 <sign>
-                <content#body>
+                def body = [<content>]
                 <sign>
             ]
             
-            entry [...<escaped content=[(a - z, A - Z)+]>]
+            entry [object: ...<escaped content=[(a - z, A - Z)+]>]
         `);
 
         expect(parse('"hello"')).to.deep.equal({
@@ -57,9 +57,9 @@ describe('[COM] Arguments', () => {
 
     it('Should properly resolve a deep reference inside an argument', () => {
         const parse = compile(`
-            <escaped sign=['"'] content> = [
+            <escaped sign=['"'] content> = [object:
                 <sign>
-                <content#body>
+                def body = [object: ...<content>]
                 <sign>
             ]
             
@@ -68,11 +68,11 @@ describe('[COM] Arguments', () => {
                 export <lowercase> = [(a - z)+]
             }
             
-            entry [
-                ...<escaped content=[
-                    <utils:uppercase#up>
+            entry [object:
+                ...<escaped content=[object:
+                    def up = [<utils:uppercase>]
                     ' '
-                    <utils:lowercase#low>
+                    def low = [<utils:lowercase>]
                 ]>
             ]
         `);
@@ -91,7 +91,9 @@ describe('[COM] Arguments', () => {
                 /['{']/ <content> /['}']/
             ]
         
-            entry [<wrap-in-braces#item content=[(\\w)+]>]+
+            entry [object: 
+                def item = [<wrap-in-braces content=[(\\w)+]>]
+            ]+
         `);
 
         expect(parse('{abc}{def}')).to.deep.equal([

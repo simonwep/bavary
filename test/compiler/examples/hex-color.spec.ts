@@ -1,29 +1,36 @@
 import compile from './tools';
 
 describe('[EXAMPLE] hex-color', () => {
-
     const parse = compile(`
         entry {
             <hex> = [(\\d, a - f)]
             <hex-pair> = [<hex> <hex>]
             
-            default [
+            default [object:
                 '#'
                 
                 // RRGGBBAA & RRGGBB
-                [<hex-pair#r> <hex-pair#b> <hex-pair#g> <hex-pair#a>?] |
-                
-                // RGBA & RGB
-                [<hex#r> <hex#b> <hex#g> <hex#a>?]
+                [
+                    def r = [<hex-pair>]
+                    def g = [<hex-pair>]
+                    def b = [<hex-pair>]
+                    def a = [<hex-pair>]?
+                ] | [
+                    // RGBA & RGB
+                    def r = [<hex>]
+                    def g = [<hex>]
+                    def b = [<hex>] 
+                    def a = [<hex>]?
+                ]
             ]
         }
     `);
 
     parse([
-        ['#b5d', {r: 'b', b: '5', g: 'd', a: null}],
-        ['#cf5c', {r: 'c', b: 'f', g: '5', a: 'c'}],
-        ['#4eaecc', {r: '4e', b: 'ae', g: 'cc', a: null}],
-        ['#328fffcc', {r: '32', b: '8f', g: 'ff', a: 'cc'}]
+        ['#b5d', {r: 'b', g: '5', b: 'd', a: null}],
+        ['#cf5c', {r: 'c', g: 'f', b: '5', a: 'c'}],
+        ['#4eaecc', {r: '4e', g: 'ae', b: 'cc', a: null}],
+        ['#328fffcc', {r: '32', g: '8f', b: 'ff', a: 'cc'}]
     ]);
 
     parse([

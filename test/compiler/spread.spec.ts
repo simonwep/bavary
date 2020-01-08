@@ -3,7 +3,7 @@ import {compile} from '../../src';
 
 describe('[COM] Spread operator', () => {
 
-    it('Should throw an error if it\'s used on a type which returns a string', () => {
+    it('Should throw an error if it\'s used on a string', () => {
         const parse = compile(`
             <char> = [(A - Z)+]
            
@@ -15,7 +15,7 @@ describe('[COM] Spread operator', () => {
         expect(() => parse('A')).to.throw();
     });
 
-    it('Should throw an error if it\'s used on a type which returns an array', () => {
+    it('Should throw an error if it\'s used on an array', () => {
         const parse = compile(`
             <char> = [[(A - Z)]+]
            
@@ -27,34 +27,28 @@ describe('[COM] Spread operator', () => {
         expect(() => parse('A')).to.throw();
     });
 
-    it('Should throw an error if it\'s used in combination with a tag', () => {
-        expect(() => compile(`
-            <char> = {
-                <num> = [(0 - 9)+]
-                default [ <num#number>]
-            }
-            
-            entry [
-                ...<char#ooops>
-            ]
-        `)).to.throw();
-    });
-
     it('Should properly assign nested object properties to the parent', () => {
         const parse = compile(`
             <char> = {
                 <uppercase> = [(A - Z)+]
                 <lowercase> = [(a - z)+]
-                default [
-                    [<uppercase#up> <lowercase#low>] |
-                    [<uppercase#up> | <lowercase#low>]
+                
+                default [object:
+                    [
+                        def up = [<uppercase>] 
+                        def low = [<lowercase>]
+                    ] | [
+                        def up = [<uppercase>] | 
+                        def low = [<lowercase>]
+                    ]
                 ]
             }
             
-            <num> = [(0 - 9)+]
-            
             entry {
-                default [...<char> <num#num>]
+                default [object:
+                    ...<char> 
+                    def num = [(0 - 9)+]
+                ]
             }
         `);
 

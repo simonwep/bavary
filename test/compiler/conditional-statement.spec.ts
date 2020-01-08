@@ -7,10 +7,10 @@ describe('[COM] Conditional statement', () => {
         const parse = compile(`
             <number> = [(0 - 9)+]
             
-            entry [
-                <number#value>?
+            entry [object:
+                def value = [<number>]?
                 
-                if (#value != null) ['A'] else ['B']
+                if ($value != null) ['A'] else ['B']
             ]
         `);
 
@@ -23,12 +23,14 @@ describe('[COM] Conditional statement', () => {
     it('Should resolve deep accessors', () => {
         const parse = compile(`
             <number> = [(0 - 9)+]
-            <w-num> = [<number#value>]
+            <w-num> = [object:
+                def value = [<number>]
+            ]
             
-            entry [
-                <w-num#num>?
+            entry [object:
+                def num = [object: ...<w-num>]?
                 
-                if (#num.value != null) ['A'] else ['B']
+                if ($num.value != null) ['A'] else ['B']
             ]
         `);
 
@@ -47,10 +49,10 @@ describe('[COM] Conditional statement', () => {
         const parse = compile(`
             <number> = [(0 - 9)+]
             
-            entry [
+            entry [object:
                 [(a - z)+]
-                <number#num>?
-                if (#num != null) ['A']
+                def num = [<number>]?
+                if ($num != null) ['A']
             ]
         `);
 
@@ -62,9 +64,9 @@ describe('[COM] Conditional statement', () => {
     it('Should evaluate a comparison', () => {
         const parse = compile(`
             <upper> = [(A - Z)+]
-            entry [
-                <upper#upp>
-                if (#upp = 'ABC') ['0']
+            entry [object:
+                def upp = [<upper>]
+                if ($upp = 'ABC') ['0']
             ]
         `);
 
@@ -76,9 +78,9 @@ describe('[COM] Conditional statement', () => {
     it('Should evaluate a larger-than comparison', () => {
         const parse = compile(`
             <upper> = [(A - Z)+]
-            entry [
-                <upper#upp>
-                if (#upp > 'CCC') ['0']
+            entry [object:
+                def upp = [<upper>]
+                if ($upp > 'CCC') ['0']
             ]
         `);
 
@@ -90,9 +92,9 @@ describe('[COM] Conditional statement', () => {
     it('Should properly evaluate an or-operator', () => {
         const parse = compile(`
             <upper> = [(A - Z)+]
-            entry [
-                <upper#upp>
-                if (#upp = 'A' | #upp = 'Z') ['0']
+            entry [object:
+                def upp = [<upper>]
+                if ($upp = 'A' | $upp = 'Z') ['0']
             ]
         `);
 
@@ -107,11 +109,11 @@ describe('[COM] Conditional statement', () => {
             <upper> = [(A - Z)+]
             <lower> = [(a - z)+]
             
-            entry [
-                <upper#upp>
-                <lower#low>
+            entry [object:
+                def upp = [<upper>]
+                def low = [<lower>]
                 
-                if (#upp = 'AA' & #low = 'bb') ['XY']
+                if ($upp = 'AA' & $low = 'bb') ['XY']
             ]
         `);
 
@@ -125,11 +127,11 @@ describe('[COM] Conditional statement', () => {
             <upper> = [(A - Z)+]
             <lower> = [(a - z)+]
             
-            entry [
-                <upper#upp>
-                <lower#low>
+            entry [object:
+                def upp = [<upper>]
+                def low = [<lower>]
                 
-                if (#upp = 'AA' | #low < 'cc') ['XY']
+                if ($upp = 'AA' | $low < 'cc') ['XY']
             ]
         `);
 
@@ -137,16 +139,16 @@ describe('[COM] Conditional statement', () => {
         expect(parse('XabXY')).to.not.equal(null);
     });
 
-    it('Should return false for nullish / undefined comparison', () => {
+    it('Should return false for nullish / undefd comparison', () => {
         const parse = compile(`
             <upper> = [(A - Z)+]
             <lower> = [(a - z)+]
             
-            entry [
-                <upper#upp>
-                <lower#low>
+            entry [object:
+                def upp = [<upper>]
+                def low = [<lower>]
                 
-                if (#upp.x < 'x' | #low.x > 'y' | #upp = 'A') [
+                if ($upp.x < 'x' | $low.x > 'y' | $upp = 'A') [
                     'XY'
                 ]
             ]
@@ -160,9 +162,9 @@ describe('[COM] Conditional statement', () => {
         const parse = compile(`
             <upper> = [(A - Z)+]
             
-            entry [
-                <upper#upp>
-                if (#upp.length > 3) ['x']
+            entry [object:
+                def upp = [<upper>]
+                if ($upp.length > 3) ['x']
             ]
         `);
 
@@ -175,10 +177,10 @@ describe('[COM] Conditional statement', () => {
         const parse = compile(`
             <upper> = [(A - Z)*]
         
-            entry [
-                <upper#upp>
+            entry [object:
+                def upp = [<upper>]
         
-                if (#upp.xy | #upp) ["ab"]
+                if ($upp.xy | $upp) ["ab"]
             ]
         `);
 
@@ -193,12 +195,12 @@ describe('[COM] Conditional statement', () => {
             <lower> = [(a - z)+]
             <numbe> = [(0 - 9)+]
             
-            entry [
-                <upper#upp>
-                <lower#low>
-                <numbe#num>
+            entry [object:
+                def upp = [<upper>]
+                def low = [<lower>]
+                def num = [<numbe>]
         
-                if (#upp = 'A' & (#low = 'a' | #num = '0')) ['!']
+                if ($upp = 'A' & ($low = 'a' | $num = '0')) ['!']
             ]
         `);
 
@@ -212,9 +214,9 @@ describe('[COM] Conditional statement', () => {
         const parse = compile(`
             <upper> = [(A - Z)+]
             
-            entry [
-                <upper#upp>
-                if (#upp != 'A') ['!']
+            entry [object:
+                def upp = [<upper>]
+                if ($upp != 'A') ['!']
             ]
         `);
 
@@ -226,10 +228,10 @@ describe('[COM] Conditional statement', () => {
         const parse = compile(`
             <upper> = [(A - Z)+]
             
-            entry [
-                <upper#upp>?
+            entry [object:
+                def upp = [<upper>]?
 
-                if (#upp = null) ['!']
+                if ($upp = null) ['!']
             ]
         `);
 
@@ -242,14 +244,14 @@ describe('[COM] Conditional statement', () => {
         const parse = compile(`
             <string> = [(A - Z, a - z)+]
             
-            entry [
-                <string#str>?
+            entry [object:
+                def str = [<string>]?
 
-                if (#str = null) [
+                if ($str = null) [
                     'nothing'
-                ] else if (#str = 'Hello') [
+                ] else if ($str = 'Hello') [
                     ' world'
-                ] else if (#str = 'Good') [
+                ] else if ($str = 'Good') [
                     ' bye'
                 ]
             ]
@@ -267,12 +269,12 @@ describe('[COM] Conditional statement', () => {
         const parse = compile(`
             <char> = [(a - z)]
 
-            entry [
-                <char#a>
-                <char#b>
+            entry [object:
+                def a = [<char>]
+                def b = [<char>]
 
-                if (#a < #b) ['<'] 
-                else if (#a <= #b) ['<=']
+                if ($a < $b) ['<'] 
+                else if ($a <= $b) ['<=']
             ]
         `);
 
@@ -286,12 +288,12 @@ describe('[COM] Conditional statement', () => {
         const parse = compile(`
             <char> = [(a - z)]
 
-            entry [
-                <char#a>
-                <char#b>
+            entry [object:
+                def a = [<char>]
+                def b = [<char>]
 
-                if (#a > #b) ['>'] 
-                else if (#a >= #b) ['>=']
+                if ($a > $b) ['>'] 
+                else if ($a >= $b) ['>=']
             ]
         `);
 
@@ -301,10 +303,10 @@ describe('[COM] Conditional statement', () => {
         expect(parse('cb>')).to.not.equal(null);
     });
 
-    it('Should throw an error if a tag is not defined anywhere', () => {
+    it('Should throw an error if a tag is not defd anywhere', () => {
         const parse = compile(`
             entry [
-                if (#lol = 0) []
+                if ($lol = 0) []
             ]
         `);
 
@@ -315,9 +317,9 @@ describe('[COM] Conditional statement', () => {
         const parse = compile(`
             <upper> = [(A - Z)+]
             
-            entry [
-                <upper#upp>
-                if (#upp > 4) []
+            entry [object:
+                def upp = [<upper>]
+                if ($upp > 4) []
             ]
         `);
 
@@ -328,9 +330,9 @@ describe('[COM] Conditional statement', () => {
         const parse = compile(`
             <upper> = [(A - Z)+]
 
-            entry [
-                <upper#upp>
-                if (#upp != hello) []
+            entry [object:
+                def upp = [<upper>]
+                if ($upp != hello) []
             ]
         `);
 

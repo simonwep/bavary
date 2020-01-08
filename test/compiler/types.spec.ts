@@ -67,28 +67,6 @@ describe('[COM] Nested types', () => {
         expect(parse('2-')).to.equal(null);
     });
 
-    it('Should throw an error if no tag is defined but neccessary', () => {
-        const parse = compile(`
-            <abc> = ['a' | 'b']
-            <dfg> = [<abc#values>+]
-            entry [<dfg>]
-        `);
-
-        expect(() => parse('a')).to.throw();
-    });
-
-    it('Should throw an error if a tag is used within a group with multipliers', () => {
-        const parse = compile(`
-            <abc> = ['abc']
-            entry [
-                [<abc#abc>]+
-            ]
-        `);
-
-        expect(() => parse('abcabc')).to.throw();
-    });
-
-
     it('Should make a difference between types in lower- and uppercase', () => {
         const parse = compile(`
             <STRING> = [(A - Z)]
