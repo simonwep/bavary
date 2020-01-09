@@ -29,8 +29,16 @@ const parseArrayAccessor = maybe<number>((stream: TokenStream) => {
 });
 
 export const parseValueAccessor = maybe<ValueAccessor>((stream: TokenStream) => {
+
+    // They start with a tag...
+    if (!stream.optional(false, 'punc', '$')) {
+        return null;
+    }
+
+    // Might start with a property
     const entry = parseIdentifier(stream);
 
+    // Following path...
     const accessorPath = entry ? [entry.value] : [];
     const parser = combine<string | number | null>(
         parseObjectAccessor,
@@ -43,7 +51,7 @@ export const parseValueAccessor = maybe<ValueAccessor>((stream: TokenStream) => 
     }
 
     if (!accessorPath.length) {
-        return null;
+        stream.throwError('Expected value accessor.');
     }
 
     return {

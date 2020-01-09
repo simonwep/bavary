@@ -1,9 +1,8 @@
-import {TokenStream}                              from '../../tokenizer/stream/token-stream';
-import {parseGroup, parseIdentifier, parseString} from '../internal';
-import {combine}                                  from '../tools/combine';
-import {maybe}                                    from '../tools/maybe';
-import {Func, FuncArgument}                       from '../types';
-import {parseInstanceValueAccessor}               from './binary-expression/instance-value-accessor';
+import {TokenStream}                                                  from '../../tokenizer/stream/token-stream';
+import {parseGroup, parseIdentifier, parseString, parseValueAccessor} from '../internal';
+import {combine}                                                      from '../tools/combine';
+import {maybe}                                                        from '../tools/maybe';
+import {Func, FuncArgument}                                           from '../types';
 
 export const parseFunction = maybe<Func>((stream: TokenStream) => {
 
@@ -14,7 +13,7 @@ export const parseFunction = maybe<Func>((stream: TokenStream) => {
     }
 
     const parse = combine<FuncArgument | null>(
-        parseInstanceValueAccessor,
+        parseValueAccessor,
         parseIdentifier,
         parseGroup,
         parseString
