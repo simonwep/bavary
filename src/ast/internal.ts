@@ -13,4 +13,4 @@ export * from './nodes/number';
 export * from './nodes/reference';
 export * from './nodes/string';
 export * from './nodes/value-accessor';
-export * from './nodes/group-statement';
+export * from './nodes/commands';

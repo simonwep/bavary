@@ -1,8 +1,8 @@
 import {parseGroup, parseString} from '../../internal';
 import {maybe}                   from '../../tools/maybe';
-import {GroupArrayPushStatement} from '../../types';
+import {PushStatement}           from '../../types';
 
-export const parseGroupArrayPushStatement = maybe<GroupArrayPushStatement>(stream => {
+export const parsePushStatement = maybe<PushStatement>(stream => {
     const value = parseString(stream) || parseGroup(stream);
 
     if (!value) {
@@ -12,5 +12,5 @@ export const parseGroupArrayPushStatement = maybe<GroupArrayPushStatement>(strea
     return {
         type: 'push',
         value,
-    } as GroupArrayPushStatement;
+    } as PushStatement;
 });

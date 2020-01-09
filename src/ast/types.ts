@@ -1,7 +1,7 @@
 import {TokenStream} from '../tokenizer/stream/token-stream';
 
 export type ASTNode = Declaration | CharacterSelection | ValueAccessor | ConditionalStatement |
-    Ignored | Arguments | Func | Multiplier | BinaryExpressionValue | Type | Group | Reference | Block | Str;
+    Ignored | Arguments | Func | Multiplier | BinaryExpressionValue | Group | Reference | Block | Str;
 
 export type ParserFunction<T> = (stream: TokenStream) => T | null;
 
@@ -15,15 +15,19 @@ export type Declaration = {
     arguments: Arguments | null;
 }
 
+export type Block = {
+    type: 'block';
+    value: Array<Declaration>;
+}
+
 export type Arguments = Array<Argument>;
 export type Argument = {
-    type: 'argument';
     name: string;
     value: Group | null;
 }
 
 export type GroupValue = Reference | Str | BinaryCombinator | Group |
-    CharacterSelection | GroupStatement | ConditionalStatement | Func | Ignored;
+    CharacterSelection | GroupCommand | ConditionalStatement | Func | Ignored;
 
 export type Group = {
     type: 'group';
@@ -32,39 +36,31 @@ export type Group = {
     value: Array<GroupValue>;
 }
 
-// TODO: Use better names for them
-export type GroupStatement = GroupObjectDefineStatement | GroupArrayPushStatement;
-export type GroupObjectDefineStatement = {
+export type GroupCommand = DefineStatement | PushStatement;
+export type DefineStatement = {
     type: 'define';
     name: string;
     value: Group | Str;
 }
 
-export type GroupArrayPushStatement = {
+export type PushStatement = {
     type: 'push';
     value: Group | Str;
 }
-
 
 export type Ignored = {
     type: 'ignored';
     value: Group;
 }
 
-export type BinaryCombinator = {
-    type: 'combinator';
-    sign: string;
-    value: Array<GroupValue>;
+export type Multiplier = {
+    type: 'zero-infinity' | 'one-infinity' | 'optional' | 'range';
+    value: MultiplierRange | '*' | '+' | '?';
 }
 
 export type MultiplierRange = {
     start: number;
     end: number;
-}
-
-export type Multiplier = {
-    type: 'zero-infinity' | 'one-infinity' | 'optional' | 'range';
-    value: MultiplierRange | '*' | '+' | '?';
 }
 
 export type Num = {
@@ -82,11 +78,6 @@ export type Identifier = {
     value: string;
 }
 
-export type Type = {
-    type: 'type';
-    value: string;
-}
-
 export type Reference = {
     type: 'reference';
     multiplier: Multiplier | null;
@@ -95,7 +86,7 @@ export type Reference = {
     spread: boolean;
 }
 
-export type FuncArgument = Group | Str | Identifier | ValueAccessor ;
+export type FuncArgument = Group | Str | Identifier | ValueAccessor;
 export type Func = {
     type: 'function';
     name: string;
@@ -110,11 +101,6 @@ export type CharacterSelection = {
 }
 
 export type CharacterSelectionArray = Array<number | [number, number]>;
-export type Block = {
-    type: 'block';
-    value: Array<Declaration>;
-}
-
 export type ValueAccessorPath = Array<string | number>; // <identifier | array-index>
 export type ValueAccessor = {
     type: 'value-accessor';
@@ -126,6 +112,12 @@ export type ConditionalStatement = {
     condition: BinaryExpression;
     consequent: Group;
     alternate: Group | ConditionalStatement | null;
+}
+
+export type BinaryCombinator = {
+    type: 'combinator';
+    sign: string;
+    value: Array<GroupValue>;
 }
 
 export type BinaryExpressionValue = BinaryExpression | Str | Identifier | Num | ValueAccessor;

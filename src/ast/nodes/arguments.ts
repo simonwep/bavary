@@ -8,7 +8,7 @@ export const parseArguments = maybe<Arguments>((stream: TokenStream) => {
 
     while (true) {
         stream.consumeSpace();
-        const name = parseIdentifier(stream);
+        const name = parseIdentifier(stream)?.value;
 
         if (!name) {
             break;
@@ -24,11 +24,7 @@ export const parseArguments = maybe<Arguments>((stream: TokenStream) => {
             }
         }
 
-        args.push({
-            type: 'argument',
-            name: name.value,
-            value
-        });
+        args.push({name, value});
     }
 
     return args.length ? args : null;
