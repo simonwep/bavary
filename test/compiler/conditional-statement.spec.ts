@@ -362,4 +362,23 @@ describe('[COM] Conditional statement', () => {
 
         expect(() => parse('A')).to.throw();
     });
+
+    it('Should resolve array indecies', () => {
+        const parse = compile(`
+            entry [array:
+                push [(a, b)+]
+                push [(c, d)+]
+                push [(e, f)+]
+                
+                if ($[0] = 'ab') [
+                    '!'
+                ]
+            ]
+        `);
+
+        expect(parse('abcccee')).to.equal(null);
+        expect(parse('abcccee!')).to.deep.equal([
+            'ab', 'ccc', 'ee'
+        ]);
+    });
 });

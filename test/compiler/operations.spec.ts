@@ -28,12 +28,14 @@ describe('[COM] Operations', () => {
     it('Should push values into arrays', () => {
         const parse = compile(`
             entry [array:
+                push "abc"
                 push [(a - z)+]
                 push [(A - Z)+]
             ]
         `);
 
         expect(parse('helloWORLD')).to.deep.equal([
+            'abc',
             'hello',
             'WORLD'
         ]);
@@ -73,5 +75,28 @@ describe('[COM] Operations', () => {
                 aha: 'oho'
             }
         });
+    });
+
+
+    it('Should throw an error if operations are used in the wrong placec', () => {
+
+        // Invalid array operators
+        expect(() => compile(`
+            entry [array: def x = ['a']]
+        `)('a')).to.throw();
+
+        // Invalid object operators
+        expect(() => compile(`
+            entry [object: push ['a']]
+        `)('a')).to.throw();
+
+        // Invalid string operators
+        expect(() => compile(`
+            entry [push ['a']]
+        `)('a')).to.throw();
+
+        expect(() => compile(`
+            entry [def x = ['a']]
+        `)('a')).to.throw();
     });
 });

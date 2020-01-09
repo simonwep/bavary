@@ -17,10 +17,10 @@ describe('[COM] Spread operator', () => {
 
     it('Should throw an error if it\'s used on an array', () => {
         const parse = compile(`
-            <char> = [[(A - Z)]+]
+            <char> = [object: def x = [(A - Z)+]]
            
             entry {
-                default [...<char>]
+                default [array: ...<char>]
             }
         `);
 

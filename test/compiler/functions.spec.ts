@@ -73,4 +73,18 @@ describe('[COM] Functions', () => {
 
         expect(() => parse('(12)')).to.throw();
     });
+
+    it('Should forward errors', () => {
+        const parse = compile(`
+            entry [throwError()]
+        `, {
+            functions: {
+                throwError(): boolean {
+                    throw new Error('Error');
+                }
+            }
+        });
+
+        expect(() => parse('')).to.throw();
+    });
 });

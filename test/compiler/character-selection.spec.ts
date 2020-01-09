@@ -125,4 +125,20 @@ describe('[COM] Character selection', () => {
         expect(parse('hello world!')).to.equal('hello world!');
         expect(parse('hello world 2!')).to.equal(null);
     });
+
+    it('Should concatenate the value of an character-selection if a multiplier was used', () => {
+        const parse = compile(`
+            entry [object:
+                def val = [(a, b)+]
+                def arr = [array: push [(c, d)+]]
+                def arr2 = [array: push ['e']]
+            ]
+        `);
+
+        expect(parse('aaabbbcdde')).to.deep.equal({
+            val: 'aaabbb',
+            arr: ['cdd'],
+            arr2: ['e']
+        });
+    });
 });
