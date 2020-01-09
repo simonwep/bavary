@@ -1,7 +1,7 @@
-import {Reference}        from '../../ast/types';
-import {evalRawReference} from '../internal';
-import {typeOf}           from '../tools/type-of';
-import {ParserArgs}       from '../types';
+import {Reference}                      from '../../ast/types';
+import {evalRawReference}               from '../internal';
+import {typeOf}                         from '../tools/type-of';
+import {ParserArgs, ParsingResultValue} from '../types';
 
 export const evalReference = (
     {
@@ -24,29 +24,36 @@ export const evalReference = (
 
         if (decl.spread) {
 
-            // Spread operator won't work with strings or arrays
-            if (matchesType !== 'object') {
-                throw new Error(`"${decl.value}" doesn't return a object which is required for the spread operator to work.`);
-            } else if (result.type !== 'object') {
-
-                // TODO: Weird error message though
-                throw new Error('Spread operator can only be used within objects.');
+            // Validate both sides
+            if (matchesType === 'string') {
+                throw new Error(`"${decl.value}" doesn't return a object or array which is required for the spread operator to work.`);
+            } else if (result.type === 'string') {
+                throw new Error('Cannot use spread-operator in strings.');
             }
 
-            // Assign result to current object
-            Object.assign(result.value, matches);
+            /**
+             * Join objects / arrays. Otherwise throw error because of incompatibility
+             */
+            if (matchesType === 'array' && result.type === 'array') {
+                result.value.push(...(matches as Array<ParsingResultValue>));
+            } else if (matchesType === 'object' && result.type === 'object') {
+                Object.assign(result.value, matches);
+            } else {
+                throw new Error(`Incompatible types used in spread operator: ${matchesType} ≠ ${result.type}`);
+            }
+
         } else if (matchesType === 'array') {
 
-            if (result.type === 'string' && (matches as Array<unknown>).every(v => typeof v === 'string')) {
-                result.value += (matches as Array<unknown>).join('');
-            } else {
-                // TODO: What happens in this case?
+            // Join array-values if all entries are strings
+            if (result.type === 'string' && (matches as Array<ParsingResultValue>).every(v => typeof v === 'string')) {
+                result.value += (matches as Array<ParsingResultValue>).join('');
             }
 
-            // TODO: Add spread operator to arrays
         } else if (matchesType === 'string' && result.type === 'string') {
+
+            // Concat strings
             result.value += matches;
-        } // TODO: Throw error if nothing happens?
+        }
     } else {
 
         // Restore previous stack position

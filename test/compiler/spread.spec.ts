@@ -5,7 +5,7 @@ describe('[COM] Spread operator', () => {
 
     it('Should throw an error if it\'s used on a string', () => {
         const parse = compile(`
-            <char> = [(A - Z)+]
+            <char> = [array: push [(\\w)+]]
            
             entry {
                 default [...<char>]
@@ -22,6 +22,18 @@ describe('[COM] Spread operator', () => {
             entry {
                 default [array: ...<char>]
             }
+        `);
+
+        expect(() => parse('A')).to.throw();
+    });
+
+    it('Should throw an error if the spread-source is a string', () => {
+        const parse = compile(`
+            <char> = [(A - Z)+]
+           
+            entry [array:
+                ...<char>
+            ]
         `);
 
         expect(() => parse('A')).to.throw();
@@ -57,5 +69,28 @@ describe('[COM] Spread operator', () => {
         expect(parse('aa2')).to.deep.equal({up: null, low: 'aa', num: '2'});
         expect(parse('AAaa123')).to.deep.equal({up: 'AA', low: 'aa', num: '123'});
         expect(parse('abc')).to.equal(null);
+    });
+
+    it('Should work with arrays', () => {
+        const parse = compile(`
+            <abcd> = [array:
+                push [(a, b)+]
+                push [(c, d)+]
+            ]
+        
+            <efgh> = [array:
+                push [(e, f)+]
+                push [(g, h)+]
+            ]
+            
+            entry [array:
+                ...<abcd>
+                ...<efgh>
+            ]
+        `);
+
+        expect(parse('aaccehh')).to.deep.equal([
+            'aa', 'cc', 'e', 'hh'
+        ]);
     });
 });

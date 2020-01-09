@@ -47,15 +47,20 @@ describe('[COM] Operations', () => {
                 def hello = 'world'
                 def abcd = [array:
                     push ['A' | 'B']
-                    push ['C' | 'D']
+                    push ['C' | 'D']?
                 ]
             ]
         `);
 
-        expect(parse('AU')).to.equal(null);
+        expect(parse('UC')).to.equal(null);
         expect(parse('AD')).to.deep.equal({
             hello: 'world',
             abcd: ['A', 'D']
+        });
+
+        expect(parse('A')).to.deep.equal({
+            hello: 'world',
+            abcd: ['A']
         });
     });
 

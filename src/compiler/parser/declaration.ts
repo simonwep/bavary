@@ -135,9 +135,10 @@ export const evalDeclaration = (
 
                 if (res) {
                     result.value.push(res);
+                    return true;
                 }
 
-                return (res !== null) || (value.multiplier?.type === 'optional');
+                return value.multiplier?.type === 'optional';
             }
         }
     }
