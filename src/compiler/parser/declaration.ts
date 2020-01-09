@@ -128,11 +128,14 @@ export const evalDeclaration = (
             } else {
                 const res = evalGroup({
                     decl: value,
-                    result,
                     scope,
                     config,
                     stream
                 });
+
+                if (res) {
+                    result.value.push(res);
+                }
 
                 return (res !== null) || (value.multiplier?.type === 'optional');
             }

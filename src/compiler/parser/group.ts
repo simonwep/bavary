@@ -11,7 +11,7 @@ export const evalGroup = maybeMultiplier<ParsingResultObjectValue, Group>((
         stream,
         decl,
         scope,
-        result = createParsingResult(decl.mode)
+        result = createParsingResult(decl.mode || 'string')
     }
 ): ParsingResultObjectValue => {
     stream.stash();
@@ -22,7 +22,6 @@ export const evalGroup = maybeMultiplier<ParsingResultObjectValue, Group>((
     // Remember initial string and array values in case the match fails
     const previousValue = result.type !== 'object' ? result.value : null;
 
-    // TODO: Serialization
     const decs = decl.value;
     for (let i = 0; i < decs.length; i++) {
         const decl = decs[i];
@@ -36,7 +35,6 @@ export const evalGroup = maybeMultiplier<ParsingResultObjectValue, Group>((
             } else {
 
                 // Restore initial value
-                // TODO: The !.-thang is ugly
                 result.value = previousValue;
             }
 

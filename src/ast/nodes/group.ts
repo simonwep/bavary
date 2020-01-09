@@ -112,7 +112,7 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
 
     return {
         type: 'group',
-        mode: mode || 'string',
+        mode,
         multiplier: parseMultiplier(stream),
         value: values
     } as Group;

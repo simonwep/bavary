@@ -240,6 +240,30 @@ describe('[COM] Conditional statement', () => {
         expect(parse('A!')).to.equal(null);
     });
 
+    it('Should resolve array-indecies', () => {
+        const parse = compile(`
+            entry [object:
+                def arr = [array:
+                    push [(\\w)+]
+                    [',' push [(\\w)+]]*
+                ]
+                
+                if ($arr[0] = 'hello') [
+                    '!'
+                ]
+            ]
+        `);
+
+        expect(parse('hello,abc,abc')).to.equal(null);
+        expect(parse('abc,abc,abc')).to.deep.equal({
+            arr: ['abc', 'abc', 'abc']
+        });
+
+        expect(parse('hello,abc,abc!')).to.deep.equal({
+            arr: ['hello', 'abc', 'abc']
+        });
+    });
+
     it('Should handle else-if statements', () => {
         const parse = compile(`
             <string> = [(A - Z, a - z)+]
