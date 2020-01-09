@@ -8,7 +8,7 @@ export * from './nodes/function';
 export * from './nodes/group';
 export * from './nodes/identifier';
 export * from './nodes/multiplier';
-export * from './nodes/ignored';
+export * from './nodes/commands/void';
 export * from './nodes/number';
 export * from './nodes/reference';
 export * from './nodes/string';

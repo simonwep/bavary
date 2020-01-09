@@ -4,11 +4,11 @@ import {maybe}                                       from '../tools/maybe';
 import {ConditionalStatement, Group, ParserFunction} from '../types';
 
 export const parseConditionalStatement: ParserFunction<ConditionalStatement> = maybe((stream: TokenStream) => {
+
+    // The if-keyword initiates a if-statement
     if (!stream.optional(false, 'kw', 'if')) {
         return null;
     }
-
-    // TODO: Add type-of to determine group type
 
     // Parse condition
     const condition = parseBinaryExpression(stream);

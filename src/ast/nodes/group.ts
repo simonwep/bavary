@@ -1,22 +1,9 @@
-import {TokenStream}     from '../../tokenizer/stream/token-stream';
-import {
-    parseCharacterSelecton,
-    parseConditionalStatement,
-    parseFunction,
-    parseGroupStatement,
-    parseIgnored,
-    parseMultiplier,
-    parseReference,
-    parseString
-}                        from '../internal';
-import {parseCombinator} from '../misc/combinator';
-import {combine}         from '../tools/combine';
-import {maybe}           from '../tools/maybe';
-import {
-    BinaryCombinator,
-    Group,
-    GroupValue
-}                        from '../types';
+import {TokenStream}                                                                                                                         from '../../tokenizer/stream/token-stream';
+import {parseCharacterSelecton, parseConditionalStatement, parseFunction, parseGroupStatement, parseMultiplier, parseReference, parseString} from '../internal';
+import {parseCombinator}                                                                                                                     from '../misc/combinator';
+import {combine}                                                                                                                             from '../tools/combine';
+import {maybe}                                                                                                                               from '../tools/maybe';
+import {BinaryCombinator, Group, GroupValue}                                                                                                 from '../types';
 
 export const parseGroup = maybe<Group>((stream: TokenStream) => {
 
@@ -25,7 +12,6 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
         return null;
     }
 
-    // TODO: Outsource
     stream.stash();
     const mode = stream.optional(true, 'kw', 'object', 'array', 'string');
     if (mode) {
@@ -38,7 +24,6 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
         parseGroupStatement,
         parseConditionalStatement,
         parseFunction,
-        parseIgnored,
         parseGroup,
         parseReference,
         parseCharacterSelecton,

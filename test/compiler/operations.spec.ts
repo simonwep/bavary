@@ -82,6 +82,18 @@ describe('[COM] Operations', () => {
         });
     });
 
+    it('Should ignore a group via void statement', () => {
+        const parse = compile(`
+            entry [
+                void ['hello']?
+                'world'
+            ]
+        `);
+
+        expect(parse('helloworld')).to.equal('world');
+        expect(parse('world')).to.equal('world');
+        expect(parse('hworld')).to.equal(null);
+    });
 
     it('Should throw an error if operations are used in the wrong placec', () => {
 

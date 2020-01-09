@@ -1,7 +1,7 @@
 import {TokenStream} from '../tokenizer/stream/token-stream';
 
 export type ASTNode = Declaration | CharacterSelection | ValueAccessor | ConditionalStatement |
-    Ignored | Arguments | Func | Multiplier | BinaryExpressionValue | Group | Reference | Block | Str;
+    VoidStatement | Arguments | Func | Multiplier | BinaryExpressionValue | Group | Reference | Block | Str;
 
 export type ParserFunction<T> = (stream: TokenStream) => T | null;
 
@@ -27,7 +27,7 @@ export type Argument = {
 }
 
 export type GroupValue = Reference | Str | BinaryCombinator | Group |
-    CharacterSelection | GroupCommand | ConditionalStatement | Func | Ignored;
+    CharacterSelection | GroupCommand | ConditionalStatement | Func | VoidStatement;
 
 export type Group = {
     type: 'group';
@@ -36,7 +36,7 @@ export type Group = {
     value: Array<GroupValue>;
 }
 
-export type GroupCommand = DefineStatement | PushStatement;
+export type GroupCommand = DefineStatement | PushStatement | VoidStatement;
 export type DefineStatement = {
     type: 'define';
     name: string;
@@ -48,7 +48,7 @@ export type PushStatement = {
     value: Group | Str;
 }
 
-export type Ignored = {
+export type VoidStatement = {
     type: 'ignored';
     value: Group;
 }
