@@ -1,7 +1,7 @@
-import {Reference}                            from '../../ast/types';
-import {evalRawReference}                     from '../internal';
-import {typeOf}                               from '../tools/type-of';
-import {ParserArgs, ParsingResultObjectValue} from '../types';
+import {Reference}        from '../../ast/types';
+import {evalRawReference} from '../internal';
+import {typeOf}           from '../tools/type-of';
+import {ParserArgs}       from '../types';
 
 export const evalReference = (
     {
@@ -39,18 +39,13 @@ export const evalReference = (
 
             if (result.type === 'string' && (matches as Array<unknown>).every(v => typeof v === 'string')) {
                 result.value += (matches as Array<unknown>).join('');
-            } else if (result.type === 'array') {
-                result.value.push(...(matches as Array<ParsingResultObjectValue>));
             } else {
                 // TODO: What happens in this case?
             }
 
-        } else if (matchesType === 'string') {
-            if (result.type === 'string') {
-                result.value += matches;
-            } else if (result.type === 'array') {
-                result.value.push(matches);
-            }
+            // TODO: Add spread operator to arrays
+        } else if (matchesType === 'string' && result.type === 'string') {
+            result.value += matches;
         } // TODO: Throw error if nothing happens?
     } else {
 

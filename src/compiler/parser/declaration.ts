@@ -124,7 +124,7 @@ export const evalDeclaration = (
 
             const {value} = decl;
             if (value.type === 'string') {
-                result.value.push(value);
+                result.value.push(value.value);
             } else {
                 const res = evalGroup({
                     decl: value,

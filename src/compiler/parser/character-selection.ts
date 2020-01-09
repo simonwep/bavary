@@ -46,25 +46,16 @@ export const evalCharacterSelection = (
         return null;
     })({config, stream, decl, scope, result});
 
-    // Resolve corresponding multiplier
-    if (Array.isArray(matches)) {
-        const strValue = (matches).join('');
+    if (matches) {
 
-        if (result.type === 'string') {
-            result.value += strValue;
-        } else if (result.type === 'array') {
-            result.value.push(strValue);
+        // Ignore result if current mode is not a string
+        if (result.type !== 'string') {
+            return true;
         }
 
-    } else if (typeof matches === 'string') {
-
-        if (result.type === 'string') {
-            result.value += matches;
-        } else if (result.type === 'array') {
-            result.value.push(matches);
-        }
-
-    } else if (!matches && !decl.multiplier || (decl.multiplier && decl.multiplier.type !== 'optional')) {
+        // Append value, concat array values if needed
+        result.value += Array.isArray(matches) ? matches.join('') : matches;
+    } else if (decl.multiplier?.type !== 'optional') {
         return false;
     }
 
