@@ -5,7 +5,7 @@ import {ParsingError}                       from './parsing-error';
 /* istanbul ignore next */
 export class TokenStream extends Streamable<Token> {
 
-    next(includeWhitespace = false): Token | null {
+    next(includeWhitespace = false): Token | never {
         const {index, length, vals} = this;
 
         if (includeWhitespace && index < length) {
@@ -19,7 +19,7 @@ export class TokenStream extends Streamable<Token> {
             }
         }
 
-        return null;
+        this.throwError(`Unexpected end of input`);
     }
 
     peek(includeWhitespace = false): Token | null {
@@ -54,7 +54,7 @@ export class TokenStream extends Streamable<Token> {
     /**
      * Checks if the next token matches the given conditioons
      */
-    match(includeWhitespace = false, type: TokenType, ...values: Array<string | number>): boolean {
+    match(includeWhitespace = false, type: TokenType, ...values: Array<unknown>): boolean {
         const peek = this.peek(includeWhitespace);
 
         // Check if type matches
@@ -69,7 +69,7 @@ export class TokenStream extends Streamable<Token> {
     /**
      * Same as match but it'll consume the token if the conditions are met
      */
-    optional(includeWhitespace = false, type: TokenType, ...values: Array<string | number>): string | number | null {
+    optional<T = string | number>(includeWhitespace = false, type: TokenType, ...values: Array<T>): T | null {
         const peek = this.peek(includeWhitespace);
 
         // Check if type matches
@@ -78,13 +78,15 @@ export class TokenStream extends Streamable<Token> {
         }
 
         // Check if next token matches the given condition
-        return this.match(includeWhitespace, type, ...values) ? (this.next(includeWhitespace) as Token).value : null;
+        return this.match(includeWhitespace, type, ...values) ?
+            this.next(includeWhitespace).value as unknown as T :
+            null;
     }
 
     /**
      * Same as match but it'll throw an error if the conditions aren't met
      */
-    expect(includeWhitespace = false, type: TokenType, ...values: Array<string | number>): string | number | never {
+    expect<T = string | number>(includeWhitespace = false, type: TokenType, ...values: Array<T>): T | never {
 
         // Check if next token matches type and value
         const expected = this.optional(includeWhitespace, type, ...values);
