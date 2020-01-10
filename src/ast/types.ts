@@ -40,7 +40,7 @@ export type GroupCommand = DefineStatement | PushStatement | VoidStatement;
 export type DefineStatement = {
     type: 'define';
     name: string;
-    value: Group | Str;
+    value: Group | Str | ValueAccessor;
 }
 
 export type PushStatement = {

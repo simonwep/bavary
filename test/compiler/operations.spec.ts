@@ -25,6 +25,36 @@ describe('[COM] Operations', () => {
         });
     });
 
+    it('Should define properties using variable-lookups', () => {
+        const parse = compile(`
+            <foo> = [object:
+                def hello = [array:
+                    push [object: 
+                        def baz = 'bam'
+                    ]
+                ]
+            ]
+            
+            entry [object:
+                'hi'
+
+                def foo = [object: ...<foo>]
+                def val = $foo.hello[0].baz
+            ]
+        `);
+
+        expect(parse('hi')).to.deep.equal({
+            foo: {
+                hello: [
+                    {
+                        baz: 'bam'
+                    }
+                ]
+            },
+            val: 'bam'
+        });
+    });
+
     it('Should push values into arrays', () => {
         const parse = compile(`
             entry [array:

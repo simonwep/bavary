@@ -1,6 +1,7 @@
 import {GroupValue}                                                                                                           from '../../ast/types';
 import {evalCharacterSelection, evalCombiantor, evalConditionalStatement, evalFunction, evalGroup, evalReference, evalString} from '../internal';
-import {ParserArgs}                                                                                                           from '../types';
+import {lookupValue}                                                                                                          from '../tools/lookup-value';
+import {ParserArgs, ParsingResultObjectValue}                                                                                 from '../types';
 
 export const evalDeclaration = (
     {
@@ -95,11 +96,13 @@ export const evalDeclaration = (
             }
 
             // TODO: Allow reference as direct value
-
+            // TODO: Template strings?
             // TODO: Outsource
             const {value} = decl;
             if (value.type === 'string') {
                 result.value[decl.name] = value.value;
+            } else if (value.type === 'value-accessor') {
+                result.value[decl.name] = lookupValue(result.value, value.value) as ParsingResultObjectValue;
             } else {
                 const res = evalGroup({
                     decl: value,
@@ -141,6 +144,7 @@ export const evalDeclaration = (
                 return value.multiplier?.type === 'optional';
             }
         }
+        // TODO: Remove statements?
     }
 
     stream.recycle();
