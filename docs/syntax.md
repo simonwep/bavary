@@ -2,18 +2,17 @@
 
 ### Content
 1. [Comments](#comments) _- Everything should be properly documented, especially parser._
-
 2. [Entry type](#entry-type) _- Each parser starts with it._
 
 3. [Character selection](#character-selection) _- Core concept: character ranges._  
    3.1 [Common tokens](#common-tokens) _- Regexp escape-sequences_
-
+   
 4. [Groups](#groups) _- Group related items together._  
-   4.1 [Multipliers](#multipliers) _- How (and how often) things should matched._
-   4.2 [Combinators](#combinators) _- Logical relationship between matcher._
-   4.3 [String group](#string-group) _- A group to match and return strings._
-   4.4 [Array group](#array-group) _- A group which returns an array._
-   4.5 [Object group](#object-group) _- A group which returns an object._
+   4.1 [Multipliers](#multipliers) _- How (and how often) things should matched._  
+   4.2 [Combinators](#combinators) _- Logical relationship between matcher._  
+   4.3 [String group](#string-group) _- A group to match and return strings._  
+   4.4 [Array group](#array-group) _- A group which returns an array._  
+   4.5 [Object group](#object-group) _- A group which returns an object._  
    4.6 [Operators](#operators) _- Manipulate the current state of a group._
 
 5. [Types](#types) _- Reusable, independent, named [group](#groups)._  
@@ -21,9 +20,8 @@
    5.2 [Arguments](#arguments) _- Pass groups to [types](#types)._
 
 6. [Blocks](#block-definition) _- Give [types](#types) a scope and group related stuff together_.
-
 7. [Conditional statements](#conditional-statements) _- Parse by condition._  
-   7.1 [Logical operators](#logical-operators) _- As the name already says..._
+   7.1 [Logical operators](#logical-operators) _- As the name already says..._  
    7.2 [Constants](#constants) _- Constants for values to use within conditional-statements._
 
 ### Comments
@@ -241,15 +239,19 @@ And that's it.
 
 #### Operators
 
-| Syntax                        | Can be used within...          | Description                                                  | Example       |
-| ----------------------------- | ------------------------------ | ------------------------------------------------------------ | ------------- |
-| `void <group>`                | `String`,`Array`,`Object` [^1] | Ignores value of `<group>`.                                  | `void ['A']`  |
-| `push <group|string>`         | `Array`                        | Appends a value to the array.                                | `push ['A']`  |
-| `def <name> = <group|string>` | `Object`                       | Defines a property `<name>` within the object with the given value. | `def = ['A']` |
+| Syntax                                 | Can be used within...          | Description                                                  | Example                         |
+| -------------------------------------- | ------------------------------ | ------------------------------------------------------------ | ------------------------------- |
+| `void <group>`                         | `String`,`Array`,`Object` [^1] | Ignores value of `<group>`.                                  | `void ['A']`                    |
+| `push <group|string>`                  | `Array`                        | Appends a value to the array.                                | `push ['A']`                    |
+| `def <name> = <group|string|var-path>` | `Object`                       | Defines a property `<name>` within the object with the given value. | `def x = ['A']` `def x = $abc ` |
 
 [^1]:`void` only makes sense in `string` since `array` and `object` doesn't return strings.
 
 > ⚠ Using incompatible operators will lead to an runtime-error!
+
+Where
+
+* `<var-path>` is any kind of variable lookup such as `$obj.array[4].anotherprop`
 
 ### Types
 
