@@ -39,6 +39,30 @@ describe('[COM] Spread operator', () => {
         expect(() => parse('A')).to.throw();
     });
 
+    it('Should work with groups', () => {
+        const parse = compile(`
+            entry [object:
+                ...[object:
+                    def innr = 'Hello'
+                ]
+                
+                def arr = [array:
+                    ...[array:
+                        push 'World'
+                    ]
+                ]
+            ]
+        `);
+
+        expect(parse('')).to.deep.equal({
+            innr: 'Hello',
+            arr: [
+                'World'
+            ]
+        });
+    });
+
+
     it('Should properly assign nested object properties to the parent', () => {
         const parse = compile(`
             <char> = {

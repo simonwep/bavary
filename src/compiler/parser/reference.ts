@@ -14,35 +14,16 @@ export const evalReference = (
 ): boolean => {
 
     // Resolve value of reference
-    const matches = evalRawReference({config, stream, decl, scope, result});
+    const matches = evalRawReference({
+        config, stream, decl, scope
+    });
 
     // Identify result type
     const matchesType = typeOf(matches);
 
     stream.stash();
     if (matches !== null) {
-
-        if (decl.spread) {
-
-            // Validate both sides
-            if (matchesType === 'string') {
-                throw new Error(`"${decl.value}" doesn't return a object or array which is required for the spread operator to work.`);
-            } else if (result.type === 'string') {
-                throw new Error('Cannot use spread-operator in strings.');
-            }
-
-            /**
-             * Join objects / arrays. Otherwise throw error because of incompatibility
-             */
-            if (matchesType === 'array' && result.type === 'array') {
-                result.value.push(...(matches as Array<ParsingResultValue>));
-            } else if (matchesType === 'object' && result.type === 'object') {
-                Object.assign(result.value, matches);
-            } else {
-                throw new Error(`Incompatible types used in spread operator: ${matchesType} ≠ ${result.type}`);
-            }
-
-        } else if (matchesType === 'array') {
+        if (matchesType === 'array') {
 
             // Join array-values if all entries are strings
             if (result.type === 'string' && (matches as Array<ParsingResultValue>).every(v => typeof v === 'string')) {

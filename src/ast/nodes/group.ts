@@ -3,6 +3,7 @@ import {parseCharacterSelecton, parseConditionalStatement, parseFunction, parseG
 import {combine}                                                                                                                             from '../tools/combine';
 import {maybe}                                                                                                                               from '../tools/maybe';
 import {BinaryCombinator, Group, GroupValue}                                                                                                 from '../types';
+import {parseSpread}                                                                                                                         from './spread';
 
 export const parseCombinator = maybe<string>((stream: TokenStream) => {
     let combinator = stream.optional(false, 'punc', '|', '&');
@@ -35,6 +36,7 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
     stream.recycle();
     const values: Array<GroupValue> = [];
     const parsers = combine<GroupValue | null>(
+        parseSpread,
         parseGroupStatement,
         parseConditionalStatement,
         parseFunction,

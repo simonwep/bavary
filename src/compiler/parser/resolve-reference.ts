@@ -3,14 +3,14 @@ import {evalGroup}                            from '../internal';
 import {ParserArgs, ParsingResultObjectValue} from '../types';
 import {maybeMultiplier}                      from './multiplier';
 
+// TODO: Merge with reference
 export const evalRawReference = (
     {
         config,
         stream,
         decl,
         scope,
-        result
-    }: ParserArgs<Reference>
+    }: Omit<ParserArgs<Reference>, 'result'>
 ): ParsingResultObjectValue => {
 
     // Resolve reference
@@ -64,7 +64,7 @@ export const evalRawReference = (
             scope: newScope
         })
     )({
-        config, stream, decl, result,
+        config, stream, decl,
         scope: newScope
     });
 

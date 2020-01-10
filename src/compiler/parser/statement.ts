@@ -1,7 +1,7 @@
-import {GroupValue}                                                                                                           from '../../ast/types';
-import {evalCharacterSelection, evalCombiantor, evalConditionalStatement, evalFunction, evalGroup, evalReference, evalString} from '../internal';
-import {lookupValue}                                                                                                          from '../tools/lookup-value';
-import {ParserArgs, ParsingResultObjectValue}                                                                                 from '../types';
+import {GroupValue}                                                                                                                       from '../../ast/types';
+import {evalCharacterSelection, evalCombiantor, evalConditionalStatement, evalFunction, evalGroup, evalReference, evalSpread, evalString} from '../internal';
+import {lookupValue}                                                                                                                      from '../tools/lookup-value';
+import {ParserArgs, ParsingResultObjectValue}                                                                                             from '../types';
 
 export const evalDeclaration = (
     {
@@ -84,6 +84,15 @@ export const evalDeclaration = (
         case 'conditional-statement': {
 
             if (!evalConditionalStatement({config, stream, decl, scope, result})) {
+                stream.pop();
+                return false;
+            }
+
+            break;
+        }
+        case 'spread': {
+
+            if (!evalSpread({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }

@@ -1,13 +1,9 @@
 import {TokenStream}                                      from '../../tokenizer/stream/token-stream';
 import {parseArguments, parseIdentifier, parseMultiplier} from '../internal';
-import {parseSpreadOperator}                              from '../misc/spread-operator';
 import {maybe}                                            from '../tools/maybe';
 import {Reference}                                        from '../types';
 
 export const parseReference = maybe<Reference>((stream: TokenStream) => {
-
-    // It may have a spread operator attached to it
-    const spread = parseSpreadOperator(stream);
 
     // It may be a type
     if (!stream.optional(false, 'punc', '<')) {
@@ -42,7 +38,6 @@ export const parseReference = maybe<Reference>((stream: TokenStream) => {
         type: 'reference',
         arguments: args,
         multiplier: parseMultiplier(stream),
-        spread,
         value
     } as Reference;
 });

@@ -26,7 +26,7 @@ export type Argument = {
     value: Group | null;
 }
 
-export type GroupValue = Reference | Str | BinaryCombinator | Group |
+export type GroupValue = Reference | Str | BinaryCombinator | Group | Spread |
     CharacterSelection | GroupCommand | ConditionalStatement | Func | VoidStatement;
 
 export type Group = {
@@ -83,7 +83,11 @@ export type Reference = {
     multiplier: Multiplier | null;
     arguments: Arguments | null;
     value: Array<string>;
-    spread: boolean;
+}
+
+export type Spread = {
+    type: 'spread';
+    value: Reference | Group;
 }
 
 export type FuncArgument = Group | Str | Identifier | ValueAccessor;
