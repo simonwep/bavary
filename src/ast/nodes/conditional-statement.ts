@@ -32,6 +32,11 @@ export const parseConditionalStatement: ParserFunction<ConditionalStatement> = m
         }
     }
 
+    // Groups of if-statements can't have a associated type
+    if (consequent.mode || (alternate?.type === 'group' && alternate.mode)) {
+        stream.throwError('If-statement-blocks can\'t have a type attached to it.');
+    }
+
     return {
         type: 'conditional-statement',
         condition, consequent, alternate
