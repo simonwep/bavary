@@ -14,7 +14,10 @@ export const lookupValue = (source: any, path: ValueAccessorPath): unknown => {
             // Allow access to length propertie of strings and arrays
             if ((sourceType === 'array' || sourceType === 'string') && ent === 'length') {
                 source = source.length;
-            } else if (sourceType === 'object' && source !== null) {
+                continue;
+            }
+
+            if (sourceType === 'object') {
                 source = source[ent];
 
                 if (source !== undefined) {
