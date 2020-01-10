@@ -1,9 +1,23 @@
 import {TokenStream}                                                                                                                         from '../../tokenizer/stream/token-stream';
 import {parseCharacterSelecton, parseConditionalStatement, parseFunction, parseGroupStatement, parseMultiplier, parseReference, parseString} from '../internal';
-import {parseCombinator}                                                                                                                     from '../misc/combinator';
 import {combine}                                                                                                                             from '../tools/combine';
 import {maybe}                                                                                                                               from '../tools/maybe';
 import {BinaryCombinator, Group, GroupValue}                                                                                                 from '../types';
+
+export const parseCombinator = maybe<string>((stream: TokenStream) => {
+    let combinator = stream.optional(false, 'punc', '|', '&');
+
+    if (!combinator) {
+        return null;
+    }
+
+    // It may be a extended combinator
+    if (combinator === '&' && stream.optional(false, 'punc', '&')) {
+        combinator += '&';
+    }
+
+    return combinator;
+});
 
 export const parseGroup = maybe<Group>((stream: TokenStream) => {
 
