@@ -32,7 +32,7 @@ export const parseToken = maybe<number>((stream: TokenStream) => {
             return null;
         }
 
-        const escaped = stream.peek() as Token;
+        const escaped = stream.peek(true) as Token;
         const escapedValue = String(escaped.value);
 
         if (escaped.type !== 'punc') {

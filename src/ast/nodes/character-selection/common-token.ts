@@ -13,9 +13,7 @@ export const parseCommonToken = maybe<CharacterSelectionArray>((stream: TokenStr
     }
 
     const token = stream.next(true);
-    if (!token) {
-        stream.throwError('Expected token.');
-    } else if (token.type === 'ws') {
+    if (token.type === 'ws') {
         stream.throwError(`Expected token but got "${token.value}".`);
     }
 

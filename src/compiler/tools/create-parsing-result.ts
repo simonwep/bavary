@@ -1,6 +1,6 @@
 import {ParsingResult} from '../types';
 
-export const createParsingResult = (name: 'string' | 'array' | 'object' = 'string'): ParsingResult => {
+export const createParsingResult = (name: 'string' | 'array' | 'object'): ParsingResult => {
     switch (name) {
         case 'array':
             return {

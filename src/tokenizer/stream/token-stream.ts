@@ -19,7 +19,7 @@ export class TokenStream extends Streamable<Token> {
             }
         }
 
-        this.throwError(`Unexpected end of input`);
+        this.throwError('Unexpected end of input');
     }
 
     peek(includeWhitespace = false): Token | null {
@@ -95,7 +95,7 @@ export class TokenStream extends Streamable<Token> {
         }
 
         if (this.hasNext(includeWhitespace)) {
-            const nxt = this.next(includeWhitespace) as Token;
+            const nxt = this.next(includeWhitespace);
             this.throwError(`Expected ${values.join(', ')} (${type}) but got ${nxt.value} (${nxt.type})`);
         }
 

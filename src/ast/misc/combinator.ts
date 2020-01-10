@@ -13,5 +13,5 @@ export const parseCombinator = maybe<string>((stream: TokenStream) => {
         combinator += '&';
     }
 
-    return combinator as string;
+    return combinator;
 });
