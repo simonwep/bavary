@@ -9,16 +9,19 @@ entry {
     <scientific-notation> = ['e' <num-sign>? <raw-num>]
     <scientific-num> = [<raw-num> <scientific-notation>?]
     
-    default [
+    default [object:
     
         // Well that's optional
-        <num-sign#sign>?
+        def sign = [<num-sign>]?
 
         // Decimal
-        [<raw-num#num>? '.' <scientific-num#decimal>] |
+        [
+            def num = [<raw-num>]? '.' 
+            def decimal = [<scientific-num>]
+        ] |
     
         // Non-decimal
-        [<scientific-num#num>]
+        def num = [<scientific-num>]
     ]
 }
 ```

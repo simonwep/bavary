@@ -4,23 +4,17 @@ Usage of the double-quote in the string itself is possible by escaping it
 
 ```html
 entry {
-    
-    /**
-     * Match all characters except the quotation character.
-     * Match escaped quotation-characters first.
-     */ 
-    <str-body> = [
-        ['\\"' | (. except \\")]+
-    ]
-    
-    default [
-        '"' <str-body#string> '"'
+    default [object:
+        '"'
+        /**
+           * Match all characters except the quotation character.
+           * Match escaped quotation-characters first.
+           */ 
+        def string = [['\"' | (. except \")]+]
+        '"'
     ]
 }
 ```
-
-Note that the `<str-body>` type first tries to match a escaped quote (`'\\\\"'`).
-This way it's possible to use the double-quotation-character itself in the string.
 
 ##### Valid inputs:
 | Input | Output |
