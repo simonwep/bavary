@@ -15,6 +15,12 @@ export const consumeEscaped = (stream: Streamable<string>, end: string): string 
             escaped = false;
         } else if (ch === '\\') {
             escaped = true;
+
+            // Don't include end or escape-character if escaped
+            const peek = stream.peek();
+            if (peek === end || peek === '\\') {
+                continue;
+            }
         } else if (ch === end) {
             return str;
         } else if (!stream.hasNext()) {
