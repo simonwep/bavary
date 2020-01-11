@@ -3,24 +3,13 @@ import {compile} from '../../src';
 
 describe('[COM] Essentials', () => {
 
-    it('Should throw an error on an invalid statements', () => {
+    it('Should throw on invalid entry-statements', () => {
 
-        // Missing punctuations
-        expect(() => compile('.')).to.throw();
-        expect(() => compile('<abc')).to.throw();
-        expect(() => compile('<abc> =')).to.throw();
-        expect(() => compile('<abc> = [<de]')).to.throw();
-        expect(() => compile('<abc> = [<de')).to.throw();
-        expect(() => compile('<abc> = { export <abc> = ["A"]')).to.throw();
+        // Global types used but no entry type defined
+        expect(() => compile('<abc> = ["A"] ["B"]')).to.throw();
 
-        // Missing tag
-        expect(() => compile('<abc> = [<de#>]')).to.throw();
-
-        // Invalid tag
-        expect(() => compile('<abc> = [<de#">]')).to.throw();
-
-        // Unfinished range multiplier
-        expect(() => compile('<abc> = [<de>{2,]')).to.throw();
+        // Random, non-valid string
+        expect(() => compile('{')).to.throw();
     });
 
     it('Should throw an error if no entry-type is defined', () => {
@@ -40,6 +29,11 @@ describe('[COM] Essentials', () => {
             default <abc> = ["A"]
             entry [<abc>]
         `)).to.throw();
+    });
+
+    it('Should assume an entry-value if only a group were passed as value', () => {
+        const parse = compile('[\'A\' | \'B\']');
+        expect(parse('A')).to.equal('A');
     });
 
     it('Should compile and parse character definitions', () => {

@@ -6,10 +6,10 @@ describe('[AST] Simple group declarations', () => {
         '<vvv',
         'entry [\'A\' | \'B\'|]',
         '<abc.> = ["A"]',
+        '<abc> = ["A"',
         '<abc> = [/]',
         '<abc> = [//]',
         '<abc> = [/[]]',
-        '<abc> = [',
         '<abc> = ["A" | "B" | []',
         '<abc> = [A""]'
     ]);

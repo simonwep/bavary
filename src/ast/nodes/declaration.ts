@@ -22,7 +22,7 @@ export const parseDeclaration = maybe<Declaration>((stream: TokenStream) => {
         stream.expect(false, 'punc', '>');
         stream.expect(false, 'punc', '=');
     } else if (!variant) {
-        stream.throwError('Expected declaration.');
+        return null;
     }
 
     // A declaration value could be either a group or scoped block
