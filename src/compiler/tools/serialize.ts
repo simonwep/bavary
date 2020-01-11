@@ -3,7 +3,6 @@ import {ParsingResultObject} from '../types';
 
 /**
  * Serializes, e.g nullish, tagged types which got not matched
- * TODO: Serialzation for arrays?
  * @param rest Array of declaration
  * @param target Result-obj
  * @param nullish Override existing values
@@ -14,7 +13,6 @@ export function serializeParsingResult(rest: Array<GroupValue>, target: ParsingR
     for (const item of rest) {
 
         // Check if item is a reference
-        // TODO: define alone is not that good, wrap it
         if (item.type === 'define') {
 
             // Set value only to null if it's not defined yet

@@ -3,7 +3,6 @@ import {evalGroup}                            from '../internal';
 import {ParserArgs, ParsingResultObjectValue} from '../types';
 import {maybeMultiplier}                      from './multiplier';
 
-// TODO: Merge with reference
 export const evalRawReference = (
     {
         config,
