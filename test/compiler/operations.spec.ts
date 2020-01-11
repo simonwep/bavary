@@ -146,4 +146,19 @@ describe('[COM] Operations', () => {
             entry [def x = ['a']]
         `)('a')).to.throw();
     });
+
+    it('Should throw an error with with throw-statement', () => {
+        const parse = compile(`[object:
+            def hi = [(a - z)+]
+            
+            if ($hi != 'hello') [
+                throw 'Expected "hello".'
+            ]
+        ]`);
+
+        expect(() => parse('helo')).to.throw();
+        expect(parse('hello')).to.deep.equal({
+            hi: 'hello'
+        });
+    });
 });

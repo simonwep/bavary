@@ -1,4 +1,4 @@
-import {TokenStream}                 from '../../tokenizer/stream/token-stream';
+import {TokenStream}                 from '../../tokenizer/token-stream';
 import {parseGroup, parseIdentifier} from '../internal';
 import {maybe}                       from '../tools/maybe';
 import {Arguments}                   from '../types';
@@ -20,7 +20,7 @@ export const parseArguments = maybe<Arguments>((stream: TokenStream) => {
             value = parseGroup(stream);
 
             if (!value) {
-                stream.throwError('Expected a group.');
+                stream.throw('Expected a group.');
             }
         }
 

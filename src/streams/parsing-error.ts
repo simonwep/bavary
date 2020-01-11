@@ -8,22 +8,22 @@ export class ParsingError extends Error {
 
     // Source-code and error-message
     public source?: string;
-    public msg: string;
+    public description: string;
 
     /**
      * Sytax-error with message and position
      * @param source
-     * @param msg
+     * @param description
      * @param start
      * @param end
      */
-    constructor(msg: string, source?: string, start?: number, end?: number) {
+    constructor(description: string, source?: string, start?: number, end?: number) {
         /* istanbul ignore next */
-        super(start !== undefined && end !== undefined && source ? prettifyError(msg, source, start, end) : msg);
+        super(start !== undefined && end !== undefined && source ? prettifyError(description, source, start, end) : description);
         this.source = source;
         this.start = start;
         this.end = end;
-        this.msg = msg;
+        this.description = description;
         this.name = 'Parsing Error';
     }
 }

@@ -1,4 +1,4 @@
-import {Streamable}                 from '../../streamable';
+import {Streamable}                 from '../../streams/streamable';
 import {consumeWhile}               from '../tools/consume';
 import {isNonWhitespace, isNumeric} from '../tools/is';
 import {Token}                      from '../types';

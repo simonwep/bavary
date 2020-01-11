@@ -1,4 +1,4 @@
-import {Streamable} from '../streamable';
+import {Streamable} from '../streams/streamable';
 import {Scope}      from './scope';
 
 

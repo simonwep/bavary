@@ -1,5 +1,5 @@
 import {expect}     from 'chai';
-import {Streamable} from '../../src/streamable';
+import {Streamable} from '../../src/streams/streamable';
 
 describe('Streams', () => {
     const stream = new Streamable('Hello');

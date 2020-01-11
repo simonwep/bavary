@@ -1,4 +1,4 @@
-import {TokenStream}         from '../../../tokenizer/stream/token-stream';
+import {TokenStream}         from '../../../tokenizer/token-stream';
 import {Token}               from '../../../tokenizer/types';
 import {maybe}               from '../../tools/maybe';
 import {parseHexCharacter}   from './hex-character';

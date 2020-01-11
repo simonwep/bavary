@@ -1,4 +1,4 @@
-import {TokenStream} from '../tokenizer/stream/token-stream';
+import {TokenStream} from '../tokenizer/token-stream';
 
 export type ASTNode = Declaration | CharacterSelection | ValueAccessor | ConditionalStatement |
     VoidStatement | Arguments | Func | Multiplier | BinaryExpressionValue | Group | Reference | Block | Str;
@@ -36,7 +36,7 @@ export type Group = {
     value: Array<GroupValue>;
 }
 
-export type GroupCommand = DefineStatement | PushStatement | VoidStatement;
+export type GroupCommand = DefineStatement | PushStatement | VoidStatement | ThrowStatement;
 export type DefineStatement = {
     type: 'define';
     name: string;
@@ -51,6 +51,11 @@ export type PushStatement = {
 export type VoidStatement = {
     type: 'ignored';
     value: Group;
+}
+
+export type ThrowStatement = {
+    type: 'throw';
+    value: Str;
 }
 
 export type Multiplier = {

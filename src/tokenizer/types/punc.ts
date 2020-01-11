@@ -1,4 +1,4 @@
-import {Streamable}    from '../../streamable';
+import {Streamable}    from '../../streams/streamable';
 import {isPunctuation} from '../tools/is';
 import {Token}         from '../types';
 

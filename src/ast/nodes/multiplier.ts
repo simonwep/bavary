@@ -1,4 +1,4 @@
-import {TokenStream} from '../../tokenizer/stream/token-stream';
+import {TokenStream} from '../../tokenizer/token-stream';
 import {maybe}       from '../tools/maybe';
 import {Multiplier}  from '../types';
 
@@ -21,7 +21,7 @@ export const parseMultiplier = maybe<Multiplier>((stream: TokenStream) => {
 
             // Validate range - tokenizer currently parses no negaive numbers
             if ((end as number) - (start as number) < 0) {
-                stream.throwError('The difference between start and end-value cannot be negative or zero.');
+                stream.throw('The difference between start and end-value cannot be negative or zero.');
             }
         }
 

@@ -1,4 +1,4 @@
-import {TokenStream}                from '../../tokenizer/stream/token-stream';
+import {TokenStream}                from '../../tokenizer/token-stream';
 import {parseGroup, parseReference} from '../internal';
 import {maybe}                      from '../tools/maybe';
 import {Spread}                     from '../types';
@@ -18,7 +18,7 @@ export const parseSpread = maybe<Spread>((stream: TokenStream) => {
     // Either a group or reference must follow
     const value = parseGroup(stream) || parseReference(stream);
     if (!value) {
-        stream.throwError('Expected group or reference.');
+        stream.throw('Expected group or reference.');
     }
 
     return {

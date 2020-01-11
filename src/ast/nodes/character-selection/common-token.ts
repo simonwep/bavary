@@ -1,4 +1,4 @@
-import {TokenStream}             from '../../../tokenizer/stream/token-stream';
+import {TokenStream}             from '../../../tokenizer/token-stream';
 import {maybe}                   from '../../tools/maybe';
 import {CharacterSelectionArray} from '../../types';
 import {commonTokens}            from './common-tokens';
@@ -14,14 +14,14 @@ export const parseCommonToken = maybe<CharacterSelectionArray>((stream: TokenStr
 
     const token = stream.next(true);
     if (token.type === 'ws') {
-        stream.throwError(`Expected token but got "${token.value}".`);
+        stream.throw(`Expected token but got "${token.value}".`);
     }
 
     const tv = token.value as string;
     const target = commonTokens[tv];
 
     if (target === undefined) {
-        stream.throwError(`Unknown token: "${tv}"`);
+        stream.throw(`Unknown token: "${tv}"`);
     }
 
     return target;

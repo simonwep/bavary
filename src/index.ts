@@ -5,6 +5,9 @@ import {CompilerConfig, Parser} from './compiler/types';
 import {ENV_VERSION}            from './env';
 import {tokenize}               from './tokenizer';
 
+// Export parsing-error
+export {ParsingError} from './streams/parsing-error';
+
 /**
  * Compiles a definition-string.
  * Returns a function which can be used to parse content with compiled definitions.

@@ -1,4 +1,4 @@
-import {Streamable} from '../streamable';
+import {Streamable} from '../streams/streamable';
 import {Token}      from './types';
 import {cmt}        from './types/cmt';
 import {kw}         from './types/kw';

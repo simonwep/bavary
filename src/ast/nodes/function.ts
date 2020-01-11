@@ -1,4 +1,4 @@
-import {TokenStream}                                                  from '../../tokenizer/stream/token-stream';
+import {TokenStream}                                                  from '../../tokenizer/token-stream';
 import {parseGroup, parseIdentifier, parseString, parseValueAccessor} from '../internal';
 import {combine}                                                      from '../tools/combine';
 import {maybe}                                                        from '../tools/maybe';
@@ -30,7 +30,7 @@ export const parseFunction = maybe<Func>((stream: TokenStream) => {
         stream.consumeSpace();
         const arg = parse(stream);
         if (!arg) {
-            stream.throwError('Expected an a group, tag or identifier.');
+            stream.throw('Expected an a group, tag or identifier.');
         }
 
         args.push(arg);

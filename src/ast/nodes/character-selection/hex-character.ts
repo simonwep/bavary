@@ -1,4 +1,4 @@
-import {TokenStream} from '../../../tokenizer/stream/token-stream';
+import {TokenStream} from '../../../tokenizer/token-stream';
 import {isValidHex}  from '../../tools/is-valid-hex';
 import {maybe}       from '../../tools/maybe';
 
@@ -15,9 +15,9 @@ export const parseHexCharacter = maybe<number>((stream: TokenStream) => {
 
     const hex = (next as string).slice(1);
     if (hex.length !== 2 && hex.length !== 4) {
-        stream.throwError('Hex value must either be 2 or 4 values.');
+        stream.throw('Hex value must either be 2 or 4 values.');
     } else if (!isValidHex(hex)) {
-        stream.throwError('Invalid hex value.');
+        stream.throw('Invalid hex value.');
     }
 
     return parseInt(hex, 16);

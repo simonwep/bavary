@@ -3,6 +3,7 @@ import {evalCharacterSelection, evalCombiantor, evalConditionalStatement, evalFu
 import {ParserArgs}                                                                                                                       from '../types';
 import {evalDefineCommand}                                                                                                                from './commands/define';
 import {evalPushCommand}                                                                                                                  from './commands/push';
+import {evalThrowStatement}                                                                                                               from './commands/throw';
 
 export const evalDeclaration = (
     {
@@ -115,6 +116,11 @@ export const evalDeclaration = (
                 stream.pop();
                 return false;
             }
+
+            break;
+        }
+        case 'throw': {
+            evalThrowStatement({config, stream, decl, scope, result});
         }
     }
 

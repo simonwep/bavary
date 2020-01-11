@@ -1,4 +1,4 @@
-import {TokenStream}                                      from '../../tokenizer/stream/token-stream';
+import {TokenStream}                                      from '../../tokenizer/token-stream';
 import {parseArguments, parseIdentifier, parseMultiplier} from '../internal';
 import {maybe}                                            from '../tools/maybe';
 import {Reference}                                        from '../types';
@@ -29,7 +29,7 @@ export const parseReference = maybe<Reference>((stream: TokenStream) => {
     }
 
     if (expectIdentifier || !value.length) {
-        stream.throwError('Expected identifier');
+        stream.throw('Expected identifier');
     }
 
     const args = parseArguments(stream);

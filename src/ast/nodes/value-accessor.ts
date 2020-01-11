@@ -1,4 +1,4 @@
-import {TokenStream}     from '../../tokenizer/stream/token-stream';
+import {TokenStream}     from '../../tokenizer/token-stream';
 import {parseIdentifier} from '../internal';
 import {combine}         from '../tools/combine';
 import {maybe}           from '../tools/maybe';
@@ -11,7 +11,7 @@ const parseObjectAccessor = maybe<string>((stream: TokenStream) => {
 
     const ident = parseIdentifier(stream);
     if (!ident) {
-        stream.throwError('Expected identifier.');
+        stream.throw('Expected identifier.');
     }
 
     return ident.value;
@@ -51,7 +51,7 @@ export const parseValueAccessor = maybe<ValueAccessor>((stream: TokenStream) => 
     }
 
     if (!accessorPath.length) {
-        stream.throwError('Expected value accessor.');
+        stream.throw('Expected value accessor.');
     }
 
     return {

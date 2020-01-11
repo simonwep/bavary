@@ -8,7 +8,7 @@ export const parseDefineStatement = maybe<DefineStatement>(stream => {
 
     const value = parseString(stream) || parseGroup(stream) || parseValueAccessor(stream);
     if (!value) {
-        stream.throwError('Expected group, string or variable lookup.');
+        stream.throw('Expected group, string or variable lookup.');
     }
 
     return {

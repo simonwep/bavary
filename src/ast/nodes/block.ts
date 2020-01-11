@@ -1,4 +1,4 @@
-import {TokenStream}        from '../../tokenizer/stream/token-stream';
+import {TokenStream}        from '../../tokenizer/token-stream';
 import {parseDeclaration}   from '../internal';
 import {maybe}              from '../tools/maybe';
 import {Block, Declaration} from '../types';

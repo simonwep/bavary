@@ -8,6 +8,7 @@ describe('[AST] Operations', () => {
         '<abc> = [void]',
         '<abc> = [void ab]',
         '<abc> = [def s]',
+        '<abc> = [throw]',
         '<abc> = [def s = ]',
         '<abc> = [def s = abc]',
     ]);

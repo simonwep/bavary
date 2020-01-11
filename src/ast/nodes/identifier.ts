@@ -1,4 +1,4 @@
-import {TokenStream} from '../../tokenizer/stream/token-stream';
+import {TokenStream} from '../../tokenizer/token-stream';
 import {Token}       from '../../tokenizer/types';
 import {maybe}       from '../tools/maybe';
 import {Identifier}  from '../types';
@@ -28,7 +28,7 @@ export const parseIdentifier = maybe<Identifier>((stream: TokenStream) => {
     }
 
     if (name.endsWith('-')) {
-        stream.throwError('Identifier cannot end with a hyphen');
+        stream.throw('Identifier cannot end with a hyphen');
     }
 
     return name.length ? {

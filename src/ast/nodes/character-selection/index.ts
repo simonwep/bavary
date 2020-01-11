@@ -1,4 +1,4 @@
-import {TokenStream}                                 from '../../../tokenizer/stream/token-stream';
+import {TokenStream}                                 from '../../../tokenizer/token-stream';
 import {parseMultiplier}                             from '../../internal';
 import {maybe}                                       from '../../tools/maybe';
 import {CharacterSelection, CharacterSelectionArray} from '../../types';

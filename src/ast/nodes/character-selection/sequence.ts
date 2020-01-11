@@ -1,4 +1,4 @@
-import {TokenStream}             from '../../../tokenizer/stream/token-stream';
+import {TokenStream}             from '../../../tokenizer/token-stream';
 import {CharacterSelectionArray} from '../../types';
 import {parseCommonToken}        from './common-token';
 import {parseToken}              from './token';
@@ -17,7 +17,7 @@ export const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
             if (ct) {
                 sequence.push(...ct);
             } else {
-                stream.throwError('Expected character-selection.');
+                stream.throw('Expected character-selection.');
             }
 
             continue;
@@ -28,7 +28,7 @@ export const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
             const b = parseToken(stream);
 
             if (b === null) {
-                stream.throwError('Expected end position.');
+                stream.throw('Expected end position.');
             }
 
             sequence.push([

@@ -1,4 +1,4 @@
-import {TokenStream}      from '../tokenizer/stream/token-stream';
+import {TokenStream}      from '../tokenizer/token-stream';
 import {Token}            from '../tokenizer/types';
 import {parseGroup}       from './internal';
 import {parseDeclaration} from './nodes/declaration';
@@ -45,7 +45,7 @@ export const parse = (tokens: Array<Token>, source: string): Array<Declaration> 
 
     // Throw error if tokens were left unparsed
     if (stream.hasNext()) {
-        stream.throwError('Unexpected token');
+        stream.throw('Unexpected token');
     }
 
     return declarations;

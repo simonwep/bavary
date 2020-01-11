@@ -6,7 +6,7 @@ export const parsePushStatement = maybe<PushStatement>(stream => {
     const value = parseString(stream) || parseGroup(stream);
 
     if (!value) {
-        stream.throwError('Expected group or string');
+        stream.throw('Expected group or string');
     }
 
     return {

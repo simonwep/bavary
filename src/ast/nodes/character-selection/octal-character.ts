@@ -1,4 +1,4 @@
-import {TokenStream}  from '../../../tokenizer/stream/token-stream';
+import {TokenStream}  from '../../../tokenizer/token-stream';
 import {isValidOctal} from '../../tools/is-valid-octal';
 import {maybe}        from '../../tools/maybe';
 
@@ -15,7 +15,7 @@ export const parseOctalCharacter = maybe<number>((stream: TokenStream) => {
 
     const nextStr = String(next);
     if (!isValidOctal(nextStr) || next > 999) {
-        stream.throwError('Invalid octal value.');
+        stream.throw('Invalid octal value.');
     }
 
     // Parse and return decimal value

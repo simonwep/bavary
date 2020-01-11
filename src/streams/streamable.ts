@@ -1,3 +1,5 @@
+import {ParsingError} from './parsing-error';
+
 /**
  * Creates a new stream out of an array of values and an optional "source-map"
  * @param vals
@@ -7,15 +9,13 @@
 export class Streamable<T> {
 
     public index: number;
-    protected readonly source: string | null;
     protected readonly vals: ArrayLike<T>;
     protected readonly length: number;
     private readonly stashed: Array<number>;
 
-    constructor(vals: ArrayLike<T>, source: string | null = null) {
+    constructor(vals: ArrayLike<T>,) {
         this.vals = vals;
         this.length = vals.length;
-        this.source = source;
         this.index = 0;
         this.stashed = [];
     }
@@ -54,5 +54,24 @@ export class Streamable<T> {
      */
     recycle(): void {
         this.stashed.pop();
+    }
+
+    /**
+     * Throws an error, a ParsingError if the values
+     * are of type string.
+     * @param msg error-message
+     */
+    /* istanbul ignore next */
+    throw(msg: string): never {
+        const {index, vals} = this;
+
+        if (typeof vals === 'string') {
+
+            // Throw StreamingError
+            throw new ParsingError(msg, vals, index, index);
+        }
+
+        // Throw regular error
+        throw new Error(msg);
     }
 }

@@ -1,4 +1,4 @@
-import {TokenStream}                                             from '../../tokenizer/stream/token-stream';
+import {TokenStream}                                             from '../../tokenizer/token-stream';
 import {parseArguments, parseBlock, parseGroup, parseIdentifier} from '../internal';
 import {maybe}                                                   from '../tools/maybe';
 import {Declaration}                                             from '../types';
@@ -14,7 +14,7 @@ export const parseDeclaration = maybe<Declaration>((stream: TokenStream) => {
 
         name = parseIdentifier(stream);
         if (!name) {
-            stream.throwError('Expected identifier.');
+            stream.throw('Expected identifier.');
         }
 
         // Parse arguments
@@ -31,13 +31,13 @@ export const parseDeclaration = maybe<Declaration>((stream: TokenStream) => {
         body = parseGroup(stream);
 
         if (!body) {
-            stream.throwError('Expected a group.');
+            stream.throw('Expected a group.');
         }
     } else {
         body = parseGroup(stream) || parseBlock(stream);
 
         if (!body) {
-            stream.throwError('Expected a group or block-statement.');
+            stream.throw('Expected a group or block-statement.');
         }
     }
 

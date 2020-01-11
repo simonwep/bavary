@@ -1,9 +1,16 @@
-import {Streamable}                         from '../../streamable';
-import {RangeInformation, Token, TokenType} from '../types';
-import {ParsingError}                       from './parsing-error';
+import {ParsingError}                       from '../streams/parsing-error';
+import {Streamable}                         from '../streams/streamable';
+import {RangeInformation, Token, TokenType} from './types';
 
 /* istanbul ignore next */
 export class TokenStream extends Streamable<Token> {
+
+    private readonly source: string;
+
+    constructor(vals: Array<Token>, source: string) {
+        super(vals);
+        this.source = source;
+    }
 
     next(includeWhitespace = false): Token | never {
         const {index, length, vals} = this;
@@ -19,7 +26,7 @@ export class TokenStream extends Streamable<Token> {
             }
         }
 
-        this.throwError('Unexpected end of input');
+        this.throw('Unexpected end of input');
     }
 
     peek(includeWhitespace = false): Token | null {
@@ -96,32 +103,27 @@ export class TokenStream extends Streamable<Token> {
 
         if (this.hasNext(includeWhitespace)) {
             const nxt = this.next(includeWhitespace);
-            this.throwError(`Expected ${values.join(', ')} (${type}) but got ${nxt.value} (${nxt.type})`);
+            this.throw(`Expected ${values.join(', ')} (${type}) but got ${nxt.value} (${nxt.type})`);
         }
 
-        this.throwError('Unxpected end of input.');
+        this.throw('Unxpected end of input.');
     }
 
     /**
      * Throws an ParsingError
      * @param msg Error message
      */
-    throwError(msg: string): never {
-        const {index, source} = this;
+    throw(msg: string): never {
+        const {source} = this;
 
-        /* istanbul ignore if */
-        if (!source) {
-
-            // Currently not used, maybe in the future
-            throw new ParsingError(msg);
-        } else if (this.hasNext()) {
+        if (this.hasNext() && source) {
 
             // Expect peeked value to be of type RangeInformation
             const peek = this.peek() as RangeInformation;
             throw new ParsingError(msg, source, peek.start, peek.end);
         }
 
-        // Otherwise use current index as start and end value
-        throw new ParsingError(msg, source, index, index);
+        // Throw regular error
+        throw new Error(msg);
     }
 }

@@ -1,4 +1,4 @@
-import {TokenStream}                                                   from '../../../tokenizer/stream/token-stream';
+import {TokenStream}                                                   from '../../../tokenizer/token-stream';
 import {parseIdentifier, parseNumber, parseString, parseValueAccessor} from '../../internal';
 import {combine}                                                       from '../../tools/combine';
 import {maybe}                                                         from '../../tools/maybe';
@@ -36,7 +36,7 @@ function maybeBinary(
         stream.consumeSpace();
         const rightValue = parse(stream);
         if (!rightValue) {
-            stream.throwError('Expected right-hand value');
+            stream.throw('Expected right-hand value');
         }
 
         return maybeBinary({
@@ -72,7 +72,7 @@ export const parseBinaryExpression = maybe<BinaryExpression>((stream: TokenStrea
     // Parse binary expression
     const bex = maybeBinary(left, stream, parse);
     if (bex.type !== 'binary-expression') {
-        stream.throwError('Expected binary expression.');
+        stream.throw('Expected binary expression.');
     }
 
     stream.expect(false, 'punc', ')');

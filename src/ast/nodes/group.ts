@@ -1,4 +1,4 @@
-import {TokenStream}                                                                                                                         from '../../tokenizer/stream/token-stream';
+import {TokenStream}                                                                                                                         from '../../tokenizer/token-stream';
 import {parseCharacterSelecton, parseConditionalStatement, parseFunction, parseGroupStatement, parseMultiplier, parseReference, parseString} from '../internal';
 import {combine}                                                                                                                             from '../tools/combine';
 import {maybe}                                                                                                                               from '../tools/maybe';
@@ -54,7 +54,7 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
         const sign = parseCombinator(stream);
 
         if (!value) {
-            stream.throwError('Expected a type, group or raw string / character-range.');
+            stream.throw('Expected a type, group or raw string / character-range.');
         }
 
         if (sign) {
@@ -106,7 +106,7 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
 
     // A remaining
     if (comg) {
-        stream.throwError('Combinator is missing a value!');
+        stream.throw('Combinator is missing a value!');
     }
 
     stream.expect(false, 'punc', ']');
