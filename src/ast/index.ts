@@ -1,6 +1,5 @@
 import {TokenStream}      from '../tokenizer/stream/token-stream';
 import {Token}            from '../tokenizer/types';
-import './internal';
 import {parseGroup}       from './internal';
 import {parseDeclaration} from './nodes/declaration';
 import {Declaration}      from './types';

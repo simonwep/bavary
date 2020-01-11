@@ -62,13 +62,13 @@ describe('Tokenizer', () => {
     });
 
     it('Should properly include escaped-characters', () => {
-        expect(tokenize(`['\\'']`)).to.deep.equal([
+        expect(tokenize('[\'\\\'\']')).to.deep.equal([
             {type: 'punc', value: '[', start: 0, end: 1},
             {type: 'str', value: '\'', start: 1, end: 5},
             {type: 'punc', value: ']', start: 5, end: 6}
         ]);
 
-        expect(tokenize(`'\\abc'`)).to.deep.equal([
+        expect(tokenize('\'\\abc\'')).to.deep.equal([
             {type: 'str', value: '\\abc', start: 0, end: 6}
         ]);
     });
