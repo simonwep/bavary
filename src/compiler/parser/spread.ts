@@ -26,16 +26,14 @@ export const evalSpread = (
     const valueType = typeOf(value);
 
     // Validate both sides
-    if (valueType === 'string') {
-        throw new Error(`"${decl.value}" doesn't return a object or array which is required for the spread operator to work.`);
-    } else if (result.type === 'string') {
+    if (result.type === 'string') {
         throw new Error('Cannot use spread-operator in strings.');
     }
 
     /**
      * Join objects / arrays. Otherwise throw error because of incompatibility
      */
-    if (valueType === 'array' && result.type === 'array') {
+    if ((valueType === 'array' || valueType === 'string') && result.type === 'array') {
         result.value.push(...(value as Array<ParsingResultValue>));
     } else if (valueType === 'object' && result.type === 'object') {
         Object.assign(result.value, value);

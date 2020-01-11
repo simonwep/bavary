@@ -3,7 +3,7 @@ import {compile} from '../../src';
 
 describe('[COM] Spread operator', () => {
 
-    it('Should throw an error if it\'s used on a string', () => {
+    it('Should throw an error if an array is spread into a string', () => {
         const parse = compile(`
             <char> = [array: push [(\\w)+]]
            
@@ -15,7 +15,7 @@ describe('[COM] Spread operator', () => {
         expect(() => parse('A')).to.throw();
     });
 
-    it('Should throw an error if it\'s used on an array', () => {
+    it('Should throw an error if an object is spread into an array', () => {
         const parse = compile(`
             <char> = [object: def x = [(A - Z)+]]
            
@@ -27,16 +27,16 @@ describe('[COM] Spread operator', () => {
         expect(() => parse('A')).to.throw();
     });
 
-    it('Should throw an error if the spread-source is a string', () => {
+    it('Should split a string if a spread operator is used on it', () => {
         const parse = compile(`
-            <char> = [(A - Z)+]
-           
             entry [array:
-                ...<char>
+                ... [(A - Z)+]
             ]
         `);
 
-        expect(() => parse('A')).to.throw();
+        expect(parse('ABCDE')).to.deep.equal([
+            'A', 'B', 'C', 'D', 'E'
+        ]);
     });
 
     it('Should work with groups', () => {

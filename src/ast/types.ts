@@ -87,7 +87,7 @@ export type Reference = {
 
 export type Spread = {
     type: 'spread';
-    value: Reference | Group;
+    value: Reference | Group | CharacterSelection | Str;
 }
 
 export type FuncArgument = Group | Str | Identifier | ValueAccessor;
