@@ -3,10 +3,8 @@
 ### Content
 1. [Comments](#comments) _- Everything should be properly documented, especially parser._
 2. [Entry type](#entry-type) _- Each parser starts with it._
-
 3. [Character selection](#character-selection) _- Core concept: character ranges._  
    3.1 [Common tokens](#common-tokens) _- Regexp escape-sequences_
-   
 4. [Groups](#groups) _- Group related items together._  
    4.1 [Multipliers](#multipliers) _- How (and how often) things should matched._  
    4.2 [Combinators](#combinators) _- Logical relationship between matcher._  
@@ -14,15 +12,14 @@
    4.4 [Array group](#array-group) _- A group which returns an array._  
    4.5 [Object group](#object-group) _- A group which returns an object._  
    4.6 [Operators](#operators) _- Manipulate the current state of a group._
-
-5. [Types](#types) _- Reusable, independent, named [group](#groups)._  
-   5.1 [Spread operator](#spread-operator) _- Let the result, array or object, from a [type](#types) bubble up._  
-   5.2 [Arguments](#arguments) _- Pass groups to [types](#types)._
-
+5. [Types](#types) _- Reusable, independent, named [group](#groups)._   
+   5.1 [Arguments](#arguments) _- Pass groups to [types](#types)._
 6. [Blocks](#block-definition) _- Give [types](#types) a scope and group related stuff together_.
-7. [Conditional statements](#conditional-statements) _- Parse by condition._  
-   7.1 [Logical operators](#logical-operators) _- As the name already says..._  
-   7.2 [Constants](#constants) _- Constants for values to use within conditional-statements._
+7. [Spread operator](#spread-operator) _- Concatenate arrays and objects, make them "bubble up"._  
+   7.1 [Possible use cases](#possible-use-cases) _- Table with possible use cases._
+8. [Conditional statements](#conditional-statements) _- Parse by condition._  
+   8.1 [Logical operators](#logical-operators) _- As the name already says..._  
+   8.2 [Constants](#constants) _- Constants for values to use within conditional-statements._
 
 ### Comments
 There are two ways to make comments (The same ways as in JS):
@@ -40,7 +37,7 @@ There are two ways to make comments (The same ways as in JS):
 ```
 
 ### Entry type
-Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type declaration](#type-definition) **or**
+Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type](#types) **or**
 a [block](#block-definition) definition where the default export will be used. The entry value is where everything starts:
 
 ```html
@@ -55,8 +52,15 @@ entry {
 }
 ```
 
+Entry types are only useful if you plan to use global [types](#types), otherwise you can just pass a raw group in it:
+
+````js
+const parse = compile(`[...]`);
+console.log(parse('...'))
+````
 
 ### Character selection
+
 Character-selection works almost the same as in regular expressions, only the syntax is a bit different:
 
 | Name | Description | Example |
@@ -134,7 +138,7 @@ Combinators define how components in a group should be treated:
 | `&`  | Ampersand        | Each component is mandatory but the may appear in any order  | `'A' & 'B'`  |
 | `&&` | Double ampersand | At least one component must be present, and the may appear in any order | `'A' && 'B'` |
 
-Combinators don't have any priorities, mixed combinators will be grouped from left to right. Use [groups](#group-definition) to
+Combinators don't have any priorities, mixed combinators will be grouped from left to right. Use [groups](#groups) to
 bypass precedence rules.
 
 #### String group
@@ -257,7 +261,7 @@ Where
 
 A type is a re-usable form of a group which can be used in other declarations, it's even possible to create recursive parser with it!
 
-Each type can either be a [parsing-group](#group-definition), to **group related** types together, or a direct definition of a character / type sequence.
+Each type can either be a [parsing-group](#groups), to **group related** types together, or a direct definition of a character / type sequence.
 ```html
 // Group definition
 <my-group-type> = ['A']
@@ -270,31 +274,6 @@ Types used in declarations can be [multiplied](#multipliers):
 ```html
 entry [<my-type>+]
 ```
-
-#### Spread operator
-
-If you're within a [`object-group`](#object-group) and want to inherit all values from another [`object-group`](#object-group) you can use the spread operator `...` (the same counts for arrays):
-
-````js
-const parse = compile(`
-    <uppercase> = [object:
-        def up = [(A - Z)+]
-    ]
-    
-    <lowercase> = [object:
-        def low = [(a - z)+]
-    ]
-
-	entry [object:
-        ...<lowercase>
-        ...<uppercase>?
-	]
-`);
-
-console.log(parse('hello')); // Outputs {low: 'hello'}
-console.log(parse('helloWORLD')); // Outputs {low: 'hello', up: 'WORLD'}
-console.log(parse('')); // Outputs null - <lowercase> isn't optional
-````
 
 #### Arguments
 
@@ -324,7 +303,7 @@ console.log(parse('"hello"')); // Outputs {body: 'hello'}
 
 ### Block definition
 
-Blocks (or scopes) can be used to scope [types](#type-definition) and group related [types](#type-definition) together without interfering other types.
+Blocks (or scopes) can be used to scope [types](#types) and group related [types](#types) together without interfering other types.
 
 Each block can have exactly one, optional, `default` export which can be used to define the behavior if you use it without referring to
 sub-types, and an arbitrary amount of _exported_ types:
@@ -347,7 +326,70 @@ sub-types, and an arbitrary amount of _exported_ types:
 entry [<characters>+]
 ```
 
+### Spread operator
+
+Use the spread operator `...` on arrays, objects and even strings (They'll be split into their characters) which have the same value to make their value part of the current group, they work both on [groups](#groups) and [types](#types), example with types:
+
+````js
+const parse = compile(`
+    <uppercase> = [object:
+        def up = [(A - Z)+]
+    ]
+    
+    <lowercase> = [object:
+        def low = [(a - z)+]
+    ]
+
+	entry [object:
+        ...<lowercase>
+        ...<uppercase>?
+	]
+`);
+
+console.log(parse('hello')); // Outputs {low: 'hello'}
+console.log(parse('helloWORLD')); // Outputs {low: 'hello', up: 'WORLD'}
+console.log(parse('')); // Outputs null - <lowercase> isn't optional
+````
+
+Or use it directly on groups:
+
+````js
+const parse = compile(`
+    entry [object:
+    
+        // Inherit the properties from another object...
+        ...[object: 
+            def intro = [(A - Z)+]
+        ]
+        
+        def arr = [array:
+            
+            // ... or array
+            ...[array:
+                push [(a - z)+]
+            ]
+        ]
+    ]
+`);
+
+console.log(parse('HELLOworld')); // Outputs {intro: 'HELLO', arr: ['world']}
+````
+
+Therefore, they work the same way as in [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax).
+
+#### Possible use cases
+
+There are more than just the previously mentioned ways to make use of spread operator, in the following table the **target** represents the group in which the spread is used and the **source** the group / type on which the spread-syntax is used:
+
+| Target   | Source   | Outcome                                                      |
+| -------- | -------- | ------------------------------------------------------------ |
+| `object` | `object` | Target will **inherit** all properties from source.          |
+| `array`  | `object` | The **entries** from the source will be **appended** to the target. |
+| `array`  | `array`  | All entries of source will be **appended** to the target.    |
+| `array`  | `string` | Each character of source will be **appended** to the target. |
+
 ### Conditional Statements
+
 It's possible to use if-statements within a group to execute another group by condition.
 In your condition you can to use the dollar-sign `$` to access the current [array-indecies](#array-group) or [object-properties](#object-group) and JavaScript-like property-lookups.
 

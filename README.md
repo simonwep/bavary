@@ -49,9 +49,7 @@ Include directly via jsdelivr:
 import {compile} from '@bavary/core';
 
 // Compile definitions
-const parse = compile(`
-    entry ['A' | 'B']
-`);
+const parse = compile(`['A' | 'B']`);
 
 // Use compiled definitions to parse a string
 const parsed = parse('A');
