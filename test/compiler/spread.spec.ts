@@ -3,7 +3,7 @@ import {compile} from '../../src';
 
 describe('[COM] Spread operator', () => {
 
-    it('Should throw an error if an array is spread into a string', () => {
+    it('Should throw an error if anything is spread into a string', () => {
         const parse = compile(`
             <char> = [array: push [(\\w)+]]
            
@@ -15,16 +15,30 @@ describe('[COM] Spread operator', () => {
         expect(() => parse('A')).to.throw();
     });
 
-    it('Should throw an error if an object is spread into an array', () => {
+    it('Should throw an error if an array is spread into an object', () => {
         const parse = compile(`
-            <char> = [object: def x = [(A - Z)+]]
-           
-            entry {
-                default [array: ...<char>]
-            }
+            entry [object:
+                ...[array: 
+                    push 'World'
+                ]
+            ]
         `);
 
-        expect(() => parse('A')).to.throw();
+        expect(() => parse('')).to.throw();
+    });
+
+    it('Should append the entries of an object if an object is spread into an array', () => {
+        const parse = compile(`
+            entry [array:
+                ...[object: 
+                    def intro = [(A - Z)+]
+                ]
+            ]
+        `);
+
+        expect(parse('HELLO')).to.deep.equal([
+            ['intro', 'HELLO']
+        ]);
     });
 
     it('Should split a string if a spread operator is used on it', () => {

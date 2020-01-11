@@ -35,6 +35,8 @@ export const evalSpread = (
      */
     if ((valueType === 'array' || valueType === 'string') && result.type === 'array') {
         result.value.push(...(value as Array<ParsingResultValue>));
+    } else if (valueType === 'object' && result.type === 'array') {
+        result.value.push(...Object.entries(value));
     } else if (valueType === 'object' && result.type === 'object') {
         Object.assign(result.value, value);
     } else {
