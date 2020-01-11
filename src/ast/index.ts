@@ -17,5 +17,10 @@ export const parse = (tokens: Array<Token>, source: string): Array<Declaration> 
         declarations.push(parseDeclaration(stream) as Declaration);
     }
 
+    // Throw error if tokens were left unparsed
+    if (stream.hasNext()) {
+        stream.throwError('Unexpected token');
+    }
+
     return declarations;
 };

@@ -118,10 +118,10 @@ export class TokenStream extends Streamable<Token> {
 
             // Expect peeked value to be of type RangeInformation
             const peek = this.peek() as RangeInformation;
-            throw new ParsingError(source, msg, peek.start, peek.end);
+            throw new ParsingError(msg, source, peek.start, peek.end);
         }
 
         // Otherwise use current index as start and end value
-        throw new ParsingError(source, msg, index, index);
+        throw new ParsingError(msg, source, index, index);
     }
 }

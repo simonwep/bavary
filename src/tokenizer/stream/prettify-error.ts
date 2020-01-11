@@ -12,8 +12,8 @@ function alternative(val: number, fallback: number, pred = -1): number {
  * @param end error-end index
  */
 export const prettifyError = (msg: string, source: string, start: number, end: number): string => {
-    const prevLineBreak = alternative(previousIndexOf(msg, '\n', start), -1) + 1;
-    const nextLineBreak = alternative(msg.indexOf('\n', end), msg.length);
+    const prevLineBreak = alternative(previousIndexOf(source, '\n', start), -1) + 1;
+    const nextLineBreak = alternative(source.indexOf('\n', end), source.length);
     const col = (start - prevLineBreak);
-    return `\n${msg.slice(prevLineBreak, nextLineBreak)}\n${' '.repeat(col)}^\n${source}`;
+    return `\n${source.slice(prevLineBreak, nextLineBreak)}\n${' '.repeat(col)}^\n${msg}`;
 };
