@@ -11,7 +11,7 @@
    4.3 [String group](#string-group) _- A group to match and return strings._  
    4.4 [Array group](#array-group) _- A group which returns an array._  
    4.5 [Object group](#object-group) _- A group which returns an object._  
-   4.6 [Operators](#operators) _- Manipulate the current state of a group._
+   4.6 [Commands](#operators) _- Manipulate the current state of a group and more._
 5. [Types](#types) _- Reusable, independent, named [group](#groups)._   
    5.1 [Arguments](#arguments) _- Pass groups to [types](#types)._
 6. [Blocks](#block-definition) _- Give [types](#types) a scope and group related stuff together_.
@@ -20,6 +20,8 @@
 8. [Conditional statements](#conditional-statements) _- Parse by condition._  
    8.1 [Logical operators](#logical-operators) _- As the name already says..._  
    8.2 [Constants](#constants) _- Constants for values to use within conditional-statements._
+9. [Native Functions](#native-functions) _- Manipulating the state by native JavaScript functions._
+10. [Error handling](#errors) _- Handle error raised by your code properly._
 
 ### Comments
 There are two ways to make comments (The same ways as in JS):
@@ -97,7 +99,6 @@ You can use a sub-set of common-tokens used in regex to avoid rewriting commonly
 | `\s` | Any whitespace character (Same as  `(' ', \t, \n)`). | `(\s)` |
 | `\d` | Any digit (Same as  `(0 - 9)`). | `(\d)` |
 | `\w` | Any word character (Same as  `(a - z, A - Z, 0 - 9, \_)`). | `(\w)` |
-| `\t` | Tab character. | `(\t)` |
 | `\0` | Null character. | `(\0)` |
 
 > ⚠ The amount of `\` you need to use depends on your envieroment! In a JS-Literal its `\\` whereby in a text-file it's only one.
@@ -241,15 +242,17 @@ And that's it.
 
 
 
-#### Operators
+#### Commands
 
 | Syntax                                 | Can be used within...          | Description                                                  | Example                         |
 | -------------------------------------- | ------------------------------ | ------------------------------------------------------------ | ------------------------------- |
-| `void <group>`                         | `String`,`Array`,`Object` [^1] | Ignores value of `<group>`.                                  | `void ['A']`                    |
+| `throw <string>`                       | `String`,`Array`,`Object`[^1]  | Throws a pretty error.                                       | `throw 'whoopsie'`              |
+| `void <group>`                         | `String`,`Array`,`Object` [^2] | Ignores value of `<group>`.                                  | `void ['A']`                    |
 | `push <group|string>`                  | `Array`                        | Appends a value to the array.                                | `push ['A']`                    |
 | `def <name> = <group|string|var-path>` | `Object`                       | Defines a property `<name>` within the object with the given value. | `def x = ['A']` `def x = $abc ` |
 
-[^1]:`void` only makes sense in `string` since `array` and `object` doesn't return strings.
+[^1]:Combined with if-statements it's useful to validate stuff. With pretty-error is meant that it shows the position in your target-string where the parser failed.
+[^2]:`void` only makes sense in `string` since `array` and `object` doesn't return strings.
 
 > ⚠ Using incompatible operators will lead to an runtime-error!
 
@@ -443,3 +446,117 @@ Constants can be used within conditional statements to make comparisons which ar
 | Name | Description | Example |
 | ---- | ----------- | ------- |
 | `null` | `null`-value, used to determine whenever a value is null. | `if ($a = null) [...]` |
+
+### Native functions
+
+In case the given features aren't enough you can use native JavaScript functions to manipulate the state of groups:
+
+```js
+const parse = compile(`[
+    
+    // Match any lower- / uppercase characters
+    (a - z, A - Z)+
+    
+    // Call capitalize function
+    capitalize()
+]`, {
+    functions: {
+
+        // Our capitalize function
+        capitalize({state}) {
+
+            // Verify capitalize is called within a string-group
+            if(state.type !== 'string') {
+                throw new Error('capitalized can only be used within string-groups.')
+            }
+
+            // Capitalize content
+            state.value = state.value.toUpperCase();
+
+            // Return true, use false to make the group fail
+            return true;
+        }
+    }
+});
+```
+
+As we can see functions are defined within the configuration object in the `functions` option, their first argument is a object with following properties (so far):
+
+| Property | Explanation                                                  |
+| -------- | ------------------------------------------------------------ |
+| `state`  | Current parsing state, contains two properties: `type` (either `array`, `object` or `string`) and `value` (the current group value). |
+
+Every following argument depends on how the function was called in your declaration, it accepts variables, [groups](#groups) or literals, all arguments will be replaced with their value before they get passed into your JavaScript function:
+
+```js
+const parse = compile(`[object:
+    def hello = 'world'
+
+    inspect(
+        'a string!',
+         [array: push 'A array group!'],
+         $hello // A variable!
+    )
+]`, {
+    functions: {
+        inspect({state}, str, arr, variable): boolean {
+        	// Be sure to validate each argument before using it's value!
+            console.log({
+                str, // 'a string!'
+                arr, // ['A array group!']
+                variable // 'world'
+            });
+
+            return true;
+        }
+    }
+});
+```
+
+See [config.md](/docs/config.md) regarding compiler options.
+
+### Error handling
+
+If you're using the [throw](#commands)-command you may want to manually handle the error, in this case surround your parse-call by a try-catch and check whenever the error is instance of an parsing-error. A parsing-error occurs if  a) Your syntax has an issue or caused a runtime-exception or b) The [throw](#commands)-command got executed.
+
+```js
+try {
+    const parse = compile(`[object:
+        def hi = [(a - z)+]
+
+        if ($hi != 'hello') [
+            throw 'Expected "hello".'
+        ]
+
+        [(A - Z)+]
+    ]`);
+
+    console.log(parse(`helloWORLD`)); // Successful
+    console.log(parse(`heloWORLD`)); // Throws error we're missing a "l"
+} catch (e) {
+
+    // Check if error is a ParsingError before accessing its properties
+    if(e instanceof ParsingError) {
+        // Handle error
+    }
+}
+```
+
+Properties of `ParsingError`:
+
+| Property      | Description           | Value in previous example |
+| ------------- | --------------------- | ------------------------- |
+| `source`      | Source-code           | `heloWorld`               |
+| `start`       | Error-offset          | `4`                       |
+| `end`         | End-position of error | `4`                       |
+| `description` | Error description     | `Expected "hello".`       |
+
+The `message` property, inherited from [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) will be a pretty-formatted version of the error with a preview of the current line where the error occurred:
+
+````
+heloWORLD
+    ^
+Expected "hello".
+````
+
+> `ParsingError` is used both as error if your syntax is invalid, a runtime-error occurred or you used the [throw](#commands)-command . 
