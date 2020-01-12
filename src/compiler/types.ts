@@ -32,7 +32,7 @@ export type CustomFunctionValues = {
      * Current state.
      * Is either a array, string or object - depends on the context where it's used.
      */
-    state: ParsingResultValue;
+    state: ParsingResult;
 }
 
 export type CompilerConfig = {

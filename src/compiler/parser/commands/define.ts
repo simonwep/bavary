@@ -18,7 +18,6 @@ export const evalDefineCommand = (
         throw new Error('Can\'t use define within arrays or strings.');
     }
 
-    // TODO: Allow reference as direct value
     // TODO: Template strings?
     const {value} = decl;
     if (value.type === 'string') {

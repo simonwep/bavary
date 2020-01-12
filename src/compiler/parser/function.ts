@@ -44,7 +44,7 @@ export const evalFunction = (
     try {
         return fn(
             // Current state
-            {state: result.value},
+            {state: result},
 
             // Resolved arguments
             ...resolvedArgs

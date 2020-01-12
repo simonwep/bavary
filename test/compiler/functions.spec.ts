@@ -10,7 +10,7 @@ describe('[COM] Functions', () => {
             functions: {
                 count({state}, value, prop): boolean {
 
-                    if (Array.isArray(state) || typeof state !== 'object') {
+                    if (state.type !== 'object') {
                         throw new Error('count can only be used within objects.');
                     }
 
@@ -23,7 +23,7 @@ describe('[COM] Functions', () => {
                     }
 
                     if (value.length > 2) {
-                        state[prop] = value.length;
+                        state.value[prop] = value.length;
                     }
 
                     return value.length > 2;
@@ -46,12 +46,12 @@ describe('[COM] Functions', () => {
             functions: {
                 count({state}, chars, prop): boolean {
 
-                    if (Array.isArray(state) || typeof state !== 'object') {
+                    if (state.type !== 'object') {
                         throw new Error('count can only be used within objects.');
                     }
 
                     if (chars && typeof chars === 'string' && typeof prop === 'string' && prop.length) {
-                        state[prop] = chars.length;
+                        state.value[prop] = chars.length;
                         return true;
                     }
 

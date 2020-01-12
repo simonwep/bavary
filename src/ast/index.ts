@@ -24,7 +24,6 @@ export const parse = (tokens: Array<Token>, source: string): Array<Declaration> 
         declarations.push(dec);
     }
 
-
     /**
      * In case no declarations were successfully parsed the user may
      * have used a group as only entry value.
