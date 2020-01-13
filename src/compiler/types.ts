@@ -18,7 +18,7 @@ export type ParsingResultArray = {type: 'array'; value: Array<ParsingResultObjec
 export type ParsingResult = ParsingResultString | ParsingResultObject | ParsingResultArray
 
 export type ParsingResultValue = string | ParsingResultObjectKVSet | Array<ParsingResultObjectValue>;
-export type ParsingResultObjectValue = Array<ParsingResultObjectValue> | ParsingResultObjectKVSet | string | number | null ;
+export type ParsingResultObjectValue = symbol | Array<ParsingResultObjectValue> | ParsingResultObjectKVSet | string | number | null;
 export type ParsingResultObjectKVSet = {
     // TODO: See https://stackoverflow.com/questions/59118271/using-symbol-as-object-key-type-in-typescript
     [key: string]: ParsingResultObjectValue;

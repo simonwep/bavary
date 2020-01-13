@@ -1,4 +1,5 @@
 import {GroupValue}          from '../../ast/types';
+import {REMOVED_PROPERTY}    from '../internal';
 import {ParsingResultObject} from '../types';
 
 /**
@@ -14,11 +15,15 @@ export function serializeParsingResult(rest: Array<GroupValue>, target: ParsingR
 
         // Check if item is a reference
         if (item.type === 'define') {
+            const itemValue = value[item.name];
 
             // Set value only to null if it's not defined yet
-            if (typeof value[item.name] === 'undefined' || nullish) {
+            if (typeof itemValue === 'undefined' || nullish) {
                 value[item.name] = null;
+            } else if (itemValue === REMOVED_PROPERTY) {
+                delete value[item.name];
             }
+
         } else if (item.type === 'group' || item.type === 'combinator') {
             serializeParsingResult(item.value, target, nullish);
         } else if (item.type === 'conditional-statement') {

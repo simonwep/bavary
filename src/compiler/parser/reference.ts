@@ -33,7 +33,7 @@ export const evalReference = (
         } else if (matchesType === 'string' && result.type === 'string') {
 
             // Concat strings
-            result.value += matches;
+            result.value += matches as string;
         }
     } else {
 

@@ -3,6 +3,7 @@ import {evalCharacterSelection, evalCombiantor, evalConditionalStatement, evalFu
 import {ParserArgs}                                                                                                                       from '../types';
 import {evalDefineCommand}                                                                                                                from './commands/define';
 import {evalPushCommand}                                                                                                                  from './commands/push';
+import {evalRemoveCommand}                                                                                                                from './commands/remove';
 import {evalThrowStatement}                                                                                                               from './commands/throw';
 
 export const evalDeclaration = (
@@ -117,6 +118,10 @@ export const evalDeclaration = (
                 return false;
             }
 
+            break;
+        }
+        case 'remove': {
+            evalRemoveCommand({config, stream, decl, scope, result});
             break;
         }
         case 'throw': {

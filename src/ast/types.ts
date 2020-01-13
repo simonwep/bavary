@@ -36,7 +36,12 @@ export type Group = {
     value: Array<GroupValue>;
 }
 
-export type GroupCommand = DefineStatement | PushStatement | VoidStatement | ThrowStatement;
+export type GroupCommand = DefineStatement | PushStatement | RemoveStatement | VoidStatement | ThrowStatement;
+export type RemoveStatement = {
+    type: 'remove';
+    value: ValueAccessor;
+}
+
 export type DefineStatement = {
     type: 'define';
     name: string;

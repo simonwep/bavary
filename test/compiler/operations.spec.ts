@@ -125,6 +125,52 @@ describe('[COM] Operations', () => {
         expect(parse('hworld')).to.equal(null);
     });
 
+    it('Should throw an error if rem is used within string', () => {
+        const parse = compile(`[
+            (A - Z)+
+            rem $abc
+        ]`);
+
+        expect(() => parse('ABC')).to.throw();
+    });
+
+    it('Should properly remove values with the remove statement', () => {
+        const parse = compile(`[object:
+            def str = 'hello'
+            def arr = [array:
+                push 'Hello'
+                push 'World'
+                push '!'
+            ]
+        
+            def sub = [object:
+                def bar = 'bam'
+                def foo = 'mai'
+                
+                def deep = [object:
+                    def ugh = 'wow'
+                ]
+                
+                def hmhm = [array:
+                    push 'bar'
+                ]
+                
+                rem $bar
+            ]
+            
+            rem $sub.deep.ugh
+            rem $sub.hmhm
+            rem $arr[0]
+            rem $str.length // Should do nothin
+        ]`);
+
+        expect(parse('')).to.deep.equal({
+            str: 'hello',
+            arr: ['World', '!'],
+            sub: {foo: 'mai', deep: {}}
+        });
+    });
+
     it('Should throw an error if operations are used in the wrong placec', () => {
 
         // Invalid array operators
