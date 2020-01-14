@@ -135,7 +135,7 @@ export type BinaryCombinator = {
 }
 
 export type BinaryExpressionValue = BinaryExpression | Str | Identifier | Num | ValueAccessor;
-export type BinaryOperator = '|' | '&' | '=' | '<' | '>' | '!=' | '>=' | '<=';
+export type BinaryOperator = '|' | '&' | '<' | '>' | '==' | '!=' | '>=' | '<=';
 export type BinaryExpression = {
     type: 'binary-expression';
     operator: BinaryOperator;

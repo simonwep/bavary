@@ -66,7 +66,7 @@ describe('[COM] Conditional statement', () => {
             <upper> = [(A - Z)+]
             entry [object:
                 def upp = [<upper>]
-                if ($upp = 'ABC') ['0']
+                if ($upp == 'ABC') ['0']
             ]
         `);
 
@@ -94,7 +94,7 @@ describe('[COM] Conditional statement', () => {
             <upper> = [(A - Z)+]
             entry [object:
                 def upp = [<upper>]
-                if ($upp = 'A' | $upp = 'Z') ['0']
+                if ($upp == 'A' | $upp == 'Z') ['0']
             ]
         `);
 
@@ -113,7 +113,7 @@ describe('[COM] Conditional statement', () => {
                 def upp = [<upper>]
                 def low = [<lower>]
                 
-                if ($upp = 'AA' & $low = 'bb') ['XY']
+                if ($upp == 'AA' & $low == 'bb') ['XY']
             ]
         `);
 
@@ -131,7 +131,7 @@ describe('[COM] Conditional statement', () => {
                 def upp = [<upper>]
                 def low = [<lower>]
                 
-                if ($upp = 'AA' | $low < 'cc') ['XY']
+                if ($upp == 'AA' | $low < 'cc') ['XY']
             ]
         `);
 
@@ -148,7 +148,7 @@ describe('[COM] Conditional statement', () => {
                 def upp = [<upper>]
                 def low = [<lower>]
                 
-                if ($upp.x < 'x' | $low.x > 'y' | $upp = 'A') [
+                if ($upp.x < 'x' | $low.x > 'y' | $upp == 'A') [
                     'XY'
                 ]
             ]
@@ -200,7 +200,7 @@ describe('[COM] Conditional statement', () => {
                 def low = [<lower>]
                 def num = [<numbe>]
         
-                if ($upp = 'A' & ($low = 'a' | $num = '0')) ['!']
+                if ($upp == 'A' & ($low == 'a' | $num == '0')) ['!']
             ]
         `);
 
@@ -231,7 +231,7 @@ describe('[COM] Conditional statement', () => {
             entry [object:
                 def upp = [<upper>]?
 
-                if ($upp = null) ['!']
+                if ($upp == null) ['!']
             ]
         `);
 
@@ -248,7 +248,7 @@ describe('[COM] Conditional statement', () => {
                     [',' push [(\\w)+]]*
                 ]
                 
-                if ($arr[0] = 'hello') [
+                if ($arr[0] == 'hello') [
                     '!'
                 ]
             ]
@@ -271,11 +271,11 @@ describe('[COM] Conditional statement', () => {
             entry [object:
                 def str = [<string>]?
 
-                if ($str = null) [
+                if ($str == null) [
                     'nothing'
-                ] else if ($str = 'Hello') [
+                ] else if ($str == 'Hello') [
                     ' world'
-                ] else if ($str = 'Good') [
+                ] else if ($str == 'Good') [
                     ' bye'
                 ]
             ]
@@ -330,7 +330,7 @@ describe('[COM] Conditional statement', () => {
     it('Should throw an error if a tag is not defd anywhere', () => {
         const parse = compile(`
             entry [
-                if ($lol = 0) []
+                if ($lol == 0) []
             ]
         `);
 
@@ -370,7 +370,7 @@ describe('[COM] Conditional statement', () => {
                 push [(c, d)+]
                 push [(e, f)+]
                 
-                if ($[0] = 'ab') [
+                if ($[0] == 'ab') [
                     '!'
                 ]
             ]
