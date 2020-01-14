@@ -29,36 +29,19 @@ describe('Tokenizer', () => {
         ]);
     });
 
-    it('Should skip single-line comments indicated by two slashes (\\\\)', () => {
+    it('Should skip single-line comments indicated by a #', () => {
         expect(tokenize(`
-            abc // another comment
-            // wow
-            123 // nice
+            abc # another comment
+            # wow
+            123 # nice
         `)).to.deep.equal([
             {type: 'ws', value: '\n            ', start: 0, end: 13},
             {type: 'kw', value: 'abc', start: 13, end: 16},
-            {type: 'ws', value: ' \n            \n            ', start: 16, end: 67},
-            {type: 'num', value: 123, start: 67, end: 70},
-            {type: 'ws', value: ' \n        ', start: 70, end: 87}
-        ]);
-    });
-
-    it('Should skip multi-line comments wrapped in /**/', () => {
-        expect(tokenize(`
-            abc 
-            /*oooh
-             My comment
-             over multiple 
-             
-            lines!*/
-            123 // nice
-        `)).to.deep.equal([
-            {type: 'ws', value: '\n            ', start: 0, end: 13},
-            {type: 'kw', value: 'abc', start: 13, end: 16},
-            {type: 'ws', value: ' \n            \n            ', start: 16, end: 136},
-            {type: 'num', value: 123, start: 136, end: 139},
-            {type: 'ws', value: ' \n        ', start: 139, end: 156}
-        ]);
+            {type: 'ws', value: ' \n            \n            ', start: 16, end: 65},
+            {type: 'num', value: 123, start: 65, end: 68},
+            {type: 'ws', value: ' \n        ', start: 68, end: 84}
+        ]
+        );
     });
 
     it('Should properly include escaped-characters', () => {

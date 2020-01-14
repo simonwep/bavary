@@ -37,6 +37,7 @@ export type Group = {
 }
 
 export type GroupCommand = DefineStatement | PushStatement | RemoveStatement | VoidStatement | ThrowStatement;
+
 export type RemoveStatement = {
     type: 'remove';
     value: ValueAccessor;

@@ -11,16 +11,16 @@ entry {
     
     default [object:
     
-        // Well that's optional
+        # Well that's optional
         def sign = [<num-sign>]?
 
-        // Decimal
+        # Decimal
         [
             def num = [<raw-num>]? '.' 
             def decimal = [<scientific-num>]
         ] |
     
-        // Non-decimal
+        # Non-decimal
         def num = [<scientific-num>]
     ]
 }

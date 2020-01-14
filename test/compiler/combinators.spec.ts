@@ -75,7 +75,7 @@ describe('[COM] Combinators', () => {
     it('Should handle weirdly mixed combinators', () => {
         const parse = compile(`
             
-            // This is exactly the same as [['a' | ['b' & 'c']] ['e' | ['d' & ['e' | 'f']]]]
+            # This is exactly the same as [['a' | ['b' & 'c']] ['e' | ['d' & ['e' | 'f']]]]
             entry ['a' | 'b' & 'c' 'e' | ['d' & 'e' | 'f']]
         `);
 

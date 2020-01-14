@@ -6,10 +6,9 @@ describe('[EXAMPLE] strings', () => {
         entry {
             default [object:
                 '"'
-                /**
-                   * Match all characters except the quotation character.
-                   * Match escaped quotation-characters first.
-                   */ 
+                
+                # Match all characters except the quotation character.
+                # Match escaped quotation-characters first.
                 def string = [['\\"' | (. except \\")]+]
                 '"'
             ]

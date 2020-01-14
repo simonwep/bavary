@@ -9,14 +9,14 @@ describe('[EXAMPLE] hex-color', () => {
             default [object:
                 '#'
                 
-                // RRGGBBAA & RRGGBB
+                # RRGGBBAA & RRGGBB
                 [
                     def r = [<hex-pair>]
                     def g = [<hex-pair>]
                     def b = [<hex-pair>]
                     def a = [<hex-pair>]?
                 ] | [
-                    // RGBA & RGB
+                    # RGBA & RGB
                     def r = [<hex>]
                     def g = [<hex>]
                     def b = [<hex>] 

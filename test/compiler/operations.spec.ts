@@ -161,7 +161,7 @@ describe('[COM] Operations', () => {
             rem $sub.deep.ugh
             rem $sub.hmhm
             rem $arr[0]
-            rem $str.length // Should do nothin
+            rem $str.length # Should do nothin
         ]`);
 
         expect(parse('')).to.deep.equal({
