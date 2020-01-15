@@ -1,7 +1,7 @@
 import {expect}  from 'chai';
-import {compile} from '../../src';
+import {compile} from '../../../src';
 
-describe('[COM] Position marks', () => {
+describe('[OPTION] Location data', () => {
 
     it('Should add the __starts and __ends property to an object', () => {
         const parse = compile(`

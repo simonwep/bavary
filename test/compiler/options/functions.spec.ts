@@ -1,7 +1,7 @@
 import {expect}  from 'chai';
-import {compile} from '../../src';
+import {compile} from '../../../src';
 
-describe('[COM] Functions', () => {
+describe('[OPTION] Functions', () => {
 
     it('Should resolve and execute a custom-function', () => {
         const parse = compile(`
