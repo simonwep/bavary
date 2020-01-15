@@ -1,7 +1,7 @@
-import {Func}                                 from '../../ast/types';
-import {evalGroup}                            from '../internal';
-import {lookupValue}                          from '../tools/lookup-value';
-import {ParserArgs, ParsingResultObjectValue} from '../types';
+import {Func}                           from '../../ast/types';
+import {evalGroup}                      from '../internal';
+import {lookupValue}                    from '../tools/lookup-value';
+import {ParserArgs, ParsingResultValue} from '../types';
 
 export const evalFunction = (
     {
@@ -18,7 +18,7 @@ export const evalFunction = (
     for (const arg of decl.args) {
         switch (arg.type) {
             case 'value-accessor': {
-                resolvedArgs.push(lookupValue(result.value, arg.value) as ParsingResultObjectValue);
+                resolvedArgs.push(lookupValue(result.value, arg.value) as ParsingResultValue);
                 break;
             }
             case 'group': {

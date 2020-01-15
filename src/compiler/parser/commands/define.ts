@@ -1,7 +1,7 @@
-import {DefineStatement}                      from '../../../ast/types';
-import {lookupValue}                          from '../../tools/lookup-value';
-import {ParserArgs, ParsingResultObjectValue} from '../../types';
-import {evalGroup}                            from '../group';
+import {DefineStatement}                from '../../../ast/types';
+import {lookupValue}                    from '../../tools/lookup-value';
+import {ParserArgs, ParsingResultValue} from '../../types';
+import {evalGroup}                      from '../group';
 
 export const evalDefineCommand = (
     {
@@ -23,7 +23,7 @@ export const evalDefineCommand = (
     if (value.type === 'string') {
         result.value[decl.name] = value.value;
     } else if (value.type === 'value-accessor') {
-        result.value[decl.name] = lookupValue(result.value, value.value) as ParsingResultObjectValue;
+        result.value[decl.name] = lookupValue(result.value, value.value) as ParsingResultValue;
     } else {
         const res = evalGroup({
             decl: value,

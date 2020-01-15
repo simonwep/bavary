@@ -1,8 +1,8 @@
-import {Declaration, Group}                               from '../ast/types';
-import {Streamable}                                       from '../streams/streamable';
-import {evalGroup}                                        from './internal';
-import {Scope}                                            from './scope';
-import {CompilerConfig, Parser, ParsingResultObjectValue} from './types';
+import {Declaration, Group}                         from '../ast/types';
+import {Streamable}                                 from '../streams/streamable';
+import {evalGroup}                                  from './internal';
+import {Scope}                                      from './scope';
+import {CompilerConfig, Parser, ParsingResultValue} from './types';
 
 /**
  * Compiles a pre-calcuated set of declarations.
@@ -39,7 +39,7 @@ export const compileDeclarations = (
     }
 
     const [decl, scope] = entry;
-    return (content: string): null | ParsingResultObjectValue => {
+    return (content: string): null | ParsingResultValue => {
 
         // Parse and return result if successful
         const stream = new Streamable(content);

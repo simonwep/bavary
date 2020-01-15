@@ -10,23 +10,28 @@ export type ParserArgs<DeclarationType> = {
     result: ParsingResult;
 }
 
-
 // Different kinds of parsing results
 export type ParsingResultString = {type: 'string'; value: string};
 export type ParsingResultObject = {type: 'object'; value: ParsingResultObjectKVSet};
-export type ParsingResultArray = {type: 'array'; value: Array<ParsingResultObjectValue>};
+export type ParsingResultArray = {type: 'array'; value: Array<ParsingResultValue>};
 export type ParsingResult = ParsingResultString | ParsingResultObject | ParsingResultArray
 
-export type ParsingResultValue = string | ParsingResultObjectKVSet | Array<ParsingResultObjectValue>;
-export type ParsingResultObjectValue = symbol | Array<ParsingResultObjectValue> | ParsingResultObjectKVSet | string | number | null;
+export type ParsingResultValue = symbol | string | number | null |
+    Array<ParsingResultValue> |
+    ParsingResultObjectKVSet;
+
 export type ParsingResultObjectKVSet = {
-    // TODO: See https://stackoverflow.com/questions/59118271/using-symbol-as-object-key-type-in-typescript
-    [key: string]: ParsingResultObjectValue;
+    [key: string]: ParsingResultValue;
 }
 
-export type Parser = (content: string) => null | ParsingResultObjectValue;
-export type CustomFunction = (res: CustomFunctionValues, ...args: Array<Array<ParsingResultObjectValue> | ParsingResultObjectValue>) => boolean;
-export type CustomFunctionValues = {
+export type Parser = (content: string) => null | ParsingResultValue;
+
+export type NativeFunction = (
+    res: NativeFunctionContainer,
+    ...args: Array<Array<ParsingResultValue> | ParsingResultValue>
+) => boolean;
+
+export type NativeFunctionContainer = {
 
     /**
      * Current state.
@@ -38,7 +43,7 @@ export type CustomFunctionValues = {
 export type CompilerConfig = {
     locationData?: boolean | LocationDataObject;
     functions?: {
-        [key: string]: CustomFunction;
+        [key: string]: NativeFunction;
     };
 }
 

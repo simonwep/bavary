@@ -1,11 +1,11 @@
-import {Group}                                                             from '../../ast/types';
-import {evalDeclaration}                                                   from '../internal';
-import {createParsingResult}                                               from '../tools/create-parsing-result';
-import {serializeParsingResult}                                            from '../tools/serialize';
-import {LocationDataObject, ParsingResultObject, ParsingResultObjectValue} from '../types';
-import {maybeMultiplier}                                                   from './multiplier';
+import {Group}                                                       from '../../ast/types';
+import {evalDeclaration}                                             from '../internal';
+import {createParsingResult}                                         from '../tools/create-parsing-result';
+import {serializeParsingResult}                                      from '../tools/serialize';
+import {LocationDataObject, ParsingResultObject, ParsingResultValue} from '../types';
+import {maybeMultiplier}                                             from './multiplier';
 
-export const evalGroup = maybeMultiplier<ParsingResultObjectValue, Group>((
+export const evalGroup = maybeMultiplier<ParsingResultValue, Group>((
     {
         config,
         stream,
@@ -13,7 +13,7 @@ export const evalGroup = maybeMultiplier<ParsingResultObjectValue, Group>((
         scope,
         result = createParsingResult(decl.mode || 'string')
     }
-): ParsingResultObjectValue => {
+): ParsingResultValue => {
     stream.stash();
 
     // Remember stream-position in case the locationData-option is set
