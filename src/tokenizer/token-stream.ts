@@ -102,7 +102,7 @@ export class TokenStream extends Streamable<Token> {
         }
 
         if (this.hasNext(includeWhitespace)) {
-            const nxt = this.next(includeWhitespace);
+            const nxt = this.peek(includeWhitespace) as Token;
             this.throw(`Expected ${values.join(', ')} (${type}) but got ${nxt.value} (${nxt.type})`);
         }
 
