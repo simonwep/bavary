@@ -24,31 +24,23 @@
 10. [Error handling](#errors) _- Handle error raised by your code properly._
 
 ### Comments
-There are two ways to make comments (The same ways as in JS):
+Use `#` to comment:
 
-> Single-line comments
 ```
-// Hi! This is a single-line comment :)
-```
-
-> Multi-line comments
-```
-/*
- * Multi-line comments are useful to write larger parts of documentation!
- */
+# Hello world
 ```
 
 ### Entry type
+
 Each parser consists of exactly **one** `entry` type followed by a named (or anonymous) [type](#types) **or**
 a [block](#block-definition) definition where the default export will be used. The entry value is where everything starts:
 
 ```html
-// A entry group
+# A entry group
 entry ['A']
 
-/* A entry block
- * The default export will be used, in this case ['AB']
- */
+# A entry block
+# The default export will be used, in this case ['AB']
 entry {
 	default ['AB']
 }
@@ -148,10 +140,10 @@ Let's start with the simplest one, the **string-group**. This group-type returns
 
 ```js
 const parse = compile(`
-    // The "string:" part is in case of a string optional, it defines our group-type
+    # The "string:" part is in case of a string optional, it defines our group-type
 	entry [string:
 
-		// We expect exact the following char-sequence
+		# We expect exact the following char-sequence
 		"Hello World"
 	]
 `);
@@ -166,7 +158,7 @@ If we want to exclude a part of our string, let's say "Hello " we could omit it 
 const parse = compile(`
 	entry [string:
 		
-		// Omit the "Hello " string in our final result
+		# Omit the "Hello " string in our final result
 		void ["Hello "] 
 		"World"
 	]
@@ -184,23 +176,22 @@ The **array-group** is used whenever you want to parse a list-like structure lik
 ```js
 const parse = compile(`
 	entry [array:
-		'[' // Our array starts with a "["
+		'[' # Our array starts with a "["
 
     		[
-    			// Our first value
+    			# Our first value
     			push [(\\w)+]
             
-    			/* The first value might be followed by even more values but we're
-                 * gonna use the * operator to allow single values.
-                 */ 
+    			# The first value might be followed by even more values but we're
+                # gonna use the * operator to allow single values. 
     			[
-    				// Each following value need have a comma in front of it
+    				# Each following value need have a comma in front of it
     				','
     				push [(\\w)+]
     			]*
     
-    		// The content is optional, if we'd leave the ? out at least one
-            // value would nee to be present
+    		# The content is optional, if we'd leave the ? out at least one
+            # value would nee to be present
     		]? 
 		']'
 	]
@@ -221,14 +212,14 @@ A **object-group**, finally, let us create complex data-hierarchies and wrap our
 const parse = compile(`
 	entry [object:
         
-        // Define a low property containing lowercase letters
+        # Define a low property containing lowercase letters
         def low = [(a - z)+]
         
-        // We can spare the void-statement since we're not in a string-group
-        // We'll also make it optional
+        # We can spare the void-statement since we're not in a string-group
+        # We'll also make it optional
         [' ']?
         
-        // A up property, which is optional, containing uppercase letters
+        # A up property, which is optional, containing uppercase letters
         def up = [(A - Z)+]?
 	]
 `);
@@ -244,15 +235,17 @@ And that's it.
 
 #### Commands
 
-| Syntax                                 | Can be used within...          | Description                                                  | Example                         |
-| -------------------------------------- | ------------------------------ | ------------------------------------------------------------ | ------------------------------- |
-| `throw <string>`                       | `String`,`Array`,`Object`[^1]  | Throws a pretty error.                                       | `throw 'whoopsie'`              |
-| `void <group>`                         | `String`,`Array`,`Object` [^2] | Ignores value of `<group>`.                                  | `void ['A']`                    |
-| `push <group|string>`                  | `Array`                        | Appends a value to the array.                                | `push ['A']`                    |
-| `def <name> = <group|string|var-path>` | `Object`                       | Defines a property `<name>` within the object with the given value. | `def x = ['A']` `def x = $abc ` |
+| Syntax                                     | Can be used within...          | Description                                                  | Example                         |
+| ------------------------------------------ | ------------------------------ | ------------------------------------------------------------ | ------------------------------- |
+| `throw <string>`                           | `String`,`Array`,`Object`[^1]  | Throws a pretty error.                                       | `throw 'whoopsie'`              |
+| `void <group>`                             | `String`,`Array`,`Object` [^2] | Ignores value of `<group>`.                                  | `void ['A']`                    |
+| `push <group|string>`                      | `Array`                        | Appends a value to the array.                                | `push ['A']`                    |
+| `def <name> = <group|string|variable>`[^3] | `Object`                       | Defines a property `<name>` within the object with the given value. | `def x = ['A']` `def x = $abc ` |
+| `rem <variable>`                           | `Array`,`Object`               | Removes a property.                                          | `rem $baz`                      |
 
 [^1]:Combined with if-statements it's useful to validate stuff. With pretty-error is meant that it shows the position in your target-string where the parser failed.
 [^2]:`void` only makes sense in `string` since `array` and `object` doesn't return strings.
+[^3]: `variable` means any kind of variable access, commonly used in [conditional-statements](#conditional-statements). Example: `$obj.arr[3].prop` This kind of access **will never throw an error**.
 
 > ⚠ Using incompatible operators will lead to an runtime-error!
 
@@ -266,10 +259,10 @@ A type is a re-usable form of a group which can be used in other declarations, i
 
 Each type can either be a [parsing-group](#groups), to **group related** types together, or a direct definition of a character / type sequence.
 ```html
-// Group definition
+# Group definition
 <my-group-type> = ['A']
 
-// Block / Scope definition
+# Block / Scope definition
 <my-block-type> = {...}
 ```
 
@@ -284,17 +277,17 @@ It's possible to pass groups to types:
 
 ```js
 const parse = compile(`
-    // You can specify default values by using the assign operator on arguments
+    # You can specify default values by using the assign operator on arguments
     <string sign=['"'] content> = [object:
-        <sign> // Arguments are used just like types
+        <sign> # Arguments are used just like types
         def body = [<content>]
         <sign>
     ]
     
     entry [object:
         
-        // Arguments with default-value aren't mandatory
-        // and can be overridden any time.
+        # Arguments with default-value aren't mandatory
+        # and can be overridden any time.
         ...<string content=[(a - z, A - Z, 0 - 9)+]>
     ]
 `);
@@ -314,18 +307,18 @@ sub-types, and an arbitrary amount of _exported_ types:
 ```html
 <characters> = {
 
-  // Exported types
+  # Exported types
   export <uppercase> = [(A - Z)]
   export <lowercase> = [(a - z)]
   export <numbers> = [(0 - 9)]
 
-  // Default export if <character> is used without referring to exported types.
-  // The default will match either 'A' to 'Z', 'a' to 'z' or '0' to '9'
+  # Default export if <character> is used without referring to exported types.
+  # The default will match either 'A' to 'Z', 'a' to 'z' or '0' to '9'
   default [<uppercase> | <lowercase> | <numbers>]
 }
 
-// Using <characters> without deep-selection will result in [<uppercase> | <lowercase> | <numbers>]
-// To access nested e.g. the <uppercase> type use `<characters:uppercase>`
+# Using <characters> without deep-selection will result in [<uppercase> | <lowercase> | <numbers>]
+# To access nested e.g. the <uppercase> type use `<characters:uppercase>`
 entry [<characters>+]
 ```
 
@@ -360,14 +353,14 @@ Or use it directly on groups:
 const parse = compile(`
     entry [object:
     
-        // Inherit the properties from another object...
+        # Inherit the properties from another object...
         ...[object: 
             def intro = [(A - Z)+]
         ]
         
         def arr = [array:
             
-            // ... or array
+            # ... or array
             ...[array:
                 push [(a - z)+]
             ]
@@ -398,8 +391,8 @@ In your condition you can to use the dollar-sign `$` to access the current [arra
 
 ```
 if ($foo.bam[3].baz != null) [
-    // If foo is not null, bam neither, bam got a third non-null value and is an actual array
-    // and the array element has an attribute baz which isn't null.
+    # If foo is not null, bam neither, bam got a third non-null value and is an actual array
+    # and the array element has an attribute baz which isn't null.
 ]
 ```
 
@@ -412,20 +405,20 @@ Use them to fine-tune your conditional statement:
 | ---- | ----------- | ------- |
 | `<` / `>`  | Greater- / Smaller-than, compatible with both strings and numbers. | `if ($a < $b) [...]` |
 | `<=` / `>=`  | Greater- / Smaller-or-equal-than. | `if ($a <= $b) [...]` |
-| `=` | Equal, strictly compares numbers, strings and `null` values. | `if ($a = "ABC") [...]` |
+| `==` | Equal, strictly compares numbers, strings and `null` values. | `if ($a == "ABC") [...]` |
 | `!=` | Not equal, strictly compares numbers, strings and `null` values. | `if ($a != 25) [...]` |
-| `|` | or-operator, one of the conditions need to be true. | `if ($a = "ABC" | $b < 10) [...]` |
+| `|` | or-operator, one of the conditions need to be true. | `if ($a == "ABC" | $b < 10) [...]` |
 | `&` | and-operator, both conditions need to be true. | `if ($a > 20 & $b < $a) [...]` |
 
 Use parenthesis to bypass precedence rules:
 
 ```
-if ($numA > 100 & $strA < #strB | ($numA = $obj[3].a)) [
-    // $numA is bigger than 100
-    // $strA is smaller than $strB
-    // $numA is the same as the propery "a" from the third element in $obj
+if ($numA > 100 & $strA < #strB | ($numA == $obj[3].a)) [
+    # $numA is bigger than 100
+    # $strA is smaller than $strB
+    # $numA is the same as the propery "a" from the third element in $obj
 ] else [
-    // Alternate content
+    # Alternate content
 ]
 ```
 
@@ -445,7 +438,7 @@ Constants can be used within conditional statements to make comparisons which ar
 
 | Name | Description | Example |
 | ---- | ----------- | ------- |
-| `null` | `null`-value, used to determine whenever a value is null. | `if ($a = null) [...]` |
+| `null` | `null`-value, used to determine whenever a value is null. | `if ($a == null) [...]` |
 
 ### Native functions
 
@@ -454,10 +447,10 @@ In case the given features aren't enough you can use native JavaScript functions
 ```js
 const parse = compile(`[
     
-    // Match any lower- / uppercase characters
+    # Match any lower- / uppercase characters
     (a - z, A - Z)+
     
-    // Call capitalize function
+    # Call capitalize function
     capitalize()
 ]`, {
     functions: {
@@ -495,7 +488,7 @@ const parse = compile(`[object:
     inspect(
         'a string!',
          [array: push 'A array group!'],
-         $hello // A variable!
+         $hello # A variable!
     )
 ]`, {
     functions: {
