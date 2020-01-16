@@ -39,9 +39,7 @@ export const parseString = maybe<Literal>((stream: TokenStream) => {
         }
 
         // Interpolation
-        // TODO: React style: {}??
-        if (value === '$' && !escaped) {
-            stream.expect(true, 'punc', '(');
+        if (value === '{' && !escaped) {
 
             // Dump current raw string
             if (currentRawString.length) {
@@ -60,7 +58,7 @@ export const parseString = maybe<Literal>((stream: TokenStream) => {
             }
 
             values.push(inner);
-            stream.expect(false, 'punc', ')');
+            stream.expect(false, 'punc', '}');
             continue;
         }
 
