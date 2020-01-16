@@ -1,4 +1,5 @@
 import {DefineStatement}                from '../../../ast/types';
+import {evalLiteral}                    from '../../tools/eval-literal';
 import {lookupValue}                    from '../../tools/lookup-value';
 import {ParserArgs, ParsingResultValue} from '../../types';
 import {evalGroup}                      from '../group';
@@ -18,10 +19,15 @@ export const evalDefineCommand = (
         throw new Error('Can\'t use define within arrays or strings.');
     }
 
-    // TODO: Template strings?
     const {value} = decl;
-    if (value.type === 'string') {
-        result.value[decl.name] = value.value;
+    if (value.type === 'literal') {
+        result.value[decl.name] = evalLiteral({
+            config,
+            stream,
+            scope,
+            decl: value,
+            result
+        });
     } else if (value.type === 'value-accessor') {
         result.value[decl.name] = lookupValue(result.value, value.value) as ParsingResultValue;
     } else {

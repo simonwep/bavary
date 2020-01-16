@@ -1,4 +1,4 @@
-export type TokenType = 'punc' | 'num' | 'str' | 'kw' | 'ws';
+export type TokenType = 'punc' | 'num' | 'kw' | 'ws';
 
 export type Token = {
     type: TokenType;

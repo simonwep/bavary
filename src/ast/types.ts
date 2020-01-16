@@ -1,7 +1,7 @@
 import {TokenStream} from '../tokenizer/token-stream';
 
 export type ASTNode = Declaration | CharacterSelection | ValueAccessor | ConditionalStatement |
-    VoidStatement | Arguments | Func | Multiplier | BinaryExpressionValue | Group | Reference | Block | Str;
+    VoidStatement | Arguments | Func | Multiplier | BinaryExpressionValue | Group | Reference | Block | Literal;
 
 export type ParserFunction<T> = (stream: TokenStream) => T | null;
 
@@ -26,7 +26,7 @@ export type Argument = {
     value: Group | null;
 }
 
-export type GroupValue = Reference | Str | BinaryCombinator | Group | Spread |
+export type GroupValue = Reference | Literal | BinaryCombinator | Group | Spread |
     CharacterSelection | GroupCommand | ConditionalStatement | Func | VoidStatement;
 
 export type Group = {
@@ -46,12 +46,12 @@ export type RemoveStatement = {
 export type DefineStatement = {
     type: 'define';
     name: string;
-    value: Group | Str | ValueAccessor;
+    value: Group | Literal | ValueAccessor;
 }
 
 export type PushStatement = {
     type: 'push';
-    value: Group | Str;
+    value: Group | Literal;
 }
 
 export type VoidStatement = {
@@ -61,7 +61,7 @@ export type VoidStatement = {
 
 export type ThrowStatement = {
     type: 'throw';
-    value: Str;
+    value: Literal;
 }
 
 export type Multiplier = {
@@ -74,15 +74,22 @@ export type MultiplierRange = {
     end: number;
 }
 
-export type Num = {
+export type Numeral = {
     type: 'number';
     value: number;
 }
 
-export type Str = {
-    type: 'string';
+export type RawLiteral = {
+    type: 'raw-literal';
     value: string;
 }
+
+export type Literal = {
+    type: 'literal';
+    value: LiteralValues;
+}
+
+export type LiteralValues = Array<RawLiteral | Literal | Group | ValueAccessor>;
 
 export type Identifier = {
     type: 'identifier';
@@ -98,10 +105,10 @@ export type Reference = {
 
 export type Spread = {
     type: 'spread';
-    value: Reference | Group | CharacterSelection | Str;
+    value: Reference | Group | CharacterSelection | Literal;
 }
 
-export type FuncArgument = Group | Str | Identifier | ValueAccessor;
+export type FuncArgument = Group | Literal | Identifier | ValueAccessor;
 export type Func = {
     type: 'function';
     name: string;
@@ -135,7 +142,7 @@ export type BinaryCombinator = {
     value: Array<GroupValue>;
 }
 
-export type BinaryExpressionValue = BinaryExpression | Str | Identifier | Num | ValueAccessor;
+export type BinaryExpressionValue = BinaryExpression | Literal | Identifier | Numeral | ValueAccessor;
 export type BinaryOperator = '|' | '&' | '<' | '>' | '==' | '!=' | '>=' | '<=';
 export type BinaryExpression = {
     type: 'binary-expression';

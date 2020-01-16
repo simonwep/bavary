@@ -1,5 +1,6 @@
 import {Func}                           from '../../ast/types';
 import {evalGroup}                      from '../internal';
+import {evalLiteral}                    from '../tools/eval-literal';
 import {lookupValue}                    from '../tools/lookup-value';
 import {ParserArgs, ParsingResultValue} from '../types';
 
@@ -27,7 +28,12 @@ export const evalFunction = (
                 }));
                 break;
             }
-            case 'string':
+            case 'literal': {
+                resolvedArgs.push(evalLiteral({
+                    config, result, stream, decl: arg, scope
+                }));
+                break;
+            }
             case 'identifier': {
                 resolvedArgs.push(arg.value);
                 break;

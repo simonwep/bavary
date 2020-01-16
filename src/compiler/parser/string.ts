@@ -1,14 +1,23 @@
-import {Str}        from '../../ast/types';
-import {ParserArgs} from '../types';
+import {Literal}     from '../../ast/types';
+import {evalLiteral} from '../tools/eval-literal';
+import {ParserArgs}  from '../types';
 
-export const evalString = (
+export const evalLiteralContent = (
     {
         stream,
+        scope,
+        config,
         decl,
         result
-    }: ParserArgs<Str>
+    }: ParserArgs<Literal>
 ): boolean => {
-    const {value} = decl;
+    const value = evalLiteral({
+        stream,
+        scope,
+        config,
+        decl,
+        result
+    });
 
     stream.stash();
     for (let i = 0; i < value.length; i++) {

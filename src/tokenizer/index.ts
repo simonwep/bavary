@@ -4,13 +4,11 @@ import {cmt}        from './types/cmt';
 import {kw}         from './types/kw';
 import {num}        from './types/num';
 import {punc}       from './types/punc';
-import {str}        from './types/str';
 import {ws}         from './types/ws';
 
 const parser = [
     cmt,
     ws,
-    str,
     kw,
     num,
     punc
@@ -51,11 +49,24 @@ export const tokenize = (str: string): Array<Token> => {
                 end: stream.index
             } as Token);
 
+            // Escaped comment-token
+            if (parsed.value === '\\' && stream.peek() === '#') {
+                tokens.push({
+                    type: 'punc',
+                    value: '#',
+                    start: stream.index,
+                    end: stream.index + 1
+                } as Token);
+
+                stream.next();
+            }
+
             continue outer;
         }
 
         // Same problem as in types/punc.ts
         /* istanbul ignore next */
+        // TODO: Fails on single comment
         throw new Error('Failed to parse input sequence.');
     }
 

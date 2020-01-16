@@ -1,31 +1,36 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import {BinaryExpression, BinaryExpressionValue} from '../../ast/types';
-import {ParsingResult}                           from '../types';
+import {ParserArgs}                              from '../types';
+import {evalLiteral}                             from './eval-literal';
 import {lookupValue}                             from './lookup-value';
 
 /**
  * Resolves a single value in a binary-expression
- * @param result
- * @param bexv
+ * @param args
  */
-function resolveValueOf(result: ParsingResult, bexv: BinaryExpressionValue): string | number | boolean | null {
-    switch (bexv.type) {
+function resolveValueOf(args: ParserArgs<BinaryExpressionValue>): string | number | boolean | null {
+    const {result, decl} = args;
+
+    switch (decl.type) {
         case 'binary-expression': {
-            return evalBinaryExpression(result, bexv);
+            return evalBinaryExpression({...args, decl});
         }
         case 'value-accessor': {
-            return lookupValue(result.value, bexv.value) as string | number | boolean | null;
+            return lookupValue(result.value, decl.value) as string | number | boolean | null;
         }
         case 'identifier': {
 
-            if (bexv.value === 'null') {
+            if (decl.value === 'null') {
                 return null;
             }
 
-            throw new Error(`Unknown constant: "${bexv.value}"`);
+            throw new Error(`Unknown constant: "${decl.value}"`);
         }
-        default: {
-            return bexv.value;
+        case 'literal': {
+            return evalLiteral({...args, decl});
+        }
+        case 'number': {
+            return decl.value;
         }
     }
 }
@@ -40,13 +45,12 @@ function strictBoolean(val: unknown): boolean {
 
 /**
  * Evaluates a binary expression to a single, boolsche value
- * @param result
- * @param bex
+ * @param args
  */
-export function evalBinaryExpression(result: ParsingResult, bex: BinaryExpression): boolean {
-    let {operator} = bex;
-    let leftVal = resolveValueOf(result, bex.left);
-    let rightVal = resolveValueOf(result, bex.right);
+export function evalBinaryExpression(args: ParserArgs<BinaryExpression>): boolean {
+    let {operator} = args.decl;
+    let leftVal = resolveValueOf({...args, decl: args.decl.left});
+    let rightVal = resolveValueOf({...args, decl: args.decl.right});
 
     // "a > b" is the same as "b < a"
     if (operator === '>') {

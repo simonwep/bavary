@@ -11,7 +11,7 @@ describe('[OPTION] Location data', () => {
                 <hex-pair> = [<hex> <hex>]
                 
                 default [object:
-                    '#'
+                    '\\#'
                     
                     # RRGGBBAA & RRGGBB
                     [
@@ -68,7 +68,7 @@ describe('[OPTION] Location data', () => {
                 <hex-pair> = [<hex> <hex>]
                 
                 default [object:
-                    '#'
+                    '\\#'
                     
                     # RRGGBBAA & RRGGBB
                     [

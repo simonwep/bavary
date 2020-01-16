@@ -14,11 +14,15 @@ describe('Tokenizer', () => {
             {type: 'ws', value: ' ', start: 12, end: 13},
             {type: 'punc', value: '[', start: 13, end: 14},
             {type: 'ws', value: ' ', start: 14, end: 15},
-            {type: 'str', value: '+', start: 15, end: 18},
+            {type: 'punc', value: '"', start: 15, end: 16},
+            {type: 'punc', value: '+', start: 16, end: 17},
+            {type: 'punc', value: '"', start: 17, end: 18},
             {type: 'ws', value: ' ', start: 18, end: 19},
             {type: 'punc', value: '|', start: 19, end: 20},
             {type: 'ws', value: ' ', start: 20, end: 21},
-            {type: 'str', value: '-', start: 21, end: 24},
+            {type: 'punc', value: '"', start: 21, end: 22},
+            {type: 'punc', value: '-', start: 22, end: 23},
+            {type: 'punc', value: '"', start: 23, end: 24},
             {type: 'ws', value: ' ', start: 24, end: 25},
             {type: 'punc', value: ']', start: 25, end: 26},
             {type: 'punc', value: '{', start: 26, end: 27},
@@ -45,14 +49,20 @@ describe('Tokenizer', () => {
     });
 
     it('Should properly include escaped-characters', () => {
-        expect(tokenize('[\'\\\'\']')).to.deep.equal([
+        expect(tokenize('[\'\\#\'\\\'\'\\\\#\']')).to.deep.equal([
             {type: 'punc', value: '[', start: 0, end: 1},
-            {type: 'str', value: '\'', start: 1, end: 5},
-            {type: 'punc', value: ']', start: 5, end: 6}
-        ]);
-
-        expect(tokenize('\'\\abc\'')).to.deep.equal([
-            {type: 'str', value: '\\abc', start: 0, end: 6}
+            {type: 'punc', value: '\'', start: 1, end: 2},
+            {type: 'punc', value: '\\', start: 2, end: 3},
+            {type: 'punc', value: '#', start: 3, end: 4},
+            {type: 'punc', value: '\'', start: 4, end: 5},
+            {type: 'punc', value: '\\', start: 5, end: 6},
+            {type: 'punc', value: '\'', start: 6, end: 7},
+            {type: 'punc', value: '\'', start: 7, end: 8},
+            {type: 'punc', value: '\\', start: 8, end: 9},
+            {type: 'punc', value: '\\', start: 9, end: 10},
+            {type: 'punc', value: '#', start: 10, end: 11},
+            {type: 'punc', value: '\'', start: 11, end: 12},
+            {type: 'punc', value: ']', start: 12, end: 13}
         ]);
     });
 });

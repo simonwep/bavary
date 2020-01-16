@@ -7,7 +7,7 @@ describe('[EXAMPLE] hex-color', () => {
             <hex-pair> = [<hex> <hex>]
             
             default [object:
-                '#'
+                '\\#'
                 
                 # RRGGBBAA & RRGGBB
                 [

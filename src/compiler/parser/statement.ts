@@ -1,10 +1,19 @@
-import {GroupValue}                                                                                                                       from '../../ast/types';
-import {evalCharacterSelection, evalCombiantor, evalConditionalStatement, evalFunction, evalGroup, evalReference, evalSpread, evalString} from '../internal';
-import {ParserArgs}                                                                                                                       from '../types';
-import {evalDefineCommand}                                                                                                                from './commands/define';
-import {evalPushCommand}                                                                                                                  from './commands/push';
-import {evalRemoveCommand}                                                                                                                from './commands/remove';
-import {evalThrowStatement}                                                                                                               from './commands/throw';
+import {GroupValue}         from '../../ast/types';
+import {
+    evalCharacterSelection,
+    evalCombiantor,
+    evalConditionalStatement,
+    evalFunction,
+    evalGroup,
+    evalLiteralContent,
+    evalReference,
+    evalSpread
+}                           from '../internal';
+import {ParserArgs}         from '../types';
+import {evalDefineCommand}  from './commands/define';
+import {evalPushCommand}    from './commands/push';
+import {evalRemoveCommand}  from './commands/remove';
+import {evalThrowStatement} from './commands/throw';
 
 export const evalDeclaration = (
     {
@@ -27,9 +36,9 @@ export const evalDeclaration = (
 
             break;
         }
-        case 'string': {
+        case 'literal': {
 
-            if (!evalString({config, stream, decl, scope, result})) {
+            if (!evalLiteralContent({config, stream, decl, scope, result})) {
                 stream.pop();
                 return false;
             }

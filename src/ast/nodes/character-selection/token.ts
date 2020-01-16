@@ -1,5 +1,6 @@
 import {TokenStream}         from '../../../tokenizer/token-stream';
 import {Token}               from '../../../tokenizer/types';
+import {parseString}         from '../../internal';
 import {maybe}               from '../../tools/maybe';
 import {parseHexCharacter}   from './hex-character';
 import {parseOctalCharacter} from './octal-character';
@@ -16,17 +17,32 @@ export const parseToken = maybe<number>((stream: TokenStream) => {
         return null;
     }
 
-    const next = stream.peek() as Token;
-    const nextValue = String(next.value);
-    const escaped = nextValue === '\\';
+    const literal = parseString(stream)?.value;
+    let nextValue, escaped;
 
-    // Validate length and check if it's a punctuation character which isn't escaped
-    if (nextValue.length !== 1 || (next.type === 'punc' && !escaped)) {
-        return null;
+    if (literal) {
+
+        // Validate literal
+        if (literal.length !== 1 || literal[0].type !== 'raw-literal') {
+            stream.throw('Unexpected literal, expected single character.');
+        }
+
+        nextValue = literal[0].value;
+        escaped = nextValue === '\\';
+    } else {
+        const peek = stream.peek() as Token;
+        nextValue = String(peek.value);
+        escaped = nextValue === '\\';
+
+        // Validate length and check if it's a punctuation character which isn't escaped
+        if (nextValue.length !== 1 || (peek.type === 'punc' && !escaped)) {
+            return null;
+        }
+
+        // Check if user wants to escape a punctuation character
+        stream.next();
     }
 
-    // Check if user wants to escape a punctuation character
-    stream.next();
     if (escaped) {
         if (!stream.hasNext()) {
             return null;

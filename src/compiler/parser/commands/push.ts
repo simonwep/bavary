@@ -1,4 +1,5 @@
 import {PushStatement} from '../../../ast/types';
+import {evalLiteral}   from '../../tools/eval-literal';
 import {ParserArgs}    from '../../types';
 import {evalGroup}     from '../group';
 
@@ -18,8 +19,14 @@ export const evalPushCommand = (
     }
 
     const {value} = decl;
-    if (value.type === 'string') {
-        result.value.push(value.value);
+    if (value.type === 'literal') {
+        result.value.push(evalLiteral({
+            config,
+            stream,
+            decl: value,
+            scope,
+            result
+        }));
     } else {
         const res = evalGroup({
             decl: value,
