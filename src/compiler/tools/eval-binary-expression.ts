@@ -1,19 +1,18 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import {BinaryExpression, BinaryExpressionValue} from '../../ast/types';
-import {ParserArgs}                              from '../types';
+import {ParsingResult}                           from '../types';
 import {evalLiteral}                             from './eval-literal';
 import {lookupValue}                             from './lookup-value';
 
 /**
  * Resolves a single value in a binary-expression
- * @param args
+ * @param result
+ * @param decl
  */
-function resolveValueOf(args: ParserArgs<BinaryExpressionValue>): string | number | boolean | null {
-    const {result, decl} = args;
-
+function resolveValueOf(result: ParsingResult, decl: BinaryExpressionValue): string | number | boolean | null {
     switch (decl.type) {
         case 'binary-expression': {
-            return evalBinaryExpression({...args, decl});
+            return evalBinaryExpression(result, decl);
         }
         case 'value-accessor': {
             return lookupValue(result.value, decl.value) as string | number | boolean | null;
@@ -27,7 +26,7 @@ function resolveValueOf(args: ParserArgs<BinaryExpressionValue>): string | numbe
             throw new Error(`Unknown constant: "${decl.value}"`);
         }
         case 'literal': {
-            return evalLiteral({...args, decl});
+            return evalLiteral(result, decl);
         }
         case 'number': {
             return decl.value;
@@ -45,12 +44,13 @@ function strictBoolean(val: unknown): boolean {
 
 /**
  * Evaluates a binary expression to a single, boolsche value
- * @param args
+ * @param result
+ * @param decl
  */
-export function evalBinaryExpression(args: ParserArgs<BinaryExpression>): boolean {
-    let {operator} = args.decl;
-    let leftVal = resolveValueOf({...args, decl: args.decl.left});
-    let rightVal = resolveValueOf({...args, decl: args.decl.right});
+export function evalBinaryExpression(result: ParsingResult, decl: BinaryExpression): boolean {
+    let {operator} = decl;
+    let leftVal = resolveValueOf(result, decl.left);
+    let rightVal = resolveValueOf(result, decl.right);
 
     // "a > b" is the same as "b < a"
     if (operator === '>') {

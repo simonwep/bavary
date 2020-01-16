@@ -20,13 +20,7 @@ export const evalPushCommand = (
 
     const {value} = decl;
     if (value.type === 'literal') {
-        result.value.push(evalLiteral({
-            config,
-            stream,
-            decl: value,
-            scope,
-            result
-        }));
+        result.value.push(evalLiteral(result, value));
     } else {
         const res = evalGroup({
             decl: value,

@@ -89,7 +89,7 @@ export type Literal = {
     value: LiteralValues;
 }
 
-export type LiteralValues = Array<RawLiteral | Literal | Group | ValueAccessor>;
+export type LiteralValues = Array<RawLiteral | ValueAccessor>;
 
 export type Identifier = {
     type: 'identifier';

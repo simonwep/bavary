@@ -5,19 +5,11 @@ import {ParserArgs}  from '../types';
 export const evalLiteralContent = (
     {
         stream,
-        scope,
-        config,
         decl,
         result
     }: ParserArgs<Literal>
 ): boolean => {
-    const value = evalLiteral({
-        stream,
-        scope,
-        config,
-        decl,
-        result
-    });
+    const value = evalLiteral(result, decl);
 
     stream.stash();
     for (let i = 0; i < value.length; i++) {

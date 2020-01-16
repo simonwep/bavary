@@ -21,13 +21,7 @@ export const evalDefineCommand = (
 
     const {value} = decl;
     if (value.type === 'literal') {
-        result.value[decl.name] = evalLiteral({
-            config,
-            stream,
-            scope,
-            decl: value,
-            result
-        });
+        result.value[decl.name] = evalLiteral(result, value);
     } else if (value.type === 'value-accessor') {
         result.value[decl.name] = lookupValue(result.value, value.value) as ParsingResultValue;
     } else {

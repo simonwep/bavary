@@ -29,9 +29,7 @@ export const evalFunction = (
                 break;
             }
             case 'literal': {
-                resolvedArgs.push(evalLiteral({
-                    config, result, stream, decl: arg, scope
-                }));
+                resolvedArgs.push(evalLiteral(result, arg));
                 break;
             }
             case 'identifier': {
