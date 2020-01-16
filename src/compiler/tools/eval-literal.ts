@@ -17,7 +17,6 @@ export const evalLiteral = (result: ParsingResult, decl: Literal): string => {
             }
             case 'raw-literal': {
                 raw = part.value;
-                break;
             }
         }
 

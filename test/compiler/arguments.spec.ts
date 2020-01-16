@@ -88,7 +88,7 @@ describe('[COM] Arguments', () => {
     it('Should properly clean-up injected types', () => {
         const parse = compile(`
             <wrap-in-braces content> = [
-                void ['{']
+                void ['\\{']
                 <content>
                 void ['}']
             ]

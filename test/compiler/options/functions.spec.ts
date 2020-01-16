@@ -40,7 +40,7 @@ describe('[OPTION] Functions', () => {
         const parse = compile(`
             entry [object:
                 def chars = [(a - z)+]
-                count($chars, 'size')
+                count($chars, size)
             ]
         `, {
             functions: {

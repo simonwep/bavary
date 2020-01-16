@@ -34,7 +34,6 @@ export const evalFunction = (
             }
             case 'identifier': {
                 resolvedArgs.push(arg.value);
-                break;
             }
         }
     }
