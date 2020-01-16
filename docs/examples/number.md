@@ -2,7 +2,7 @@
 The following example parses floating-point numbers and integers. 
 In both the scientific notation can be used.
 
-```html
+```
 entry {
     <raw-num> = [(\d)+]
     <num-sign> = [ '+' | '-' ]

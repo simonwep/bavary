@@ -2,13 +2,13 @@
 The following example parses hex-colors.
 It supports the 3- and 4-shorthand as well as the written out 4 and 8 character long version.
 
-```html
+```
 entry {
     <hex> = [(\d, a - f)]
     <hex-pair> = [<hex> <hex>]
     
     default [object:
-        '#'
+        '\\#'
         
         # RRGGBBAA & RRGGBB
         [

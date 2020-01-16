@@ -21,7 +21,8 @@
    8.1 [Logical operators](#logical-operators) _- As the name already says..._  
    8.2 [Constants](#constants) _- Constants for values to use within conditional-statements._
 9. [Native Functions](#native-functions) _- Manipulating the state by native JavaScript functions._
-10. [Error handling](#errors) _- Handle error raised by your code properly._
+10. [Template Strings](#template-strings) _- Embed variables inside literals and refer to previously matched or defined values._
+11. [Error handling](#error-handling) _- Handle error raised by your code properly._
 
 ### Comments
 Use `#` to comment:
@@ -59,7 +60,7 @@ Character-selection works almost the same as in regular expressions, only the sy
 
 | Name | Description | Example |
 | ---- | ----------- | ------- |
-| Single Character | Matches exactly the given character. | `'A'` |
+| Single Character(-sequence) | Matches exactly the given character or sequence. | `'A'` `'Abc'` |
 | Hex character  | Matches the 16-bit character with the given hex value. | `\x0f` `\xfa15` |
 | Octal character  | Matches the 8-bit character with the given octal value. | `\45` `\167` |
 | Character range | Matches every character between two anchor-chars. | `(a - z)` |
@@ -75,6 +76,8 @@ Let's look at a few examples:
 
 Character selection could also have [multipliers](#multipliers) attached to it, for example `(a - z, except d - g, z){4, 7}`: Matches all characters between `a` and `z` except `d` -`g` and the character `z`
 *4 to 7 times*.
+
+> ⚠ It's not possible to use [template-strings](#template-strings) within a character-selection!
 
 **All punctuation characters** need to be escaped: `(\- - \+)` (`-` to `+`) / `(\\\n - \t)` (`\n` to `\t`, line-breaks need to be escaped too). Even better: Wrap them into quotation-marks since `\` is normally used for tokens (see below).
 
@@ -391,7 +394,7 @@ In your condition you can to use the dollar-sign `$` to access the current [arra
 
 ```
 if ($foo.bam[3].baz != null) [
-    # If foo is not null, bam neither, bam got a third non-null value and is an actual array
+    #	 If foo is not null, bam neither, bam got a third non-null value and is an actual array
     # and the array element has an attribute baz which isn't null.
 ]
 ```
@@ -492,7 +495,7 @@ const parse = compile(`[object:
     )
 ]`, {
     functions: {
-        inspect({state}, str, arr, variable): boolean {
+        inspect({state}, str, arr, variable) {
         	// Be sure to validate each argument before using it's value!
             console.log({
                 str, // 'a string!'
@@ -507,6 +510,43 @@ const parse = compile(`[object:
 ```
 
 See [config.md](/docs/config.md) regarding compiler options.
+
+### Template Strings
+
+Whenever you need to re-match a subset of previously matched values or just want to embed a value inside of an string you can use brackets (`{}`) to do so:
+
+````js
+const parse = compile(`[object:
+    def word = [(\\w)+]
+	
+	# We expect the char-sequence ' is ' followed by whatever the variable word contains.
+    ' is {$word}'
+]`);
+
+console.log(parse('Hello is Hello')); // Outputs {word: 'Hello'}
+console.log(parse('Hello is hello')); // Outputs null since 'Hello' wasn't matched again
+````
+
+... or use it to embed values inside a property:
+
+``````js
+const parse = compile(`[object:
+    def word = [(A - Z, a - z)+]
+    def number = [(\\d)+]
+    def pretty = 'Matched the word "{$word}" and the number "{$number}"'
+    
+    # Remove used variables (to minimize the output)
+    rem $word
+    rem $number
+]`);
+
+// Outputs: {pretty: 'Matched the word "Hello" and the number "123"'}
+console.log(parse('Hello123'));
+``````
+
+
+
+> Use the backslash-character to use `{` inside strings: `'this works: \{ :)'`
 
 ### Error handling
 
