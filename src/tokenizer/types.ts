@@ -5,6 +5,11 @@ export type Token = {
     value: string | number;
 } & RangeInformation;
 
+export enum Alternate {
+    FAILED = 'FAILED',
+    EMPTY = 'EMPTY'
+}
+
 export type RangeInformation = {
     start: number;
     end: number;

@@ -1,8 +1,8 @@
-import {Streamable} from '../../streams/streamable';
-import {isNumeric}  from '../tools/is';
-import {Token}      from '../types';
+import {Streamable}       from '../../streams/streamable';
+import {isNumeric}        from '../tools/is';
+import {Alternate, Token} from '../types';
 
-export const num = (stream: Streamable<string>): Token | null => {
+export const num = (stream: Streamable<string>): Token | Alternate => {
 
     let number = '';
     while (stream.hasNext()) {
@@ -20,5 +20,5 @@ export const num = (stream: Streamable<string>): Token | null => {
     return number.length ? {
         type: 'num',
         value: Number(number)
-    } as Token : null;
+    } as Token : Alternate.FAILED;
 };

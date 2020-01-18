@@ -1,10 +1,9 @@
 import {Streamable}                 from '../../streams/streamable';
 import {consumeWhile}               from '../tools/consume';
 import {isNonWhitespace, isNumeric} from '../tools/is';
-import {Token}                      from '../types';
+import {Alternate, Token}           from '../types';
 
-export const kw = (stream: Streamable<string>): Token | null => {
-
+export const kw = (stream: Streamable<string>): Token | Alternate => {
     const str = consumeWhile(stream, (v, c) => {
         return isNonWhitespace(v) || !!(isNumeric(v) && c.length);
     });
@@ -12,5 +11,5 @@ export const kw = (stream: Streamable<string>): Token | null => {
     return str.length ? {
         type: 'kw',
         value: str
-    } as Token : null;
+    } as Token : Alternate.FAILED;
 };

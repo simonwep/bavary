@@ -1,10 +1,10 @@
-import {Streamable} from '../streams/streamable';
-import {Token}      from './types';
-import {cmt}        from './types/cmt';
-import {kw}         from './types/kw';
-import {num}        from './types/num';
-import {punc}       from './types/punc';
-import {ws}         from './types/ws';
+import {Streamable}       from '../streams/streamable';
+import {Alternate, Token} from './types';
+import {cmt}              from './types/cmt';
+import {kw}               from './types/kw';
+import {num}              from './types/num';
+import {punc}             from './types/punc';
+import {ws}               from './types/ws';
 
 const parser = [
     cmt,
@@ -31,8 +31,10 @@ export const tokenize = (str: string): Array<Token> => {
             const start = stream.index;
             const parsed = parse(stream);
 
-            if (!parsed) {
+            if (parsed === Alternate.FAILED) {
                 continue;
+            } else if (parsed === Alternate.EMPTY) {
+                continue outer;
             }
 
             // There may be a comment between whitespace, concatenate that
@@ -66,7 +68,6 @@ export const tokenize = (str: string): Array<Token> => {
 
         // Same problem as in types/punc.ts
         /* istanbul ignore next */
-        // TODO: Fails on single comment
         throw new Error('Failed to parse input sequence.');
     }
 
