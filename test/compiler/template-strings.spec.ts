@@ -24,6 +24,15 @@ describe('[COM] Template strings', () => {
         ).to.throw();
     });
 
+    it('Should throw an error if evaluated value of variables isn\'t a string or number', () => {
+        const parse = compile(`[object:
+            def a = [object: def res = [(A - Z)+]]
+            def cm = '{$a}'
+        ]`);
+
+        expect(() => parse('ABC')).to.throw();
+    });
+
     it('Should ignore nullpointer', () => {
         const parse = compile('[\'abc{$invalid[23].foo}\']');
         expect(parse('abc')).to.equal('abc');

@@ -13,6 +13,17 @@ export const evalLiteral = (result: ParsingResult, decl: Literal): string => {
         switch (part.type) {
             case 'value-accessor': {
                 raw = lookupValue(result.value, part.value);
+
+                // Ignore null or undefined values
+                if (raw === null || raw === undefined) {
+                    break;
+                }
+
+                // Strict-check if it's not a string or number
+                if (typeof raw !== 'string' && typeof raw !== 'number') {
+                    throw new Error(`Evaluated value of "${part.value.pop()}" not a string or number.`);
+                }
+
                 break;
             }
             case 'literal': {
