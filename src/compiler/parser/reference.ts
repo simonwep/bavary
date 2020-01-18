@@ -2,6 +2,7 @@ import {Reference}                      from '../../ast/types';
 import {evalRawReference}               from '../internal';
 import {typeOf}                         from '../tools/type-of';
 import {ParserArgs, ParsingResultValue} from '../types';
+import {StatementOutcome}               from './statement-outcome';
 
 export const evalReference = (
     {
@@ -11,7 +12,7 @@ export const evalReference = (
         scope,
         result
     }: ParserArgs<Reference>
-): boolean => {
+): StatementOutcome => {
 
     // Resolve value of reference
     const matches = evalRawReference({
@@ -41,9 +42,11 @@ export const evalReference = (
         stream.pop();
 
         // Declaration may be still optional through a '?'
-        return !!(decl.multiplier && decl.multiplier.type === 'optional');
+        if (!!(decl.multiplier && decl.multiplier.type === 'optional')) {
+            return StatementOutcome.FAILED;
+        }
     }
 
     stream.recycle();
-    return true;
+    return StatementOutcome.OK;
 };

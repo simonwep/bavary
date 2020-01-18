@@ -1,6 +1,6 @@
-import {Streamable} from '../streams/streamable';
-import {Scope}      from './scope';
-
+import {Streamable}       from '../streams/streamable';
+import {StatementOutcome} from './parser/statement-outcome';
+import {Scope}            from './scope';
 
 export type ParserArgs<DeclarationType> = {
     config: CompilerConfig;
@@ -8,6 +8,16 @@ export type ParserArgs<DeclarationType> = {
     decl: DeclarationType;
     scope: Scope;
     result: ParsingResult;
+}
+
+export type GroupOutcome = {
+    value: ParsingResultValue;
+    state: StatementOutcome;
+}
+
+export type MultipliedOutcome <T> = {
+    values: T | Array<T> | null,
+    state: StatementOutcome;
 }
 
 // Different kinds of parsing results

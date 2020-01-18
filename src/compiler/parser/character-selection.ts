@@ -1,6 +1,7 @@
 import {CharacterSelection, CharacterSelectionArray} from '../../ast/types';
 import {ParserArgs}                                  from '../types';
 import {maybeMultiplier}                             from './multiplier';
+import {StatementOutcome}                            from './statement-outcome';
 
 /**
  * Checks if any range or value of a CharacterSelectionArray matches the given char-code
@@ -23,7 +24,7 @@ export const evalCharacterSelection = (
         scope,
         result
     }: ParserArgs<CharacterSelection>
-): boolean => {
+): StatementOutcome => {
     const {included, excluded} = decl;
 
     // Type may have a multiplier attached to it
@@ -36,7 +37,8 @@ export const evalCharacterSelection = (
             const charCode = value.charCodeAt(0);
 
             // Check if character is included and not excluded
-            if (matchesCharacterSelectionArray(included, charCode) &&
+            if (
+                matchesCharacterSelectionArray(included, charCode) &&
                 !matchesCharacterSelectionArray(excluded, charCode)) {
                 stream.next();
                 return value;
@@ -49,15 +51,14 @@ export const evalCharacterSelection = (
     if (matches) {
 
         // Ignore result if current mode is not a string
-        if (result.type !== 'string') {
-            return true;
-        }
+        if (result.type === 'string') {
 
-        // Append value, concat array values if needed
-        result.value += Array.isArray(matches) ? matches.join('') : matches;
+            // Append value, concat array values if needed
+            result.value += Array.isArray(matches) ? matches.join('') : matches;
+        }
     } else if (decl.multiplier?.type !== 'optional') {
-        return false;
+        return StatementOutcome.FAILED;
     }
 
-    return true;
+    return StatementOutcome.OK;
 };

@@ -1,6 +1,7 @@
 import {BinaryCombinator} from '../../ast/types';
 import {evalDeclaration}  from '../internal';
 import {ParserArgs}       from '../types';
+import {StatementOutcome} from './statement-outcome';
 
 export const evalCombiantor = (
     {
@@ -10,7 +11,7 @@ export const evalCombiantor = (
         scope,
         result
     }: ParserArgs<BinaryCombinator>
-): boolean => {
+): StatementOutcome => {
     stream.stash();
 
     switch (decl.sign) {
@@ -21,7 +22,7 @@ export const evalCombiantor = (
             for (let i = 0; i < decs.length; i++) {
                 if (evalDeclaration({config, stream, decl: decs[i], scope, result})) {
                     stream.recycle();
-                    return true;
+                    return StatementOutcome.OK;
                 }
             }
 
@@ -41,7 +42,7 @@ export const evalCombiantor = (
 
             if (!cpy.length || (decl.sign === '&&' && cpy.length < decl.value.length)) {
                 stream.recycle();
-                return true;
+                return StatementOutcome.OK;
             }
 
             break;
@@ -49,5 +50,5 @@ export const evalCombiantor = (
     }
 
     stream.pop();
-    return false;
+    return StatementOutcome.FAILED;
 };

@@ -1,7 +1,8 @@
-import {PushStatement} from '../../../ast/types';
-import {evalLiteral}   from '../../tools/eval-literal';
-import {ParserArgs}    from '../../types';
-import {evalGroup}     from '../group';
+import {PushStatement}    from '../../../ast/types';
+import {evalLiteral}      from '../../tools/eval-literal';
+import {ParserArgs}       from '../../types';
+import {evalGroup}        from '../group';
+import {StatementOutcome} from '../statement-outcome';
 
 export const evalPushCommand = (
     {
@@ -11,7 +12,7 @@ export const evalPushCommand = (
         scope,
         result
     }: ParserArgs<PushStatement>
-): boolean => {
+): StatementOutcome => {
 
     // Push only works on arrays
     if (result.type !== 'array') {
@@ -29,12 +30,12 @@ export const evalPushCommand = (
             stream
         });
 
-        if (res) {
-            result.value.push(res);
-            return true;
+        if (!res && value.multiplier?.type !== 'optional') {
+            return StatementOutcome.FAILED;
         }
 
-        return value.multiplier?.type === 'optional';
+        result.value.push(res);
     }
-    return true;
+
+    return StatementOutcome.OK;
 };

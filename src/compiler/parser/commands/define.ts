@@ -3,6 +3,7 @@ import {evalLiteral}                    from '../../tools/eval-literal';
 import {lookupValue}                    from '../../tools/lookup-value';
 import {ParserArgs, ParsingResultValue} from '../../types';
 import {evalGroup}                      from '../group';
+import {StatementOutcome}               from '../statement-outcome';
 
 export const evalDefineCommand = (
     {
@@ -12,7 +13,7 @@ export const evalDefineCommand = (
         scope,
         result
     }: ParserArgs<DefineStatement>
-): boolean => {
+): StatementOutcome => {
 
     // Define only works on object-groups
     if (result.type !== 'object') {
@@ -33,11 +34,11 @@ export const evalDefineCommand = (
         });
 
         if (res !== null) {
-            result.value[decl.name] = res;
-        } else {
-            return value.multiplier?.type === 'optional';
+            result.value[decl.name] = Array.isArray(res) ? res : res.value;
+        } else if (value.multiplier?.type !== 'optional') {
+            return StatementOutcome.FAILED;
         }
     }
 
-    return true;
+    return StatementOutcome.OK;
 };

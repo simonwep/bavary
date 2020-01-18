@@ -2,6 +2,7 @@ import {Group, Reference, Spread}       from '../../ast/types';
 import {evalGroup, evalRawReference}    from '../internal';
 import {typeOf}                         from '../tools/type-of';
 import {ParserArgs, ParsingResultValue} from '../types';
+import {StatementOutcome}               from './statement-outcome';
 
 export const evalSpread = (
     {
@@ -11,7 +12,7 @@ export const evalSpread = (
         scope,
         result
     }: ParserArgs<Spread>
-): boolean => {
+): StatementOutcome => {
 
     // Execute value
     const value = (decl.value.type === 'reference' ? evalRawReference : evalGroup)({
@@ -20,7 +21,7 @@ export const evalSpread = (
     });
 
     if (!value) {
-        return false;
+        return StatementOutcome.FAILED;
     }
 
     const valueType = typeOf(value);
@@ -43,5 +44,5 @@ export const evalSpread = (
         throw new Error(`Incompatible types used in spread operator: ${valueType} ≠ ${result.type}`);
     }
 
-    return true;
+    return StatementOutcome.OK;
 };

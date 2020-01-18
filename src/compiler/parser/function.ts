@@ -3,6 +3,7 @@ import {evalGroup}                      from '../internal';
 import {evalLiteral}                    from '../tools/eval-literal';
 import {lookupValue}                    from '../tools/lookup-value';
 import {ParserArgs, ParsingResultValue} from '../types';
+import {StatementOutcome}               from './statement-outcome';
 
 export const evalFunction = (
     {
@@ -12,7 +13,7 @@ export const evalFunction = (
         scope,
         result
     }: ParserArgs<Func>
-): boolean => {
+): StatementOutcome => {
 
     // Resolve arguments
     const resolvedArgs = [];
@@ -51,7 +52,7 @@ export const evalFunction = (
 
             // Resolved arguments
             ...resolvedArgs
-        );
+        ) ? StatementOutcome.OK : StatementOutcome.FAILED;
     } catch (e) {
         throw new Error(`Function "${decl.name}" throwed an error:\n${e.message}`);
     }

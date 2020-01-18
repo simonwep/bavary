@@ -1,4 +1,10 @@
 import {GroupValue}         from '../../ast/types';
+import {ParserArgs}         from '../types';
+import {evalDefineCommand}  from './commands/define';
+import {evalPushCommand}    from './commands/push';
+import {evalRemoveCommand}  from './commands/remove';
+import {evalThrowStatement} from './commands/throw';
+import {StatementOutcome}   from './statement-outcome';
 import {
     evalCharacterSelection,
     evalCombiantor,
@@ -8,12 +14,7 @@ import {
     evalLiteralContent,
     evalReference,
     evalSpread
-}                           from '../internal';
-import {ParserArgs}         from '../types';
-import {evalDefineCommand}  from './commands/define';
-import {evalPushCommand}    from './commands/push';
-import {evalRemoveCommand}  from './commands/remove';
-import {evalThrowStatement} from './commands/throw';
+} from '../internal';
 
 export const evalDeclaration = (
     {
@@ -23,47 +24,40 @@ export const evalDeclaration = (
         scope,
         result
     }: ParserArgs<GroupValue>
-): boolean => {
+): StatementOutcome => {
+    let outcome: StatementOutcome = StatementOutcome.OK;
 
     stream.stash();
     switch (decl.type) {
         case 'combinator': {
-
-            if (!evalCombiantor({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalCombiantor({config, stream, decl, scope, result});
             break;
         }
         case 'literal': {
-
-            if (!evalLiteralContent({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalLiteralContent({config, stream, decl, scope, result});
             break;
         }
         case 'character-selection': {
-
-            if (!evalCharacterSelection({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalCharacterSelection({config, stream, decl, scope, result});
             break;
         }
         case 'reference': {
-
-            if (!evalReference({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalReference({config, stream, decl, scope, result});
             break;
         }
-        case 'ignored':
+        case 'function': {
+            outcome = evalFunction({config, stream, decl, scope, result});
+            break;
+        }
+        case 'conditional-statement': {
+            outcome = evalConditionalStatement({config, stream, decl, scope, result});
+            break;
+        }
+        case 'spread': {
+            outcome = evalSpread({config, stream, decl, scope, result});
+            break;
+        }
+        case 'ignored': // TODO: Rename ignored to void
         case 'group': {
             const group = decl.type === 'ignored' ? decl.value : decl;
             const res = evalGroup({
@@ -78,55 +72,18 @@ export const evalDeclaration = (
              * is not "optional" which would be the only one where null counts as true.
              */
             if (!res && (!group.multiplier || group.multiplier.type !== 'optional')) {
-                stream.pop();
-                return false;
+                outcome = StatementOutcome.FAILED;
             }
 
-            break;
-        }
-        case 'function': {
-
-            if (!evalFunction({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
-            break;
-        }
-        case 'conditional-statement': {
-
-            if (!evalConditionalStatement({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
-            break;
-        }
-        case 'spread': {
-
-            if (!evalSpread({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = StatementOutcome.OK;
             break;
         }
         case 'define': {
-
-            if (!evalDefineCommand({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalDefineCommand({config, stream, decl, scope, result});
             break;
         }
         case 'push': {
-
-            if (!evalPushCommand({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalPushCommand({config, stream, decl, scope, result});
             break;
         }
         case 'remove': {
@@ -135,9 +92,18 @@ export const evalDeclaration = (
         }
         case 'throw': {
             evalThrowStatement({config, stream, decl, scope, result});
+            break;
+        }
+        case 'return': {
+            outcome = StatementOutcome.RETURN;
         }
     }
 
-    stream.recycle();
-    return true;
+    if (outcome === StatementOutcome.FAILED) {
+        stream.pop();
+    } else {
+        stream.recycle();
+    }
+
+    return outcome;
 };

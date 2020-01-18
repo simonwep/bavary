@@ -8,7 +8,7 @@ export const evalRemoveCommand = (
         decl,
         result
     }: ParserArgs<RemoveStatement>
-): boolean => {
+): void => {
 
     // Remove dosn't work on strings
     if (result.type === 'string') {
@@ -33,6 +33,4 @@ export const evalRemoveCommand = (
         // Deeply nested properties won't be serialized, remove them immediatly
         delete (parent as ParsingResultObjectKVSet)[topAccessor];
     }
-
-    return true;
 };

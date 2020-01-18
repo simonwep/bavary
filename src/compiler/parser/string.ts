@@ -1,6 +1,7 @@
-import {Literal}     from '../../ast/types';
-import {evalLiteral} from '../tools/eval-literal';
-import {ParserArgs}  from '../types';
+import {Literal}          from '../../ast/types';
+import {evalLiteral}      from '../tools/eval-literal';
+import {ParserArgs}       from '../types';
+import {StatementOutcome} from './statement-outcome';
 
 export const evalLiteralContent = (
     {
@@ -8,7 +9,7 @@ export const evalLiteralContent = (
         decl,
         result
     }: ParserArgs<Literal>
-): boolean => {
+): StatementOutcome => {
     const value = evalLiteral(result, decl);
 
     stream.stash();
@@ -18,7 +19,7 @@ export const evalLiteralContent = (
         // Check for type mismatch
         if (next !== value[i]) {
             stream.pop();
-            return false;
+            return StatementOutcome.FAILED;
         }
     }
 
@@ -27,5 +28,5 @@ export const evalLiteralContent = (
         result.value += value;
     }
 
-    return true;
+    return StatementOutcome.OK;
 };

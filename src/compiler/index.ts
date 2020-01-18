@@ -50,6 +50,10 @@ export const compileDeclarations = (
             decl: decl.value as Group
         });
 
-        return stream.hasNext() ? null : res;
+        if (stream.hasNext() || !res) {
+            return null;
+        }
+
+        return Array.isArray(res) ? res : res.value;
     };
 };
