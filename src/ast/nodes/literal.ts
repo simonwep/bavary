@@ -15,17 +15,16 @@ export const parseString = maybe<Literal>((stream: TokenStream) => {
     let currentRawString = '';
     let escaped = false;
 
-    // TODO: Performance issue?
-    const dumpRawString = (): void => {
+    function dumpRawString(): void {
         if (currentRawString.length) {
             values.push({
-                type: 'raw-literal',
+                type: 'string-litereal',
                 value: currentRawString
             });
 
             currentRawString = '';
         }
-    };
+    }
 
     while (stream.hasNext(true)) {
         const {value} = stream.next(true);
@@ -72,7 +71,7 @@ export const parseString = maybe<Literal>((stream: TokenStream) => {
     // Throw error on empty strings, their mostly a error
     if (
         !values.length ||
-        (values.length === 1 && values[0].type === 'raw-literal' && !values[0].value)
+        (values.length === 1 && values[0].type === 'string-litereal' && !values[0].value)
     ) {
         stream.throw('Strings shouldn\'t be empty.');
     }

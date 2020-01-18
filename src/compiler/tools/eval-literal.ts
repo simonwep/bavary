@@ -15,7 +15,7 @@ export const evalLiteral = (result: ParsingResult, decl: Literal): string => {
                 raw = lookupValue(result.value, part.value);
                 break;
             }
-            case 'raw-literal': {
+            case 'string-litereal': {
                 raw = part.value;
             }
         }

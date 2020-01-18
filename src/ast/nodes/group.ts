@@ -1,9 +1,9 @@
 import {TokenStream}                                                                                                                         from '../../tokenizer/token-stream';
 import {parseCharacterSelecton, parseConditionalStatement, parseFunction, parseGroupStatement, parseMultiplier, parseReference, parseString} from '../internal';
 import {combine}                                                                                                                             from '../tools/combine';
-import {maybe}                                                                                                                               from '../tools/maybe';
-import {BinaryCombinator, Group, GroupValue}                                                                                                 from '../types';
-import {parseSpread}                                                                                                                         from './spread';
+import {maybe}                         from '../tools/maybe';
+import {Combinator, Group, GroupValue} from '../types';
+import {parseSpread}                   from './spread';
 
 export const parseCombinator = maybe<string>((stream: TokenStream) => {
     let combinator = stream.optional(false, 'punc', '|', '&');
@@ -48,7 +48,7 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
 
     // The following code is chaos, and thats ok.
     // It works as intended and does the job just fine.
-    let comg: null | BinaryCombinator = null;
+    let comg: null | Combinator = null;
     while (!stream.match(false, 'punc', ']')) {
         const value = parsers(stream);
         const sign = parseCombinator(stream);
@@ -75,7 +75,7 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
                         type: 'combinator',
                         value: [value],
                         sign
-                    } as BinaryCombinator;
+                    } as Combinator;
 
                     comg.value.push(subCom);
                     comg = subCom; // We're now in another combinator
@@ -89,7 +89,7 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
                 type: 'combinator',
                 value: [value],
                 sign
-            } as BinaryCombinator;
+            } as Combinator;
 
             values.push(comg);
         } else if (comg) {

@@ -1,4 +1,4 @@
-import {Func}                           from '../../ast/types';
+import {NativeFunction}                 from '../../ast/types';
 import {evalGroup}                      from '../internal';
 import {evalLiteral}                    from '../tools/eval-literal';
 import {lookupValue}                    from '../tools/lookup-value';
@@ -11,7 +11,7 @@ export const evalFunction = (
         decl,
         scope,
         result
-    }: ParserArgs<Func>
+    }: ParserArgs<NativeFunction>
 ): boolean => {
 
     // Resolve arguments

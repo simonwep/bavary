@@ -23,7 +23,7 @@ export const parseToken = maybe<number>((stream: TokenStream) => {
     if (literal) {
 
         // Validate literal
-        if (literal.length !== 1 || literal[0].type !== 'raw-literal') {
+        if (literal.length !== 1 || literal[0].type !== 'string-litereal') {
             stream.throw('Unexpected literal, expected single character.');
         }
 

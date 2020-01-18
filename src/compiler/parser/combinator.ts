@@ -1,5 +1,5 @@
-import {BinaryCombinator} from '../../ast/types';
-import {evalDeclaration}  from '../internal';
+import {Combinator}      from '../../ast/types';
+import {evalDeclaration} from '../internal';
 import {ParserArgs}       from '../types';
 
 export const evalCombiantor = (
@@ -9,7 +9,7 @@ export const evalCombiantor = (
         decl,
         scope,
         result
-    }: ParserArgs<BinaryCombinator>
+    }: ParserArgs<Combinator>
 ): boolean => {
     stream.stash();
 

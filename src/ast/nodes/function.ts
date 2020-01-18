@@ -2,9 +2,9 @@ import {TokenStream}                                                  from '../.
 import {parseGroup, parseIdentifier, parseString, parseValueAccessor} from '../internal';
 import {combine}                                                      from '../tools/combine';
 import {maybe}                                                        from '../tools/maybe';
-import {Func, FuncArgument}                                           from '../types';
+import {NativeFunction, NativeFunctionArgument}                       from '../types';
 
-export const parseFunction = maybe<Func>((stream: TokenStream) => {
+export const parseFunction = maybe<NativeFunction>((stream: TokenStream) => {
 
     stream.consumeSpace();
     const name = parseIdentifier(stream);
@@ -12,7 +12,7 @@ export const parseFunction = maybe<Func>((stream: TokenStream) => {
         return null;
     }
 
-    const parse = combine<FuncArgument | null>(
+    const parse = combine<NativeFunctionArgument | null>(
         parseValueAccessor,
         parseIdentifier,
         parseGroup,
@@ -41,5 +41,5 @@ export const parseFunction = maybe<Func>((stream: TokenStream) => {
         type: 'function',
         name: name.value,
         args,
-    } as Func;
+    } as NativeFunction;
 });

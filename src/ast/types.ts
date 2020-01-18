@@ -1,7 +1,7 @@
 import {TokenStream} from '../tokenizer/token-stream';
 
 export type ASTNode = Declaration | CharacterSelection | ValueAccessor | ConditionalStatement |
-    VoidStatement | Arguments | Func | Multiplier | BinaryExpressionValue | Group | Reference | Block | Literal;
+    VoidStatement | Arguments | NativeFunction | Multiplier | BinaryExpressionValue | Group | Reference | Block | Literal;
 
 export type ParserFunction<T> = (stream: TokenStream) => T | null;
 
@@ -26,8 +26,8 @@ export type Argument = {
     value: Group | null;
 }
 
-export type GroupValue = Reference | Literal | BinaryCombinator | Group | Spread |
-    CharacterSelection | GroupCommand | ConditionalStatement | Func | VoidStatement;
+export type GroupValue = Reference | Literal | Combinator | Group | Spread |
+    CharacterSelection | GroupCommand | ConditionalStatement | NativeFunction | VoidStatement;
 
 export type Group = {
     type: 'group';
@@ -79,8 +79,8 @@ export type Numeral = {
     value: number;
 }
 
-export type RawLiteral = {
-    type: 'raw-literal';
+export type StringLiteral = {
+    type: 'string-litereal';
     value: string;
 }
 
@@ -89,7 +89,7 @@ export type Literal = {
     value: LiteralValues;
 }
 
-export type LiteralValues = Array<RawLiteral | ValueAccessor>;
+export type LiteralValues = Array<StringLiteral | ValueAccessor>;
 
 export type Identifier = {
     type: 'identifier';
@@ -108,11 +108,11 @@ export type Spread = {
     value: Reference | Group | CharacterSelection | Literal;
 }
 
-export type FuncArgument = Group | Literal | Identifier | ValueAccessor;
-export type Func = {
+export type NativeFunctionArgument = Group | Literal | Identifier | ValueAccessor;
+export type NativeFunction = {
     type: 'function';
     name: string;
-    args: Array<FuncArgument>;
+    args: Array<NativeFunctionArgument>;
 }
 
 export type CharacterSelection = {
@@ -136,7 +136,7 @@ export type ConditionalStatement = {
     alternate: Group | ConditionalStatement | null;
 }
 
-export type BinaryCombinator = {
+export type Combinator = {
     type: 'combinator';
     sign: string;
     value: Array<GroupValue>;
