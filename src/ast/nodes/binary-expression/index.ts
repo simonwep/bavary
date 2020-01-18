@@ -1,9 +1,9 @@
-import {TokenStream}                                                   from '../../../tokenizer/token-stream';
-import {parseIdentifier, parseNumber, parseString, parseValueAccessor} from '../../internal';
-import {combine}                                                       from '../../tools/combine';
-import {maybe}                                                         from '../../tools/maybe';
-import {BinaryExpression, BinaryExpressionValue}                       from '../../types';
-import {operatorPriority}                                              from './operator-priority';
+import {TokenStream}                                                    from '../../../tokenizer/token-stream';
+import {parseIdentifier, parseLiteral, parseNumber, parseValueAccessor} from '../../internal';
+import {combine}                                                        from '../../tools/combine';
+import {maybe}                                                          from '../../tools/maybe';
+import {BinaryExpression, BinaryExpressionValue}                        from '../../types';
+import {operatorPriority}                                               from './operator-priority';
 
 /**
  * Parses a binary expression
@@ -59,7 +59,7 @@ export const parseBinaryExpression = maybe<BinaryExpression>((stream: TokenStrea
     const parse = combine<BinaryExpressionValue | null>(
         parseValueAccessor,
         parseBinaryExpression,
-        parseString,
+        parseLiteral,
         parseNumber,
         parseIdentifier
     );

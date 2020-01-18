@@ -1,8 +1,8 @@
-import {TokenStream}                                                  from '../../tokenizer/token-stream';
-import {parseGroup, parseIdentifier, parseString, parseValueAccessor} from '../internal';
-import {combine}                                                      from '../tools/combine';
-import {maybe}                                                        from '../tools/maybe';
-import {NativeFunction, NativeFunctionArgument}                       from '../types';
+import {TokenStream}                                                   from '../../tokenizer/token-stream';
+import {parseGroup, parseIdentifier, parseLiteral, parseValueAccessor} from '../internal';
+import {combine}                                                       from '../tools/combine';
+import {maybe}                                                         from '../tools/maybe';
+import {NativeFunction, NativeFunctionArgument}                        from '../types';
 
 export const parseFunction = maybe<NativeFunction>((stream: TokenStream) => {
 
@@ -16,7 +16,7 @@ export const parseFunction = maybe<NativeFunction>((stream: TokenStream) => {
         parseValueAccessor,
         parseIdentifier,
         parseGroup,
-        parseString
+        parseLiteral
     );
 
     // Parse arguments

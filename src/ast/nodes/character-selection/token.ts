@@ -1,6 +1,6 @@
 import {TokenStream}         from '../../../tokenizer/token-stream';
 import {Token}               from '../../../tokenizer/types';
-import {parseString}         from '../../internal';
+import {parseLiteral}        from '../../internal';
 import {maybe}               from '../../tools/maybe';
 import {parseHexCharacter}   from './hex-character';
 import {parseOctalCharacter} from './octal-character';
@@ -17,7 +17,7 @@ export const parseToken = maybe<number>((stream: TokenStream) => {
         return null;
     }
 
-    const literal = parseString(stream)?.value;
+    const literal = parseLiteral(stream)?.value;
     let nextValue, escaped;
 
     if (literal) {

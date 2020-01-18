@@ -89,7 +89,7 @@ export type Literal = {
     value: LiteralValues;
 }
 
-export type LiteralValues = Array<StringLiteral | ValueAccessor>;
+export type LiteralValues = Array<Literal | StringLiteral | ValueAccessor>;
 
 export type Identifier = {
     type: 'identifier';

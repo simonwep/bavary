@@ -1,6 +1,6 @@
 import {Combinator}      from '../../ast/types';
 import {evalDeclaration} from '../internal';
-import {ParserArgs}       from '../types';
+import {ParserArgs}      from '../types';
 
 export const evalCombiantor = (
     {

@@ -1,9 +1,10 @@
-import {TokenStream}            from '../../tokenizer/token-stream';
-import {maybe}                  from '../tools/maybe';
-import {Literal, LiteralValues} from '../types';
-import {parseValueAccessor}     from './value-accessor';
+import {TokenStream}                           from '../../tokenizer/token-stream';
+import {combine}                               from '../tools/combine';
+import {maybe}                                 from '../tools/maybe';
+import {Literal, LiteralValues, ValueAccessor} from '../types';
+import {parseValueAccessor}                    from './value-accessor';
 
-export const parseString = maybe<Literal>((stream: TokenStream) => {
+export const parseLiteral = maybe<Literal>((stream: TokenStream) => {
     const escapeChar = stream.optional(false, 'punc', '\'', '"');
 
     if (!escapeChar) {
@@ -26,6 +27,11 @@ export const parseString = maybe<Literal>((stream: TokenStream) => {
         }
     }
 
+    const parseInterpolation = combine<ValueAccessor | Literal | null>(
+        parseValueAccessor,
+        parseLiteral
+    );
+
     while (stream.hasNext(true)) {
         const {value} = stream.next(true);
 
@@ -44,14 +50,17 @@ export const parseString = maybe<Literal>((stream: TokenStream) => {
             }
 
             // Parse interpolated value
-            // TODO: Allow multiple values?
-            const inner = parseValueAccessor(stream);
+            while (!stream.match(false, 'punc', '}')) {
+                const inner = parseInterpolation(stream);
 
-            if (!inner) {
-                stream.throw('Expected literal, value-accessor or group.');
+                if (!inner) {
+                    break;
+                }
+
+                values.push(inner);
             }
 
-            values.push(inner);
+
             stream.expect(false, 'punc', '}');
             continue;
         }

@@ -1,9 +1,9 @@
-import {parseString}    from '../../internal';
+import {parseLiteral}   from '../../internal';
 import {maybe}          from '../../tools/maybe';
 import {ThrowStatement} from '../../types';
 
 export const parseThrowStatement = maybe<ThrowStatement>(stream => {
-    const value = parseString(stream);
+    const value = parseLiteral(stream);
 
     if (!value) {
         stream.throw('Expected string');

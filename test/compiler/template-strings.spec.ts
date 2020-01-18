@@ -28,4 +28,18 @@ describe('[COM] Template strings', () => {
         const parse = compile('[\'abc{$invalid[23].foo}\']');
         expect(parse('abc')).to.equal('abc');
     });
+
+    it('Should allow multiple, nested interpolation', () => {
+        const parse = compile(`[object:
+            def va = [(A - Z)+]
+            def vb = [(a - z)+]
+            def cm = '{$va ' - ' $vb}'
+        ]`);
+
+        expect(parse('FOObar')).to.deep.equal({
+            va: 'FOO',
+            vb: 'bar',
+            cm: 'FOO - bar'
+        });
+    });
 });

@@ -1,6 +1,14 @@
-import {TokenStream}                                                                                                                         from '../../tokenizer/token-stream';
-import {parseCharacterSelecton, parseConditionalStatement, parseFunction, parseGroupStatement, parseMultiplier, parseReference, parseString} from '../internal';
-import {combine}                                                                                                                             from '../tools/combine';
+import {TokenStream}                   from '../../tokenizer/token-stream';
+import {
+    parseCharacterSelecton,
+    parseConditionalStatement,
+    parseFunction,
+    parseGroupStatement,
+    parseLiteral,
+    parseMultiplier,
+    parseReference
+}                                      from '../internal';
+import {combine}                       from '../tools/combine';
 import {maybe}                         from '../tools/maybe';
 import {Combinator, Group, GroupValue} from '../types';
 import {parseSpread}                   from './spread';
@@ -43,7 +51,7 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
         parseGroup,
         parseReference,
         parseCharacterSelecton,
-        parseString
+        parseLiteral
     );
 
     // The following code is chaos, and thats ok.
