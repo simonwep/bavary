@@ -22,7 +22,7 @@ const parseArrayAccessor = maybe<number>((stream: TokenStream) => {
         return null;
     }
 
-    const index = stream.expect(false, 'num');
+    const index = stream.expect(true, 'num');
     stream.expect(true, 'punc', ']');
 
     return index as number;
