@@ -48,9 +48,9 @@ describe('[OPTION] Location data', () => {
 
         // Test if all tree values are correctly labeled in their position
         const expectedPositions = [
-            [13, 16],
-            [33, 36],
-            [58, 66]
+            [13, 17],
+            [33, 37],
+            [58, 67]
         ];
 
         for (let i = 0; i < expectedPositions.length; i++) {
@@ -96,7 +96,7 @@ describe('[OPTION] Location data', () => {
 
         expect(parse('((#fff))')).to.nested.include({
             'col.startsAt': 2,
-            'col.endsAt': 5
+            'col.endsAt': 6
         });
     });
 });

@@ -53,7 +53,7 @@ export const evalGroup = maybeMultiplier<ParsingResultValue, Group>((
     if (config.locationData && result.type === 'object') {
         const {end, start} = config.locationData as LocationDataObject;
         result.value[start] = starts;
-        result.value[end] = stream.index - 1;
+        result.value[end] = stream.index;
     }
 
     stream.recycle();
