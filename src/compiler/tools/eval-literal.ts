@@ -1,6 +1,6 @@
-import {Literal}       from '../../ast/types';
-import {ParsingResult} from '../types';
-import {lookupValue}   from './lookup-value';
+import {Literal}              from '../../ast/types';
+import {ParsingResult}        from '../types';
+import {evalMemberExpression} from './eval-member-expression';
 
 export const evalLiteral = (result: ParsingResult, decl: Literal): string => {
     const {value} = decl;
@@ -12,7 +12,7 @@ export const evalLiteral = (result: ParsingResult, decl: Literal): string => {
         // Resolve value
         switch (part.type) {
             case 'value-accessor': {
-                raw = lookupValue(result.value, part.value);
+                raw = evalMemberExpression(result.value, part.value);
 
                 // Ignore null or undefined values
                 if (raw === null || raw === undefined) {

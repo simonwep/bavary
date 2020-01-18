@@ -12,5 +12,5 @@ export * from './nodes/commands/void';
 export * from './nodes/number';
 export * from './nodes/reference';
 export * from './nodes/literal';
-export * from './nodes/value-accessor';
+export * from './nodes/member-expression';
 export * from './nodes/commands';

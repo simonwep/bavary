@@ -1,6 +1,6 @@
 import {DefineStatement}                from '../../../ast/types';
 import {evalLiteral}                    from '../../tools/eval-literal';
-import {lookupValue}                    from '../../tools/lookup-value';
+import {evalMemberExpression}           from '../../tools/eval-member-expression';
 import {ParserArgs, ParsingResultValue} from '../../types';
 import {evalGroup}                      from '../group';
 
@@ -23,7 +23,7 @@ export const evalDefineCommand = (
     if (value.type === 'literal') {
         result.value[decl.name] = evalLiteral(result, value);
     } else if (value.type === 'value-accessor') {
-        result.value[decl.name] = lookupValue(result.value, value.value) as ParsingResultValue;
+        result.value[decl.name] = evalMemberExpression(result.value, value.value) as ParsingResultValue;
     } else {
         const res = evalGroup({
             decl: value,

@@ -1,6 +1,6 @@
 import {TokenStream} from '../tokenizer/token-stream';
 
-export type ASTNode = Declaration | CharacterSelection | ValueAccessor | ConditionalStatement |
+export type ASTNode = Declaration | CharacterSelection | MemberExpression | ConditionalStatement |
     VoidStatement | Arguments | NativeFunction | Multiplier | BinaryExpressionValue | Group | Reference | Block | Literal;
 
 export type ParserFunction<T> = (stream: TokenStream) => T | null;
@@ -40,13 +40,13 @@ export type GroupCommand = DefineStatement | PushStatement | RemoveStatement | V
 
 export type RemoveStatement = {
     type: 'remove';
-    value: ValueAccessor;
+    value: MemberExpression;
 }
 
 export type DefineStatement = {
     type: 'define';
     name: string;
-    value: Group | Literal | ValueAccessor;
+    value: Group | Literal | MemberExpression;
 }
 
 export type PushStatement = {
@@ -89,7 +89,7 @@ export type Literal = {
     value: LiteralValues;
 }
 
-export type LiteralValues = Array<Literal | StringLiteral | ValueAccessor>;
+export type LiteralValues = Array<Literal | StringLiteral | MemberExpression>;
 
 export type Identifier = {
     type: 'identifier';
@@ -108,7 +108,7 @@ export type Spread = {
     value: Reference | Group | CharacterSelection | Literal;
 }
 
-export type NativeFunctionArgument = Group | Literal | Identifier | ValueAccessor;
+export type NativeFunctionArgument = Group | Literal | Identifier | MemberExpression;
 export type NativeFunction = {
     type: 'function';
     name: string;
@@ -123,10 +123,10 @@ export type CharacterSelection = {
 }
 
 export type CharacterSelectionArray = Array<number | [number, number]>;
-export type ValueAccessorPath = Array<string | number>; // <identifier | array-index>
-export type ValueAccessor = {
+export type MemberExpressionPath = Array<string | number>; // <identifier | array-index>
+export type MemberExpression = {
     type: 'value-accessor';
-    value: ValueAccessorPath;
+    value: MemberExpressionPath;
 }
 
 export type ConditionalStatement = {
@@ -142,7 +142,7 @@ export type Combinator = {
     value: Array<GroupValue>;
 }
 
-export type BinaryExpressionValue = BinaryExpression | Literal | Identifier | Numeral | ValueAccessor;
+export type BinaryExpressionValue = BinaryExpression | Literal | Identifier | Numeral | MemberExpression;
 export type BinaryOperator = '|' | '&' | '<' | '>' | '==' | '!=' | '>=' | '<=';
 export type BinaryExpression = {
     type: 'binary-expression';

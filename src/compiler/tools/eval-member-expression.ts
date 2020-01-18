@@ -1,8 +1,8 @@
-import {ValueAccessorPath} from '../../ast/types';
-import {typeOf}            from './type-of';
+import {MemberExpressionPath} from '../../ast/types';
+import {typeOf}               from './type-of';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const lookupValue = (source: any, path: ValueAccessorPath): unknown => {
+export const evalMemberExpression = (source: any, path: MemberExpressionPath): unknown => {
 
     for (const ent of path) {
         const sourceType = typeOf(source);

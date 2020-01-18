@@ -2,7 +2,7 @@
 import {BinaryExpression, BinaryExpressionValue} from '../../ast/types';
 import {ParsingResult}                           from '../types';
 import {evalLiteral}                             from './eval-literal';
-import {lookupValue}                             from './lookup-value';
+import {evalMemberExpression}                    from './eval-member-expression';
 
 /**
  * Resolves a single value in a binary-expression
@@ -15,7 +15,7 @@ function resolveValueOf(result: ParsingResult, decl: BinaryExpressionValue): str
             return evalBinaryExpression(result, decl);
         }
         case 'value-accessor': {
-            return lookupValue(result.value, decl.value) as string | number | boolean | null;
+            return evalMemberExpression(result.value, decl.value) as string | number | boolean | null;
         }
         case 'identifier': {
 

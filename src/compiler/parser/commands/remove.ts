@@ -1,6 +1,6 @@
 import {RemoveStatement}                      from '../../../ast/types';
 import {REMOVED_PROPERTY}                     from '../../internal';
-import {lookupValue}                          from '../../tools/lookup-value';
+import {evalMemberExpression}                 from '../../tools/eval-member-expression';
 import {ParserArgs, ParsingResultObjectKVSet} from '../../types';
 
 export const evalRemoveCommand = (
@@ -18,7 +18,7 @@ export const evalRemoveCommand = (
     // Lookup parent
     const pathCopy = [...decl.value.value];
     const topAccessor = pathCopy.pop() as string | number;
-    const parent = lookupValue(result.value, pathCopy);
+    const parent = evalMemberExpression(result.value, pathCopy);
 
     if (Array.isArray(parent) && typeof topAccessor === 'number') {
 

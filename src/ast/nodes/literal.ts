@@ -1,8 +1,8 @@
-import {TokenStream}                           from '../../tokenizer/token-stream';
-import {combine}                               from '../tools/combine';
-import {maybe}                                 from '../tools/maybe';
-import {Literal, LiteralValues, ValueAccessor} from '../types';
-import {parseValueAccessor}                    from './value-accessor';
+import {TokenStream}                              from '../../tokenizer/token-stream';
+import {combine}                                  from '../tools/combine';
+import {maybe}                                    from '../tools/maybe';
+import {Literal, LiteralValues, MemberExpression} from '../types';
+import {parseMemberExpression}                    from './member-expression';
 
 export const parseLiteral = maybe<Literal>((stream: TokenStream) => {
     const escapeChar = stream.optional(false, 'punc', '\'', '"');
@@ -27,8 +27,8 @@ export const parseLiteral = maybe<Literal>((stream: TokenStream) => {
         }
     }
 
-    const parseInterpolation = combine<ValueAccessor | Literal | null>(
-        parseValueAccessor,
+    const parseInterpolation = combine<MemberExpression | Literal | null>(
+        parseMemberExpression,
         parseLiteral
     );
 

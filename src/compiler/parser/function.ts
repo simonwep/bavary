@@ -1,7 +1,7 @@
 import {NativeFunction}                 from '../../ast/types';
 import {evalGroup}                      from '../internal';
 import {evalLiteral}                    from '../tools/eval-literal';
-import {lookupValue}                    from '../tools/lookup-value';
+import {evalMemberExpression}           from '../tools/eval-member-expression';
 import {ParserArgs, ParsingResultValue} from '../types';
 
 export const evalFunction = (
@@ -19,7 +19,7 @@ export const evalFunction = (
     for (const arg of decl.args) {
         switch (arg.type) {
             case 'value-accessor': {
-                resolvedArgs.push(lookupValue(result.value, arg.value) as ParsingResultValue);
+                resolvedArgs.push(evalMemberExpression(result.value, arg.value) as ParsingResultValue);
                 break;
             }
             case 'group': {

@@ -1,10 +1,10 @@
-import {TokenStream}     from '../../tokenizer/token-stream';
-import {parseIdentifier} from '../internal';
-import {combine}         from '../tools/combine';
-import {maybe}           from '../tools/maybe';
-import {ValueAccessor}   from '../types';
+import {TokenStream}      from '../../tokenizer/token-stream';
+import {parseIdentifier}  from '../internal';
+import {combine}          from '../tools/combine';
+import {maybe}            from '../tools/maybe';
+import {MemberExpression} from '../types';
 
-const parseObjectAccessor = maybe<string>((stream: TokenStream) => {
+const parsePropertyExpression = maybe<string>((stream: TokenStream) => {
     if (!stream.optional(true, 'punc', '.')) {
         return null;
     }
@@ -17,7 +17,7 @@ const parseObjectAccessor = maybe<string>((stream: TokenStream) => {
     return ident.value;
 });
 
-const parseArrayAccessor = maybe<number>((stream: TokenStream) => {
+const parseArrayExpression = maybe<number>((stream: TokenStream) => {
     if (!stream.optional(true, 'punc', '[')) {
         return null;
     }
@@ -28,7 +28,7 @@ const parseArrayAccessor = maybe<number>((stream: TokenStream) => {
     return index as number;
 });
 
-export const parseValueAccessor = maybe<ValueAccessor>((stream: TokenStream) => {
+export const parseMemberExpression = maybe<MemberExpression>((stream: TokenStream) => {
 
     // They start with a tag...
     if (!stream.optional(false, 'punc', '$')) {
@@ -41,8 +41,8 @@ export const parseValueAccessor = maybe<ValueAccessor>((stream: TokenStream) => 
     // Following path...
     const accessorPath = entry ? [entry.value] : [];
     const parser = combine<string | number | null>(
-        parseObjectAccessor,
-        parseArrayAccessor
+        parsePropertyExpression,
+        parseArrayExpression
     );
 
     // Parse parts
@@ -57,5 +57,5 @@ export const parseValueAccessor = maybe<ValueAccessor>((stream: TokenStream) => 
     return {
         type: 'value-accessor',
         value: accessorPath
-    } as ValueAccessor;
+    } as MemberExpression;
 });
