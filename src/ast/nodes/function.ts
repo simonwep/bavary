@@ -40,6 +40,6 @@ export const parseFunction = maybe<NativeFunction>((stream: TokenStream) => {
     return {
         type: 'function',
         name: name.value,
-        args,
+        args
     } as NativeFunction;
 });

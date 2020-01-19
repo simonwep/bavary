@@ -11,6 +11,6 @@ export const parsePushStatement = maybe<PushStatement>(stream => {
 
     return {
         type: 'push',
-        value,
+        value
     } as PushStatement;
 });

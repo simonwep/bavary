@@ -121,7 +121,7 @@ export class Scope {
             variant: null,
             arguments: null,
             value,
-            name,
+            name
         });
     }
 

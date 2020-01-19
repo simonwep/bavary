@@ -11,6 +11,6 @@ export const parseRemoveStatement = maybe<RemoveStatement>(stream => {
 
     return {
         type: 'remove',
-        value,
+        value
     } as RemoveStatement;
 });

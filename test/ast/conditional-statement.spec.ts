@@ -14,6 +14,6 @@ describe('[AST] Conditional statement', () => {
         'entry [if ($a == 5) [object:]]',
         'entry [if ($abc >) else ]',
         'entry [if ($abc > ()]',
-        'entry [if ($abc ! ()]',
+        'entry [if ($abc ! ()]'
     ]);
 });

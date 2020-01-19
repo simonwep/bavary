@@ -11,6 +11,6 @@ export const parseThrowStatement = maybe<ThrowStatement>(stream => {
 
     return {
         type: 'throw',
-        value,
+        value
     } as ThrowStatement;
 });

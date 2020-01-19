@@ -6,5 +6,5 @@ export const operatorPriority = {
     '==': 4,
     '!=': 4,
     '<=': 4,
-    '>=': 4,
+    '>=': 4
 } as {[key: string]: number};

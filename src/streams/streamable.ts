@@ -13,7 +13,7 @@ export class Streamable<T> {
     protected readonly length: number;
     private readonly stashed: Array<number>;
 
-    constructor(vals: ArrayLike<T>,) {
+    constructor(vals: ArrayLike<T>) {
         this.vals = vals;
         this.length = vals.length;
         this.index = 0;

@@ -8,7 +8,7 @@ export const evalRawReference = (
         config,
         stream,
         decl,
-        scope,
+        scope
     }: Omit<ParserArgs<Reference>, 'result'>
 ): ParsingResultValue => {
 

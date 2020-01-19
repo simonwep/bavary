@@ -11,6 +11,6 @@ describe('[AST] Operations', () => {
         '<abc> = [def s]',
         '<abc> = [throw]',
         '<abc> = [def s = ]',
-        '<abc> = [def s = abc]',
+        '<abc> = [def s = abc]'
     ]);
 });

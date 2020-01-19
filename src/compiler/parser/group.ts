@@ -11,7 +11,7 @@ export const evalGroup = (
     }
 ): ParsingResultValue => {
 
-    return multiplier<ParsingResultValue, Group>(({stream, decl,}) => {
+    return multiplier<ParsingResultValue, Group>(({stream, decl}) => {
         stream.stash();
 
         const {

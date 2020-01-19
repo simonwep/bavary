@@ -13,6 +13,6 @@ export const parseDefineStatement = maybe<DefineStatement>(stream => {
 
     return {
         type: 'define',
-        name, value,
+        name, value
     } as DefineStatement;
 });
