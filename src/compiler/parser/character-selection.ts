@@ -1,6 +1,6 @@
 import {CharacterSelection, CharacterSelectionArray} from '../../ast/types';
 import {ParserArgs}                                  from '../types';
-import {maybeMultiplier}                             from './multiplier';
+import {multiplier}                                  from './multiplier';
 
 /**
  * Checks if any range or value of a CharacterSelectionArray matches the given char-code
@@ -17,17 +17,15 @@ const matchesCharacterSelectionArray = (arr: CharacterSelectionArray, charCode: 
 
 export const evalCharacterSelection = (
     {
-        config,
         stream,
         decl,
-        scope,
         result
     }: ParserArgs<CharacterSelection>
 ): boolean => {
     const {included, excluded} = decl;
 
     // Type may have a multiplier attached to it
-    const matches = maybeMultiplier<string, CharacterSelection>(() => {
+    const matches = multiplier<string, CharacterSelection>(() => {
 
         if (stream.hasNext()) {
 
@@ -44,7 +42,7 @@ export const evalCharacterSelection = (
         }
 
         return null;
-    })({config, stream, decl, scope, result});
+    })({stream, decl});
 
     if (matches) {
 

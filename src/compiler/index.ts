@@ -41,13 +41,15 @@ export const compileDeclarations = (
     const [decl, scope] = entry;
     return (content: string): null | ParsingResultValue => {
 
-        // Parse and return result if successful
+        // Create content-stream
         const stream = new Streamable(content);
+
+        // Execute entry group statement
         const res = evalGroup({
+            decl: decl.value as Group,
             config,
             stream,
-            scope,
-            decl: decl.value as Group
+            scope
         });
 
         return stream.hasNext() ? null : res;

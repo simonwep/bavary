@@ -1,24 +1,20 @@
 import {CharacterSelection, Group, MultiplierRange, Reference} from '../../ast/types';
-import {ParserArgs, ParsingResult}                             from '../types';
+import {Streamable}                                            from '../../streams/streamable';
 
-type typesWhoCouldHaveMultiplierAttachedToIt = Group | Reference | CharacterSelection;
+type PossibleStatements = Group | Reference | CharacterSelection;
 
-
-type OptionalResult<T> = {
-    [P in Exclude<keyof ParserArgs<T>, 'result'>]: ParserArgs<T>[P];
-} & {
-    result?: ParsingResult;
+type RequiredParserArgs<T> = {
+    stream: Streamable<string>;
+    decl: T;
 }
 
-export const maybeMultiplier = <expectedResult, declarationType extends typesWhoCouldHaveMultiplierAttachedToIt>(
-    fn: (args: OptionalResult<declarationType>) => expectedResult | null
-) => {
-
-    return (args: OptionalResult<declarationType>): expectedResult | Array<expectedResult> | null => {
+export const multiplier = <ExpectedResult, DeclarationType extends PossibleStatements>(
+    fn: (args: RequiredParserArgs<DeclarationType>) => ExpectedResult | null
+) => (args: RequiredParserArgs<DeclarationType>): Array<ExpectedResult> | ExpectedResult | null => {
         const {stream, decl} = args;
 
-        const parseAll = (): Array<expectedResult> => {
-            const values: Array<expectedResult> = [];
+        const parseAll = (): Array<ExpectedResult> => {
+            const values: Array<ExpectedResult> = [];
 
             for (let res; (res = fn(args));) {
                 values.push(res);
@@ -66,4 +62,3 @@ export const maybeMultiplier = <expectedResult, declarationType extends typesWho
         stream.recycle();
         return fn(args);
     };
-};

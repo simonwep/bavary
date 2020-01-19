@@ -1,7 +1,7 @@
 import {Group, Reference}               from '../../ast/types';
 import {evalGroup}                      from '../internal';
 import {ParserArgs, ParsingResultValue} from '../types';
-import {maybeMultiplier}                from './multiplier';
+import {multiplier}                     from './multiplier';
 
 export const evalRawReference = (
     {
@@ -55,17 +55,14 @@ export const evalRawReference = (
     }
 
     // Type may have a multiplier attached to it
-    const matches = maybeMultiplier<ParsingResultValue, Reference>(
+    const matches = multiplier<ParsingResultValue, Reference>(
         () => evalGroup({
             config,
             stream,
             decl: target.value as Group,
             scope: newScope
         })
-    )({
-        config, stream, decl,
-        scope: newScope
-    });
+    )({stream, decl});
 
     // Remove injected arguments
     for (const name of registeredTypes) {

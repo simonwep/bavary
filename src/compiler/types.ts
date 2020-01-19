@@ -1,7 +1,6 @@
 import {Streamable} from '../streams/streamable';
 import {Scope}      from './scope';
 
-
 export type ParserArgs<DeclarationType> = {
     config: CompilerConfig;
     stream: Streamable<string>;

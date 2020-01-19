@@ -1,61 +1,66 @@
-import {Group}                                                       from '../../ast/types';
-import {evalDeclaration}                                             from '../internal';
-import {createParsingResult}                                         from '../tools/create-parsing-result';
-import {serializeParsingResult}                                      from '../tools/serialize';
-import {LocationDataObject, ParsingResultObject, ParsingResultValue} from '../types';
-import {maybeMultiplier}                                             from './multiplier';
+import {Group}                                                                                  from '../../ast/types';
+import {evalDeclaration}                                                                        from '../internal';
+import {createParsingResult}                                                                    from '../tools/create-parsing-result';
+import {serializeParsingResult}                                                                 from '../tools/serialize';
+import {LocationDataObject, ParserArgs, ParsingResult, ParsingResultObject, ParsingResultValue} from '../types';
+import {multiplier}                                                                             from './multiplier';
 
-export const evalGroup = maybeMultiplier<ParsingResultValue, Group>((
-    {
-        config,
-        stream,
-        decl,
-        scope,
-        result = createParsingResult(decl.mode || 'string')
+export const evalGroup = (
+    args: Omit<ParserArgs<Group>, 'result'> & {
+        result?: ParsingResult;
     }
 ): ParsingResultValue => {
-    stream.stash();
 
-    // Remember stream-position in case the locationData-option is set
-    const starts = stream.index;
+    return multiplier<ParsingResultValue, Group>(({stream, decl,}) => {
+        stream.stash();
 
-    // Remember initial string and array values in case the match fails
-    const previousValue = result.type !== 'object' ? result.value : null;
+        const {
+            result = createParsingResult(args.decl.mode || 'string'),
+            config,
+            scope
+        } = args as ParserArgs<Group>;
 
-    const decs = decl.value;
-    for (let i = 0; i < decs.length; i++) {
-        const decl = decs[i];
+        // In case the current values is a string
+        const previousValue = result.type !== 'object' ? result.value : null;
 
-        // Parse declaration
-        if (!evalDeclaration({config, stream, decl, scope, result})) {
+        // Remember stream-position in case the locationData-option is set
+        const starts = stream.index;
 
-            // Nullish values used in this group
-            if (previousValue === null) {
-                serializeParsingResult(decs, result as ParsingResultObject, true);
-            } else {
+        const decs = decl.value;
+        for (let i = 0; i < decs.length; i++) {
+            const decl = decs[i];
 
-                // Restore initial value
-                result.value = previousValue;
+            // Parse declaration
+            if (!evalDeclaration({config, stream, decl, scope, result})) {
+
+                // Nullish values used in this group
+                if (previousValue === null) {
+                    serializeParsingResult(decs, result as ParsingResultObject, true);
+                } else  {
+
+                    // Restore initial value
+                    result.value = previousValue;
+                }
+
+                stream.pop();
+                return null;
             }
-
-            stream.pop();
-            return null;
         }
-    }
 
-    // Nullish remaining values
-    if (previousValue === null) {
-        serializeParsingResult(decs, result as ParsingResultObject);
-    }
+        // Nullish remaining values
+        if (previousValue === null) {
+            serializeParsingResult(decs, result as ParsingResultObject);
+        }
 
-    // Add location-data if enabled
-    // Save optional start / end labels
-    if (config.locationData && result.type === 'object') {
-        const {end, start} = config.locationData as LocationDataObject;
-        result.value[start] = starts;
-        result.value[end] = stream.index;
-    }
+        // Add location-data if enabled
+        // Save optional start / end labels
+        if (config.locationData && result.type === 'object') {
+            const {end, start} = config.locationData as LocationDataObject;
+            result.value[start] = starts;
+            result.value[end] = stream.index;
+        }
 
-    stream.recycle();
-    return result.value;
-});
+        stream.recycle();
+        return result.value;
+    })(args as ParserArgs<Group>);
+};
