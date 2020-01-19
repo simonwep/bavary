@@ -43,7 +43,7 @@ entry ['A']
 # A entry block
 # The default export will be used, in this case ['AB']
 entry {
-	default ['AB']
+    default ['AB']
 }
 ```
 
@@ -144,11 +144,11 @@ Let's start with the simplest one, the **string-group**. This group-type returns
 ```js
 const parse = compile(`
     # The "string:" part is in case of a string optional, it defines our group-type
-	entry [string:
+    entry [string:
 
-		# We expect exact the following char-sequence
-		"Hello World"
-	]
+        # We expect exact the following char-sequence
+        "Hello World"
+    ]
 `);
 
 console.log(parse('Hello World')); // Prints "Hello World"
@@ -159,12 +159,12 @@ If we want to exclude a part of our string, let's say "Hello " we could omit it 
 
 ```js
 const parse = compile(`
-	entry [string:
-		
-		# Omit the "Hello " string in our final result
-		void ["Hello "] 
-		"World"
-	]
+    entry [string:
+        
+        # Omit the "Hello " string in our final result
+        void ["Hello "] 
+        "World"
+    ]
 `);
 
 console.log(parse('Hello World')); // Prints just "World"
@@ -178,26 +178,26 @@ The **array-group** is used whenever you want to parse a list-like structure lik
 
 ```js
 const parse = compile(`
-	entry [array:
-		'[' # Our array starts with a "["
+    entry [array:
+        '[' # Our array starts with a "["
 
-    		[
-    			# Our first value
-    			push [(\\w)+]
+            [
+                # Our first value
+                push [(\\w)+]
             
-    			# The first value might be followed by even more values but we're
+                # The first value might be followed by even more values but we're
                 # gonna use the * operator to allow single values. 
-    			[
-    				# Each following value need have a comma in front of it
-    				','
-    				push [(\\w)+]
-    			]*
+                [
+                    # Each following value need have a comma in front of it
+                    ','
+                    push [(\\w)+]
+                ]*
     
-    		# The content is optional, if we'd leave the ? out at least one
+            # The content is optional, if we'd leave the ? out at least one
             # value would nee to be present
-    		]? 
-		']'
-	]
+            ]? 
+        ']'
+    ]
 `);
 
 console.log(parse('[]')); // Outputs []
@@ -213,7 +213,7 @@ A **object-group**, finally, let us create complex data-hierarchies and wrap our
 
 ````js
 const parse = compile(`
-	entry [object:
+    entry [object:
         
         # Define a low property containing lowercase letters
         def low = [(a - z)+]
@@ -224,7 +224,7 @@ const parse = compile(`
         
         # A up property, which is optional, containing uppercase letters
         def up = [(A - Z)+]?
-	]
+    ]
 `);
 
 console.log(parse('hello')); // Outputs {low: 'hello', up: null}
@@ -339,10 +339,10 @@ const parse = compile(`
         def low = [(a - z)+]
     ]
 
-	entry [object:
+    entry [object:
         ...<lowercase>
         ...<uppercase>?
-	]
+    ]
 `);
 
 console.log(parse('hello')); // Outputs {low: 'hello'}
@@ -394,7 +394,7 @@ In your condition you can to use the dollar-sign `$` to access the current [arra
 
 ```
 if ($foo.bam[3].baz != null) [
-    #	 If foo is not null, bam neither, bam got a third non-null value and is an actual array
+    # If foo is not null, bam neither, bam got a third non-null value and is an actual array
     # and the array element has an attribute baz which isn't null.
 ]
 ```
@@ -410,7 +410,7 @@ Use them to fine-tune your conditional statement:
 | `<=` / `>=`  | Greater- / Smaller-or-equal-than. | `if ($a <= $b) [...]` |
 | `==` | Equal, strictly compares numbers, strings and `null` values. | `if ($a == "ABC") [...]` |
 | `!=` | Not equal, strictly compares numbers, strings and `null` values. | `if ($a != 25) [...]` |
-| `|` | or-operator, one of the conditions need to be true. | `if ($a == "ABC" | $b < 10) [...]` |
+| `\|` | or-operator, one of the conditions need to be true. | `if ($a == "ABC" \| $b < 10) [...]` |
 | `&` | and-operator, both conditions need to be true. | `if ($a > 20 & $b < $a) [...]` |
 
 Use parenthesis to bypass precedence rules:
@@ -496,7 +496,8 @@ const parse = compile(`[object:
 ]`, {
     functions: {
         inspect({state}, str, arr, variable) {
-        	// Be sure to validate each argument before using it's value!
+
+            // Be sure to validate each argument before using it's value!
             console.log({
                 str, // 'a string!'
                 arr, // ['A array group!']
@@ -518,8 +519,8 @@ Whenever you need to re-match a subset of previously matched values or just want
 ````js
 const parse = compile(`[object:
     def word = [(\\w)+]
-	
-	# We expect the char-sequence ' is ' followed by whatever the variable word contains.
+
+    # We expect the char-sequence ' is ' followed by whatever the variable word contains.
     ' is {$word}'
 ]`);
 
@@ -544,9 +545,22 @@ const parse = compile(`[object:
 console.log(parse('Hello123'));
 ``````
 
-
-
 > Use the backslash-character to use `{` inside strings: `'this works: \{ :)'`
+
+It's possible to chain variables and nest literals:
+
+````
+[object:
+    def a = 'hello'
+    def b = 'world'
+    
+    # "Combined: hello - world" in this case
+    # Nested strings, here ' - ', could again, contain interpolations
+    def c = 'Combined: {$a ' - ' $b}'
+]
+````
+
+
 
 ### Error handling
 
