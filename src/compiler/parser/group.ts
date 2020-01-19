@@ -1,9 +1,9 @@
-import {Group}                                                                                  from '../../ast/types';
-import {evalDeclaration}                                                                        from '../internal';
-import {createParsingResult}                                                                    from '../tools/create-parsing-result';
-import {serializeParsingResult}                                                                 from '../tools/serialize';
-import {LocationDataObject, ParserArgs, ParsingResult, ParsingResultObject, ParsingResultValue} from '../types';
-import {multiplier}                                                                             from './multiplier';
+import {Group}                                                             from '../../ast/types';
+import {evalDeclaration}                                                   from '../internal';
+import {createParsingResult}                                               from '../tools/create-parsing-result';
+import {serializeParsingResult}                                            from '../tools/serialize';
+import {LocationDataObject, ParserArgs, ParsingResult, ParsingResultValue} from '../types';
+import {multiplier}                                                        from './multiplier';
 
 export const evalGroup = (
     args: Omit<ParserArgs<Group>, 'result'> & {
@@ -11,17 +11,18 @@ export const evalGroup = (
     }
 ): ParsingResultValue => {
 
+    // Non-changing props used in multiplier
+    const {config, scope} = args;
+
     return multiplier<ParsingResultValue, Group>(({stream, decl}) => {
         stream.stash();
 
-        const {
-            result = createParsingResult(args.decl.mode || 'string'),
-            config,
-            scope
-        } = args as ParserArgs<Group>;
+        // Use passed result, create new out of the current mode or string as default
+        const result = (args as ParserArgs<Group>).result ||
+            createParsingResult(args.decl.mode || 'string');
 
-        // In case the current values is a string
-        const previousValue = result.type !== 'object' ? result.value : null;
+        // In case the evaluation fails and the value needs to get be restored
+        const previousValue = result.value;
 
         // Remember stream-position in case the locationData-option is set
         const starts = stream.index;
@@ -33,13 +34,14 @@ export const evalGroup = (
             // Parse declaration
             if (!evalDeclaration({config, stream, decl, scope, result})) {
 
-                // Nullish values used in this group
-                if (previousValue === null) {
-                    serializeParsingResult(decs, result as ParsingResultObject, true);
-                } else  {
+                if (result.type === 'object') {
 
-                    // Restore initial value
-                    result.value = previousValue;
+                    // Nullish properties used in this group
+                    serializeParsingResult(decs, result, true);
+                } else {
+
+                    // Restore previous value
+                    result.value = previousValue as string | Array<ParsingResultValue>;
                 }
 
                 stream.pop();
@@ -48,8 +50,8 @@ export const evalGroup = (
         }
 
         // Nullish remaining values
-        if (previousValue === null) {
-            serializeParsingResult(decs, result as ParsingResultObject);
+        if (result.type === 'object') {
+            serializeParsingResult(decs, result);
         }
 
         // Add location-data if enabled
