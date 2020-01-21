@@ -130,7 +130,7 @@ Combinators define how components in a group should be treated:
 | Sign | Name             | Description                                                  | Example      |
 | ---- | ---------------- | ------------------------------------------------------------ | ------------ |
 |      | Juxtaposition    | Each component is mandatory and must appear in the given order | `'A' <abc>`  |
-| `|`  | Single bar       | Exactly one of the components must match                     | `'A' | 'B'`  |
+| `\|`  | Single bar       | Exactly one of the components must match                     | `'A' \| 'B'`  |
 | `&`  | Ampersand        | Each component is mandatory but the may appear in any order  | `'A' & 'B'`  |
 | `&&` | Double ampersand | At least one component must be present, and the may appear in any order | `'A' && 'B'` |
 
@@ -240,15 +240,17 @@ And that's it.
 
 | Syntax                                     | Can be used within...          | Description                                                  | Example                         |
 | ------------------------------------------ | ------------------------------ | ------------------------------------------------------------ | ------------------------------- |
-| `throw <string>`                           | `String`,`Array`,`Object`[^1]  | Throws a pretty error.                                       | `throw 'whoopsie'`              |
-| `void <group>`                             | `String`,`Array`,`Object` [^2] | Ignores value of `<group>`.                                  | `void ['A']`                    |
-| `push <group|string>`                      | `Array`                        | Appends a value to the array.                                | `push ['A']`                    |
-| `def <name> = <group|string|variable>`[^3] | `Object`                       | Defines a property `<name>` within the object with the given value. | `def x = ['A']` `def x = $abc ` |
+| `throw <string>`                           | `String`,`Array`,`Object` <sup>1</sup>  | Throws a pretty error.                                       | `throw 'whoopsie'`              |
+| `void <group>`                             | `String`,`Array`,`Object` <sup>2</sup> | Ignores value of `<group>`.                                  | `void ['A']`                    |
+| `push <group\|string>`                      | `Array`                        | Appends a value to the array.                                | `push ['A']`                    |
+| `def <name> = <group\|string\|variable>` <sup>3</sup> | `Object`                       | Defines a property `<name>` within the object with the given value. | `def x = ['A']` `def x = $abc ` |
 | `rem <variable>`                           | `Array`,`Object`               | Removes a property.                                          | `rem $baz`                      |
 
-[^1]:Combined with if-statements it's useful to validate stuff. With pretty-error is meant that it shows the position in your target-string where the parser failed.
-[^2]:`void` only makes sense in `string` since `array` and `object` doesn't return strings.
-[^3]: `variable` means any kind of variable access, commonly used in [conditional-statements](#conditional-statements). Example: `$obj.arr[3].prop` This kind of access **will never throw an error**.
+<sup>[1]</sup>: Combined with if-statements it's useful to validate stuff. With pretty-error is meant that it shows the position in your target-string where the parser failed.
+
+<sup>[2]</sup>: `void` only makes sense in `string` since `array` and `object` doesn't return strings.
+
+<sup>[3]</sup>: `variable` means any kind of variable access, commonly used in [conditional-statements](#conditional-statements). Example: `$obj.arr[3].prop` This kind of access **will never throw an error**.
 
 > ⚠ Using incompatible operators will lead to an runtime-error!
 
@@ -583,7 +585,7 @@ try {
 } catch (e) {
 
     // Check if error is a ParsingError before accessing its properties
-    if(e instanceof ParsingError) {
+    if (e instanceof ParsingError) {
         // Handle error
     }
 }
