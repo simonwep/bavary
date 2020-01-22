@@ -18,7 +18,7 @@ export const evalFunction = (
     const resolvedArgs = [];
     for (const arg of decl.args) {
         switch (arg.type) {
-            case 'value-accessor': {
+            case 'member-expression': {
                 resolvedArgs.push(evalMemberExpression(result.value, arg.value) as ParsingResultValue);
                 break;
             }

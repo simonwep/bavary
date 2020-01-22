@@ -55,7 +55,7 @@ export const parseMemberExpression = maybe<MemberExpression>((stream: TokenStrea
     }
 
     return {
-        type: 'value-accessor',
+        type: 'member-expression',
         value: accessorPath
     } as MemberExpression;
 });

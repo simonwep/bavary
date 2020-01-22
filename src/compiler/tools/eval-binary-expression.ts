@@ -15,7 +15,7 @@ function resolveValueOf(result: ParsingResult, decl: BinaryExpressionValue): str
         case 'binary-expression': {
             return evalBinaryExpression(result, decl);
         }
-        case 'value-accessor': {
+        case 'member-expression': {
             return evalMemberExpression(result.value, decl.value) as string | number | boolean | null;
         }
         case 'identifier': {

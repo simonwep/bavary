@@ -22,7 +22,7 @@ export const evalDefineCommand = (
     const {value} = decl;
     if (value.type === 'literal') {
         result.value[decl.name] = evalLiteral(result, value);
-    } else if (value.type === 'value-accessor') {
+    } else if (value.type === 'member-expression') {
         result.value[decl.name] = evalMemberExpression(result.value, value.value) as ParsingResultValue;
     } else {
         const res = evalGroup({

@@ -11,7 +11,7 @@ export const evalLiteral = (result: ParsingResult, decl: Literal): string => {
 
         // Resolve value
         switch (part.type) {
-            case 'value-accessor': {
+            case 'member-expression': {
                 raw = evalMemberExpression(result.value, part.value);
 
                 // Ignore null or undefined values

@@ -125,7 +125,7 @@ export type CharacterSelection = {
 export type CharacterSelectionArray = Array<number | [number, number]>;
 export type MemberExpressionPath = Array<string | number>; // <identifier | array-index>
 export type MemberExpression = {
-    type: 'value-accessor';
+    type: 'member-expression';
     value: MemberExpressionPath;
 }
 
