@@ -24,43 +24,24 @@ export const evalDeclaration = (
         result
     }: ParserArgs<GroupValue>
 ): boolean => {
+    let outcome = false;
 
     stream.stash();
     switch (decl.type) {
         case 'combinator': {
-
-            if (!evalCombiantor({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalCombiantor({config, stream, decl, scope, result});
             break;
         }
         case 'literal': {
-
-            if (!evalLiteralContent({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalLiteralContent({config, stream, decl, scope, result});
             break;
         }
         case 'character-selection': {
-
-            if (!evalCharacterSelection({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalCharacterSelection({config, stream, decl, scope, result});
             break;
         }
         case 'reference': {
-
-            if (!evalReference({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalReference({config, stream, decl, scope, result});
             break;
         }
         case 'ignored':
@@ -77,56 +58,27 @@ export const evalDeclaration = (
              * and either no multiplier (The group would be required) or the multipliers
              * is not "optional" which would be the only one where null counts as true.
              */
-            if (!res && (!group.multiplier || group.multiplier.type !== 'optional')) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = !(!res && (!group.multiplier || group.multiplier.type !== 'optional'))
             break;
         }
         case 'function': {
-
-            if (!evalFunction({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalFunction({config, stream, decl, scope, result});
             break;
         }
         case 'conditional-statement': {
-
-            if (!evalConditionalStatement({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalConditionalStatement({config, stream, decl, scope, result});
             break;
         }
         case 'spread': {
-
-            if (!evalSpread({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalSpread({config, stream, decl, scope, result});
             break;
         }
         case 'define': {
-
-            if (!evalDefineCommand({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalDefineCommand({config, stream, decl, scope, result});
             break;
         }
         case 'push': {
-
-            if (!evalPushCommand({config, stream, decl, scope, result})) {
-                stream.pop();
-                return false;
-            }
-
+            outcome = evalPushCommand({config, stream, decl, scope, result});
             break;
         }
         case 'remove': {
@@ -135,7 +87,13 @@ export const evalDeclaration = (
         }
         case 'throw': {
             evalThrowStatement({config, stream, decl, scope, result});
+            break;
         }
+    }
+
+    if (!outcome) {
+        stream.pop();
+        return false;
     }
 
     stream.recycle();
