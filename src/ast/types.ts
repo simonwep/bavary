@@ -1,8 +1,5 @@
 import {TokenStream} from '../tokenizer/token-stream';
 
-export type ASTNode = Declaration | CharacterSelection | MemberExpression | ConditionalStatement |
-    VoidStatement | Arguments | NativeFunction | Multiplier | BinaryExpressionValue | Group | Reference | Block | Literal;
-
 export type ParserFunction<T> = (stream: TokenStream) => T | null;
 
 export type DeclarationValue = Group | Block;
