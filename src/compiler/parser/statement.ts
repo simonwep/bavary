@@ -24,7 +24,7 @@ export const evalDeclaration = (
         result
     }: ParserArgs<GroupValue>
 ): boolean => {
-    let outcome = false;
+    let outcome = true;
 
     stream.stash();
     switch (decl.type) {
@@ -58,7 +58,7 @@ export const evalDeclaration = (
              * and either no multiplier (The group would be required) or the multipliers
              * is not "optional" which would be the only one where null counts as true.
              */
-            outcome = !(!res && (!group.multiplier || group.multiplier.type !== 'optional'))
+            outcome = !!(res || (group.multiplier?.type === 'optional'));
             break;
         }
         case 'function': {
