@@ -1,7 +1,8 @@
-import {Group, Reference}               from '../../ast/types';
-import {evalGroup}                      from '../internal';
-import {ParserArgs, ParsingResultValue} from '../types';
-import {multiplier}                     from './multiplier';
+import {Group, Reference} from '../../ast/types';
+import {evalGroup}        from '../internal';
+import {NodeValue}        from '../node';
+import {ParserArgs}       from '../types';
+import {multiplier}       from './multiplier';
 
 export const evalRawReference = (
     {
@@ -9,8 +10,8 @@ export const evalRawReference = (
         stream,
         decl,
         scope
-    }: Omit<ParserArgs<Reference>, 'result'>
-): ParsingResultValue => {
+    }: Omit<ParserArgs<Reference>, 'node'>
+): NodeValue => {
 
     // Resolve reference
     const res = scope.lookupByPath(decl.value);
@@ -55,7 +56,7 @@ export const evalRawReference = (
     }
 
     // Type may have a multiplier attached to it
-    const matches = multiplier<ParsingResultValue, Reference>(
+    const matches = multiplier<NodeValue, Reference>(
         () => evalGroup({
             config,
             stream,

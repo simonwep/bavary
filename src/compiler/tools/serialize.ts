@@ -1,6 +1,6 @@
-import {GroupValue}          from '../../ast/types';
-import {REMOVED_PROPERTY}    from '../internal';
-import {ParsingResultObject} from '../types';
+import {GroupValue}       from '../../ast/types';
+import {REMOVED_PROPERTY} from '../internal';
+import {ObjectNode}       from '../node';
 
 /**
  * Serializes, e.g nullish, tagged types which got not matched
@@ -8,7 +8,7 @@ import {ParsingResultObject} from '../types';
  * @param target Result-obj
  * @param nullish Override existing values
  */
-export function serializeParsingResult(rest: Array<GroupValue>, target: ParsingResultObject, nullish = false): void {
+export function serializeParsingResult(rest: Array<GroupValue>, target: ObjectNode, nullish = false): void {
     const {value} = target;
 
     for (const item of rest) {

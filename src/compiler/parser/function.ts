@@ -1,8 +1,9 @@
-import {NativeFunction}                 from '../../ast/types';
-import {evalGroup}                      from '../internal';
-import {evalLiteral}                    from '../tools/eval-literal';
-import {evalMemberExpression}           from '../tools/eval-member-expression';
-import {ParserArgs, ParsingResultValue} from '../types';
+import {NativeFunction}       from '../../ast/types';
+import {evalGroup}            from '../internal';
+import {NodeValue}            from '../node';
+import {evalLiteral}          from '../tools/eval-literal';
+import {evalMemberExpression} from '../tools/eval-member-expression';
+import {ParserArgs}           from '../types';
 
 export const evalFunction = (
     {
@@ -10,7 +11,7 @@ export const evalFunction = (
         stream,
         decl,
         scope,
-        result
+        node
     }: ParserArgs<NativeFunction>
 ): boolean => {
 
@@ -19,7 +20,7 @@ export const evalFunction = (
     for (const arg of decl.args) {
         switch (arg.type) {
             case 'member-expression': {
-                resolvedArgs.push(evalMemberExpression(result.value, arg.value) as ParsingResultValue);
+                resolvedArgs.push(evalMemberExpression(node.value, arg.value) as NodeValue);
                 break;
             }
             case 'group': {
@@ -29,7 +30,7 @@ export const evalFunction = (
                 break;
             }
             case 'literal': {
-                resolvedArgs.push(evalLiteral(result, arg));
+                resolvedArgs.push(evalLiteral(node, arg));
                 break;
             }
             case 'identifier': {
@@ -47,7 +48,7 @@ export const evalFunction = (
     try {
         return fn(
             // Current state
-            {state: result},
+            {state: node},
 
             // Resolved arguments
             ...resolvedArgs

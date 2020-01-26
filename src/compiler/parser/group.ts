@@ -1,28 +1,32 @@
-import {Group}                                                             from '../../ast/types';
-import {evalDeclaration}                                                   from '../internal';
-import {createParsingResult}                                               from '../tools/create-parsing-result';
-import {serializeParsingResult}                                            from '../tools/serialize';
-import {LocationDataObject, ParserArgs, ParsingResult, ParsingResultValue} from '../types';
-import {multiplier}                                                        from './multiplier';
+import {Group}                          from '../../ast/types';
+import {evalDeclaration}                from '../internal';
+import {Node, NodeValue, ObjectNode}    from '../node';
+import {serializeParsingResult}         from '../tools/serialize';
+import {LocationDataObject, ParserArgs} from '../types';
+import {multiplier}                     from './multiplier';
 
 export const evalGroup = (
-    args: Omit<ParserArgs<Group>, 'result'> & {
-        result?: ParsingResult;
+    args: Omit<ParserArgs<Group>, 'node'> & {
+        node?: Node;
+        parent?: Node;
     }
-): ParsingResultValue => {
+): NodeValue => {
 
     // Non-changing props used in multiplier
-    const {config, scope} = args;
+    const {config, scope, node, decl} = args;
 
-    return multiplier<ParsingResultValue, Group>(({stream, decl}) => {
+    return multiplier<NodeValue, Group>(({stream}) => {
         stream.stash();
 
-        // Use passed result, create new out of the current mode or string as default
-        const result = (args as ParserArgs<Group>).result ||
-            createParsingResult(args.decl.mode || 'string');
+        // Use passed value, create new out of the current mode or string as default
+        const subNode = node ? (
+            decl.mode ?
+                Node.create(decl.mode, node) :
+                node
+        ) : Node.create(decl.mode || 'string');
 
         // In case the evaluation fails and the value needs to get be restored
-        const previousValue = result.value;
+        const previousValue = subNode.value;
 
         // Remember stream-position in case the locationData-option is set
         const starts = stream.index;
@@ -32,16 +36,16 @@ export const evalGroup = (
             const decl = decs[i];
 
             // Parse declaration
-            if (!evalDeclaration({config, stream, decl, scope, result})) {
+            if (!evalDeclaration({config, stream, decl, scope, node: subNode})) {
 
-                if (result.type === 'object') {
+                if (subNode instanceof ObjectNode) {
 
                     // Nullish properties used in this group
-                    serializeParsingResult(decs, result, true);
+                    serializeParsingResult(decs, subNode, true);
                 } else {
 
                     // Restore previous value
-                    result.value = previousValue as string | Array<ParsingResultValue>;
+                    subNode.value = previousValue as string | Array<NodeValue>;
                 }
 
                 stream.pop();
@@ -50,19 +54,19 @@ export const evalGroup = (
         }
 
         // Nullish remaining values
-        if (result.type === 'object') {
-            serializeParsingResult(decs, result);
+        if (subNode instanceof ObjectNode) {
+            serializeParsingResult(decs, subNode);
         }
 
         // Add location-data if enabled
         // Save optional start / end labels
-        if (config.locationData && result.type === 'object') {
+        if (config.locationData && subNode instanceof ObjectNode) {
             const {end, start} = config.locationData as LocationDataObject;
-            result.value[start] = starts;
-            result.value[end] = stream.index;
+            subNode.value[start] = starts;
+            subNode.value[end] = stream.index;
         }
 
         stream.recycle();
-        return result.value;
+        return subNode.value;
     })(args as ParserArgs<Group>);
 };

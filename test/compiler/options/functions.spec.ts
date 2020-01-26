@@ -1,5 +1,6 @@
-import {expect}  from 'chai';
-import {compile} from '../../../src';
+import {expect}     from 'chai';
+import {compile}    from '../../../src';
+import {ObjectNode} from '../../../src/compiler/node';
 
 describe('[OPTION] Functions', () => {
 
@@ -23,7 +24,9 @@ describe('[OPTION] Functions', () => {
                     }
 
                     if (value.length > 2) {
-                        state.value[prop] = value.length;
+
+                        // TODO: Improve that
+                        (state as ObjectNode).value[prop] = value.length;
                     }
 
                     return value.length > 2;
@@ -51,7 +54,7 @@ describe('[OPTION] Functions', () => {
                     }
 
                     if (chars && typeof chars === 'string' && typeof prop === 'string' && prop.length) {
-                        state.value[prop] = chars.length;
+                        (state as ObjectNode).value[prop] = chars.length;
                         return true;
                     }
 

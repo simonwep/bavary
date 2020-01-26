@@ -8,7 +8,7 @@ export const evalCombiantor = (
         stream,
         decl,
         scope,
-        result
+        node
     }: ParserArgs<Combinator>
 ): boolean => {
     stream.stash();
@@ -19,7 +19,7 @@ export const evalCombiantor = (
             // Match one of the items
             const decs = decl.value;
             for (let i = 0; i < decs.length; i++) {
-                if (evalDeclaration({config, stream, decl: decs[i], scope, result})) {
+                if (evalDeclaration({config, stream, decl: decs[i], scope, node})) {
                     stream.recycle();
                     return true;
                 }
@@ -33,7 +33,7 @@ export const evalCombiantor = (
 
             // Match items ignoring the order
             for (let i = 0; i < cpy.length; i++) {
-                if (evalDeclaration({config, stream, decl: cpy[i], scope, result})) {
+                if (evalDeclaration({config, stream, decl: cpy[i], scope, node})) {
                     cpy.splice(i, 1);
                     i = -1;
                 }

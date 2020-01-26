@@ -9,11 +9,11 @@ export const evalConditionalStatement = (
         stream,
         decl,
         scope,
-        result
+        node
     }: ParserArgs<ConditionalStatement>
 ): boolean => {
     const {condition, consequent, alternate} = decl;
-    const conditionValue = evalBinaryExpression(result, condition);
+    const conditionValue = evalBinaryExpression(node, condition);
 
     // Choose branch and take into account that the user may negate the value
     const branch = conditionValue ? consequent : alternate;
@@ -28,7 +28,7 @@ export const evalConditionalStatement = (
         config,
         stream,
         scope,
-        result,
+        node,
         decl: branch as (Group & ConditionalStatement)
     });
 

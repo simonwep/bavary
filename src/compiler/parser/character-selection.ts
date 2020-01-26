@@ -1,9 +1,10 @@
 import {CharacterSelection, CharacterSelectionArray} from '../../ast/types';
+import {StringNode}                                  from '../node';
 import {ParserArgs}                                  from '../types';
 import {multiplier}                                  from './multiplier';
 
 /**
- * Checks if any range or value of a CharacterSelectionArray matches the given char-code
+ * Checks if any range or node of a CharacterSelectionArray matches the given char-code
  * @param arr
  * @param charCode
  */
@@ -19,7 +20,7 @@ export const evalCharacterSelection = (
     {
         stream,
         decl,
-        result
+        node
     }: ParserArgs<CharacterSelection>
 ): boolean => {
     const {included, excluded} = decl;
@@ -46,13 +47,13 @@ export const evalCharacterSelection = (
 
     if (matches) {
 
-        // Ignore result if current mode is not a string
-        if (result.type !== 'string') {
-            return true;
+        // Append value, concat array values if needed
+        if (node instanceof StringNode) {
+            node.value += Array.isArray(matches) ? matches.join('') : matches;
         }
 
-        // Append value, concat array values if needed
-        result.value += Array.isArray(matches) ? matches.join('') : matches;
+        // Ignore value if current mode is not a string
+        return true;
     } else if (decl.multiplier?.type !== 'optional') {
         return false;
     }

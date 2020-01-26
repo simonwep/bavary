@@ -21,7 +21,7 @@ export const evalDeclaration = (
         stream,
         decl,
         scope,
-        result
+        node
     }: ParserArgs<GroupValue>
 ): boolean => {
     let outcome = true;
@@ -29,19 +29,19 @@ export const evalDeclaration = (
     stream.stash();
     switch (decl.type) {
         case 'combinator': {
-            outcome = evalCombiantor({config, stream, decl, scope, result});
+            outcome = evalCombiantor({config, stream, decl, scope, node});
             break;
         }
         case 'literal': {
-            outcome = evalLiteralContent({config, stream, decl, scope, result});
+            outcome = evalLiteralContent({config, stream, decl, scope, node});
             break;
         }
         case 'character-selection': {
-            outcome = evalCharacterSelection({config, stream, decl, scope, result});
+            outcome = evalCharacterSelection({config, stream, decl, scope, node});
             break;
         }
         case 'reference': {
-            outcome = evalReference({config, stream, decl, scope, result});
+            outcome = evalReference({config, stream, decl, scope, node});
             break;
         }
         case 'ignored':
@@ -50,11 +50,11 @@ export const evalDeclaration = (
             const res = evalGroup({
                 config, stream, scope,
                 decl: group,
-                result: decl.type === 'ignored' ? undefined : result
+                node: decl.type === 'ignored' ? undefined : node
             });
 
             /**
-             * The declaration is considered to be false if the result is null
+             * The declaration is considered to be false if the node is null
              * and either no multiplier (The group would be required) or the multipliers
              * is not "optional" which would be the only one where null counts as true.
              */
@@ -62,32 +62,31 @@ export const evalDeclaration = (
             break;
         }
         case 'function': {
-            outcome = evalFunction({config, stream, decl, scope, result});
+            outcome = evalFunction({config, stream, decl, scope, node});
             break;
         }
         case 'conditional-statement': {
-            outcome = evalConditionalStatement({config, stream, decl, scope, result});
+            outcome = evalConditionalStatement({config, stream, decl, scope, node});
             break;
         }
         case 'spread': {
-            outcome = evalSpread({config, stream, decl, scope, result});
+            outcome = evalSpread({config, stream, decl, scope, node});
             break;
         }
         case 'define': {
-            outcome = evalDefineCommand({config, stream, decl, scope, result});
+            outcome = evalDefineCommand({config, stream, decl, scope, node});
             break;
         }
         case 'push': {
-            outcome = evalPushCommand({config, stream, decl, scope, result});
+            outcome = evalPushCommand({config, stream, decl, scope, node});
             break;
         }
         case 'remove': {
-            evalRemoveCommand({config, stream, decl, scope, result});
+            evalRemoveCommand({config, stream, decl, scope, node});
             break;
         }
         case 'throw': {
-            evalThrowStatement({config, stream, decl, scope, result});
-            break;
+            evalThrowStatement({config, stream, decl, scope, node});
         }
     }
 

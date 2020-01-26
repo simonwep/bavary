@@ -1,8 +1,7 @@
-import {Literal}              from '../../ast/types';
-import {ParsingResult}        from '../types';
-import {evalMemberExpression} from './eval-member-expression';
+import {Literal}                     from '../../ast/types';
+import {ArrayNode, Node, ObjectNode} from '../node';
 
-export const evalLiteral = (result: ParsingResult, decl: Literal): string => {
+export const evalLiteral = (node: Node, decl: Literal): string => {
     const {value} = decl;
     let str = '';
 
@@ -12,7 +11,12 @@ export const evalLiteral = (result: ParsingResult, decl: Literal): string => {
         // Resolve value
         switch (part.type) {
             case 'member-expression': {
-                raw = evalMemberExpression(result.value, part.value);
+
+                if (node instanceof ObjectNode || node instanceof ArrayNode) {
+                    raw = node.lookup(part.value);
+                } else {
+                    break;
+                }
 
                 // Ignore null or undefined values
                 if (raw === null || raw === undefined) {
@@ -27,7 +31,7 @@ export const evalLiteral = (result: ParsingResult, decl: Literal): string => {
                 break;
             }
             case 'literal': {
-                raw = evalLiteral(result, part);
+                raw = evalLiteral(node, part);
                 break;
             }
             case 'string-litereal': {

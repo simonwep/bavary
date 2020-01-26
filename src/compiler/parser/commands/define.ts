@@ -1,8 +1,8 @@
-import {DefineStatement}                from '../../../ast/types';
-import {evalLiteral}                    from '../../tools/eval-literal';
-import {evalMemberExpression}           from '../../tools/eval-member-expression';
-import {ParserArgs, ParsingResultValue} from '../../types';
-import {evalGroup}                      from '../group';
+import {DefineStatement}       from '../../../ast/types';
+import {NodeValue, ObjectNode} from '../../node';
+import {evalLiteral}           from '../../tools/eval-literal';
+import {ParserArgs}            from '../../types';
+import {evalGroup}             from '../group';
 
 export const evalDefineCommand = (
     {
@@ -10,30 +10,31 @@ export const evalDefineCommand = (
         stream,
         decl,
         scope,
-        result
+        node
     }: ParserArgs<DefineStatement>
 ): boolean => {
 
     // Define only works on object-groups
-    if (result.type !== 'object') {
+    if (!(node instanceof ObjectNode)) {
         throw new Error('Can\'t use define within arrays or strings.');
     }
 
     const {value} = decl;
     if (value.type === 'literal') {
-        result.value[decl.name] = evalLiteral(result, value);
+        node.value[decl.name] = evalLiteral(node, value);
     } else if (value.type === 'member-expression') {
-        result.value[decl.name] = evalMemberExpression(result.value, value.value) as ParsingResultValue;
+        node.value[decl.name] = node.lookup(value.value) as NodeValue;
     } else {
         const res = evalGroup({
             decl: value,
+            parent: node,
             scope,
             config,
             stream
         });
 
         if (res !== null) {
-            result.value[decl.name] = res;
+            node.value[decl.name] = res;
         } else {
             return value.multiplier?.type === 'optional';
         }

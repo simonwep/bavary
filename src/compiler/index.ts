@@ -1,8 +1,9 @@
-import {Declaration, Group}                         from '../ast/types';
-import {Streamable}                                 from '../streams/streamable';
-import {evalGroup}                                  from './internal';
-import {Scope}                                      from './scope';
-import {CompilerConfig, Parser, ParsingResultValue} from './types';
+import {Declaration, Group}     from '../ast/types';
+import {Streamable}             from '../streams/streamable';
+import {evalGroup}              from './internal';
+import {NodeValue}              from './node';
+import {Scope}                  from './scope';
+import {CompilerConfig, Parser} from './types';
 
 /**
  * Compiles a pre-calcuated set of declarations.
@@ -33,13 +34,13 @@ export const compileDeclarations = (
     // Pick entry type
     const entry = globalScope.lookup('entry');
 
-    // Check if entry node is declared
+    // Check if entry value is declared
     if (!entry) {
         throw new Error('Couldn\'t resolve entry type. Use the entry keyword to declare one.');
     }
 
     const [decl, scope] = entry;
-    return (content: string): null | ParsingResultValue => {
+    return (content: string): null | NodeValue => {
 
         // Create content-stream
         const stream = new Streamable(content);

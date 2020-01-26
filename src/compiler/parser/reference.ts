@@ -1,7 +1,8 @@
-import {Reference}                      from '../../ast/types';
-import {evalRawReference}               from '../internal';
-import {typeOf}                         from '../tools/type-of';
-import {ParserArgs, ParsingResultValue} from '../types';
+import {Reference}             from '../../ast/types';
+import {evalRawReference}      from '../internal';
+import {NodeValue, StringNode} from '../node';
+import {typeOf}                from '../tools/type-of';
+import {ParserArgs}            from '../types';
 
 export const evalReference = (
     {
@@ -9,7 +10,7 @@ export const evalReference = (
         stream,
         decl,
         scope,
-        result
+        node
     }: ParserArgs<Reference>
 ): boolean => {
 
@@ -18,7 +19,7 @@ export const evalReference = (
         config, stream, decl, scope
     });
 
-    // Identify result type
+    // Identify value type
     const matchesType = typeOf(matches);
 
     stream.stash();
@@ -26,14 +27,14 @@ export const evalReference = (
         if (matchesType === 'array') {
 
             // Join array-values if all entries are strings
-            if (result.type === 'string' && (matches as Array<ParsingResultValue>).every(v => typeof v === 'string')) {
-                result.value += (matches as Array<ParsingResultValue>).join('');
+            if (node instanceof StringNode && (matches as Array<NodeValue>).every(v => typeof v === 'string')) {
+                node.value += (matches as Array<NodeValue>).join('');
             }
 
-        } else if (matchesType === 'string' && result.type === 'string') {
+        } else if (matchesType === 'string' && node instanceof StringNode) {
 
             // Concat strings
-            result.value += matches as string;
+            node.value += matches as string;
         }
     } else {
 

@@ -1,24 +1,25 @@
-import {RemoveStatement}                      from '../../../ast/types';
-import {REMOVED_PROPERTY}                     from '../../internal';
-import {evalMemberExpression}                 from '../../tools/eval-member-expression';
-import {ParserArgs, ParsingResultObjectKVSet} from '../../types';
+import {RemoveStatement}             from '../../../ast/types';
+import {REMOVED_PROPERTY}            from '../../internal';
+import {ObjectNodeValue, StringNode} from '../../node';
+import {evalMemberExpression}        from '../../tools/eval-member-expression';
+import {ParserArgs}                  from '../../types';
 
 export const evalRemoveCommand = (
     {
         decl,
-        result
+        node
     }: ParserArgs<RemoveStatement>
 ): boolean => {
 
     // Remove dosn't work on strings
-    if (result.type === 'string') {
+    if (node instanceof StringNode) {
         throw new Error('Can\'t use rem on strings.');
     }
 
     // Lookup parent
     const pathCopy = [...decl.value.value];
     const topAccessor = pathCopy.pop() as string | number;
-    const parent = evalMemberExpression(result.value, pathCopy);
+    const parent = evalMemberExpression(node.value, pathCopy);
 
     if (Array.isArray(parent) && typeof topAccessor === 'number') {
 
@@ -27,11 +28,11 @@ export const evalRemoveCommand = (
     } else if (!pathCopy.length) {
 
         // Top-level properties will be serialzed, mark them that they shall be removed
-        (parent as ParsingResultObjectKVSet)[topAccessor] = REMOVED_PROPERTY;
+        (parent as ObjectNodeValue)[topAccessor] = REMOVED_PROPERTY;
     } else if (typeof parent === 'object') {
 
         // Deeply nested properties won't be serialized, remove them immediatly
-        delete (parent as ParsingResultObjectKVSet)[topAccessor];
+        delete (parent as ObjectNodeValue)[topAccessor];
     }
 
     return true;

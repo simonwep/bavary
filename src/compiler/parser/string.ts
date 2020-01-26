@@ -1,4 +1,5 @@
 import {Literal}     from '../../ast/types';
+import {StringNode}  from '../node';
 import {evalLiteral} from '../tools/eval-literal';
 import {ParserArgs}  from '../types';
 
@@ -6,10 +7,10 @@ export const evalLiteralContent = (
     {
         stream,
         decl,
-        result
+        node
     }: ParserArgs<Literal>
 ): boolean => {
-    const value = evalLiteral(result, decl);
+    const value = evalLiteral(node, decl);
 
     stream.stash();
     for (let i = 0; i < value.length; i++) {
@@ -23,8 +24,8 @@ export const evalLiteralContent = (
     }
 
     stream.recycle();
-    if (result.type === 'string') {
-        result.value += value;
+    if (node instanceof StringNode) {
+        node.value += value;
     }
 
     return true;

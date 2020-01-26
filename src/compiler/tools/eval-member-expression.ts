@@ -30,7 +30,7 @@ export const evalMemberExpression = (source: any, path: MemberExpressionPath): u
             continue;
         }
 
-        return null;
+        return undefined;
     }
 
     return source;

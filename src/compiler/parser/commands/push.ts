@@ -1,4 +1,5 @@
 import {PushStatement} from '../../../ast/types';
+import {ArrayNode}     from '../../node';
 import {evalLiteral}   from '../../tools/eval-literal';
 import {ParserArgs}    from '../../types';
 import {evalGroup}     from '../group';
@@ -9,18 +10,18 @@ export const evalPushCommand = (
         stream,
         decl,
         scope,
-        result
+        node
     }: ParserArgs<PushStatement>
 ): boolean => {
 
     // Push only works on arrays
-    if (result.type !== 'array') {
+    if (!(node instanceof ArrayNode)) {
         throw new Error('Can\'t use define within arrays or strings.');
     }
 
     const {value} = decl;
     if (value.type === 'literal') {
-        result.value.push(evalLiteral(result, value));
+        node.value.push(evalLiteral(node, value));
     } else {
         const res = evalGroup({
             decl: value,
@@ -30,7 +31,7 @@ export const evalPushCommand = (
         });
 
         if (res) {
-            result.value.push(res);
+            node.value.push(res);
             return true;
         }
 
