@@ -13,7 +13,7 @@ export const evalGroup = (
 ): NodeValue => {
 
     // Non-changing props used in multiplier
-    const {config, scope, node, decl} = args;
+    const {config, scope, node, parent, decl} = args;
 
     return multiplier<NodeValue, Group>(({stream}) => {
         stream.stash();
@@ -23,7 +23,7 @@ export const evalGroup = (
             decl.mode ?
                 Node.create(decl.mode, node) :
                 node
-        ) : Node.create(decl.mode || 'string');
+        ) : Node.create(decl.mode || 'string', parent);
 
         // In case the evaluation fails and the value needs to get be restored
         const previousValue = subNode.value;
