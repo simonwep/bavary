@@ -207,4 +207,62 @@ describe('[COM] Operations', () => {
             hi: 'hello'
         });
     });
+
+    it('Should be able to resolve properties in the parent scope', () => {
+        const parse = compile(`
+            entry [object:
+                def a = [(A - Z)+]
+                
+                if ($a == 'ABC') [
+                    def con = [object:
+                        def b = "Val: {$a}"
+                    ]
+                ] else [
+                    def x = "Unknown: {$a}"
+                ]
+            ]
+        `);
+
+        expect(parse('HELLO')).to.deep.equal({
+            a: 'HELLO',
+            con: null,
+            x: 'Unknown: HELLO'
+        });
+
+        expect(parse('ABC')).to.deep.equal({
+            a: 'ABC',
+            con: {
+                b: 'Val: ABC'
+            },
+            x: null
+        });
+
+        expect(parse('')).to.equal(null);
+    });
+
+    it('Should ignore null-pointer', () => {
+        const parse = compile(`
+            entry [object:
+                def x = 'Nothin:{$hi.wow[2]}'
+            ]
+        `);
+
+        expect(parse('')).to.deep.equal({
+            x: 'Nothin:'
+        });
+    });
+
+    it('Should properly resolve elements inside of an array', () => {
+        const parse = compile(`
+            entry [array:
+               push [(A - Z)+]
+               push 'First element: {$[0]}'
+            ]
+        `);
+
+        expect(parse('ABC')).to.deep.equal([
+            'ABC',
+            'First element: ABC'
+        ]);
+    });
 });
