@@ -7,7 +7,13 @@ import {multiplier}                     from './multiplier';
 
 export const evalGroup = (
     args: Omit<ParserArgs<Group>, 'node'> & {
+
+        // The current node used as parent if group-mode is set,
+        // otherwise inherited and passed to further statements.
         node?: Node;
+
+        // It's possible to force the process of creating a new node but
+        // setting the parent of it through this variable.
         parent?: Node;
     }
 ): NodeValue => {
@@ -18,11 +24,13 @@ export const evalGroup = (
     return multiplier<NodeValue, Group>(({stream}) => {
         stream.stash();
 
-        // Use passed value, create new out of the current mode or string as default
+        // Recreate a node through group-mode, node and optional parent
         const subNode = node ? (
-            decl.mode ?
-                Node.create(decl.mode, node) :
-                node
+
+            // Create new node with current one as parent, or use current one
+            decl.mode ? Node.create(decl.mode, node) : node
+
+            // Make new one with string as fallback and parent as opional parent node
         ) : Node.create(decl.mode || 'string', parent);
 
         // In case the evaluation fails and the value needs to get be restored
