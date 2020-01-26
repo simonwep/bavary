@@ -1,5 +1,4 @@
 import {PushStatement} from '../../../ast/types';
-import {ArrayNode}     from '../../node';
 import {evalLiteral}   from '../../tools/eval-literal';
 import {ParserArgs}    from '../../types';
 import {evalGroup}     from '../group';
@@ -15,7 +14,7 @@ export const evalPushCommand = (
 ): boolean => {
 
     // Push only works on arrays
-    if (!(node instanceof ArrayNode)) {
+    if (!(node.type === 'array')) {
         throw new Error('Can\'t use define within arrays or strings.');
     }
 

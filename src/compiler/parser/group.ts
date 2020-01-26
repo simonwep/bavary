@@ -1,6 +1,6 @@
 import {Group}                          from '../../ast/types';
 import {evalDeclaration}                from '../internal';
-import {Node, NodeValue, ObjectNode}    from '../node';
+import {createNode, Node, NodeValue}    from '../node';
 import {serializeParsingResult}         from '../tools/serialize';
 import {LocationDataObject, ParserArgs} from '../types';
 import {multiplier}                     from './multiplier';
@@ -9,11 +9,11 @@ export const evalGroup = (
     args: Omit<ParserArgs<Group>, 'node'> & {
 
         // The current node used as parent if group-mode is set,
-        // otherwise inherited and passed to further statements.
+        // Otherwise inherited and passed to further statements.
         node?: Node;
 
         // It's possible to force the process of creating a new node but
-        // setting the parent of it through this variable.
+        // Setting the parent of it through this variable.
         parent?: Node;
     }
 ): NodeValue => {
@@ -28,10 +28,10 @@ export const evalGroup = (
         const subNode = node ? (
 
             // Create new node with current one as parent, or use current one
-            decl.mode ? Node.create(decl.mode, node) : node
+            decl.mode ? createNode(decl.mode, node) : node
 
-            // Make new one with string as fallback and parent as opional parent node
-        ) : Node.create(decl.mode || 'string', parent);
+        // Make new one with string as fallback and parent as opional parent node
+        ) : createNode(decl.mode || 'string', parent);
 
         // In case the evaluation fails and the value needs to get be restored
         const previousValue = subNode.value;
@@ -46,7 +46,7 @@ export const evalGroup = (
             // Parse declaration
             if (!evalDeclaration({config, stream, decl, scope, node: subNode})) {
 
-                if (subNode instanceof ObjectNode) {
+                if (subNode.type === 'object') {
 
                     // Nullish properties used in this group
                     serializeParsingResult(decs, subNode, true);
@@ -62,13 +62,13 @@ export const evalGroup = (
         }
 
         // Nullish remaining values
-        if (subNode instanceof ObjectNode) {
+        if (subNode.type === 'object') {
             serializeParsingResult(decs, subNode);
         }
 
         // Add location-data if enabled
         // Save optional start / end labels
-        if (config.locationData && subNode instanceof ObjectNode) {
+        if (config.locationData && subNode.type === 'object') {
             const {end, start} = config.locationData as LocationDataObject;
             subNode.value[start] = starts;
             subNode.value[end] = stream.index;

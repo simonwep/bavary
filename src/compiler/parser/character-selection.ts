@@ -1,5 +1,4 @@
 import {CharacterSelection, CharacterSelectionArray} from '../../ast/types';
-import {StringNode}                                  from '../node';
 import {ParserArgs}                                  from '../types';
 import {multiplier}                                  from './multiplier';
 
@@ -48,7 +47,7 @@ export const evalCharacterSelection = (
     if (matches) {
 
         // Append value, concat array values if needed
-        if (node instanceof StringNode) {
+        if (node.type === 'string') {
             node.value += Array.isArray(matches) ? matches.join('') : matches;
         }
 

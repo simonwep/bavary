@@ -1,8 +1,8 @@
-import {Reference}             from '../../ast/types';
-import {evalRawReference}      from '../internal';
-import {NodeValue, StringNode} from '../node';
-import {typeOf}                from '../tools/type-of';
-import {ParserArgs}            from '../types';
+import {Reference}        from '../../ast/types';
+import {evalRawReference} from '../internal';
+import {NodeValue}        from '../node';
+import {typeOf}           from '../tools/type-of';
+import {ParserArgs}       from '../types';
 
 export const evalReference = (
     {
@@ -27,11 +27,11 @@ export const evalReference = (
         if (matchesType === 'array') {
 
             // Join array-values if all entries are strings
-            if (node instanceof StringNode && (matches as Array<NodeValue>).every(v => typeof v === 'string')) {
+            if (node.type === 'string' && (matches as Array<NodeValue>).every(v => typeof v === 'string')) {
                 node.value += (matches as Array<NodeValue>).join('');
             }
 
-        } else if (matchesType === 'string' && node instanceof StringNode) {
+        } else if (matchesType === 'string' && node.type === 'string') {
 
             // Concat strings
             node.value += matches as string;

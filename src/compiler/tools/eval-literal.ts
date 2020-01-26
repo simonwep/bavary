@@ -1,5 +1,5 @@
-import {Literal}                     from '../../ast/types';
-import {ArrayNode, Node, ObjectNode} from '../node';
+import {Literal} from '../../ast/types';
+import {Node}    from '../node';
 
 export const evalLiteral = (node: Node, decl: Literal): string => {
     const {value} = decl;
@@ -12,7 +12,7 @@ export const evalLiteral = (node: Node, decl: Literal): string => {
         switch (part.type) {
             case 'member-expression': {
 
-                if (node instanceof ObjectNode || node instanceof ArrayNode) {
+                if (node.type === 'object' || node.type === 'array') {
                     raw = node.lookup(part.value);
                 } else {
                     break;

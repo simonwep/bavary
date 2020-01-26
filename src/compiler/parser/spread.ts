@@ -1,8 +1,8 @@
-import {Group, Reference, Spread}                                     from '../../ast/types';
-import {evalGroup, evalRawReference}                                  from '../internal';
-import {ArrayNode, ArrayNodeValue, NodeValue, ObjectNode, StringNode} from '../node';
-import {typeOf}                                                       from '../tools/type-of';
-import {ParserArgs}                                                   from '../types';
+import {Group, Reference, Spread}    from '../../ast/types';
+import {evalGroup, evalRawReference} from '../internal';
+import {ArrayNodeValue, NodeValue}   from '../node';
+import {typeOf}                      from '../tools/type-of';
+import {ParserArgs}                  from '../types';
 
 export const evalSpread = (
     {
@@ -28,18 +28,18 @@ export const evalSpread = (
     const valueType = typeOf(value);
 
     // Validate both sides
-    if (node instanceof StringNode) {
+    if (node.type === 'string') {
         throw new Error('Cannot use spread-operator in strings.');
     }
 
     /**
      * Join objects / arrays. Otherwise throw error because of incompatibility
      */
-    if ((valueType === 'array' || valueType === 'string') && node instanceof ArrayNode) {
+    if ((valueType === 'array' || valueType === 'string') && node.type === 'array') {
         node.value.push(...(value as Array<NodeValue>));
-    } else if (valueType === 'object' && node instanceof ArrayNode) {
+    } else if (valueType === 'object' && node.type === 'array') {
         node.value.push(...(Object.entries(value) as ArrayNodeValue));
-    } else if (valueType === 'object' && node instanceof ObjectNode) {
+    } else if (valueType === 'object' && node.type === 'object') {
         Object.assign(node.value, value);
     } else {
         throw new Error(`Incompatible types used in spread operator: ${valueType} ≠ ${node.type}`);

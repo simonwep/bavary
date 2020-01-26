@@ -1,8 +1,8 @@
-import {DefineStatement}       from '../../../ast/types';
-import {NodeValue, ObjectNode} from '../../node';
-import {evalLiteral}           from '../../tools/eval-literal';
-import {ParserArgs}            from '../../types';
-import {evalGroup}             from '../group';
+import {DefineStatement} from '../../../ast/types';
+import {NodeValue}       from '../../node';
+import {evalLiteral}     from '../../tools/eval-literal';
+import {ParserArgs}      from '../../types';
+import {evalGroup}       from '../group';
 
 export const evalDefineCommand = (
     {
@@ -15,7 +15,7 @@ export const evalDefineCommand = (
 ): boolean => {
 
     // Define only works on object-groups
-    if (!(node instanceof ObjectNode)) {
+    if (!(node.type === 'object')) {
         throw new Error('Can\'t use define within arrays or strings.');
     }
 

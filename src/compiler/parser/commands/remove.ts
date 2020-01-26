@@ -1,8 +1,8 @@
-import {RemoveStatement}             from '../../../ast/types';
-import {REMOVED_PROPERTY}            from '../../internal';
-import {ObjectNodeValue, StringNode} from '../../node';
-import {evalMemberExpression}        from '../../tools/eval-member-expression';
-import {ParserArgs}                  from '../../types';
+import {RemoveStatement}      from '../../../ast/types';
+import {REMOVED_PROPERTY}     from '../../internal';
+import {ObjectNodeValue}      from '../../node';
+import {evalMemberExpression} from '../../tools/eval-member-expression';
+import {ParserArgs}           from '../../types';
 
 export const evalRemoveCommand = (
     {
@@ -12,7 +12,7 @@ export const evalRemoveCommand = (
 ): boolean => {
 
     // Remove dosn't work on strings
-    if (node instanceof StringNode) {
+    if (node.type === 'string') {
         throw new Error('Can\'t use rem on strings.');
     }
 
