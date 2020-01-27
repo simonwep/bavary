@@ -19,10 +19,9 @@ export type NativeFunction = (
 export type NativeFunctionContainer = {
 
     /**
-     * Current state.
-     * Is either a array, string or object - depends on the context where it's used.
+     * Current node.
      */
-    state: NodeVariant;
+    node: NodeVariant;
 }
 
 export type CompilerConfig = {

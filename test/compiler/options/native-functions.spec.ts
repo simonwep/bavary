@@ -8,9 +8,9 @@ describe('[OPTION] Functions', () => {
             entry [object: '(' count([(0 - 9)+], 'size') ')']
         `, {
             functions: {
-                count({state}, value, prop): boolean {
+                count({node}, value, prop): boolean {
 
-                    if (state.type !== 'object') {
+                    if (node.type !== 'object') {
                         throw new Error('count can only be used within objects.');
                     }
 
@@ -23,7 +23,7 @@ describe('[OPTION] Functions', () => {
                     }
 
                     if (value.length > 2) {
-                        state.value[prop] = value.length;
+                        node.value[prop] = value.length;
                     }
 
                     return value.length > 2;
@@ -44,14 +44,14 @@ describe('[OPTION] Functions', () => {
             ]
         `, {
             functions: {
-                count({state}, chars, prop): boolean {
+                count({node}, chars, prop): boolean {
 
-                    if (state.type !== 'object') {
+                    if (node.type !== 'object') {
                         throw new Error('count can only be used within objects.');
                     }
 
                     if (chars && typeof chars === 'string' && typeof prop === 'string' && prop.length) {
-                        state.value[prop] = chars.length;
+                        node.value[prop] = chars.length;
                         return true;
                     }
 
