@@ -30,7 +30,10 @@ export function serializeParsingResult(rest: Array<GroupValue>, target: ObjectNo
             serializeParsingResult(item.value, target, nullish);
         } else if (item.type === 'conditional-statement') {
             serializeParsingResult([item.consequent], target, nullish);
-            item.alternate && serializeParsingResult([item.alternate], target, nullish);
+
+            if (item.alternate) {
+                serializeParsingResult([item.alternate], target, nullish);
+            }
         }
     }
 }

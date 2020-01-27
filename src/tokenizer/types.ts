@@ -13,4 +13,4 @@ export enum Alternate {
 export type RangeInformation = {
     start: number;
     end: number;
-}
+};

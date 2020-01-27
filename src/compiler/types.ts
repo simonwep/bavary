@@ -8,7 +8,7 @@ export type ParserArgs<DeclarationType> = {
     decl: DeclarationType;
     scope: Scope;
     node: NodeVariant;
-}
+};
 
 export type Parser = (content: string) => null | NodeValue;
 export type NativeFunction = (
@@ -22,16 +22,16 @@ export type NativeFunctionContainer = {
      * Current node.
      */
     node: NodeVariant;
-}
+};
 
 export type CompilerConfig = {
     locationData?: boolean | LocationDataObject;
     functions?: {
         [key: string]: NativeFunction;
     };
-}
+};
 
 export type LocationDataObject = {
     start: string;
     end: string;
-}
+};

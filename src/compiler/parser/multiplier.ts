@@ -6,7 +6,7 @@ type PossibleStatements = Group | Reference | CharacterSelection;
 type RequiredParserArgs<T> = {
     stream: Streamable<string>;
     decl: T;
-}
+};
 
 export const multiplier = <ExpectedResult, DeclarationType extends PossibleStatements>(
     fn: (args: RequiredParserArgs<DeclarationType>) => ExpectedResult | null

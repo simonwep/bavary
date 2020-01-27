@@ -22,26 +22,12 @@
     "rules": {
         "quotes": [2, "single", {"avoidEscape": true}],
         "indent": ["error", 4, {"SwitchCase": 1}],
-        "@typescript-eslint/no-var-requires": "off",
-        "comma-dangle": ["error", "never"],
-        "no-throw-literal": "error",
-        "brace-style": ["error", "1tbs"],
-        "capitalized-comments": "warn",
-        "keyword-spacing": "warn",
-        "eqeqeq": "error",
-        "no-console": "error",
-        "no-undef-init": "warn",
-        "no-sequences": "error",
-        "no-lonely-if": "error",
-        "no-trailing-spaces": "error",
-        "no-delete-var": "error",
-        "no-redeclare": "error",
-        "no-multi-str": "error",
-        "prefer-rest-params": "error",
-        "prefer-const": "error",
-        "camelcase": "error",
-        "eol-last": "error",
-        "curly": "error",
-        "yoda": "error"
+        "@typescript-eslint/unified-signatures": "error",
+        "@typescript-eslint/prefer-includes": "warn",
+        "@typescript-eslint/no-for-in-array": "error",
+        "@typescript-eslint/semi": "error",
+        "no-extra-semi": "error",
+        "semi-style": "error",
+        "semi": "error"
     }
 }

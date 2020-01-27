@@ -1,7 +1,7 @@
 import {expect}  from 'chai';
 import {compile} from '../../../src';
 
-type TestType = Array<string | [string, object]>
+type TestType = Array<string | [string, object]>;
 
 export default (spec: string): (tests: TestType) => void => {
     const parse = compile(spec);
