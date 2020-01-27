@@ -13,31 +13,29 @@ export type ArrayNodeValue = Array<NodeValue>;
 // Object-structures for object-nodes
 export type ObjectNodeValue = {[key: string]: NodeValue};
 
-export type StringNode = {
+// Properties used in all kind of nodes
+type NodeExtensions = {
     lookup(path: MemberExpressionPath): unknown;
     return(value: NodeValue | null): void;
     returned: boolean;
+};
+
+export type StringNode = NodeExtensions & {
     type: 'string';
     value: string;
 };
 
-export type ObjectNode = {
-    lookup(path: MemberExpressionPath): unknown;
-    return(value: NodeValue | null): void;
-    returned: boolean;
+export type ObjectNode = NodeExtensions & {
     value: ObjectNodeValue;
     type: 'object';
 };
 
-export type ArrayNode = {
-    lookup(path: MemberExpressionPath): unknown;
-    return(value: NodeValue | null): void;
-    returned: boolean;
+export type ArrayNode = NodeExtensions & {
     value: ArrayNodeValue;
     type: 'array';
 };
 
-export type NodeVariant = StringNode | ObjectNode | ArrayNode
+export type NodeVariant = StringNode | ObjectNode | ArrayNode;
 
 export class TypedNode {
     public returned: boolean;
