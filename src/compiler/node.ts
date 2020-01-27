@@ -85,18 +85,19 @@ export class TypedNode {
      * @param path
      */
     public lookup(path: MemberExpressionPath): unknown {
-        if (this.type) {
-            const value = evalMemberExpression(this.value, path);
+        const value = evalMemberExpression(this.value, path);
 
-            if (value !== undefined) {
-                return value;
-            }
+        // This node might contain the value
+        if (value !== undefined) {
+            return value;
         }
 
+        // Check parent
         if (this.parent) {
             return this.parent.lookup(path);
         }
 
+        // Lookup failed for this node (and its children)
         return undefined;
     }
 

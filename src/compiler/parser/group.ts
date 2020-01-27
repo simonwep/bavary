@@ -30,7 +30,7 @@ export const evalGroup = (
             // Create new node with current one as parent, or use current one
             decl.mode ? TypedNode.create(decl.mode, node) : node
 
-        // Make new one with string as fallback and parent as opional parent node
+            // Make new one with string as fallback and parent as opional parent node
         ) : TypedNode.create(decl.mode || 'string', parent);
 
         // In case the evaluation fails and the value needs to get be restored

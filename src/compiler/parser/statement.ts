@@ -1,4 +1,4 @@
-import {GroupValue}         from '../../ast/types';
+import {GroupValue}        from '../../ast/types';
 import {
     evalCharacterSelection,
     evalCombiantor,
@@ -8,13 +8,13 @@ import {
     evalLiteralContent,
     evalReference,
     evalSpread
-}                           from '../internal';
-import {ParserArgs}         from '../types';
-import {evalDefineCommand}  from './commands/define';
-import {evalPushCommand}    from './commands/push';
-import {evalRemoveCommand}  from './commands/remove';
-import {evalReturnCommand}  from './commands/return';
-import {evalThrowStatement} from './commands/throw';
+}                          from '../internal';
+import {ParserArgs}        from '../types';
+import {evalDefineCommand} from './commands/define';
+import {evalPushCommand}   from './commands/push';
+import {evalRemoveCommand} from './commands/remove';
+import {evalReturnCommand} from './commands/return';
+import {evalThrowCommand}  from './commands/throw';
 
 export const evalDeclaration = (
     {
@@ -87,14 +87,12 @@ export const evalDeclaration = (
             evalRemoveCommand({config, stream, decl, scope, node});
             break;
         }
-        case 'throw': {
-            evalThrowStatement({config, stream, decl, scope, node});
+        case 'return': {
+            evalReturnCommand({config, stream, decl, scope, node});
             break;
         }
-        case 'return': {
-
-            // TODO: Rename others
-            evalReturnCommand({config, stream, decl, scope, node});
+        case 'throw': {
+            evalThrowCommand({config, stream, decl, scope, node});
         }
     }
 

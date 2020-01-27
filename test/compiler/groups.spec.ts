@@ -33,4 +33,17 @@ describe('[COM] Nested groups', () => {
         expect(parse('')).to.deep.equal([]);
         expect(parse('AC')).to.deep.equal(null);
     });
+
+    it('Should leave out not-matching group-types', () => {
+        const parse = compile(`[
+           (A - Z)+
+           
+           # This will be ignored, but still a requiredment to succeed
+           [object: def x = [(a - z)+]]
+        ]`);
+
+        expect(parse('ABCabc')).to.equal('ABC');
+        expect(parse('ABC')).to.equal(null);
+        expect(parse('ab')).to.equal(null);
+    });
 });
