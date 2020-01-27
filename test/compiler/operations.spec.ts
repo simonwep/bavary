@@ -255,8 +255,8 @@ describe('[COM] Operations', () => {
     it('Should properly resolve elements inside of an array', () => {
         const parse = compile(`
             entry [array:
-               push [(A - Z)+]
-               push 'First element: {$[0]}'
+                push [(A - Z)+]
+                push 'First element: {$[0]}'
             ]
         `);
 
@@ -264,5 +264,24 @@ describe('[COM] Operations', () => {
             'ABC',
             'First element: ABC'
         ]);
+    });
+
+    it('Should automatically clean up properties set via use', () => {
+
+        // TODO: Extra store for use???
+        const parse = compile(`
+            entry [object:
+                use cmd = [(A - Z)+]
+            
+                if ($cmd == 'HELLO') [
+                    def res = 'WORLD'
+                ] else [
+                    def res = 'WHAT?'
+                ]
+            ]
+        `);
+
+        expect(parse('HELLO')).to.deep.equal({res: 'WORLD'});
+        expect(parse('ABC')).to.deep.equal({res: 'WHAT?'});
     });
 });

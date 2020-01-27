@@ -1,8 +1,8 @@
-import {DefineStatement} from '../../../ast/types';
-import {NodeValue}       from '../../node';
-import {evalLiteral}     from '../../tools/eval-literal';
-import {ParserArgs}      from '../../types';
-import {evalGroup}       from '../group';
+import {DefineStatement, UseStatement} from '../../../ast/types';
+import {NodeValue}                     from '../../node';
+import {evalLiteral}                   from '../../tools/eval-literal';
+import {ParserArgs}                    from '../../types';
+import {evalGroup}                     from '../group';
 
 export const evalDefineCommand = (
     {
@@ -11,7 +11,7 @@ export const evalDefineCommand = (
         decl,
         scope,
         node
-    }: ParserArgs<DefineStatement>
+    }: ParserArgs<UseStatement | DefineStatement>
 ): boolean => {
 
     // Define only works on object-groups

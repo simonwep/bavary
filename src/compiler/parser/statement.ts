@@ -73,6 +73,7 @@ export const evalDeclaration = (
             outcome = evalSpread({config, stream, decl, scope, node});
             break;
         }
+        case 'use':
         case 'define': {
             outcome = evalDefineCommand({config, stream, decl, scope, node});
             break;

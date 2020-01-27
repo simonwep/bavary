@@ -24,6 +24,8 @@ export function serializeParsingResult(rest: Array<GroupValue>, target: ObjectNo
                 delete value[item.name];
             }
 
+        } else if (item.type === 'use') {
+            delete value[item.name];
         } else if (item.type === 'group' || item.type === 'combinator') {
             serializeParsingResult(item.value, target, nullish);
         } else if (item.type === 'conditional-statement') {
