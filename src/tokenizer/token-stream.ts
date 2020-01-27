@@ -103,7 +103,7 @@ export class TokenStream extends Streamable<Token> {
 
         if (this.hasNext(includeWhitespace)) {
             const nxt = this.peek(includeWhitespace) as Token;
-            this.throw(`Expected ${values.join(', ')} (${type}) but got ${nxt.value} (${nxt.type})`);
+            this.throw(`Expected "${values.join(', ')}" but got "${nxt.value}"`);
         }
 
         this.throw('Unxpected end of input.');
