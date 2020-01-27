@@ -1,7 +1,7 @@
-import {Literal} from '../../ast/types';
-import {Node}    from '../node';
+import {Literal}     from '../../ast/types';
+import {NodeVariant} from '../node';
 
-export const evalLiteral = (node: Node, decl: Literal): string => {
+export const evalLiteral = (node: NodeVariant, decl: Literal): string => {
     const {value} = decl;
     let str = '';
 

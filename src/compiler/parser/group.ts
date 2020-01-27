@@ -1,20 +1,20 @@
-import {Group}                          from '../../ast/types';
-import {evalDeclaration}                from '../internal';
-import {createNode, Node, NodeValue}    from '../node';
-import {serializeParsingResult}         from '../tools/serialize';
-import {LocationDataObject, ParserArgs} from '../types';
-import {multiplier}                     from './multiplier';
+import {Group}                             from '../../ast/types';
+import {evalDeclaration}                   from '../internal';
+import {NodeValue, NodeVariant, TypedNode} from '../node';
+import {serializeParsingResult}            from '../tools/serialize';
+import {LocationDataObject, ParserArgs}    from '../types';
+import {multiplier}                        from './multiplier';
 
 export const evalGroup = (
     args: Omit<ParserArgs<Group>, 'node'> & {
 
         // The current node used as parent if group-mode is set,
         // Otherwise inherited and passed to further statements.
-        node?: Node;
+        node?: NodeVariant;
 
         // It's possible to force the process of creating a new node but
         // Setting the parent of it through this variable.
-        parent?: Node;
+        parent?: NodeVariant;
     }
 ): NodeValue => {
 
@@ -28,10 +28,10 @@ export const evalGroup = (
         const subNode = node ? (
 
             // Create new node with current one as parent, or use current one
-            decl.mode ? createNode(decl.mode, node) : node
+            decl.mode ? TypedNode.create(decl.mode, node) : node
 
         // Make new one with string as fallback and parent as opional parent node
-        ) : createNode(decl.mode || 'string', parent);
+        ) : TypedNode.create(decl.mode || 'string', parent);
 
         // In case the evaluation fails and the value needs to get be restored
         const previousValue = subNode.value;
