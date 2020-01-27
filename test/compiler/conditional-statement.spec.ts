@@ -381,4 +381,42 @@ describe('[COM] Conditional statement', () => {
             'ab', 'ccc', 'ee'
         ]);
     });
+
+    it('Should properly return values from within nested if-statements', () => {
+        const parse = compile(`
+            entry [object:
+                use val = [object:
+                    def up = [(A - Z)+]
+                    def low = [(a - z)+]
+                
+                    if ($up == 'ABC') [
+                        if ($low == 'abc') [
+                            ret "The same"
+                        ] else if ($low == 'cba')[
+                            ret "The same, but reversed"
+                        ] else [
+                            ret "Okay, low is '{$low}'!"
+                        ]
+                    ] else if ($low == 'abc') [
+                        ret "Okay, low is {$low " and up is " $up}"
+                    ]
+                    
+                    ret "unknown"
+                ]?
+                
+                if ($val == null) [
+                    ret 'failed'
+                ]
+                
+                ret '{$val}'
+            ]
+        `);
+
+        expect(parse('ABCabc')).to.equal('The same');
+        expect(parse('ABCcba')).to.equal('The same, but reversed');
+        expect(parse('ABCwoho')).to.equal('Okay, low is \'woho\'!');
+        expect(parse('OHOabc')).to.equal('Okay, low is abc and up is OHO');
+        expect(parse('OACOabvc')).to.equal('unknown');
+        expect(parse('')).to.equal('failed');
+    });
 });

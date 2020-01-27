@@ -15,30 +15,38 @@ export type ObjectNodeValue = {[key: string]: NodeValue};
 
 export type StringNode = {
     lookup(path: MemberExpressionPath): unknown;
+    return(value: NodeValue | null): void;
+    returned: boolean;
     type: 'string';
     value: string;
 };
 
 export type ObjectNode = {
     lookup(path: MemberExpressionPath): unknown;
-    type: 'object';
+    return(value: NodeValue | null): void;
+    returned: boolean;
     value: ObjectNodeValue;
+    type: 'object';
 };
 
 export type ArrayNode = {
     lookup(path: MemberExpressionPath): unknown;
-    type: 'array';
+    return(value: NodeValue | null): void;
+    returned: boolean;
     value: ArrayNodeValue;
+    type: 'array';
 };
 
 export type NodeVariant = StringNode | ObjectNode | ArrayNode
 
 export class TypedNode {
+    public returned: boolean;
     public readonly type: NodeType;
-    public value: NodeValue;
     private readonly parent: NodeVariant | null;
+    public value: NodeValue;
 
     private constructor(type: NodeType, parent?: NodeVariant) {
+        this.returned = false;
         this.parent = parent || null;
         this.type = type;
         this.value = TypedNode.resolveNodeValue(type);
@@ -78,7 +86,7 @@ export class TypedNode {
      * Returns undefined if nothing got found.
      * @param path
      */
-    lookup(path: MemberExpressionPath): unknown {
+    public lookup(path: MemberExpressionPath): unknown {
         if (this.type) {
             const value = evalMemberExpression(this.value, path);
 
@@ -92,5 +100,10 @@ export class TypedNode {
         }
 
         return undefined;
+    }
+
+    public return(value: NodeValue | null): void {
+        this.returned = true;
+        this.value = value;
     }
 }

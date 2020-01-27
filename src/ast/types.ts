@@ -33,7 +33,7 @@ export type Group = {
     value: Array<GroupValue>;
 }
 
-export type GroupCommand = DefineStatement | UseStatement | PushStatement | RemoveStatement | VoidStatement | ThrowStatement;
+export type GroupCommand = ReturnStatement | DefineStatement | UseStatement | PushStatement | RemoveStatement | VoidStatement | ThrowStatement;
 
 export type RemoveStatement = {
     type: 'remove';
@@ -50,6 +50,11 @@ export type UseStatement = {
     type: 'use';
     name: string;
     value: Group | Literal | MemberExpression;
+}
+
+export type ReturnStatement = {
+    type: 'return';
+    value: Literal;
 }
 
 export type PushStatement = {

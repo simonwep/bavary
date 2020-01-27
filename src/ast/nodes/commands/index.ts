@@ -3,14 +3,18 @@ import {GroupCommand}         from '../../types';
 import {parseDefineStatement} from './define';
 import {parsePushStatement}   from './push';
 import {parseRemoveStatement} from './remove';
+import {parseReturnStatement} from './return';
 import {parseThrowStatement}  from './throw';
 import {parseUseStatement}    from './use';
 import {parseVoidStatement}   from './void';
 
 export const parseGroupStatement = maybe<GroupCommand>(stream => {
-    const match = stream.optional(false, 'kw', 'def', 'rem', 'use', 'push', 'void', 'throw');
+    const match = stream.optional(false, 'kw', 'ret', 'def', 'rem', 'use', 'push', 'void', 'throw');
 
     switch (match) {
+        case 'ret': {
+            return parseReturnStatement(stream);
+        }
         case 'def': {
             return parseDefineStatement(stream);
         }

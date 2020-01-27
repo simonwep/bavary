@@ -59,19 +59,28 @@ export const evalGroup = (
                 stream.pop();
                 return null;
             }
+
+            // Check if node should be returned
+            if (subNode.returned) {
+                break;
+            }
         }
 
-        // Nullish remaining values
-        if (subNode.type === 'object') {
-            serializeParsingResult(decs, subNode);
-        }
+        // Serialize only if node dosn't contain a return-statement
+        if (!subNode.returned) {
 
-        // Add location-data if enabled
-        // Save optional start / end labels
-        if (config.locationData && subNode.type === 'object') {
-            const {end, start} = config.locationData as LocationDataObject;
-            subNode.value[start] = starts;
-            subNode.value[end] = stream.index;
+            // Nullish remaining values
+            if (subNode.type === 'object') {
+                serializeParsingResult(decs, subNode);
+            }
+
+            // Add location-data if enabled
+            // Save optional start / end labels
+            if (config.locationData && subNode.type === 'object') {
+                const {end, start} = config.locationData as LocationDataObject;
+                subNode.value[start] = starts;
+                subNode.value[end] = stream.index;
+            }
         }
 
         stream.recycle();

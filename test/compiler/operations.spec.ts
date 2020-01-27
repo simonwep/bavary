@@ -284,4 +284,14 @@ describe('[COM] Operations', () => {
         expect(parse('HELLO')).to.deep.equal({res: 'WORLD'});
         expect(parse('ABC')).to.deep.equal({res: 'WHAT?'});
     });
+
+    it('Should properly return the value used as return-value', () => {
+        const parse = compile(`[object:
+            use value = [(.)+]
+            ret 'You wrote "{$value}"'
+        ]`);
+
+        expect(parse('Hello')).to.equal('You wrote "Hello"');
+        expect(parse('')).to.equal(null);
+    });
 });

@@ -13,6 +13,7 @@ import {ParserArgs}         from '../types';
 import {evalDefineCommand}  from './commands/define';
 import {evalPushCommand}    from './commands/push';
 import {evalRemoveCommand}  from './commands/remove';
+import {evalReturnCommand}  from './commands/return';
 import {evalThrowStatement} from './commands/throw';
 
 export const evalDeclaration = (
@@ -88,6 +89,12 @@ export const evalDeclaration = (
         }
         case 'throw': {
             evalThrowStatement({config, stream, decl, scope, node});
+            break;
+        }
+        case 'return': {
+
+            // TODO: Rename others
+            evalReturnCommand({config, stream, decl, scope, node});
         }
     }
 

@@ -5,6 +5,8 @@ describe('[AST] Operations', () => {
     failAll([
         '<abc> = [push]',
         '<abc> = [def]',
+        '<abc> = [use]',
+        '<abc> = [ret]',
         '<abc> = [rem]',
         '<abc> = [void]',
         '<abc> = [void ab]',
