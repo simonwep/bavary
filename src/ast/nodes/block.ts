@@ -12,9 +12,18 @@ export const parseBlock = maybe<Block>((stream: TokenStream) => {
 
     // Parse declarations
     const declarations: Array<Declaration> = [];
+    let decl: Declaration;
 
-    while (!stream.match(false, 'punc', '}')) {
-        declarations.push(parseDeclaration(stream) as Declaration);
+    do {
+        decl = parseDeclaration(stream) as Declaration;
+
+        if (decl) {
+            declarations.push(decl);
+        }
+    } while (decl && !stream.match(false, 'punc', '}'));
+
+    if (!declarations.length) {
+        stream.throw('Expected a declaration.');
     }
 
     stream.expect(false, 'punc', '}');

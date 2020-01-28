@@ -9,6 +9,8 @@ describe('[AST] Types', () => {
         '<ab- c> = ["A"]',
         '<-ab c> = ["A"]',
         '<abc> = ["A" | <a:b:>]',
-        'entry <sup> = '
+        'entry <sup> = ',
+        'entry {}',
+        'entry {hi}'
     ]);
 });
