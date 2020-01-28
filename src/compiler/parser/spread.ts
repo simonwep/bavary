@@ -1,4 +1,4 @@
-import {Group, Reference, Spread}    from '../../ast/types';
+import {Spread}                      from '../../ast/types';
 import {evalGroup, evalRawReference} from '../internal';
 import {ArrayNodeValue, NodeValue}   from '../node';
 import {typeOf}                      from '../tools/type-of';
@@ -15,11 +15,25 @@ export const evalSpread = (
 ): boolean => {
 
     // Execute value
-    // TODO: Add node in case of a group
-    const value = (decl.value.type === 'reference' ? evalRawReference : evalGroup)({
-        config, stream, scope,
-        decl: decl.value as Reference & Group
-    });
+    let value;
+
+    switch (decl.value.type) {
+        case 'group': {
+            value = evalGroup({
+                config, stream, scope,
+                parent: node,
+                decl: decl.value
+            });
+
+            break;
+        }
+        case 'reference': {
+            value = evalRawReference({
+                config, stream, scope,
+                decl: decl.value
+            });
+        }
+    }
 
     if (!value) {
         return false;

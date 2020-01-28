@@ -131,4 +131,18 @@ describe('[COM] Spread operator', () => {
             'aa', 'cc', 'e', 'hh'
         ]);
     });
+
+    it('Should defer the scope of the parent-node', () => {
+        const parse = compile(`[object:
+            use name = [(.)+]
+    
+            ...[object:
+                def hi = 'My name is {$name}'
+            ]
+        ]`);
+
+        expect(parse('Simon')).to.deep.equal({
+            hi: 'My name is Simon'
+        });
+    });
 });
