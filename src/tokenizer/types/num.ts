@@ -4,6 +4,7 @@ import {Alternate, Token} from '../types';
 
 export const num = (stream: Streamable<string>): Token | Alternate => {
 
+    // TODO: Negative?
     let number = '';
     while (stream.hasNext()) {
         const ch = stream.peek() as string;

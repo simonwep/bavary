@@ -1,5 +1,5 @@
-import {NativeFunction}       from '../../ast/types';
-import {evalGroup}            from '../internal';
+import {FunctionCall} from '../../ast/types';
+import {evalGroup}    from '../internal';
 import {NodeValue}            from '../node';
 import {evalLiteral}          from '../tools/eval-literal';
 import {evalMemberExpression} from '../tools/eval-member-expression';
@@ -12,7 +12,7 @@ export const evalFunction = (
         decl,
         scope,
         node
-    }: ParserArgs<NativeFunction>
+    }: ParserArgs<FunctionCall>
 ): boolean => {
 
     // Resolve arguments

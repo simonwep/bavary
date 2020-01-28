@@ -1,10 +1,10 @@
 import {TokenStream}                                                      from '../../tokenizer/token-stream';
 import {parseGroup, parseIdentifier, parseLiteral, parseMemberExpression} from '../internal';
 import {combine}                                                          from '../tools/combine';
-import {maybe}                                                            from '../tools/maybe';
-import {NativeFunction, NativeFunctionArgument}                           from '../types';
+import {maybe}                              from '../tools/maybe';
+import {FunctionCall, FunctionCallArgument} from '../types';
 
-export const parseFunction = maybe<NativeFunction>((stream: TokenStream) => {
+export const parseFunction = maybe<FunctionCall>((stream: TokenStream) => {
 
     stream.consumeSpace();
     const name = parseIdentifier(stream);
@@ -12,7 +12,7 @@ export const parseFunction = maybe<NativeFunction>((stream: TokenStream) => {
         return null;
     }
 
-    const parse = combine<NativeFunctionArgument | null>(
+    const parse = combine<FunctionCallArgument | null>(
         parseMemberExpression,
         parseIdentifier,
         parseGroup,
@@ -38,8 +38,8 @@ export const parseFunction = maybe<NativeFunction>((stream: TokenStream) => {
 
     stream.expect(false, 'punc', ')');
     return {
-        type: 'function',
+        type: 'function-call',
         name: name.value,
         args
-    } as NativeFunction;
+    } as FunctionCall;
 });

@@ -4,7 +4,7 @@ export * from './nodes/block';
 export * from './nodes/character-selection';
 export * from './nodes/conditional-statement';
 export * from './nodes/declaration';
-export * from './nodes/function';
+export * from './nodes/function-call';
 export * from './nodes/group';
 export * from './nodes/identifier';
 export * from './nodes/multiplier';

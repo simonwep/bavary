@@ -62,7 +62,7 @@ export const evalDeclaration = (
             outcome = !!(res || (group.multiplier?.type === 'optional'));
             break;
         }
-        case 'function': {
+        case 'function-call': {
             outcome = evalFunction({config, stream, decl, scope, node});
             break;
         }

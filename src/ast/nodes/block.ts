@@ -12,10 +12,10 @@ export const parseBlock = maybe<Block>((stream: TokenStream) => {
 
     // Parse declarations
     const declarations: Array<Declaration> = [];
-    let decl: Declaration;
+    let decl: Declaration | null;
 
     do {
-        decl = parseDeclaration(stream) as Declaration;
+        decl = parseDeclaration(stream);
 
         if (decl) {
             declarations.push(decl);
