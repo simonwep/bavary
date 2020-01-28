@@ -68,7 +68,7 @@ export const tokenize = (str: string): Array<Token> => {
 
         // Same problem as in types/punc.ts
         /* istanbul ignore next */
-        throw new Error('Failed to parse input sequence.');
+        stream.throw('Failed to parse input sequence.');
     }
 
     return tokens;
