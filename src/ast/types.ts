@@ -33,10 +33,9 @@ export type Group = {
     value: Array<GroupValue>;
 };
 
-// TODO: Make groups always kind of combined stuff
 export type Combinator = {
     type: 'combinator';
-    sign: string;
+    sign: '|' | '&&' | '&';
     value: Array<GroupValue>;
 };
 
