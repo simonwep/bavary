@@ -24,7 +24,7 @@ export function serializeParsingResult(rest: Array<GroupValue>, target: ObjectNo
                 delete value[item.name];
             }
 
-        } else if (item.type === 'use') {
+        } else if (item.type === 'use') { // TODO: Create seperate map for use stuff
             delete value[item.name];
         } else if (item.type === 'group' || item.type === 'combinator') {
             serializeParsingResult(item.value, target, nullish);

@@ -113,7 +113,7 @@ export type Reference = {
 
 export type Spread = {
     type: 'spread';
-    value: Reference | Group | CharacterSelection | Literal;
+    value: Reference | Group | Literal;
 };
 
 export type NativeFunctionArgument = Group | Literal | Identifier | MemberExpression;

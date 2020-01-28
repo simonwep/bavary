@@ -1,6 +1,7 @@
 import {Spread}                      from '../../ast/types';
 import {evalGroup, evalRawReference} from '../internal';
 import {ArrayNodeValue, NodeValue}   from '../node';
+import {evalLiteral}                 from '../tools/eval-literal';
 import {typeOf}                      from '../tools/type-of';
 import {ParserArgs}                  from '../types';
 
@@ -19,6 +20,8 @@ export const evalSpread = (
 
     switch (decl.value.type) {
         case 'group': {
+
+            // TODO: Wrap in centralized function. Calls like that get repeated a lot
             value = evalGroup({
                 config, stream, scope,
                 parent: node,
@@ -32,6 +35,11 @@ export const evalSpread = (
                 config, stream, scope,
                 decl: decl.value
             });
+
+            break;
+        }
+        case 'literal': {
+            value = evalLiteral(node, decl.value);
         }
     }
 

@@ -76,6 +76,17 @@ describe('[COM] Spread operator', () => {
         });
     });
 
+    it('Should split strings into an array of characters', () => {
+        const parse = compile(`[object:
+            def str = [(A - Z)+]
+            def arr = [array: ...'{$str}']
+        ]`);
+
+        expect(parse('ABC')).to.deep.equal({
+            str: 'ABC',
+            arr: ['A', 'B', 'C']
+        });
+    });
 
     it('Should properly assign nested object properties to the parent', () => {
         const parse = compile(`

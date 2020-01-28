@@ -9,6 +9,7 @@ import {evalMemberExpression}                    from './eval-member-expression'
  * @param result
  * @param decl
  */
+
 /* eslint-disable no-use-before-define */
 function resolveValueOf(result: NodeVariant, decl: BinaryExpressionValue): string | number | boolean | null {
     switch (decl.type) {

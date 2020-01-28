@@ -40,8 +40,8 @@ export type NodeVariant = StringNode | ObjectNode | ArrayNode;
 export class TypedNode {
     public returned: boolean;
     public readonly type: NodeType;
-    private readonly parent: NodeVariant | null;
     public value: NodeValue;
+    private readonly parent: NodeVariant | null;
 
     private constructor(type: NodeType, parent?: NodeVariant) {
         this.returned = false;

@@ -7,7 +7,7 @@ describe('[AST] Character selection', () => {
         'entry [(',
         'entry [(\\',
         'entry [(\\   )',
-        'entry [...(a-z)]',
+        'entry [...]',
         'entry [()]',
         'entry [(a - )]',
         'entry [(a - \\a)]',

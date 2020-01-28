@@ -61,6 +61,7 @@ export class Streamable<T> {
      * are of type string.
      * @param msg error-message
      */
+
     /* istanbul ignore next */
     throw(msg: string): never {
         const {index, vals} = this;

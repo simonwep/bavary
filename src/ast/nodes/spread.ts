@@ -1,7 +1,7 @@
-import {TokenStream}                from '../../tokenizer/token-stream';
-import {parseGroup, parseReference} from '../internal';
-import {maybe}                      from '../tools/maybe';
-import {Spread}                     from '../types';
+import {TokenStream}                              from '../../tokenizer/token-stream';
+import {parseGroup, parseLiteral, parseReference} from '../internal';
+import {maybe}                                    from '../tools/maybe';
+import {Spread}                                   from '../types';
 
 export const parseSpread = maybe<Spread>((stream: TokenStream) => {
 
@@ -16,9 +16,14 @@ export const parseSpread = maybe<Spread>((stream: TokenStream) => {
     }
 
     // Either a group or reference must follow
-    const value = parseGroup(stream) || parseReference(stream);
+    const value = parseGroup(stream) ||
+        parseReference(stream) ||
+        parseLiteral(stream);
+
+    // TODO: Support direct member lookup?
+
     if (!value) {
-        stream.throw('Expected group or reference.');
+        stream.throw('Expected group, reference or literal.');
     }
 
     return {
