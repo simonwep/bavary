@@ -17,7 +17,7 @@ export type ObjectNodeValue = {[key: string]: NodeValue};
 type NodeExtensions = {
     lookup(path: MemberExpressionPath): unknown;
     return(value: NodeValue | null): void;
-    returned: boolean;
+    returns: boolean;
 };
 
 export type StringNode = NodeExtensions & {
@@ -40,15 +40,17 @@ export type NodeVariant = StringNode | ObjectNode | ArrayNode;
 export class TypedNode {
 
     // If this node "returns" the value, at this point value could be anything.
-    public returned: boolean;
+    public returns: boolean;
+
     // Type and value of this node
     public readonly type: NodeType;
+
     // This may have a parent-node
-    private readonly parent: NodeVariant | null;
+    public readonly parent: NodeVariant | null;
     public value: NodeValue;
 
     private constructor(type: NodeType, parent?: NodeVariant) {
-        this.returned = false;
+        this.returns = false;
         this.parent = parent || null;
         this.type = type;
         this.value = TypedNode.resolveNodeValue(type);
@@ -106,7 +108,7 @@ export class TypedNode {
     }
 
     public return(value: NodeValue | null): void {
-        this.returned = true;
+        this.returns = true;
         this.value = value;
     }
 }

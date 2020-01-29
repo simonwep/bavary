@@ -44,7 +44,12 @@ export const evalGroup = (
             const decl = decs[i];
 
             // Parse declaration
-            if (!evalDeclaration({config, stream, decl, scope, node: subNode})) {
+            const ok = evalDeclaration({config, stream, decl, scope, node: subNode});
+
+            // Check if node returns something
+            if (subNode.returns) {
+                break;
+            } else if (!ok) {
 
                 if (subNode.type === 'object') {
 
@@ -59,15 +64,10 @@ export const evalGroup = (
                 stream.pop();
                 return null;
             }
-
-            // Check if node should be returned
-            if (subNode.returned) {
-                break;
-            }
         }
 
         // Serialize only if node dosn't contain a return-statement
-        if (!subNode.returned) {
+        if (!subNode.returns) {
 
             // Nullish remaining values
             if (subNode.type === 'object') {

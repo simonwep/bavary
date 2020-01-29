@@ -125,7 +125,7 @@ export type UseStatement = {
 
 export type ReturnStatement = {
     type: 'return';
-    value: Literal;
+    value: Literal | MemberExpression;
 };
 
 export type PushStatement = {

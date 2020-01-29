@@ -267,8 +267,6 @@ describe('[COM] Operations', () => {
     });
 
     it('Should automatically clean up properties set via use', () => {
-
-        // TODO: Extra store for use???
         const parse = compile(`
             entry [object:
                 use cmd = [(A - Z)+]
@@ -293,5 +291,14 @@ describe('[COM] Operations', () => {
 
         expect(parse('Hello')).to.equal('You wrote "Hello"');
         expect(parse('')).to.equal(null);
+    });
+
+    it('Should properly return a variable', () => {
+        const parse = compile(`[object:
+            use value = [(.)+]
+            ret $value
+        ]`);
+
+        expect(parse('Hello')).to.equal('Hello');
     });
 });

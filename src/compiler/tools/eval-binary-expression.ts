@@ -6,21 +6,21 @@ import {evalMemberExpression}                                     from './eval-m
 
 /**
  * Resolves a single value in a binary-expression
- * @param result
+ * @param node
  * @param decl
  */
 
 /* eslint-disable no-use-before-define */
-function resolveValueOf(result: NodeVariant, decl: BinaryExpressionValue): string | number | boolean | null {
+function resolveValueOf(node: NodeVariant, decl: BinaryExpressionValue): string | number | boolean | null {
     switch (decl.type) {
         case 'binary-expression': {
-            return evalBinaryExpression(result, decl);
+            return evalBinaryExpression(node, decl);
         }
         case 'unary-expression': {
-            return !evalBinaryExpression(result, decl);
+            return !evalBinaryExpression(node, decl);
         }
         case 'member-expression': {
-            const res = evalMemberExpression(result.value, decl.value) as string | number | boolean | null;
+            const res = evalMemberExpression(node.value, decl.value) as string | number | boolean | null;
             return res === undefined ? null : res;
         }
         case 'identifier': {
@@ -32,7 +32,7 @@ function resolveValueOf(result: NodeVariant, decl: BinaryExpressionValue): strin
             throw new Error(`Unknown constant: "${decl.value}"`);
         }
         case 'literal': {
-            return evalLiteral(result, decl);
+            return evalLiteral(node, decl);
         }
         case 'number': {
             return decl.value;
@@ -50,18 +50,18 @@ function strictBoolean(val: unknown): boolean {
 
 /**
  * Evaluates a binary expression to a single, boolsche value
- * @param result
+ * @param node
  * @param decl
  */
-export function evalBinaryExpression(result: NodeVariant, decl: BinaryExpression | UnaryExpression): boolean {
+export function evalBinaryExpression(node: NodeVariant, decl: BinaryExpression | UnaryExpression): boolean {
 
     if (decl.type === 'unary-expression') {
-        return !evalBinaryExpression(result, decl.argument);
+        return !evalBinaryExpression(node, decl.argument);
     }
 
     let {operator} = decl;
-    let leftVal = resolveValueOf(result, decl.left);
-    let rightVal = resolveValueOf(result, decl.right);
+    let leftVal = resolveValueOf(node, decl.left);
+    let rightVal = resolveValueOf(node, decl.right);
 
     // "a > b" is the same as "b < a"
     if (operator === '>') {
