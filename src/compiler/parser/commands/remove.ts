@@ -19,7 +19,7 @@ export const evalRemoveCommand = (
     // Lookup parent
     const pathCopy = [...decl.value.value];
     const topAccessor = pathCopy.pop() as string | number;
-    const parent = evalMemberExpression(node.value, pathCopy);
+    const parent = evalMemberExpression(node.value, pathCopy); // TODO: Member might not exist!
 
     if (Array.isArray(parent) && typeof topAccessor === 'number') {
 

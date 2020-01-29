@@ -146,7 +146,7 @@ export type ThrowStatement = {
 // Spread statement
 export type Spread = {
     type: 'spread';
-    value: Reference | Group | Literal;
+    value: MemberExpression | Reference | Group | Literal;
 };
 
 // Function calls

@@ -52,7 +52,7 @@ export const evalDefineCommand = (
             break;
         }
         case 'member-expression': {
-            node.value[decl.name] = node.lookup(value.value) as NodeValue;
+            node.value[decl.name] = node.lookup(value.value);
         }
     }
 

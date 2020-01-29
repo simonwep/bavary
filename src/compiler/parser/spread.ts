@@ -19,9 +19,11 @@ export const evalSpread = (
     // Resolve value
     let value;
     switch (decl.value.type) {
+        case 'member-expression': {
+            value = node.lookup(decl.value.value);
+            break;
+        }
         case 'group': {
-
-            // TODO: Wrap in centralized function. Calls like that get repeated a lot
             value = evalGroup({
                 config, stream, scope,
                 parent: node,
