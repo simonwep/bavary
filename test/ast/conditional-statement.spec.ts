@@ -9,6 +9,8 @@ describe('[AST] Conditional statement', () => {
         'entry [if ($ab[) []',
         'entry [if ($ab[ab]) []',
         'entry [if ($abc != null) [] else]',
+        'entry [if (! ($abc != null))[]',
+        'entry [if (!)[]',
         'entry [if ()]',
         'entry [if ($abc)]',
         'entry [if ($a == 5) [object:]]',

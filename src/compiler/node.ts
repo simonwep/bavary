@@ -38,10 +38,14 @@ export type ArrayNode = NodeExtensions & {
 export type NodeVariant = StringNode | ObjectNode | ArrayNode;
 
 export class TypedNode {
+
+    // If this node "returns" the value, at this point value could be anything.
     public returned: boolean;
+    // Type and value of this node
     public readonly type: NodeType;
-    public value: NodeValue;
+    // This may have a parent-node
     private readonly parent: NodeVariant | null;
+    public value: NodeValue;
 
     private constructor(type: NodeType, parent?: NodeVariant) {
         this.returned = false;

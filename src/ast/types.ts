@@ -87,13 +87,19 @@ export type MultiplierRange = {
 };
 
 // Binary expression
-export type BinaryExpressionValue = BinaryExpression | Literal | Numeral | Identifier | MemberExpression;
+export type BinaryExpressionValue = BinaryExpression | UnaryExpression | Literal | Numeral | Identifier | MemberExpression;
 export type BinaryOperator = '|' | '&' | '<' | '>' | '==' | '!=' | '>=' | '<=';
 export type BinaryExpression = {
     type: 'binary-expression';
     operator: BinaryOperator;
     left: BinaryExpressionValue;
     right: BinaryExpressionValue;
+};
+
+export type UnaryExpression = {
+    type: 'unary-expression';
+    sign: '!';
+    argument: BinaryExpression;
 };
 
 // Possible commands

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import {BinaryExpression, BinaryExpressionValue} from '../../ast/types';
-import {NodeVariant}                             from '../node';
-import {evalLiteral}                             from './eval-literal';
-import {evalMemberExpression}                    from './eval-member-expression';
+import {BinaryExpression, BinaryExpressionValue, UnaryExpression} from '../../ast/types';
+import {NodeVariant}                                              from '../node';
+import {evalLiteral}                                              from './eval-literal';
+import {evalMemberExpression}                                     from './eval-member-expression';
 
 /**
  * Resolves a single value in a binary-expression
@@ -15,6 +15,9 @@ function resolveValueOf(result: NodeVariant, decl: BinaryExpressionValue): strin
     switch (decl.type) {
         case 'binary-expression': {
             return evalBinaryExpression(result, decl);
+        }
+        case 'unary-expression': {
+            return !evalBinaryExpression(result, decl);
         }
         case 'member-expression': {
             const res = evalMemberExpression(result.value, decl.value) as string | number | boolean | null;
@@ -50,7 +53,12 @@ function strictBoolean(val: unknown): boolean {
  * @param result
  * @param decl
  */
-export function evalBinaryExpression(result: NodeVariant, decl: BinaryExpression): boolean {
+export function evalBinaryExpression(result: NodeVariant, decl: BinaryExpression | UnaryExpression): boolean {
+
+    if (decl.type === 'unary-expression') {
+        return !evalBinaryExpression(result, decl.argument);
+    }
+
     let {operator} = decl;
     let leftVal = resolveValueOf(result, decl.left);
     let rightVal = resolveValueOf(result, decl.right);

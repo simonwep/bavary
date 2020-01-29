@@ -419,4 +419,22 @@ describe('[COM] Conditional statement', () => {
         expect(parse('OACOabvc')).to.equal('unknown');
         expect(parse('')).to.equal('failed');
     });
+
+    it('Shouold properly resolve unary-expressions', () => {
+        const parse = compile(`
+            entry [object:
+                def x = [(A - Z)+]
+                
+                if (!($x == 'ABC') | $x == 'XX') [
+                    ret 'match'
+                ]
+                
+                ret 'nope'
+            ]
+        `);
+
+        expect(parse('ABC')).to.equal('match');
+        expect(parse('XX')).to.equal('match');
+        expect(parse('XAX')).to.equal('nope');
+    });
 });

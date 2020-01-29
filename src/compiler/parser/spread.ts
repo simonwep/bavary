@@ -15,9 +15,9 @@ export const evalSpread = (
     }: ParserArgs<Spread>
 ): boolean => {
 
-    // Execute value
+    // TODO: Allow member expression
+    // Resolve value
     let value;
-
     switch (decl.value.type) {
         case 'group': {
 
