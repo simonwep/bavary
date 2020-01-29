@@ -11,7 +11,7 @@
    4.3 [String group](#string-group) _- A group to match and return strings._  
    4.4 [Array group](#array-group) _- A group which returns an array._  
    4.5 [Object group](#object-group) _- A group which returns an object._  
-   4.6 [Commands](#operators) _- Manipulate the current state of a group and more._
+   4.6 [Commands](#commands) _- Manipulate the current node and more._
 5. [Types](#types) _- Reusable, independent, named [group](#groups)._   
    5.1 [Arguments](#arguments) _- Pass groups to [types](#types)._
 6. [Blocks](#block-definition) _- Give [types](#types) a scope and group related stuff together_.
@@ -243,20 +243,21 @@ And that's it.
 | `throw <string>`                           | `String`,`Array`,`Object` <sup>1</sup>  | Throws a pretty error.                                       | `throw 'whoopsie'`              |
 | `void <group>`                             | `String`,`Array`,`Object` <sup>2</sup> | Ignores value of `<group>`.                                  | `void ['A']`                    |
 | `push <group\|string>`                      | `Array`                        | Appends a value to the array.                                | `push ['A']`                    |
-| `def <name> = <group\|string\|variable>` <sup>3</sup> | `Object`                       | Defines a property `<name>` within the object with the given value. | `def x = ['A']` `def x = $abc ` |
-| `rem <variable>`                           | `Array`,`Object`               | Removes a property.                                          | `rem $baz`                      |
+| `def <name> = <group\|expression>` | `Object`                       | Defines a property `<name>` within the object with the given value. | `def x = ['A']` `def x = $abc ` |
+| `use <name> = <group\|expression> ` | `Object` | Work the same way as `def`, but property will be excluded from the final result. | `use m = 'A'` |
+| `rem <variable>`                           | `Array`,`Object`               | Removes a property / Array value.                         | `rem $baz`                      |
+| `return <expression>` | `String`,`Array`,`Object` | Returns a literal. | `ret 'Value: {$val}'` |
 
 <sup>[1]</sup>: Combined with if-statements it's useful to validate stuff. With pretty-error is meant that it shows the position in your target-string where the parser failed.
 
 <sup>[2]</sup>: `void` only makes sense in `string` since `array` and `object` doesn't return strings.
 
-<sup>[3]</sup>: `variable` means any kind of variable access, commonly used in [conditional-statements](#conditional-statements). Example: `$obj.arr[3].prop` This kind of access **will never throw an error**.
-
 > ⚠ Using incompatible operators will lead to an runtime-error!
 
 Where
 
-* `<var-path>` is any kind of variable lookup such as `$obj.array[4].anotherprop`
+* `<variable>` is any kind of variable lookup such as `$obj.array[4].anotherprop`. Invalid accessors will always result in `null` and won't throw an error.
+* `<expression>` could be a string literal or `<variable>`
 
 ### Types
 
@@ -427,7 +428,16 @@ if ($numA > 100 & $strA < #strB | ($numA == $obj[3].a)) [
 ]
 ```
 
+Unary expressions can be made by prefixing `()` with a `!`:
+
+````
+if (!($a == 'hello')) [
+	// Do something if $a is NOT 'hello'
+]
+````
+
 It's possible to directly chain if-statements / using another if-statement as else-branch making an `else-if`-statement.
+
 ```
 if (...) [
  
@@ -461,15 +471,15 @@ const parse = compile(`[
     functions: {
 
         // Our capitalize function
-        capitalize({state}) {
+        capitalize({node}) {
 
             // Verify capitalize is called within a string-group
-            if(state.type !== 'string') {
+            if(node.type !== 'string') {
                 throw new Error('capitalized can only be used within string-groups.')
             }
 
             // Capitalize content
-            state.value = state.value.toUpperCase();
+            node.value = node.value.toUpperCase();
 
             // Return true, use false to make the group fail
             return true;
@@ -478,11 +488,11 @@ const parse = compile(`[
 });
 ```
 
-As we can see functions are defined within the configuration object in the `functions` option, their first argument is a object with following properties (so far):
+As we can see functions are defined within the configuration object in the `functions` option, their first argument is a object with following properties:
 
-| Property | Explanation                                                  |
+| Property | Value / Values / Properties                                  |
 | -------- | ------------------------------------------------------------ |
-| `state`  | Current parsing state, contains two properties: `type` (either `array`, `object` or `string`) and `value` (the current group value). |
+| `node`   | `type` _- Type of value:`array`, `object` or `string`_<br/>`value` _- Node value._<br/>`parent` _- Parent-node, used to manage scopes._ |
 
 Every following argument depends on how the function was called in your declaration, it accepts variables, [groups](#groups) or literals, all arguments will be replaced with their value before they get passed into your JavaScript function:
 
