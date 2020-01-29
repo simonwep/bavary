@@ -1,5 +1,4 @@
 import {DefineStatement, UseStatement} from '../../../ast/types';
-import {NodeValue}                     from '../../node';
 import {evalLiteral}                   from '../../tools/eval-literal';
 import {ParserArgs}                    from '../../types';
 import {evalGroup}                     from '../group';
@@ -52,7 +51,7 @@ export const evalDefineCommand = (
             break;
         }
         case 'member-expression': {
-            node.value[decl.name] = node.lookup(value.value);
+            node.value[decl.name] = node.lookup(value.value) || null;
         }
     }
 

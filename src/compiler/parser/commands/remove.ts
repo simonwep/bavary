@@ -1,8 +1,7 @@
-import {RemoveStatement}      from '../../../ast/types';
-import {REMOVED_PROPERTY}     from '../../internal';
-import {ObjectNodeValue}      from '../../node';
-import {evalMemberExpression} from '../../tools/eval-member-expression';
-import {ParserArgs}           from '../../types';
+import {RemoveStatement}  from '../../../ast/types';
+import {REMOVED_PROPERTY} from '../../internal';
+import {ObjectNodeValue}  from '../../node';
+import {ParserArgs}       from '../../types';
 
 export const evalRemoveCommand = (
     {
@@ -19,7 +18,7 @@ export const evalRemoveCommand = (
     // Lookup parent
     const pathCopy = [...decl.value.value];
     const topAccessor = pathCopy.pop() as string | number;
-    const parent = evalMemberExpression(node.value, pathCopy); // TODO: Member might not exist!
+    const parent = node.lookup(pathCopy);
 
     if (Array.isArray(parent) && typeof topAccessor === 'number') {
 

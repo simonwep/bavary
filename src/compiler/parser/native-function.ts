@@ -1,9 +1,7 @@
 import {FunctionCall} from '../../ast/types';
 import {evalGroup}    from '../internal';
-import {NodeValue}            from '../node';
-import {evalLiteral}          from '../tools/eval-literal';
-import {evalMemberExpression} from '../tools/eval-member-expression';
-import {ParserArgs}           from '../types';
+import {evalLiteral}  from '../tools/eval-literal';
+import {ParserArgs}   from '../types';
 
 export const evalFunction = (
     {
@@ -20,7 +18,7 @@ export const evalFunction = (
     for (const arg of decl.args) {
         switch (arg.type) {
             case 'member-expression': {
-                resolvedArgs.push(evalMemberExpression(node.value, arg.value) as NodeValue);
+                resolvedArgs.push(node.lookup(arg.value) || null);
                 break;
             }
             case 'group': {

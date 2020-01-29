@@ -156,4 +156,16 @@ describe('[COM] Spread operator', () => {
             hi: 'My name is Simon'
         });
     });
+
+    it('Should work on variables', () => {
+        const parse = compile(`[object:
+            use name = [(.)+]
+            use arr = [array: ...$name]
+            ret $arr
+        ]`);
+
+        expect(parse('Simon')).to.deep.equal([
+            'S', 'i', 'm', 'o', 'n'
+        ]);
+    });
 });

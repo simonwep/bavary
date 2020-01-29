@@ -2,7 +2,6 @@
 import {BinaryExpression, BinaryExpressionValue, UnaryExpression} from '../../ast/types';
 import {NodeVariant}                                              from '../node';
 import {evalLiteral}                                              from './eval-literal';
-import {evalMemberExpression}                                     from './eval-member-expression';
 
 /**
  * Resolves a single value in a binary-expression
@@ -20,7 +19,7 @@ function resolveValueOf(node: NodeVariant, decl: BinaryExpressionValue): string 
             return !evalBinaryExpression(node, decl);
         }
         case 'member-expression': {
-            const res = evalMemberExpression(node.value, decl.value) as string | number | boolean | null;
+            const res = node.lookup(decl.value) as string | number | boolean | null;
             return res === undefined ? null : res;
         }
         case 'identifier': {

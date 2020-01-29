@@ -1,8 +1,6 @@
-import {ReturnStatement}      from '../../../ast/types';
-import {NodeValue}            from '../../node';
-import {evalLiteral}          from '../../tools/eval-literal';
-import {evalMemberExpression} from '../../tools/eval-member-expression';
-import {ParserArgs}           from '../../types';
+import {ReturnStatement} from '../../../ast/types';
+import {evalLiteral}     from '../../tools/eval-literal';
+import {ParserArgs}      from '../../types';
 
 export const evalReturnCommand = (
     {decl, node}: ParserArgs<ReturnStatement>
@@ -15,7 +13,7 @@ export const evalReturnCommand = (
             break;
         }
         case 'member-expression': {
-            node.return((evalMemberExpression(node.value, value.value) as NodeValue) || null);
+            node.return(node.lookup(value.value) || null);
             break;
         }
     }

@@ -15,7 +15,7 @@ export type ObjectNodeValue = {[key: string]: NodeValue};
 
 // Properties used in all kind of nodes
 type NodeExtensions = {
-    lookup(path: MemberExpressionPath): NodeValue;
+    lookup(path: MemberExpressionPath): NodeValue | undefined;
     return(value: NodeValue | null): void;
     returns: boolean;
 };
@@ -90,8 +90,8 @@ export class TypedNode {
      * Returns undefined if nothing got found.
      * @param path
      */
-    public lookup(path: MemberExpressionPath): unknown {
-        const value = evalMemberExpression(this.value, path);
+    public lookup(path: MemberExpressionPath): NodeValue | undefined {
+        const value = evalMemberExpression(this.value, path) as NodeValue | undefined;
 
         // This node might contain the value
         if (value !== undefined) {
