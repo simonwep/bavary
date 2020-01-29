@@ -3,6 +3,7 @@ import {NodeValue}                     from '../../node';
 import {evalLiteral}                   from '../../tools/eval-literal';
 import {ParserArgs}                    from '../../types';
 import {evalGroup}                     from '../group';
+import {evalRawReference}              from '../resolve-reference';
 
 export const evalDefineCommand = (
     {
@@ -20,23 +21,38 @@ export const evalDefineCommand = (
     }
 
     const {value} = decl;
-    if (value.type === 'literal') {
-        node.value[decl.name] = evalLiteral(node, value);
-    } else if (value.type === 'member-expression') {
-        node.value[decl.name] = node.lookup(value.value) as NodeValue;
-    } else {
-        const res = evalGroup({
-            decl: value,
-            parent: node,
-            scope,
-            config,
-            stream
-        });
+    switch (value.type) {
+        case 'group': {
+            const res = evalGroup({
+                decl: value,
+                parent: node,
+                scope,
+                config,
+                stream
+            });
 
-        if (res !== null) {
-            node.value[decl.name] = res;
-        } else {
-            return value.multiplier?.type === 'optional';
+            if (res !== null) {
+                node.value[decl.name] = res;
+            } else {
+                return value.multiplier?.type === 'optional';
+            }
+            break;
+        }
+        case 'reference': {
+            node.value[decl.name] = evalRawReference({
+                decl: value,
+                scope,
+                config,
+                stream
+            });
+            break;
+        }
+        case 'literal': {
+            node.value[decl.name] = evalLiteral(node, value);
+            break;
+        }
+        case 'member-expression': {
+            node.value[decl.name] = node.lookup(value.value) as NodeValue;
         }
     }
 

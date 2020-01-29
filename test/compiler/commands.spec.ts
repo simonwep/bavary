@@ -252,6 +252,20 @@ describe('[COM] Operations', () => {
         });
     });
 
+    it('Should allow a reference as def-value', () => {
+        const parse = compile(`
+            <char> = [(A - Z) (a - z)]
+            
+            entry [object:
+                def val = <char>*
+            ]
+        `);
+
+        expect(parse('AaBbCc')).to.deep.equal({
+            val: ['Aa', 'Bb', 'Cc']
+        });
+    });
+
     it('Should properly resolve elements inside of an array', () => {
         const parse = compile(`
             entry [array:

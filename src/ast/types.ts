@@ -114,13 +114,13 @@ export type RemoveStatement = {
 export type DefineStatement = {
     type: 'define';
     name: string;
-    value: Group | Literal | MemberExpression;
+    value: Group | Reference | Literal | MemberExpression;
 };
 
 export type UseStatement = {
     type: 'use';
     name: string;
-    value: Group | Literal | MemberExpression;
+    value: Group | Reference | Literal | MemberExpression;
 };
 
 export type ReturnStatement = {
