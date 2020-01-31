@@ -3,10 +3,10 @@ import {maybe}       from '../tools/maybe';
 import {Numeral}     from '../types';
 
 export const parseNumber = maybe<Numeral>((stream: TokenStream) => {
-    const num = stream.optional(false, 'num');
+    const num = stream.optional('num');
 
-    return num ? {
+    return num !== null ? {
         type: 'number',
-        value: num as number
+        value: num
     } as Numeral : null;
 });

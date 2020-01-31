@@ -23,12 +23,12 @@ describe('[COM] Conditional statement', () => {
     it('Should resolve deep accessors', () => {
         const parse = compile(`
             <number> = [(0 - 9)+]
-            <w-num> = [object:
+            <WNum> = [object:
                 def value = [<number>]
             ]
             
             entry [object:
-                def num = [object: ...<w-num>]?
+                def num = [object: ...<WNum>]?
                 
                 if ($num.value != null) ['A'] else ['B']
             ]
@@ -325,16 +325,6 @@ describe('[COM] Conditional statement', () => {
         expect(parse('bb>')).to.equal(null);
         expect(parse('bb>=')).to.not.equal(null);
         expect(parse('cb>')).to.not.equal(null);
-    });
-
-    it('Should throw an error if a tag is not defd anywhere', () => {
-        const parse = compile(`
-            entry [
-                if ($lol == 0) []
-            ]
-        `);
-
-        expect(() => parse('A')).to.throw();
     });
 
     it('Should throw an error if types aren\'t compatible', () => {

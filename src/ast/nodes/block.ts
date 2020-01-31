@@ -6,7 +6,7 @@ import {Block, Declaration} from '../types';
 export const parseBlock = maybe<Block>((stream: TokenStream) => {
 
     // It may be a block
-    if (!stream.optional(false, 'punc', '{')) {
+    if (!stream.optional('punc', '{')) {
         return null;
     }
 
@@ -20,13 +20,13 @@ export const parseBlock = maybe<Block>((stream: TokenStream) => {
         if (decl) {
             declarations.push(decl);
         }
-    } while (decl && !stream.match(false, 'punc', '}'));
+    } while (decl && !stream.match('punc', '}'));
 
     if (!declarations.length) {
         stream.throw('Expected a declaration.');
     }
 
-    stream.expect(false, 'punc', '}');
+    stream.expect('punc', '}');
     return {
         type: 'block',
         value: declarations

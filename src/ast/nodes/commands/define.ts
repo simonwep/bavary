@@ -3,8 +3,8 @@ import {maybe}                                                           from '.
 import {DefineStatement}                                                 from '../../types';
 
 export const parseDefineStatement = maybe<DefineStatement>(stream => {
-    const name = stream.expect(false, 'kw');
-    stream.expect(false, 'punc', '=');
+    const name = stream.expect('kw');
+    stream.expect('punc', '=');
 
     const value = parseLiteral(stream) ||
         parseGroup(stream) ||

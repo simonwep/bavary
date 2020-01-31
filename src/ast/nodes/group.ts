@@ -14,14 +14,14 @@ import {Combinator, Group, GroupValue} from '../types';
 import {parseSpread}                   from './spread';
 
 export const parseCombinator = maybe<string>((stream: TokenStream) => {
-    let combinator = stream.optional(false, 'punc', '|', '&');
+    let combinator = stream.optional('punc', '|', '&');
 
     if (!combinator) {
         return null;
     }
 
     // It may be a extended combinator
-    if (combinator === '&' && stream.optional(false, 'punc', '&')) {
+    if (combinator === '&' && stream.optional('punc', '&')) {
         combinator += '&';
     }
 
@@ -31,14 +31,14 @@ export const parseCombinator = maybe<string>((stream: TokenStream) => {
 export const parseGroup = maybe<Group>((stream: TokenStream) => {
 
     // It may be a group
-    if (!stream.optional(false, 'punc', '[')) {
+    if (!stream.optional('punc', '[')) {
         return null;
     }
 
     stream.stash();
-    const mode = stream.optional(true, 'kw', 'object', 'array', 'string');
+    const mode = stream.optional('kw', 'object', 'array', 'string');
     if (mode) {
-        stream.expect(true, 'punc', ':');
+        stream.expect('punc', ':');
     }
 
     stream.recycle();
@@ -57,7 +57,7 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
     // The following code is chaos, and thats ok.
     // It works as intended and does the job just fine.
     let comg: null | Combinator = null;
-    while (!stream.match(false, 'punc', ']')) {
+    while (!stream.match('punc', ']')) {
         const value = parsers(stream);
         const sign = parseCombinator(stream);
 
@@ -117,7 +117,7 @@ export const parseGroup = maybe<Group>((stream: TokenStream) => {
         stream.throw('Combinator is missing a value!');
     }
 
-    stream.expect(false, 'punc', ']');
+    stream.expect('punc', ']');
 
     return {
         type: 'group',

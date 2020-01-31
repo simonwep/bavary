@@ -2,6 +2,14 @@ import {ParsingError}                       from '../streams/parsing-error';
 import {Streamable}                         from '../streams/streamable';
 import {RangeInformation, Token, TokenType} from './types';
 
+type TokenPrimitive<T extends TokenType> =
+    T extends 'kw' ? string :
+        T extends 'str' ? string :
+            T extends 'punc' ? string :
+                T extends 'num' ? number :
+                    unknown;
+
+
 /* istanbul ignore next */
 export class TokenStream extends Streamable<Token> {
 
@@ -12,57 +20,35 @@ export class TokenStream extends Streamable<Token> {
         this.source = source;
     }
 
-    next(includeWhitespace = false): Token | never {
+    next(): Token | never {
         const {index, length, vals} = this;
 
-        if (includeWhitespace && index < length) {
+        if (index < length) {
             return vals[this.index++];
-        }
-
-        for (let i = index; i < length; i++) {
-            if (vals[i].type !== 'ws') {
-                this.index = i + 1;
-                return vals[i];
-            }
         }
 
         this.throw('Unexpected end of input');
     }
 
-    peek(includeWhitespace = false): Token | null {
+    peek(): Token | null {
         const {index, length, vals} = this;
 
-        if (includeWhitespace && index < length) {
+        if (index < length) {
             return vals[index];
-        }
-
-        for (let i = index; i < length; i++) {
-            if (vals[i].type !== 'ws') {
-                return vals[i];
-            }
         }
 
         return null;
     }
 
-    hasNext(includeWhitespace = false): boolean {
-        return this.peek(includeWhitespace) !== null;
-    }
-
-    /**
-     * Consumes following whitespace
-     */
-    consumeSpace(): void {
-        if (this.hasNext(true) && (this.peek(true) as Token).type === 'ws') {
-            this.next(true);
-        }
+    hasNext(): boolean {
+        return this.peek() !== null;
     }
 
     /**
      * Checks if the next token matches the given conditioons
      */
-    match(includeWhitespace = false, type: TokenType, ...values: Array<unknown>): boolean {
-        const peek = this.peek(includeWhitespace);
+    match<T extends TokenType>(type: T, ...values: Array<number | string>): boolean {
+        const peek = this.peek();
 
         // Check if type matches
         if (!peek || peek.type !== type) {
@@ -76,33 +62,27 @@ export class TokenStream extends Streamable<Token> {
     /**
      * Same as match but it'll consume the token if the conditions are met
      */
-    optional<T = string | number>(includeWhitespace = false, type: TokenType, ...values: Array<T>): T | null {
-        const peek = this.peek(includeWhitespace);
-
-        // Check if type matches
-        if (!peek || peek.type !== type) {
-            return null;
-        }
+    optional<T extends TokenType>(type: T, ...values: Array<number | string>): TokenPrimitive<T> | null {
 
         // Check if next token matches the given condition
-        return this.match(includeWhitespace, type, ...values) ?
-            this.next(includeWhitespace).value as unknown as T :
+        return this.match(type, ...values) ?
+            this.next().value as TokenPrimitive<T> :
             null;
     }
 
     /**
      * Same as match but it'll throw an error if the conditions aren't met
      */
-    expect<T = string | number>(includeWhitespace = false, type: TokenType, ...values: Array<T>): T | never {
+    expect<T extends TokenType>(type: T, ...values: Array<number | string>): TokenPrimitive<T> | never {
 
-        // Check if next token matches type and value
-        const expected = this.optional(includeWhitespace, type, ...values);
+        // Check if next token matches type and
+        const expected = this.optional(type, ...values);
         if (expected !== null) {
             return expected;
         }
 
-        if (this.hasNext(includeWhitespace)) {
-            const nxt = this.peek(includeWhitespace) as Token;
+        if (this.hasNext()) {
+            const nxt = this.peek() as Token;
             this.throw(`Expected "${values.join(', ')}" but got "${nxt.value}"`);
         }
 

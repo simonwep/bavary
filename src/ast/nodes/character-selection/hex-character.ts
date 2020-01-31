@@ -4,16 +4,16 @@ import {maybe}       from '../../tools/maybe';
 
 export const parseHexCharacter = maybe<number>((stream: TokenStream) => {
 
-    if (!stream.optional(false, 'punc', '\\')) {
+    if (!stream.optional('punc', '\\')) {
         return null;
     }
 
-    const next = stream.optional(false, 'kw');
-    if (!next || !(next as string).startsWith('x')) {
+    const next = stream.optional('kw');
+    if (!next || !next.startsWith('x')) {
         return null;
     }
 
-    const hex = (next as string).slice(1);
+    const hex = (next).slice(1);
     if (hex.length !== 2 && hex.length !== 4) {
         stream.throw('Hex value must either be 2 or 4 values.');
     } else if (!isValidHex(hex)) {

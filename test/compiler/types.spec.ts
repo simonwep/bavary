@@ -36,9 +36,9 @@ describe('[COM] Nested types', () => {
 
     it('Should handle two types', () => {
         const parse = compile(`
-            <1-2-3> = ['1' | '2' | '3']
-            <a-b-c> = ['A' | 'B' | 'C']
-            entry <abc> = [<1-2-3> <a-b-c>?]*
+            <OTT> = ['1' | '2' | '3']
+            <ABC> = ['A' | 'B' | 'C']
+            entry <abc> = [<OTT> <ABC>?]*
         `);
 
         expect(parse('1A')).to.deep.equal(['1A']);

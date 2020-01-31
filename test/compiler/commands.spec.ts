@@ -96,12 +96,12 @@ describe('[COM] Operations', () => {
 
     it('Should join object via spread-operator', () => {
         const parse = compile(`
-            <other-obj> = [object:
+            <OtherObj> = [object:
                 def aha = 'oho'
             ]
 
             entry [object:
-                def hello = [object: ...<other-obj>]
+                def hello = [object: ...<OtherObj>]
             ]
         `);
 

@@ -25,8 +25,8 @@ function maybeBinary(
 ): BinaryExpression | BinaryExpressionValue {
     stream.stash();
 
-    const operator = stream.optional(false, 'punc') as string
-        + (stream.optional(true, 'punc') || '');
+    const operator = stream.optional('punc')
+        + (stream.optional('punc', '=') || '');
 
     if (!operator || !(operator in operatorPriority)) {
         stream.pop();
@@ -38,7 +38,6 @@ function maybeBinary(
     if (pr > base) {
 
         // Parse right-hand value
-        stream.consumeSpace();
         const rightValue = parse(stream);
         if (!rightValue) {
             stream.throw('Expected right-hand value');
@@ -57,7 +56,7 @@ function maybeBinary(
 }
 
 export const parseBinaryExpression = maybe<BinaryExpression | UnaryExpression>((stream: TokenStream) => {
-    if (!stream.optional(false, 'punc', '(')) {
+    if (!stream.optional('punc', '(')) {
         return null;
     }
 
@@ -82,6 +81,6 @@ export const parseBinaryExpression = maybe<BinaryExpression | UnaryExpression>((
         stream.throw('Expected binary expression.');
     }
 
-    stream.expect(false, 'punc', ')');
+    stream.expect('punc', ')');
     return bex;
 });

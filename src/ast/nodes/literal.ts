@@ -5,7 +5,7 @@ import {Literal, LiteralValues, MemberExpression} from '../types';
 import {parseMemberExpression}                    from './member-expression';
 
 export const parseLiteral = maybe<Literal>((stream: TokenStream) => {
-    const escapeChar = stream.optional(false, 'punc', '\'', '"');
+    const escapeChar = stream.optional('punc', '\'', '"');
 
     if (!escapeChar) {
         return null;
@@ -13,44 +13,24 @@ export const parseLiteral = maybe<Literal>((stream: TokenStream) => {
 
     // Build string char-by-char
     const values: LiteralValues = [];
-    let currentRawString = '';
-    let escaped = false;
-
-    function dumpRawString(): void {
-        if (currentRawString.length) {
-            values.push({
-                type: 'string-litereal',
-                value: currentRawString
-            });
-
-            currentRawString = '';
-        }
-    }
-
     const parseInterpolation = combine<MemberExpression | Literal | null>(
         parseMemberExpression,
         parseLiteral
     );
 
-    while (stream.hasNext(true)) {
-        const {value} = stream.next(true);
+    while (stream.hasNext()) {
+        const {type, value} = stream.next();
 
-        // End reached
-        if (value === escapeChar && !escaped) {
-            dumpRawString();
-            break;
-        }
+        if (type === 'str') {
+            values.push({
+                type: 'string-litereal',
+                value: value as string
+            });
 
-        // Interpolation
-        if (value === '{' && !escaped) {
-
-            // Dump current raw string
-            if (currentRawString.length) {
-                dumpRawString();
-            }
+        } else if (value === '{') {
 
             // Parse interpolated value
-            while (!stream.match(false, 'punc', '}')) {
+            while (!stream.match('punc', '}')) {
                 const inner = parseInterpolation(stream);
 
                 if (!inner) {
@@ -60,22 +40,11 @@ export const parseLiteral = maybe<Literal>((stream: TokenStream) => {
                 values.push(inner);
             }
 
-
-            stream.expect(false, 'punc', '}');
-            continue;
-        }
-
-        // Maybe the escape-character was escaped :O
-        const wasEscaped = escaped;
-        escaped = value === '\\';
-
-        // Ignore escape-slash if not escaped
-        if (!escaped || wasEscaped) {
-            currentRawString += value;
+            stream.expect('punc', '}');
+        } else if (value === escapeChar) {
+            break;
         }
     }
-
-    dumpRawString();
 
     // Throw error on empty strings, their mostly a error
     if (

@@ -9,7 +9,7 @@ import {parseUseStatement}    from './use';
 import {parseVoidStatement}   from './void';
 
 export const parseGroupStatement = maybe<GroupCommand>(stream => {
-    const match = stream.optional(false, 'kw', 'ret', 'def', 'rem', 'use', 'push', 'void', 'throw');
+    const match = stream.optional('kw', 'ret', 'def', 'rem', 'use', 'push', 'void', 'throw');
 
     switch (match) {
         case 'ret': {

@@ -4,13 +4,9 @@ import {UnaryExpression}       from '../../types';
 import {parseBinaryExpression} from './index';
 
 export const parseUnaryExpression = maybe<UnaryExpression>((stream: TokenStream) => {
-    const sign = stream.optional(false, 'punc', '!');
+    const sign = stream.optional('punc', '!');
     if (!sign) {
         return null;
-    }
-
-    if (stream.match(true, 'ws')) {
-        stream.throw('Whitespace between ! and a expression is not allowed.');
     }
 
     const argument = parseBinaryExpression(stream);

@@ -1,13 +1,13 @@
-import {Streamable}       from '../../streams/streamable';
-import {isNumeric}        from '../tools/is';
-import {Alternate, Token} from '../types';
+import {Streamable}         from '../../streams/streamable';
+import {isNumeric}          from '../tools/is';
+import {Token, TokenParser} from '../types';
 
-export const num = (stream: Streamable<string>): Token | Alternate => {
+export const num: TokenParser = (stream: Streamable<string>, tokens: Array<Token>): boolean => {
+    const start = stream.index;
     let decimal = false;
     let sign = false;
     let number = '';
 
-    stream.stash();
     while (stream.hasNext()) {
         const ch = stream.peek() as string;
 
@@ -32,13 +32,15 @@ export const num = (stream: Streamable<string>): Token | Alternate => {
     }
 
     if (!number.length || !isNumeric(number[number.length - 1])) {
-        stream.pop();
-        return Alternate.FAILED;
+        return false;
     }
 
-    stream.recycle();
-    return {
+    tokens.push({
         type: 'num',
-        value: Number(number)
-    } as Token;
+        value: Number(number),
+        start,
+        end: stream.index
+    });
+
+    return true;
 };

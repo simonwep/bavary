@@ -1,45 +1,39 @@
 import {TokenStream}      from '../../tokenizer/token-stream';
-import {parseIdentifier}  from '../internal';
 import {combine}          from '../tools/combine';
 import {maybe}            from '../tools/maybe';
 import {MemberExpression} from '../types';
 
 const parsePropertyExpression = maybe<string>((stream: TokenStream) => {
-    if (!stream.optional(true, 'punc', '.')) {
+    if (!stream.optional('punc', '.')) {
         return null;
     }
 
-    const ident = parseIdentifier(stream);
-    if (!ident) {
-        stream.throw('Expected identifier.');
-    }
-
-    return ident.value;
+    return stream.expect('kw');
 });
 
 const parseArrayExpression = maybe<number>((stream: TokenStream) => {
-    if (!stream.optional(true, 'punc', '[')) {
+    if (!stream.optional('punc', '[')) {
         return null;
     }
 
-    const index = stream.expect(true, 'num');
-    stream.expect(true, 'punc', ']');
+    const index = stream.expect('num');
+    stream.expect('punc', ']');
 
-    return index as number;
+    return index;
 });
 
 export const parseMemberExpression = maybe<MemberExpression>((stream: TokenStream) => {
 
     // They start with a tag...
-    if (!stream.optional(false, 'punc', '$')) {
+    if (!stream.optional('punc', '$')) {
         return null;
     }
 
     // Might start with a property
-    const entry = parseIdentifier(stream);
+    const entry = stream.optional('kw');
 
     // Following path...
-    const accessorPath = entry ? [entry.value] : [];
+    const accessorPath = entry ? [entry] : [];
     const parser = combine<string | number | null>(
         parsePropertyExpression,
         parseArrayExpression

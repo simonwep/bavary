@@ -1,19 +1,26 @@
-import {Streamable}       from '../../streams/streamable';
-import {isPunctuation}    from '../tools/is';
-import {Alternate, Token} from '../types';
+import {Streamable}         from '../../streams/streamable';
+import {isPunctuation}      from '../tools/is';
+import {Token, TokenParser} from '../types';
 
-export const punc = (stream: Streamable<string>): Token | Alternate => {
+export const punc: TokenParser = (stream: Streamable<string>, tokens: Array<Token>): boolean => {
 
     /* istanbul ignore else */
     if (isPunctuation(stream.peek() as string)) {
-        return {
+        let value = stream.next();
+
+        if (value === '\\' && isPunctuation(stream.peek() as string)) {
+            value = stream.next() as string;
+        }
+
+        tokens.push({
             type: 'punc',
-            value: stream.next()
-        } as Token;
+            value,
+            start: stream.index - 1,
+            end: stream.index
+        } as Token);
+
+        return true;
     }
 
-    // Basicall everyhing which ends here must be a puncuation characters...
-    // Return null is just here to keep types consistend in their return type
-    /* istanbul ignore next */
-    return Alternate.FAILED;
+    return false;
 };

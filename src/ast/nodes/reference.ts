@@ -1,12 +1,12 @@
-import {TokenStream}                                      from '../../tokenizer/token-stream';
-import {parseArguments, parseIdentifier, parseMultiplier} from '../internal';
-import {maybe}                                            from '../tools/maybe';
-import {Reference}                                        from '../types';
+import {TokenStream}                     from '../../tokenizer/token-stream';
+import {parseArguments, parseMultiplier} from '../internal';
+import {maybe}                           from '../tools/maybe';
+import {Reference}                       from '../types';
 
 export const parseReference = maybe<Reference>((stream: TokenStream) => {
 
     // It may be a type
-    if (!stream.optional(false, 'punc', '<')) {
+    if (!stream.optional('punc', '<')) {
         return null;
     }
 
@@ -14,14 +14,14 @@ export const parseReference = maybe<Reference>((stream: TokenStream) => {
     let expectIdentifier = false;
 
     while (stream.hasNext()) {
-        const next = parseIdentifier(stream);
+        const next = stream.optional('kw');
 
         if (next) {
             expectIdentifier = false;
-            value.push(next.value);
+            value.push(next); // TODO: Typed optional / expect?!
         }
 
-        if (!stream.optional(false, 'punc', ':')) {
+        if (!stream.optional('punc', ':')) {
             break;
         } else {
             expectIdentifier = true;
@@ -33,7 +33,7 @@ export const parseReference = maybe<Reference>((stream: TokenStream) => {
     }
 
     const args = parseArguments(stream);
-    stream.expect(false, 'punc', '>');
+    stream.expect('punc', '>');
     return {
         type: 'reference',
         arguments: args,

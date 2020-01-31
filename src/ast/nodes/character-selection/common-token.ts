@@ -6,18 +6,13 @@ import {commonTokens}            from './common-tokens';
 export const parseCommonToken = maybe<CharacterSelectionArray>((stream: TokenStream) => {
 
     // The . character stands for anything
-    if (stream.optional(false, 'punc', '.')) {
+    if (stream.optional('punc', '.')) {
         return [[0, 65535]];
-    } else if (!stream.optional(false, 'punc', '\\')) {
+    } else if (!stream.optional('punc', '\\')) {
         return null;
     }
 
-    const token = stream.next(true);
-    if (token.type === 'ws') {
-        stream.throw(`Expected token but got "${token.value}".`);
-    }
-
-    const tv = token.value as string;
+    const tv = stream.expect('kw');
     const target = commonTokens[tv];
 
     if (target === undefined) {

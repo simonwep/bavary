@@ -4,11 +4,11 @@ import {maybe}        from '../../tools/maybe';
 
 export const parseOctalCharacter = maybe<number>((stream: TokenStream) => {
 
-    if (!stream.optional(false, 'punc', '\\')) {
+    if (!stream.optional('punc', '\\')) {
         return null;
     }
 
-    const next = stream.optional(false, 'num');
+    const next = stream.optional('num');
     if (!next) {
         return null;
     }

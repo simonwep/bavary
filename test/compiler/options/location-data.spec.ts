@@ -6,19 +6,19 @@ describe('[OPTION] Location data', () => {
     it('Should add the __starts and __ends property to an object', () => {
         const parse = compile(`
             <ws> = [(\\s)*]
-            <hex-color> = {
+            <HexColor> = {
                 <hex> = [(0 - 9) | (a - f)]
-                <hex-pair> = [<hex> <hex>]
+                <HexPair> = [<hex> <hex>]
                 
                 default [object:
-                    '\\#'
+                    '#'
                     
                     # RRGGBBAA & RRGGBB
                     [
-                        def r = [<hex-pair>]
-                        def g = [<hex-pair>]
-                        def b = [<hex-pair>]
-                        def a = [<hex-pair>]?
+                        def r = [<HexPair>]
+                        def g = [<HexPair>]
+                        def b = [<HexPair>]
+                        def a = [<HexPair>]?
                     ] | [
                         # RGBA & RGB
                         def r = [<hex>]
@@ -31,7 +31,7 @@ describe('[OPTION] Location data', () => {
             
             entry [object:
                 <ws>
-                def hex = [object: <hex-color>]
+                def hex = [object: <HexColor>]
                 <ws>
             ]+
         `, {
@@ -63,19 +63,19 @@ describe('[OPTION] Location data', () => {
 
     it('Should allow custom location properties', () => {
         const parse = compile(`
-            <hex-color> = {
+            <HexColor> = {
                 <hex> = [(0 - 9) | (a - f)]
-                <hex-pair> = [<hex> <hex>]
+                <HexPair> = [<hex> <hex>]
                 
                 default [object:
-                    '\\#'
+                    '#'
                     
                     # RRGGBBAA & RRGGBB
                     [
-                        def r = [<hex-pair>]
-                        def g = [<hex-pair>]
-                        def b = [<hex-pair>]
-                        def a = [<hex-pair>]?
+                        def r = [<HexPair>]
+                        def g = [<HexPair>]
+                        def b = [<HexPair>]
+                        def a = [<HexPair>]?
                     ] | [
                         # RGBA & RGB
                         def r = [<hex>]
@@ -86,7 +86,7 @@ describe('[OPTION] Location data', () => {
                 ]
             }
             
-            entry [object: '((' def col = [object: ...<hex-color>] '))']
+            entry [object: '((' def col = [object: ...<HexColor>] '))']
         `, {
             locationData: {
                 start: 'startsAt',

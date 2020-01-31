@@ -9,23 +9,23 @@ const types: {[key: string]: string} = {
 };
 
 export const parseMultiplier = maybe<Multiplier>((stream: TokenStream) => {
-    const mp = stream.optional(true, 'punc', '*', '+', '?', '{');
+    const mp = stream.optional('punc', '*', '+', '?', '{');
 
     if (mp === '{') {
-        const start = stream.expect(false, 'num');
+        const start = stream.expect('num');
 
-        stream.expect(false, 'punc', ',');
-        const end = stream.optional(false, 'num');
+        stream.expect('punc', ',');
+        const end = stream.optional('num');
 
         if (end !== null) {
 
             // Validate range - tokenizer currently parses no negaive numbers
-            if ((end as number) - (start as number) < 0) {
+            if ((end) - (start) < 0) {
                 stream.throw('The difference between start and end-value cannot be negative or zero.');
             }
         }
 
-        stream.expect(false, 'punc', '}');
+        stream.expect('punc', '}');
         return {
             type: 'range',
             value: {

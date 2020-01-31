@@ -9,7 +9,7 @@ describe('[EXAMPLE] strings', () => {
                 
                 # Match all characters except the quotation character.
                 # Match escaped quotation-characters first.
-                def string = [['\\\\"' | (. except \\")]+]
+                def string = [['\\\\"' | (. except '"')]+]
                 '"'
             ]
         }

@@ -6,7 +6,7 @@ import {ConditionalStatement, Group, ParserFunction} from '../types';
 export const parseConditionalStatement: ParserFunction<ConditionalStatement> = maybe((stream: TokenStream) => {
 
     // The if-keyword initiates a if-statement
-    if (!stream.optional(false, 'kw', 'if')) {
+    if (!stream.optional('kw', 'if')) {
         return null;
     }
 
@@ -24,7 +24,7 @@ export const parseConditionalStatement: ParserFunction<ConditionalStatement> = m
 
     // The else-branch is optional
     let alternate: Group | ConditionalStatement | null = null;
-    if (stream.optional(false, 'kw', 'else')) {
+    if (stream.optional('kw', 'else')) {
         alternate = parseGroup(stream) || parseConditionalStatement(stream);
 
         if (!alternate) {

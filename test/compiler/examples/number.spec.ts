@@ -4,24 +4,24 @@ describe('[EXAMPLE] numbers', () => {
 
     const parse = compile(`
         entry {
-            <raw-num> = [(\\d)+]
-            <num-sign> = [ '+' | '-' ]
-            <scientific-notation> = ['e' <num-sign>? <raw-num>]
-            <scientific-num> = [<raw-num> <scientific-notation>?]
+            <RawNum> = [(\\d)+]
+            <NumSign> = [ '+' | '-' ]
+            <ScientificNotation> = ['e' <NumSign>? <RawNum>]
+            <ScientificNum> = [<RawNum> <ScientificNotation>?]
             
             default [object:
             
                 # Well that's optional
-                def sign = [<num-sign>]?
+                def sign = [<NumSign>]?
         
                 # Decimal
                 [
-                    def num = [<raw-num>]? '.' 
-                    def decimal = [<scientific-num>]
+                    def num = [<RawNum>]? '.' 
+                    def decimal = [<ScientificNum>]
                 ] |
             
                 # Non-decimal
-                def num = [<scientific-num>]
+                def num = [<ScientificNum>]
             ]
         }
     `);

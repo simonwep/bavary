@@ -10,10 +10,10 @@ describe('[COM] Exports', () => {
     it('Should resolve simple exports', () => {
         const parse = compile(`
             <chars> = {
-                export <lowercase-letters> = [(a - z)]
+                export <LowercaseLetters> = [(a - z)]
             }
     
-            entry [<chars:lowercase-letters>+]
+            entry [<chars:LowercaseLetters>+]
         `);
 
         expect(parse('a')).to.equal('a');
@@ -24,9 +24,9 @@ describe('[COM] Exports', () => {
     it('Should work in combination with default exports', () => {
         const parse = compile(`
             <chars> = {
-                export <lowercase-letters> = [(a - z)+]
-                export <uppercase-letters> = [(A - Z)+]
-                default [<lowercase-letters> <uppercase-letters>]
+                export <LowercaseLetters> = [(a - z)+]
+                export <UppercaseLetters> = [(A - Z)+]
+                default [<LowercaseLetters> <UppercaseLetters>]
             }
     
             entry [object: def chars = [<chars>]]
@@ -41,24 +41,25 @@ describe('[COM] Exports', () => {
         const parse = compile(`
             <chars> = {
                 export <numbers> = [(0 - 9)]
-                export <string-stuff> = {
-                    export <lowercase-letters> = [(a - z)]
-                    export <uppercase-letters> = [(A - Z)]
-                    default [<lowercase-letters> | <uppercase-letters>]+
+                export <StringStuff> = {
+                    export <LowercaseLetters> = [(a - z)]
+                    export <UppercaseLetters> = [(A - Z)]
+                    default [<LowercaseLetters> | <UppercaseLetters>]+
                 }
                 
-                default [<numbers> | <string-stuff>]
+                default [<numbers> | <StringStuff>]
             }
             
             entry [object:
-                def deep = [<chars:string-stuff:lowercase-letters>] | 
-                def mixed = [array: <chars:string-stuff>] | <chars:numbers>
+                def deep = [<chars:StringStuff>] | 
+                def mixed = [array: <chars:StringStuff>] | 
+                <chars:numbers>
             ]
         `);
 
 
         expect(parse('a')).to.deep.equal({deep: 'a', mixed: null});
-        expect(parse('ABb')).to.deep.equal({deep: null, mixed: []});
+        expect(parse('ABb')).to.deep.equal({deep: 'ABb', mixed: null});
         expect(parse('4')).to.deep.equal({deep: null, mixed: null});
     });
 

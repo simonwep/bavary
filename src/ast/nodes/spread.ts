@@ -6,11 +6,9 @@ import {Spread}                                                          from '.
 export const parseSpread = maybe<Spread>((stream: TokenStream) => {
 
     // Skip leading whitespace
-    stream.consumeSpace();
-
     // Three dots indicate a spread-operation
     for (let i = 0; i < 3; i++) {
-        if (!stream.optional(true, 'punc', '.')) {
+        if (!stream.optional('punc', '.')) {
             return null;
         }
     }

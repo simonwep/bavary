@@ -24,7 +24,7 @@ export const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
         }
 
         // There may be a range seletion
-        if (stream.optional(false, 'punc', '-')) {
+        if (stream.optional('punc', '-')) {
             const b = parseToken(stream);
 
             if (b === null) {
@@ -39,7 +39,7 @@ export const parseSequence = (stream: TokenStream): CharacterSelectionArray => {
             sequence.push(a);
         }
 
-    } while (stream.optional(false, 'punc', ','));
+    } while (stream.optional('punc', ','));
 
     return sequence;
 };

@@ -1,14 +1,13 @@
-import {TokenStream}                 from '../../tokenizer/token-stream';
-import {parseGroup, parseIdentifier} from '../internal';
-import {maybe}                       from '../tools/maybe';
-import {Arguments}                   from '../types';
+import {TokenStream} from '../../tokenizer/token-stream';
+import {parseGroup}  from '../internal';
+import {maybe}       from '../tools/maybe';
+import {Arguments}   from '../types';
 
 export const parseArguments = maybe<Arguments>((stream: TokenStream) => {
     const args: Arguments = [];
 
     while (true) {
-        stream.consumeSpace();
-        const name = parseIdentifier(stream)?.value;
+        const name = stream.optional('kw');
 
         if (!name) {
             break;
@@ -16,7 +15,7 @@ export const parseArguments = maybe<Arguments>((stream: TokenStream) => {
 
         // It may have a value
         let value = null;
-        if (stream.optional(false, 'punc', '=')) {
+        if (stream.optional('punc', '=')) {
             value = parseGroup(stream);
 
             if (!value) {

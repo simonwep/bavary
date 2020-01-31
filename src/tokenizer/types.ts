@@ -1,16 +1,19 @@
-export type TokenType = 'punc' | 'num' | 'kw' | 'ws';
+import {Streamable} from '../streams/streamable';
+
+export type TokenType = 'punc' | 'num' | 'kw' | 'str';
 
 export type Token = {
     type: TokenType;
     value: string | number;
 } & RangeInformation;
 
-export enum Alternate {
-    FAILED = 'FAILED',
-    EMPTY = 'EMPTY'
-}
-
 export type RangeInformation = {
     start: number;
     end: number;
 };
+
+export type TokenParser = (
+    stream: Streamable<string>,
+    tokens: Array<Token>,
+    next: () => boolean
+) => boolean;

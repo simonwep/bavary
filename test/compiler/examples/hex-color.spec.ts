@@ -4,17 +4,17 @@ describe('[EXAMPLE] hex-color', () => {
     const parse = compile(`
         entry {
             <hex> = [(\\d, a - f)]
-            <hex-pair> = [<hex> <hex>]
+            <HexPair> = [<hex> <hex>]
             
             default [object:
-                '\\#'
+                '#'
                 
                 # RRGGBBAA & RRGGBB
                 [
-                    def r = [<hex-pair>]
-                    def g = [<hex-pair>]
-                    def b = [<hex-pair>]
-                    def a = [<hex-pair>]?
+                    def r = [<HexPair>]
+                    def g = [<HexPair>]
+                    def b = [<HexPair>]
+                    def a = [<HexPair>]?
                 ] | [
                     # RGBA & RGB
                     def r = [<hex>]

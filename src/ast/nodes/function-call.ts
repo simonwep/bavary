@@ -1,14 +1,13 @@
 import {TokenStream}                                                      from '../../tokenizer/token-stream';
 import {parseGroup, parseIdentifier, parseLiteral, parseMemberExpression} from '../internal';
 import {combine}                                                          from '../tools/combine';
-import {maybe}                              from '../tools/maybe';
-import {FunctionCall, FunctionCallArgument} from '../types';
+import {maybe}                                                            from '../tools/maybe';
+import {FunctionCall, FunctionCallArgument}                               from '../types';
 
 export const parseFunction = maybe<FunctionCall>((stream: TokenStream) => {
 
-    stream.consumeSpace();
-    const name = parseIdentifier(stream);
-    if (!name || !stream.optional(false, 'punc', '(')) {
+    const name = stream.optional('kw');
+    if (!name || !stream.optional('punc', '(')) {
         return null;
     }
 
@@ -21,13 +20,11 @@ export const parseFunction = maybe<FunctionCall>((stream: TokenStream) => {
 
     // Parse arguments
     const args = [];
-    while (!stream.match(false, 'punc', ')')) {
-        stream.consumeSpace();
+    while (!stream.match('punc', ')')) {
         if (args.length) {
-            stream.expect(false, 'punc', ',');
+            stream.expect('punc', ',');
         }
 
-        stream.consumeSpace();
         const arg = parse(stream);
         if (!arg) {
             stream.throw('Expected an a group, tag or identifier.');
@@ -36,10 +33,10 @@ export const parseFunction = maybe<FunctionCall>((stream: TokenStream) => {
         args.push(arg);
     }
 
-    stream.expect(false, 'punc', ')');
+    stream.expect('punc', ')');
     return {
         type: 'function-call',
-        name: name.value,
+        name,
         args
     } as FunctionCall;
 });

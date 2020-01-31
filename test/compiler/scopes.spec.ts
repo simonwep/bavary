@@ -111,12 +111,12 @@ describe('[COM] Scopes', () => {
                 default [<val>]
             }
 
-            <uppercase-lowercase> = {
+            <UppercaseLowercase> = {
                 <val> = [(a - z)+]
                 default [<val> | <uppercase>]
             }
 
-            entry [<uppercase-lowercase>]
+            entry [<UppercaseLowercase>]
         `);
 
         expect(parse('ABACAB')).to.deep.equal('ABACAB');
