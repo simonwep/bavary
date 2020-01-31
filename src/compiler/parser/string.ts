@@ -13,10 +13,9 @@ export const evalLiteralContent = (
 
     stream.stash();
     for (let i = 0; i < value.length; i++) {
-        const next = stream.next();
 
         // Check for type mismatch
-        if (next !== value[i]) {
+        if (!stream.hasNext() || stream.next() !== value[i]) {
             stream.pop();
             return false;
         }

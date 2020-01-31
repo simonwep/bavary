@@ -20,30 +20,6 @@ export class TokenStream extends Streamable<Token> {
         this.source = source;
     }
 
-    next(): Token | never {
-        const {index, length, vals} = this;
-
-        if (index < length) {
-            return vals[this.index++];
-        }
-
-        this.throw('Unexpected end of input');
-    }
-
-    peek(): Token | null {
-        const {index, length, vals} = this;
-
-        if (index < length) {
-            return vals[index];
-        }
-
-        return null;
-    }
-
-    hasNext(): boolean {
-        return this.peek() !== null;
-    }
-
     /**
      * Checks if the next token matches the given conditioons
      */

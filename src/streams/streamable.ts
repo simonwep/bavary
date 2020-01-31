@@ -31,8 +31,13 @@ export class Streamable<T> {
     /**
      * Returns the next item
      */
-    next(): T | null {
-        return this.hasNext() ? this.vals[this.index++] : null;
+    next(): T | never {
+
+        if (this.hasNext()) {
+            return this.vals[this.index++];
+        }
+
+        this.throw('Unexpected end of input.');
     }
 
     /**

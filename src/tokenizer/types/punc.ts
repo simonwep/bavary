@@ -9,7 +9,7 @@ export const punc: TokenParser = (stream: Streamable<string>, tokens: Array<Toke
         let value = stream.next();
 
         if (value === '\\' && isPunctuation(stream.peek() as string)) {
-            value = stream.next() as string;
+            value = stream.next();
         }
 
         tokens.push({
