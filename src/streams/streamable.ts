@@ -69,7 +69,7 @@ export class Streamable<T> {
         if (typeof vals === 'string') {
 
             // Throw StreamingError
-            throw new ParsingError(msg, vals, index, index);
+            throw new ParsingError(msg, vals, index - 1, index);
         }
 
         // Throw regular error
