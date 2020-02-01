@@ -58,7 +58,7 @@ export class TokenStream extends Streamable<Token> {
         }
 
         if (this.hasNext()) {
-            const nxt = this.peek() as Token;
+            const nxt = this.next() as Token;
             this.throw(`Expected "${values.join(', ')}" but got "${nxt.value}"`);
         }
 
@@ -71,15 +71,15 @@ export class TokenStream extends Streamable<Token> {
      */
     throw(msg: string): never {
         const {source} = this;
+        const current: undefined | RangeInformation = this.vals[this.index - 1];
 
-        if (this.hasNext() && source) {
+        if (source && current) {
 
             // Expect peeked value to be of type RangeInformation
-            const peek = this.peek() as RangeInformation;
-            throw new ParsingError(msg, source, peek.start, peek.end);
+            throw new ParsingError(msg, source, current.start, current.end);
         }
 
         // Throw regular error
-        throw new Error(msg);
+        throw new ParsingError(msg, source, this.index, this.index + 1);
     }
 }

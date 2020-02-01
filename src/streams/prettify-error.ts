@@ -20,11 +20,10 @@ function alternative(val: number, fallback: number, pred = -1): number {
  */
 function addLinePrefixes(lines: Array<string>, rows: number, minNumPad = 1, seperator = ' | '): [Array<string>, number] {
     const rowPad = Math.max(Math.ceil(Math.log10(rows + 1)), minNumPad);
-    const padBase = (lines.length - 1) + rows;
 
     // Add row-numbers
     const newLines = lines.map((value, index) =>
-        String(padBase + index).padStart(rowPad, '0') + seperator + value
+        String(rows - (lines.length - 1 - index)).padStart(rowPad, '0') + seperator + value
     );
 
     return [newLines, rowPad + seperator.length];
@@ -62,6 +61,8 @@ function resolvePastNLines(source: string, max = 10, offset = source.length): [A
 
     if (!lines.length) {
         lines.push(source);
+    } else if (lines.length < max && buffer.length) {
+        lines.splice(0, 0, buffer);
     }
 
     // Strip leading whitespace
@@ -84,7 +85,7 @@ function resolvePastNLines(source: string, max = 10, offset = source.length): [A
 export const prettifyError = (msg: string, source: string, start: number, end: number): string => {
 
     // Error cursor
-    const col = (start - alternative(previousIndexOf(source, '\n', start), -1) + 1);
+    const col = start - (alternative(previousIndexOf(source, '\n', start), -1) + 1);
 
     // Add row-numbers
     const [sourceLines, rowCount] = resolvePastNLines(source, 4, end);
