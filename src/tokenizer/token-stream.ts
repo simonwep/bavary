@@ -58,8 +58,8 @@ export class TokenStream extends Streamable<Token> {
         }
 
         if (this.hasNext()) {
-            const nxt = this.next() as Token;
-            this.throw(`Expected "${values.join(', ')}" but got "${nxt.value}"`);
+            this.next();
+            this.throw('Unexpected token.');
         }
 
         this.throw('Unxpected end of input.');
