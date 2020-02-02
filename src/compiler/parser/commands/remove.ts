@@ -18,20 +18,32 @@ export const evalRemoveCommand = (
     // Lookup parent
     const pathCopy = [...decl.value.value];
     const topAccessor = pathCopy.pop() as string | number;
-    const parent = node.lookup(pathCopy);
+    const parent = node.lookup(pathCopy) as ObjectNodeValue | undefined | Array<unknown>;
 
-    if (Array.isArray(parent) && typeof topAccessor === 'number') {
+    // Skip unresolved parents
+    if (!parent) {
+        return true;
+    }
 
-        // Arrays won't get serialized
-        parent.splice(topAccessor, 1);
-    } else if (!pathCopy.length) {
+    if (Array.isArray(parent)) {
 
-        // Top-level properties will be serialzed, mark them that they shall be removed
-        (parent as ObjectNodeValue)[topAccessor] = REMOVED_PROPERTY;
-    } else if (typeof parent === 'object') {
+        if (typeof topAccessor === 'number') {
 
-        // Deeply nested properties won't be serialized, remove them immediatly
-        delete (parent as ObjectNodeValue)[topAccessor];
+            // Remove item
+            parent.splice(topAccessor, 1);
+        }
+
+    } else if (typeof parent === 'object' && parent[topAccessor] !== undefined) {
+
+        // Check if it's a deeply-nested property
+        if (pathCopy.length) {
+
+            // Deeply nested properties won't be serialized, remove them immediatly
+            delete parent[topAccessor];
+        } else {
+            // Top-level properties will be serialzed, mark them that they shall be removed
+            parent[topAccessor] = REMOVED_PROPERTY;
+        }
     }
 
     return true;

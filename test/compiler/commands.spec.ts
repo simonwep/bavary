@@ -252,6 +252,29 @@ describe('[COM] Operations', () => {
         });
     });
 
+    it('Should properly remove a propery, ignoreing invalid paths', () => {
+        const parse = compile(`[object:
+            def x = "Gello"
+            def a = [array:
+                push "Hello"
+                push "World"
+            ]
+            
+            rem $a[100].x
+            rem $a[1].x
+            rem $a[1]
+            rem $a.x
+            rem $woah
+            rem $woah.x
+        ]`);
+
+        expect(parse('')).to.deep.equal({
+            x: 'Gello',
+            a: ['Hello']
+        });
+    });
+
+
     it('Should allow a reference as def-value', () => {
         const parse = compile(`
             <char> = [(A - Z) (a - z)]

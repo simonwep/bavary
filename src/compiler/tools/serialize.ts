@@ -18,10 +18,10 @@ export function serializeParsingResult(rest: Array<GroupValue>, target: ObjectNo
             const itemValue = value[item.name];
 
             // Set value only to null if it's not defined yet
-            if (typeof itemValue === 'undefined' || nullish) {
-                value[item.name] = null;
-            } else if (itemValue === REMOVED_PROPERTY) {
+            if (itemValue === REMOVED_PROPERTY) {
                 delete value[item.name];
+            } else if (typeof itemValue === 'undefined' || nullish) {
+                value[item.name] = null;
             }
 
         } else if (item.type === 'use') {
