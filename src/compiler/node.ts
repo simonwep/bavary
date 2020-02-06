@@ -15,7 +15,7 @@ export type ObjectNodeValue = {[key: string]: NodeValue};
 
 // Properties used in all kind of nodes
 type NodeExtensions = {
-    lookup(path: MemberExpressionPath): NodeValue | undefined;
+    lookup(path: MemberExpressionPath): NodeValue;
     return(value: NodeValue | null): void;
     returns: boolean;
 };

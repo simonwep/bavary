@@ -75,10 +75,24 @@ describe('[COM] Scopes', () => {
                export <a> = ['A']
             }
 
-            entry [<abc:a:b>]
+            entry [<abc:a:b:d:e>]
         `);
 
         expect(() => parse('A')).to.throw();
+    });
+
+    it('Should throw an error if reference points to nothing', () => {
+        const parse = compile(`
+            <a> = {
+                default {
+                    <b> = ['abc']
+                }
+            }
+            
+            entry [<a:b:c:d>]
+        `);
+
+        expect(() => parse('abc')).to.throw();
     });
 
     it('Should throw an error if user tries to resolve a undefined type', () => {

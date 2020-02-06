@@ -18,6 +18,7 @@ const parsers = [
  * @param str
  * @returns {[]}
  */
+/* istanbul ignore next */
 export const tokenize = (str: string): Array<Token> => {
     const stream = new Streamable(str);
     const tokens: Array<Token> = [];

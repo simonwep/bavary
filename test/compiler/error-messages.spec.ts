@@ -66,7 +66,7 @@ entry [object
 03 | entry [object
 04 |     def x =
          ^^^
-Error: Unexpected token.`
+Error: Expected :`
         );
     });
 
@@ -87,5 +87,24 @@ Error: Expected end of string.`
         );
     });
 
+
+    it('Formatting test no. 8', () => {
+        expect(() => compile(`
+<con> = {
+    default {
+    
+
+        <x> = ['abc']
+}
+
+`)).to.throw(ParsingError,
+            `
+05 | 
+06 |         <x> = ['abc']
+07 | }
+     ^
+Error: Unxpected end of input.`
+        );
+    });
 
 });

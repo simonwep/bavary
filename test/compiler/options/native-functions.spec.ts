@@ -40,14 +40,16 @@ describe('[OPTION] Functions', () => {
         const parse = compile(`
             entry [object:
                 def chars = [(a - z)+]
-                count($chars, size)
+                count($chars, size, $foo)
             ]
         `, {
             functions: {
-                count({node}, chars, prop): boolean {
+                count({node}, chars, prop, foo): boolean {
 
                     if (node.type !== 'object') {
                         throw new Error('count can only be used within objects.');
+                    } else if (foo !== null) {
+                        throw new Error('Foo should be null.');
                     }
 
                     if (chars && typeof chars === 'string' && typeof prop === 'string' && prop.length) {
