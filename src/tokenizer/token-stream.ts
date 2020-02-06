@@ -59,7 +59,7 @@ export class TokenStream extends Streamable<Token> {
 
         if (this.hasNext()) {
             this.next();
-            this.throw('Unexpected token.');
+            this.throw(values.length ? `Expected ${values.join(' / ')}` : 'Unexpected token.');
         }
 
         this.throw('Unxpected end of input.');
