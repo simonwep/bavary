@@ -12,7 +12,7 @@ export const num: TokenParser = (stream: Streamable<string>, tokens: Array<Token
         const ch = stream.peek() as string;
 
         if (ch === '-' || ch === '+') {
-            if (sign) {
+            if (sign || decimal) {
                 break;
             }
 
