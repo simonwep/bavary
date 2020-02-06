@@ -8,9 +8,9 @@ import {str}        from './types/str';
 
 const parsers = [
     str,
+    num,
     punc,
-    kw,
-    num
+    kw
 ];
 
 /**
