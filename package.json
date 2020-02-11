@@ -1,6 +1,6 @@
 {
     "name": "@bavary/core",
-    "version": "0.0.26",
+    "version": "0.0.27",
     "description": "Customizable, elegant and fast syntax-parser",
     "author": "Simon Reinisch <trash@reinisch.io>",
     "main": "lib/bavary.js",
@@ -53,8 +53,5 @@
         "typescript": "^3.7.4",
         "webpack": "^4.41.5",
         "webpack-cli": "^3.3.10"
-    },
-    "dependencies": {
-        "previous-index-of": "^1.2.1"
     }
 }
