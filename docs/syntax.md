@@ -240,11 +240,11 @@ And that's it.
 
 | Syntax                                     | Can be used within...          | Description                                                  | Example                         |
 | ------------------------------------------ | ------------------------------ | ------------------------------------------------------------ | ------------------------------- |
-| `throw <string>`                           | `String`,`Array`,`Object` <sup>1</sup>  | Throws a pretty error.                                       | `throw 'whoopsie'`              |
+| `throw <literal>`                    | `String`,`Array`,`Object` <sup>1</sup>  | Throws a pretty error.                                       | `throw 'whoopsie'`              |
 | `void <group>`                             | `String`,`Array`,`Object` <sup>2</sup> | Ignores value of `<group>`.                                  | `void ['A']`                    |
-| `push <group\|string>`                      | `Array`                        | Appends a value to the array.                                | `push ['A']`                    |
-| `def <name> = <group\|expression>` | `Object`                       | Defines a property `<name>` within the object with the given value. | `def x = ['A']` `def x = $abc ` |
-| `use <name> = <group\|expression> ` | `Object` | Work the same way as `def`, but property will be excluded from the final result. | `use m = 'A'` |
+| `push <group\|literal>`                | `Array`                        | Appends a value to the array.                                | `push ['A']`                    |
+| `def <identifier> = <group\|expression\|<reference>>` | `Object`                       | Defines a property `<name>` within the object with the given value. | `def x = ['A']` `def x = $abc ` |
+| `use <identifier> = <group\|expression> ` | `Object` | Work the same way as `def`, but property will be excluded from the final result. | `use m = 'A'` |
 | `rem <variable>`                           | `Array`,`Object`               | Removes a property / Array value.                         | `rem $baz`                      |
 | `return <expression>` | `String`,`Array`,`Object` | Returns a literal. | `ret 'Value: {$val}'` |
 
@@ -257,7 +257,9 @@ And that's it.
 Where
 
 * `<variable>` is any kind of variable lookup such as `$obj.array[4].anotherprop`. Invalid accessors will always result in `null` and won't throw an error.
-* `<expression>` could be a string literal or `<variable>`
+* `<expression>` could be a string literal or `<variable>`.
+* `<literal>` refers to a string or [template-string](#template-strings). 
+* `<reference>` points to a [type](#types).
 
 ### Types
 
@@ -266,16 +268,18 @@ A type is a re-usable form of a group which can be used in other declarations, i
 Each type can either be a [parsing-group](#groups), to **group related** types together, or a direct definition of a character / type sequence.
 ```html
 # Group definition
-<my-group-type> = ['A']
+<MyGroupType> = ['A']
 
 # Block / Scope definition
-<my-block-type> = {...}
+<MyBlockType> = {...}
 ```
 
 Types used in declarations can be [multiplied](#multipliers):
 ```html
-entry [<my-type>+]
+entry [<MyType>+]
 ```
+
+The names of types are usually in [CamelCase](https://en.wikipedia.org/wiki/Camel_case) and only `A-Z,a-z,_` are allowed as characters.
 
 #### Arguments
 
@@ -284,7 +288,7 @@ It's possible to pass groups to types:
 ```js
 const parse = compile(`
     # You can specify default values by using the assign operator on arguments
-    <string sign=['"'] content> = [object:
+    <String sign=['"'] content> = [object:
         <sign> # Arguments are used just like types
         def body = [<content>]
         <sign>
@@ -294,14 +298,14 @@ const parse = compile(`
         
         # Arguments with default-value aren't mandatory
         # and can be overridden any time.
-        ...<string content=[(a - z, A - Z, 0 - 9)+]>
+        ...<String content=[(a - z, A - Z, 0 - 9)+]>
     ]
 `);
 
 console.log(parse('"hello"')); // Outputs {body: 'hello'}
 ```
 
-
+Arguments are usually written in lowercase to distinguish them from previously defined types.
 
 ### Block definition
 
@@ -311,40 +315,40 @@ Each block can have exactly one, optional, `default` export which can be used to
 sub-types, and an arbitrary amount of _exported_ types:
 
 ```html
-<characters> = {
+<Characters> = {
 
   # Exported types
-  export <uppercase> = [(A - Z)]
-  export <lowercase> = [(a - z)]
-  export <numbers> = [(0 - 9)]
+  export <Uppercase> = [(A - Z)]
+  export <Lowercase> = [(a - z)]
+  export <Numbers> = [(0 - 9)]
 
-  # Default export if <character> is used without referring to exported types.
+  # Default export if <Character> is used without referring to exported types.
   # The default will match either 'A' to 'Z', 'a' to 'z' or '0' to '9'
-  default [<uppercase> | <lowercase> | <numbers>]
+  default [<Uppercase> | <Lowercase> | <Numbers>]
 }
 
-# Using <characters> without deep-selection will result in [<uppercase> | <lowercase> | <numbers>]
-# To access nested e.g. the <uppercase> type use `<characters:uppercase>`
-entry [<characters>+]
+# Using <Characters> without deep-selection will result in [<Uppercase> | <Lowercase> | <Numbers>]
+# To access nested e.g. the <Uppercase> type use `<Characters:Uppercase>`
+entry [<Characters>+]
 ```
 
 ### Spread operator
 
-Use the spread operator `...` on arrays, objects and even strings (They'll be split into their characters) which have the same value to make their value part of the current group, they work both on [groups](#groups) and [types](#types), example with types:
+Use the spread operator `...` on [member-expressions](#commands), arrays, objects and even strings (They'll be split into their characters) which have the same value to make their value part of the current group, they work both on [groups](#groups) and [types](#types), example with types:
 
 ````js
 const parse = compile(`
-    <uppercase> = [object:
+    <Uppercase> = [object:
         def up = [(A - Z)+]
     ]
     
-    <lowercase> = [object:
+    <Lowercase> = [object:
         def low = [(a - z)+]
     ]
 
     entry [object:
-        ...<lowercase>
-        ...<uppercase>?
+        ...<Lowercase>
+        ...<Uppercase>?
     ]
 `);
 
